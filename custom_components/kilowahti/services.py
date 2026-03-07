@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import logging
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime
 
 import voluptuous as vol
+
 from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse
 from homeassistant.helpers import config_validation as cv
 
@@ -205,10 +206,7 @@ async def _handle_add_fixed_period(call: ServiceCall) -> None:
         raise vol.Invalid("price must be greater than zero")
 
     storage = coordinator._storage
-    overlap = any(
-        not (end < p.start_date or start > p.end_date)
-        for p in storage.periods
-    )
+    overlap = any(not (end < p.start_date or start > p.end_date) for p in storage.periods)
     if overlap:
         raise vol.Invalid("This period overlaps with an existing fixed-price period")
 
@@ -221,7 +219,9 @@ async def _handle_add_fixed_period(call: ServiceCall) -> None:
     )
     await storage.async_add_period(period)
     coordinator.async_update_listeners()
-    _LOGGER.info("Added fixed-price period '%s' (%s – %s, %.3f snt/kWh)", period.label, start, end, price)
+    _LOGGER.info(
+        "Added fixed-price period '%s' (%s – %s, %.3f snt/kWh)", period.label, start, end, price
+    )
 
 
 async def _handle_remove_fixed_period(call: ServiceCall) -> None:
@@ -312,6 +312,12 @@ def async_register_services(hass: HomeAssistant) -> None:
 
 def async_unregister_services(hass: HomeAssistant) -> None:
     """Unregister services when the last entry is removed."""
-    for service in ("get_prices", "cheapest_hours", "average_price",
-                    "add_fixed_period", "remove_fixed_period", "list_fixed_periods"):
+    for service in (
+        "get_prices",
+        "cheapest_hours",
+        "average_price",
+        "add_fixed_period",
+        "remove_fixed_period",
+        "list_fixed_periods",
+    ):
         hass.services.async_remove(DOMAIN, service)

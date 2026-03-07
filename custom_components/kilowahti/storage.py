@@ -18,15 +18,9 @@ class KilowahtiStorage:
     """Wraps HA Store for fixed-price periods, price cache, and score accumulators."""
 
     def __init__(self, hass: HomeAssistant, entry_id: str) -> None:
-        self._store_periods: Store = Store(
-            hass, STORAGE_VERSION, f"kilowahti_{entry_id}_periods"
-        )
-        self._store_cache: Store = Store(
-            hass, STORAGE_VERSION, f"kilowahti_{entry_id}_cache"
-        )
-        self._store_scores: Store = Store(
-            hass, STORAGE_VERSION, f"kilowahti_{entry_id}_scores"
-        )
+        self._store_periods: Store = Store(hass, STORAGE_VERSION, f"kilowahti_{entry_id}_periods")
+        self._store_cache: Store = Store(hass, STORAGE_VERSION, f"kilowahti_{entry_id}_cache")
+        self._store_scores: Store = Store(hass, STORAGE_VERSION, f"kilowahti_{entry_id}_scores")
 
         self._periods: list[FixedPeriod] = []
         self._cache: dict = {}
@@ -73,9 +67,7 @@ class KilowahtiStorage:
         return False
 
     async def _save_periods(self) -> None:
-        await self._store_periods.async_save(
-            {"periods": [p.to_dict() for p in self._periods]}
-        )
+        await self._store_periods.async_save({"periods": [p.to_dict() for p in self._periods]})
 
     # ------------------------------------------------------------------
     # Price cache (today + tomorrow slots, keyed by date string)

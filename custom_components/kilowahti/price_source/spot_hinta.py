@@ -6,6 +6,7 @@ import logging
 from datetime import datetime, timezone
 
 import aiohttp
+
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
@@ -79,9 +80,7 @@ class SpotHintaSource(PriceSource):
         ) as response:
             if response.status == 429:
                 retry_after = int(response.headers.get("Retry-After", 60))
-                _LOGGER.warning(
-                    "Rate-limited by spot-hinta.fi; Retry-After=%ds", retry_after
-                )
+                _LOGGER.warning("Rate-limited by spot-hinta.fi; Retry-After=%ds", retry_after)
                 raise SpotHintaRateLimitError(
                     response.request_info,
                     response.history,

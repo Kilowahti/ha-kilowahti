@@ -120,7 +120,9 @@ async def async_setup_entry(
         KilowahtiEffectivePriceSensor(
             coordinator,
             entry,
-            _price_sensor(SENSOR_EFFECTIVE_PRICE, lambda c: c.format_price(c.effective_price_now())),
+            _price_sensor(
+                SENSOR_EFFECTIVE_PRICE, lambda c: c.format_price(c.effective_price_now())
+            ),
         )
     )
 

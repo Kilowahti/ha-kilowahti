@@ -3,12 +3,9 @@
 from __future__ import annotations
 
 import logging
-from dataclasses import dataclass
-from typing import Any
 
 from homeassistant.components.binary_sensor import (
     BinarySensorEntity,
-    BinarySensorEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -21,10 +18,6 @@ from .const import (
     BINARY_SENSOR_PRICE_OR_RANK_ACCEPTABLE,
     BINARY_SENSOR_RANK_ACCEPTABLE,
     BINARY_SENSOR_TOMORROW_AVAILABLE,
-    CONF_MAX_PRICE,
-    CONF_MAX_RANK,
-    DEFAULT_MAX_PRICE,
-    DEFAULT_MAX_RANK,
     DOMAIN,
 )
 from .coordinator import KilowahtiCoordinator

@@ -8,13 +8,12 @@ from datetime import date
 from typing import Any
 
 import voluptuous as vol
+
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import callback
 from homeassistant.helpers import selector
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import (
-    API_BASE_URL,
     API_REGIONS,
     CONF_CONTROL_FACTOR_FUNCTION,
     CONF_CONTROL_FACTOR_SCALING,
@@ -115,12 +114,17 @@ def _user_schema(defaults: dict) -> vol.Schema:
     return vol.Schema(
         {
             vol.Required("name", default=defaults.get("name", "Home")): selector.TextSelector(),
-            vol.Required(CONF_REGION, default=defaults.get(CONF_REGION, "FI")): selector.SelectSelector(
+            vol.Required(
+                CONF_REGION, default=defaults.get(CONF_REGION, "FI")
+            ): selector.SelectSelector(
                 selector.SelectSelectorConfig(
                     options=[{"value": r, "label": r} for r in API_REGIONS],
                 )
             ),
-            vol.Required(CONF_PRICE_RESOLUTION, default=str(defaults.get(CONF_PRICE_RESOLUTION, DEFAULT_PRICE_RESOLUTION))): selector.SelectSelector(
+            vol.Required(
+                CONF_PRICE_RESOLUTION,
+                default=str(defaults.get(CONF_PRICE_RESOLUTION, DEFAULT_PRICE_RESOLUTION)),
+            ): selector.SelectSelector(
                 selector.SelectSelectorConfig(
                     options=[
                         {"value": "15", "label": "15 minutes"},
@@ -128,7 +132,9 @@ def _user_schema(defaults: dict) -> vol.Schema:
                     ],
                 )
             ),
-            vol.Required(CONF_DISPLAY_UNIT, default=defaults.get(CONF_DISPLAY_UNIT, UNIT_SNTPERKWH)): selector.SelectSelector(
+            vol.Required(
+                CONF_DISPLAY_UNIT, default=defaults.get(CONF_DISPLAY_UNIT, UNIT_SNTPERKWH)
+            ): selector.SelectSelector(
                 selector.SelectSelectorConfig(
                     options=[
                         {"value": UNIT_SNTPERKWH, "label": UNIT_SNTPERKWH},
@@ -143,10 +149,15 @@ def _user_schema(defaults: dict) -> vol.Schema:
 def _vat_schema(defaults: dict) -> vol.Schema:
     return vol.Schema(
         {
-            vol.Required("vat_rate_pct", default=defaults.get("vat_rate_pct", DEFAULT_VAT_RATE * 100)): selector.NumberSelector(
+            vol.Required(
+                "vat_rate_pct", default=defaults.get("vat_rate_pct", DEFAULT_VAT_RATE * 100)
+            ): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=0, max=100, step=0.1, mode="box")
             ),
-            vol.Required(CONF_ELECTRICITY_TAX, default=defaults.get(CONF_ELECTRICITY_TAX, DEFAULT_ELECTRICITY_TAX)): selector.NumberSelector(
+            vol.Required(
+                CONF_ELECTRICITY_TAX,
+                default=defaults.get(CONF_ELECTRICITY_TAX, DEFAULT_ELECTRICITY_TAX),
+            ): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=0, max=100, step=0.001, mode="box")
             ),
         }
@@ -157,17 +168,33 @@ def _thresholds_schema(defaults: dict, resolution: int = DEFAULT_PRICE_RESOLUTIO
     max_rank = 24 if resolution == 60 else 96
     return vol.Schema(
         {
-            vol.Required(CONF_MAX_PRICE, default=defaults.get(CONF_MAX_PRICE, DEFAULT_MAX_PRICE)): selector.NumberSelector(
+            vol.Required(
+                CONF_MAX_PRICE, default=defaults.get(CONF_MAX_PRICE, DEFAULT_MAX_PRICE)
+            ): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=0, max=999, step=0.1, mode="box")
             ),
-            vol.Required(CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER, default=defaults.get(CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER, DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER)): selector.BooleanSelector(),
-            vol.Required(CONF_MAX_RANK, default=defaults.get(CONF_MAX_RANK, DEFAULT_MAX_RANK)): selector.NumberSelector(
+            vol.Required(
+                CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
+                default=defaults.get(
+                    CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
+                    DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
+                ),
+            ): selector.BooleanSelector(),
+            vol.Required(
+                CONF_MAX_RANK, default=defaults.get(CONF_MAX_RANK, DEFAULT_MAX_RANK)
+            ): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=1, max=max_rank, step=1, mode="box")
             ),
-            vol.Required(CONF_FORWARD_AVG_HOURS, default=defaults.get(CONF_FORWARD_AVG_HOURS, DEFAULT_FORWARD_AVG_HOURS)): selector.NumberSelector(
+            vol.Required(
+                CONF_FORWARD_AVG_HOURS,
+                default=defaults.get(CONF_FORWARD_AVG_HOURS, DEFAULT_FORWARD_AVG_HOURS),
+            ): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=1, max=24, step=0.25, mode="box")
             ),
-            vol.Required(CONF_CONTROL_FACTOR_FUNCTION, default=defaults.get(CONF_CONTROL_FACTOR_FUNCTION, DEFAULT_CONTROL_FACTOR_FUNCTION)): selector.SelectSelector(
+            vol.Required(
+                CONF_CONTROL_FACTOR_FUNCTION,
+                default=defaults.get(CONF_CONTROL_FACTOR_FUNCTION, DEFAULT_CONTROL_FACTOR_FUNCTION),
+            ): selector.SelectSelector(
                 selector.SelectSelectorConfig(
                     options=[
                         {"value": CONTROL_FACTOR_LINEAR, "label": "Linear"},
@@ -175,7 +202,10 @@ def _thresholds_schema(defaults: dict, resolution: int = DEFAULT_PRICE_RESOLUTIO
                     ]
                 )
             ),
-            vol.Required(CONF_CONTROL_FACTOR_SCALING, default=defaults.get(CONF_CONTROL_FACTOR_SCALING, DEFAULT_CONTROL_FACTOR_SCALING)): selector.NumberSelector(
+            vol.Required(
+                CONF_CONTROL_FACTOR_SCALING,
+                default=defaults.get(CONF_CONTROL_FACTOR_SCALING, DEFAULT_CONTROL_FACTOR_SCALING),
+            ): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=1, max=3, step=0.1, mode="box")
             ),
         }
@@ -185,7 +215,10 @@ def _thresholds_schema(defaults: dict, resolution: int = DEFAULT_PRICE_RESOLUTIO
 def _score_profiles_schema(defaults: dict) -> vol.Schema:
     return vol.Schema(
         {
-            vol.Required(CONF_EXPOSE_PRICE_ARRAYS, default=defaults.get(CONF_EXPOSE_PRICE_ARRAYS, DEFAULT_EXPOSE_PRICE_ARRAYS)): selector.BooleanSelector(),
+            vol.Required(
+                CONF_EXPOSE_PRICE_ARRAYS,
+                default=defaults.get(CONF_EXPOSE_PRICE_ARRAYS, DEFAULT_EXPOSE_PRICE_ARRAYS),
+            ): selector.BooleanSelector(),
         }
     )
 
@@ -206,13 +239,19 @@ def _add_tier_schema(defaults: dict | None = None) -> vol.Schema:
             vol.Required("price", default=defaults.get("price", 5.0)): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=0, max=999, step=0.01, mode="box")
             ),
-            vol.Required("months", default=defaults.get("months", [str(i) for i in range(1, 13)])): selector.SelectSelector(
+            vol.Required(
+                "months", default=defaults.get("months", [str(i) for i in range(1, 13)])
+            ): selector.SelectSelector(
                 selector.SelectSelectorConfig(options=_MONTH_OPTIONS, multiple=True)
             ),
-            vol.Required("weekdays", default=defaults.get("weekdays", [str(i) for i in range(7)])): selector.SelectSelector(
+            vol.Required(
+                "weekdays", default=defaults.get("weekdays", [str(i) for i in range(7)])
+            ): selector.SelectSelector(
                 selector.SelectSelectorConfig(options=_WEEKDAY_OPTIONS, multiple=True)
             ),
-            vol.Required("hour_start", default=defaults.get("hour_start", 0)): selector.NumberSelector(
+            vol.Required(
+                "hour_start", default=defaults.get("hour_start", 0)
+            ): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=0, max=23, step=1, mode="box")
             ),
             vol.Required("hour_end", default=defaults.get("hour_end", 24)): selector.NumberSelector(
@@ -317,7 +356,10 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
             active_label = " [active]" if g.get("active") else ""
             tier_count = len(g.get("tiers", []))
             group_options.append(
-                {"value": f"manage_{i}", "label": f"Manage: {g['label']}{active_label} ({tier_count} tiers)"}
+                {
+                    "value": f"manage_{i}",
+                    "label": f"Manage: {g['label']}{active_label} ({tier_count} tiers)",
+                }
             )
         group_options.append({"value": "add_group", "label": "➕ Add group"})
         group_options.append({"value": "continue", "label": "✓ Continue to thresholds"})
@@ -376,7 +418,9 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
         if not group.get("active"):
             action_options.append({"value": "set_active", "label": "★ Set as active group"})
         for i, tier in enumerate(group.get("tiers", [])):
-            action_options.append({"value": f"remove_tier_{i}", "label": f"✕ Remove tier: {tier['label']}"})
+            action_options.append(
+                {"value": f"remove_tier_{i}", "label": f"✕ Remove tier: {tier['label']}"}
+            )
         action_options.append({"value": "remove_group", "label": "✕ Remove this group"})
         action_options.append({"value": "back", "label": "← Back to groups"})
 
@@ -417,7 +461,9 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
     async def async_step_thresholds(self, user_input: dict | None = None):
         if user_input is not None:
             self._data[CONF_MAX_PRICE] = float(user_input[CONF_MAX_PRICE])
-            self._data[CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER] = user_input[CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER]
+            self._data[CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER] = user_input[
+                CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER
+            ]
             self._data[CONF_MAX_RANK] = int(user_input[CONF_MAX_RANK])
             self._data[CONF_FORWARD_AVG_HOURS] = float(user_input[CONF_FORWARD_AVG_HOURS])
             self._data[CONF_CONTROL_FACTOR_FUNCTION] = user_input[CONF_CONTROL_FACTOR_FUNCTION]
@@ -426,7 +472,9 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
 
         return self.async_show_form(
             step_id="thresholds",
-            data_schema=_thresholds_schema({}, self._data.get(CONF_PRICE_RESOLUTION, DEFAULT_PRICE_RESOLUTION)),
+            data_schema=_thresholds_schema(
+                {}, self._data.get(CONF_PRICE_RESOLUTION, DEFAULT_PRICE_RESOLUTION)
+            ),
         )
 
     # ------ Step 5: score profiles ----------------------------------------
@@ -470,7 +518,13 @@ class KilowahtiOptionsFlow(OptionsFlow):
     async def async_step_init(self, user_input: dict | None = None):
         return self.async_show_menu(
             step_id="init",
-            menu_options=["basic", "transfer_groups", "thresholds", "score_profiles", "fixed_periods"],
+            menu_options=[
+                "basic",
+                "transfer_groups",
+                "thresholds",
+                "score_profiles",
+                "fixed_periods",
+            ],
         )
 
     # ------ Basic settings ------------------------------------------------
@@ -496,7 +550,9 @@ class KilowahtiOptionsFlow(OptionsFlow):
             "vat_rate_pct": round(cur.get(CONF_VAT_RATE, DEFAULT_VAT_RATE) * 100, 1),
             CONF_ELECTRICITY_TAX: cur.get(CONF_ELECTRICITY_TAX, DEFAULT_ELECTRICITY_TAX),
         }
-        schema = vol.Schema({**_user_schema(basic_defaults).schema, **_vat_schema(vat_defaults).schema})
+        schema = vol.Schema(
+            {**_user_schema(basic_defaults).schema, **_vat_schema(vat_defaults).schema}
+        )
 
         return self.async_show_form(step_id="basic", data_schema=schema)
 
@@ -519,7 +575,10 @@ class KilowahtiOptionsFlow(OptionsFlow):
             active_label = " [active]" if g.get("active") else ""
             tier_count = len(g.get("tiers", []))
             group_options.append(
-                {"value": f"manage_{i}", "label": f"Manage: {g['label']}{active_label} ({tier_count} tiers)"}
+                {
+                    "value": f"manage_{i}",
+                    "label": f"Manage: {g['label']}{active_label} ({tier_count} tiers)",
+                }
             )
         group_options.append({"value": "add_group", "label": "➕ Add group"})
         group_options.append({"value": "save", "label": "✓ Save & close"})
@@ -575,7 +634,9 @@ class KilowahtiOptionsFlow(OptionsFlow):
         if not group.get("active"):
             action_options.append({"value": "set_active", "label": "★ Set as active group"})
         for i, tier in enumerate(group.get("tiers", [])):
-            action_options.append({"value": f"remove_tier_{i}", "label": f"✕ Remove tier: {tier['label']}"})
+            action_options.append(
+                {"value": f"remove_tier_{i}", "label": f"✕ Remove tier: {tier['label']}"}
+            )
         action_options.append({"value": "remove_group", "label": "✕ Remove this group"})
         action_options.append({"value": "back", "label": "← Back to groups"})
 
@@ -612,11 +673,15 @@ class KilowahtiOptionsFlow(OptionsFlow):
     async def async_step_thresholds(self, user_input: dict | None = None):
         if user_input is not None:
             self._options[CONF_MAX_PRICE] = float(user_input[CONF_MAX_PRICE])
-            self._options[CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER] = user_input[CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER]
+            self._options[CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER] = user_input[
+                CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER
+            ]
             self._options[CONF_MAX_RANK] = int(user_input[CONF_MAX_RANK])
             self._options[CONF_FORWARD_AVG_HOURS] = float(user_input[CONF_FORWARD_AVG_HOURS])
             self._options[CONF_CONTROL_FACTOR_FUNCTION] = user_input[CONF_CONTROL_FACTOR_FUNCTION]
-            self._options[CONF_CONTROL_FACTOR_SCALING] = float(user_input[CONF_CONTROL_FACTOR_SCALING])
+            self._options[CONF_CONTROL_FACTOR_SCALING] = float(
+                user_input[CONF_CONTROL_FACTOR_SCALING]
+            )
             return self.async_create_entry(data=self._options)
 
         return self.async_show_form(
@@ -633,7 +698,9 @@ class KilowahtiOptionsFlow(OptionsFlow):
         if user_input is not None:
             action = user_input.get("action", "save")
             if action == "save":
-                self._options[CONF_EXPOSE_PRICE_ARRAYS] = user_input.get(CONF_EXPOSE_PRICE_ARRAYS, False)
+                self._options[CONF_EXPOSE_PRICE_ARRAYS] = user_input.get(
+                    CONF_EXPOSE_PRICE_ARRAYS, False
+                )
                 return self.async_create_entry(data=self._options)
             if action == "add_profile":
                 return await self.async_step_add_score_profile()
@@ -704,7 +771,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
             if action == "add_period":
                 return await self.async_step_add_fixed_period()
             if action.startswith("remove_period_"):
-                period_id = action[len("remove_period_"):]
+                period_id = action[len("remove_period_") :]
                 await storage.async_remove_period(period_id)
                 return await self.async_step_fixed_periods()
 

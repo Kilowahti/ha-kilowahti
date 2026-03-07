@@ -35,7 +35,6 @@ from .const import (
     CONF_SCORE_PROFILES,
     CONF_TRANSFER_GROUPS,
     CONF_VAT_RATE,
-    CONTROL_FACTOR_LINEAR,
     CONTROL_FACTOR_SINUSOIDAL,
     DEFAULT_CONTROL_FACTOR_FUNCTION,
     DEFAULT_CONTROL_FACTOR_SCALING,
@@ -135,7 +134,9 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
     @property
     def _price_threshold_includes_transfer(self) -> bool:
-        return self._opts.get(CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER, DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER)
+        return self._opts.get(
+            CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER, DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER
+        )
 
     @property
     def _forward_avg_hours(self) -> float:
@@ -196,9 +197,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
             self._today_date = today
             self._tomorrow_slots = None
-            await self._storage.async_save_cache(
-                self._today_slots, None, today
-            )
+            await self._storage.async_save_cache(self._today_slots, None, today)
             _LOGGER.info("Fetched %d today-slots from API", len(self._today_slots))
 
         # Restore score accumulators
@@ -249,10 +248,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
         # If we're already past eager_start and missing tomorrow, start polling now
         now_local = dt_util.as_local(dt_util.utcnow())
-        if (
-            self._tomorrow_slots is None
-            and eager_start <= now_local.hour < eager_end
-        ):
+        if self._tomorrow_slots is None and eager_start <= now_local.hour < eager_end:
             self.hass.async_create_task(self._async_eager_poll())
 
     def async_unload(self) -> None:
@@ -301,7 +297,9 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             self._today_slots = self._tomorrow_slots
             self._today_date = today
             self._tomorrow_slots = None
-            _LOGGER.info("Midnight rollover: promoted tomorrow → today (%d slots)", len(self._today_slots))
+            _LOGGER.info(
+                "Midnight rollover: promoted tomorrow → today (%d slots)", len(self._today_slots)
+            )
         else:
             # No tomorrow cache — fetch today fresh
             try:
@@ -309,7 +307,9 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
                     self.hass, self._region, self._resolution
                 )
                 self._today_date = today
-                _LOGGER.info("Midnight rollover: fetched today from API (%d slots)", len(self._today_slots))
+                _LOGGER.info(
+                    "Midnight rollover: fetched today from API (%d slots)", len(self._today_slots)
+                )
             except Exception as err:
                 _LOGGER.error("Midnight rollover: failed to fetch today's prices: %s", err)
 
@@ -336,9 +336,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             return
 
         try:
-            slots = await self._source.fetch_tomorrow(
-                self.hass, self._region, self._resolution
-            )
+            slots = await self._source.fetch_tomorrow(self.hass, self._region, self._resolution)
         except SpotHintaRateLimitError as err:
             _LOGGER.warning("Eager fetch: rate-limited; retrying in %ds", err.retry_after)
             self._schedule_eager_poll(err.retry_after)
@@ -543,7 +541,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             cf = 1.0 - t
 
         scaling = self._control_factor_scaling
-        cf = cf ** scaling
+        cf = cf**scaling
         return max(0.0, min(1.0, cf))
 
     def control_factor_bipolar(self) -> float | None:

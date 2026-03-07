@@ -1,0 +1,181 @@
+get_prices:
+  name: Get prices
+  description: >
+    Returns spot price slots for a given time range. Prices are in the
+    unit configured for this entry (snt/kWh or €/kWh), VAT included.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: >
+        Required when multiple Kilowahti entries are configured.
+        Omit when only one entry exists.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:
+    start:
+      name: Start
+      description: Start of the range (inclusive).
+      required: true
+      example: "2024-01-15 00:00:00"
+      selector:
+        datetime:
+    end:
+      name: End
+      description: End of the range (exclusive).
+      required: true
+      example: "2024-01-15 23:59:59"
+      selector:
+        datetime:
+
+cheapest_hours:
+  name: Cheapest hours
+  description: >
+    Finds the cheapest consecutive window of the given length within a
+    time range, using a sliding-window search over spot prices.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: >
+        Required when multiple Kilowahti entries are configured.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:
+    start:
+      name: Start
+      description: Start of the search range.
+      required: true
+      example: "2024-01-15 00:00:00"
+      selector:
+        datetime:
+    end:
+      name: End
+      description: End of the search range.
+      required: true
+      example: "2024-01-15 23:59:59"
+      selector:
+        datetime:
+    hours:
+      name: Hours
+      description: Length of the window in hours (minimum 0.25, maximum 24).
+      required: true
+      example: 3
+      selector:
+        number:
+          min: 0.25
+          max: 24
+          step: 0.25
+          unit_of_measurement: h
+
+average_price:
+  name: Average price
+  description: >
+    Returns the average, minimum, and maximum spot price for a given
+    time range.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: >
+        Required when multiple Kilowahti entries are configured.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:
+    start:
+      name: Start
+      description: Start of the range.
+      required: true
+      example: "2024-01-15 00:00:00"
+      selector:
+        datetime:
+    end:
+      name: End
+      description: End of the range.
+      required: true
+      example: "2024-01-15 23:59:59"
+      selector:
+        datetime:
+
+add_fixed_period:
+  name: Add fixed-price period
+  description: >
+    Adds a fixed-price period that overrides the spot price while active.
+    The price must be gross (VAT included), in snt/kWh.
+    Periods must not overlap with existing periods.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: >
+        Required when multiple Kilowahti entries are configured.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:
+    label:
+      name: Label
+      description: A descriptive name for this period.
+      required: true
+      example: "Winter contract 2024"
+      selector:
+        text:
+    start_date:
+      name: Start date
+      description: First day the fixed price is active (inclusive).
+      required: true
+      example: "2024-01-01"
+      selector:
+        date:
+    end_date:
+      name: End date
+      description: Last day the fixed price is active (inclusive).
+      required: true
+      example: "2024-03-31"
+      selector:
+        date:
+    price:
+      name: Price
+      description: Fixed price in snt/kWh, gross (VAT included).
+      required: true
+      example: 8.5
+      selector:
+        number:
+          min: 0.001
+          max: 9999
+          step: 0.001
+          unit_of_measurement: snt/kWh
+
+remove_fixed_period:
+  name: Remove fixed-price period
+  description: Removes a fixed-price period by its ID.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: >
+        Required when multiple Kilowahti entries are configured.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:
+    period_id:
+      name: Period ID
+      description: >
+        The UUID of the period to remove. Use the list_fixed_periods
+        service to find the ID.
+      required: true
+      example: "550e8400-e29b-41d4-a716-446655440000"
+      selector:
+        text:
+
+list_fixed_periods:
+  name: List fixed-price periods
+  description: Returns all configured fixed-price periods and their active status.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: >
+        Required when multiple Kilowahti entries are configured.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:

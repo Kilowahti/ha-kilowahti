@@ -1,12 +1,12 @@
 {
   "domain": "kilowahti",
   "name": "Kilowahti",
-  "version": "0.1.0",
+  "codeowners": ["@geekuality"],
+  "config_flow": true,
+  "dependencies": ["recorder"],
   "documentation": "https://github.com/Kilowahti/ha-kilowahti",
+  "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Kilowahti/ha-kilowahti/issues",
   "requirements": [],
-  "dependencies": ["recorder"],
-  "codeowners": ["@geekuality"],
-  "iot_class": "cloud_polling",
-  "config_flow": true
+  "version": "0.1.0"
 }
