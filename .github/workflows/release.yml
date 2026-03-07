@@ -32,9 +32,9 @@ jobs:
       - name: Create ZIP
         run: |
           cd "${{ github.workspace }}/custom_components/kilowahti"
-          zip kilowahti.zip -r *
+          zip "kilowahti-${{ github.event.release.tag_name }}.zip" -r ./
 
       - name: Upload ZIP to release
         uses: softprops/action-gh-release@v2.2.1
         with:
-          files: ${{ github.workspace }}/custom_components/kilowahti/kilowahti.zip
+          files: ${{ github.workspace }}/custom_components/kilowahti/kilowahti-${{ github.event.release.tag_name }}.zip

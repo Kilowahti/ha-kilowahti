@@ -2,9 +2,8 @@
   "name": "Kilowahti",
   "homeassistant": "2024.1.0",
   "country": "FI",
-  "content_in_root": true,
+  "content_in_root": false,
   "hide_default_branch": true,
   "render_readme": true,
-  "zip_release": true,
-  "filename": "kilowahti.zip"
+  "zip_release": true
 }
