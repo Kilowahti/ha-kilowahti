@@ -1,0 +1,239 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kilowahti — Basic settings",
+        "description": "Region determines which Nordic/Baltic spot-price area is used.",
+        "data": {
+          "name": "Name",
+          "region": "Spot-price region",
+          "price_resolution": "Price resolution",
+          "display_unit": "Display unit"
+        },
+        "data_description": {
+          "name": "Used in entity names, e.g. 'Home'",
+          "price_resolution": "15 minutes (96 slots/day) or 1 hour (24 slots/day). Match your contract's metering interval.",
+          "display_unit": "Sensor unit"
+        }
+      },
+      "vat_and_tax": {
+        "title": "VAT & electricity tax",
+        "description": "Pre-filled from your region. Adjust if needed. All prices (transfer tiers, fixed periods) are entered incl. VAT.",
+        "data": {
+          "vat_rate_pct": "VAT rate (%)",
+          "electricity_tax": "Electricity tax (snt/kWh)"
+        },
+        "data_description": {
+          "electricity_tax": "Flat per-kWh electricity tax added on top of spot/fixed price."
+        }
+      },
+      "transfer_groups": {
+        "title": "Transfer pricing",
+        "description": "Organise transfer price tiers into named groups (e.g. Time-of-use, Seasonal, General). Only one group is active at a time. You can skip this and configure groups later in Options.",
+        "data": {
+          "action": "Action"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Add group",
+        "data": {
+          "label": "Group name"
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Edit group",
+        "description": "Add or remove tiers, or set this group as active.",
+        "data": {
+          "action": "Action"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Add transfer price",
+        "description": "Evaluated in priority order; first match wins. Add a base rate as the lowest priority with no time constraints.",
+        "data": {
+          "label": "Tier label",
+          "price": "Price (snt/kWh)",
+          "months": "Months active",
+          "weekdays": "Weekdays active",
+          "hour_start": "Start time (inclusive)",
+          "hour_end": "End time (exclusive)",
+          "priority": "Priority (lower = first)"
+        }
+      },
+      "thresholds": {
+        "title": "Thresholds & control",
+        "data": {
+          "max_price": "Control max price (snt/kWh)",
+          "price_threshold_includes_transfer": "Max price includes transfer",
+          "max_rank": "Control max rank",
+          "forward_avg_hours": "Forward average window length (hours)",
+          "control_factor_function": "Control factor function",
+          "control_factor_scaling": "Control factor scaling (1–3)"
+        },
+        "data_description": {
+          "max_price": "When the current slot's price is at or below this, the price_acceptable sensor turns on.",
+          "price_threshold_includes_transfer": "ON: compare total price (spot + transfer + tax). OFF: compare energy price only (spot).",
+          "max_rank": "When the current slot's rank is at or below this, the rank_acceptable sensor turns on.",
+          "forward_avg_hours": "Number of hours ahead to average for the next_hours_avg sensor.",
+          "control_factor_function": "Shape of the 0–1 control factor curve.",
+          "control_factor_scaling": "Exponent applied to control factor (amplifies extremes)."
+        }
+      },
+      "score_profiles": {
+        "title": "Optimization scores",
+        "description": "Scores measure how well your consumption is shifted to cheap hours. The permanent 'Total' profile covers all consumption — link a meter (or meters) to it in Options after setup.",
+        "data": {
+          "expose_price_arrays": "Expose price arrays as sensor attributes (increases DB size)"
+        },
+        "data_description": {
+          "expose_price_arrays": "Writes today_prices and tomorrow_prices arrays to the spot_price sensor attributes, which are then stored in the database. Makes dashboard graphs easier to build, but is not required for displaying them and adds unnecessary DB load."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect. Check your network.",
+      "invalid_region": "The selected region returned no data from the API.",
+      "tier_hour_range": "End time must be greater than start time.",
+      "tier_no_months": "Select at least one month.",
+      "tier_no_weekdays": "Select at least one weekday.",
+      "period_invalid_dates": "End date must be on or after start date.",
+      "period_overlap": "This period overlaps with an existing fixed-price period.",
+      "period_price_zero": "Price must be greater than zero."
+    },
+    "abort": {
+      "already_configured": "This instance is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Kilowahti options",
+        "description": "Choose which settings to edit.",
+        "menu_options": {
+          "basic": "Basic settings & VAT",
+          "transfer_groups": "Transfer pricing",
+          "thresholds": "Thresholds & control",
+          "score_profiles": "Score profiles",
+          "fixed_periods": "Fixed-price periods / fixed contracts"
+        }
+      },
+      "basic": {
+        "title": "Basic settings",
+        "data": {
+          "name": "Name",
+          "region": "Spot-price region",
+          "price_resolution": "Price resolution",
+          "display_unit": "Display unit",
+          "vat_rate_pct": "VAT rate (%)",
+          "electricity_tax": "Electricity tax (snt/kWh)"
+        }
+      },
+      "transfer_groups": {
+        "title": "Transfer pricing",
+        "data": {
+          "action": "Action"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Add group",
+        "data": {
+          "label": "Group name"
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Edit group",
+        "data": {
+          "action": "Action"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Add transfer price",
+        "data": {
+          "label": "Tier name (e.g. Winter weekday)",
+          "price": "Price (snt/kWh)",
+          "months": "Months active",
+          "weekdays": "Weekdays active",
+          "hour_start": "Start time (inclusive)",
+          "hour_end": "End time (exclusive)",
+          "priority": "Priority (lower = first)"
+        }
+      },
+      "thresholds": {
+        "title": "Thresholds & control",
+        "data": {
+          "max_price": "Control max price (snt/kWh)",
+          "price_threshold_includes_transfer": "Max price includes transfer",
+          "max_rank": "Control max rank",
+          "forward_avg_hours": "Forward average window length (hours)",
+          "control_factor_function": "Control factor function",
+          "control_factor_scaling": "Control factor scaling (1–3)"
+        }
+      },
+      "score_profiles": {
+        "title": "Score profiles",
+        "data": {
+          "expose_price_arrays": "Expose price arrays as sensor attributes (increases DB size)"
+        }
+      },
+      "add_score_profile": {
+        "title": "Add score profile",
+        "data": {
+          "label": "Profile label",
+          "meters": "Energy meter entities"
+        }
+      },
+      "fixed_periods": {
+        "title": "Fixed-price periods / fixed contracts",
+        "description": "Manage fixed-price periods or fixed contracts. When active, effective_price shows the set fixed price instead of spot.",
+        "data": {
+          "action": "Action"
+        }
+      },
+      "add_fixed_period": {
+        "title": "Add fixed-price period / fixed contract",
+        "data": {
+          "label": "Period label",
+          "start_date": "Start date",
+          "end_date": "End date (inclusive)",
+          "price": "Price (snt/kWh, incl. VAT)"
+        },
+        "data_description": {
+          "price": "Enter price incl. VAT. This price is used as-is — no VAT is added."
+        }
+      }
+    },
+    "error": {
+      "tier_hour_range": "End time must be greater than start time.",
+      "tier_no_months": "Select at least one month.",
+      "tier_no_weekdays": "Select at least one weekday.",
+      "period_invalid_dates": "End date must be on or after start date.",
+      "period_overlap": "This period overlaps with an existing fixed-price period.",
+      "period_price_zero": "Price must be greater than zero."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "spot_price": {"name": "Spot price"},
+      "effective_price": {"name": "Active price"},
+      "transfer_price": {"name": "Transfer price"},
+      "total_price": {"name": "Total price"},
+      "price_rank": {"name": "Rank"},
+      "today_avg": {"name": "Today average"},
+      "today_min": {"name": "Today minimum"},
+      "today_max": {"name": "Today maximum"},
+      "tomorrow_avg": {"name": "Tomorrow average"},
+      "tomorrow_min": {"name": "Tomorrow minimum"},
+      "tomorrow_max": {"name": "Tomorrow maximum"},
+      "next_hours_avg": {"name": "Next hours average"},
+      "control_factor": {"name": "Control factor"},
+      "control_factor_bipolar": {"name": "Control factor (bipolar)"}
+    },
+    "binary_sensor": {
+      "price_acceptable": {"name": "Price is acceptable"},
+      "rank_acceptable": {"name": "Rank is acceptable"},
+      "price_or_rank_acceptable": {"name": "Price or rank is acceptable"},
+      "fixed_period_active": {"name": "Fixed price period is active"},
+      "tomorrow_available": {"name": "Tomorrow's prices available"}
+    }
+  }
+}

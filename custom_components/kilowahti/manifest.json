@@ -1,0 +1,12 @@
+{
+  "domain": "kilowahti",
+  "name": "Kilowahti",
+  "version": "0.1.0",
+  "documentation": "https://github.com/geekuality/ha-kilowahti",
+  "issue_tracker": "https://github.com/geekuality/ha-kilowahti/issues",
+  "requirements": [],
+  "dependencies": ["recorder"],
+  "codeowners": ["@geekuality"],
+  "iot_class": "cloud_polling",
+  "config_flow": true
+}

@@ -1,0 +1,239 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kilowahti — Perusasetukset",
+        "description": "Alue määrittää, miltä pohjoismaiden tai baltian spot-hinta-alueelta hinnat haetaan.",
+        "data": {
+          "name": "Nimi",
+          "region": "Spot-hinta-alue",
+          "price_resolution": "Hintaresoluutio",
+          "display_unit": "Näyttöyksikkö"
+        },
+        "data_description": {
+          "name": "Käytetään entiteettien nimissä, esim. 'Koti'",
+          "price_resolution": "15 minuuttia (96 aikaväliä/vrk) tai 1 tunti (24 aikaväliä/vrk). Valitse liittymäsi mittaustavan mukaan.",
+          "display_unit": "Anturien yksikkö"
+        }
+      },
+      "vat_and_tax": {
+        "title": "ALV ja sähkövero",
+        "description": "Arvot on esitäytetty valitun alueen mukaan, voit muuttaa niitä tarvittaessa. Kaikki hinnat (siirtohinnat, kiinteät jaksot) syötetään ALV:llisina.",
+        "data": {
+          "vat_rate_pct": "ALV-prosentti (%)",
+          "electricity_tax": "Sähkövero (snt/kWh)"
+        },
+        "data_description": {
+          "electricity_tax": "Sähkövero per kWh, lisätään spot/kiinteään hintaan."
+        }
+      },
+      "transfer_groups": {
+        "title": "Siirtohinnat",
+        "description": "Järjestä siirtohinnat nimettyihin ryhmiin (esim. Aikasiirto, Kausisiirto, Yleissiirto). Vain yksi ryhmä on kerrallaan aktiivinen. Voit ohittaa tämän ja määrittää ryhmät myöhemmin Asetuksissa.",
+        "data": {
+          "action": "Toiminto"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Lisää ryhmä",
+        "data": {
+          "label": "Ryhmän nimi"
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Muokkaa ryhmää",
+        "description": "Lisää tai poista hintoja tai aseta ryhmä aktiiviseksi.",
+        "data": {
+          "action": "Toiminto"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Lisää uusi siirtohinta",
+        "description": "Käytetty siirtohinta valitaan prioriteettijärjestyksessä; ensimmäinen osuma voittaa. Lisää ns. perushinta alimmaksi ilman ehtoja.",
+        "data": {
+          "label": "Tason nimi",
+          "price": "Hinta (snt/kWh)",
+          "months": "Voimassa kuukausina",
+          "weekdays": "Voimassa viikonpäivinä",
+          "hour_start": "Alkamisaika (mukaanlukien)",
+          "hour_end": "Loppumisaika (poissulkien)",
+          "priority": "Prioriteetti (pienempi = ensin)"
+        }
+      },
+      "thresholds": {
+        "title": "Kynnysarvot ja ohjaus",
+        "data": {
+          "max_price": "Ohjauksen maksimihinta (snt/kWh)",
+          "price_threshold_includes_transfer": "Maksimihinta sisältää myös siirron",
+          "max_rank": "Ohjauksen maksimisijaluku",
+          "forward_avg_hours": "Tulevan keskiarvoikkunan pituus (tuntia)",
+          "control_factor_function": "Ohjauskertoimen funktio",
+          "control_factor_scaling": "Ohjauskertoimen skaalaus (1–3)"
+        },
+        "data_description": {
+          "max_price": "Kun hintajakson hinta on korkeintaan tämän verran, price_acceptable-anturi on aktiivinen.",
+          "price_threshold_includes_transfer": "Päällä: vertaa kokonaishintaan (spot + siirto + vero). Pois: vertaa vain energiahintaan (spot).",
+          "max_rank": "Kun hintajakson sijaluku on korkeintaan tämä, rank_acceptable-anturi on aktiivinen.",
+          "forward_avg_hours": "Seuraavien tuntien lukumäärä next_hours_avg-anturille.",
+          "control_factor_function": "0–1-ohjauskertoimen käyrän muoto.",
+          "control_factor_scaling": "Eksponentti, joka korostaa ääriarvoja."
+        }
+      },
+      "score_profiles": {
+        "title": "Optimointipisteet",
+        "description": "Optimointipisteet mittaavat, kuinka hyvin kulutus on siirretty halvimpiin tunteihin. Kokonaiskulutusta mittaava 'Total'-profiili on pysyvä, saat sen käyttöön helposti vain liittämällä koko kulutusta kuvaavan mittarin (tai mittarit) siihen Kilowahdin asetuksissa asennuksen jälkeen.",
+        "data": {
+          "expose_price_arrays": "Näytä hinta-taulukot anturin attribuutteina (kasvattaa tietokannan kokoa)"
+        },
+        "data_description": {
+          "expose_price_arrays": "Kirjoittaa today_prices- ja tomorrow_prices-taulukot spot_price-anturin attribuutteihin, jotka puolestaan tallentuvat tietokantaan. Helpottaa dashboard-graafien tekemistä, mutta ei ole pakollinen niiden näyttämiseksi ja kuormittaa turhaan tietokantaa."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Yhteys epäonnistui. Tarkista verkkoyhteytesi.",
+      "invalid_region": "Valittu alue ei palauttanut dataa API:sta.",
+      "tier_hour_range": "Lopetustunnin on oltava suurempi kuin aloitustunnin.",
+      "tier_no_months": "Valitse vähintään yksi kuukausi.",
+      "tier_no_weekdays": "Valitse vähintään yksi viikonpäivä.",
+      "period_invalid_dates": "Päättymispäivän on oltava sama tai myöhäisempi kuin alkamispäivän.",
+      "period_overlap": "Tämä jakso on päällekkäinen olemassa olevan hintajakson kanssa.",
+      "period_price_zero": "Hinnan on oltava suurempi kuin nolla."
+    },
+    "abort": {
+      "already_configured": "Tämä kohde on jo konfiguroitu."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Kilowahti-asetukset",
+        "description": "Valitse, mitä asetuksia haluat muokata.",
+        "menu_options": {
+          "basic": "Perusasetukset ja ALV",
+          "transfer_groups": "Siirtohinnat",
+          "thresholds": "Kynnysarvot ja ohjaus",
+          "score_profiles": "Pisteprofiilit",
+          "fixed_periods": "Kiinnitetyt hintajaksot / kiinteät sopimukset"
+        }
+      },
+      "basic": {
+        "title": "Perusasetukset",
+        "data": {
+          "name": "Nimi",
+          "region": "Spot-hinta-alue",
+          "price_resolution": "Hintaresoluutio",
+          "display_unit": "Näyttöyksikkö",
+          "vat_rate_pct": "ALV-prosentti (%)",
+          "electricity_tax": "Sähkövero (snt/kWh)"
+        }
+      },
+      "transfer_groups": {
+        "title": "Siirtohinnat",
+        "data": {
+          "action": "Toiminto"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Lisää ryhmä",
+        "data": {
+          "label": "Ryhmän nimi"
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Muokkaa ryhmää",
+        "data": {
+          "action": "Toiminto"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Lisää siirtohinta",
+        "data": {
+          "label": "Tason nimi (esim. Talviarkipäivä)",
+          "price": "Hinta (snt/kWh)",
+          "months": "Voimassaolokuukaudet",
+          "weekdays": "Voimassaoloviikonpäivät",
+          "hour_start": "Alkamistunti (mukaanlukien)",
+          "hour_end": "Loppumistunti (poissulkien)",
+          "priority": "Prioriteetti (pienempi = ensin)"
+        }
+      },
+      "thresholds": {
+        "title": "Kynnysarvot ja ohjaus",
+        "data": {
+          "max_price": "Ohjauksen maksimihinta (snt/kWh)",
+          "price_threshold_includes_transfer": "Maksimihinta sisältää myös siirron",
+          "max_rank": "Ohjauksen maksimisijaluku",
+          "forward_avg_hours": "Tulevan keskiarvoikkunan pituus (tuntia)",
+          "control_factor_function": "Ohjauskertoimen funktio",
+          "control_factor_scaling": "Ohjauskertoimen skaalaus (1–3)"
+        }
+      },
+      "score_profiles": {
+        "title": "Pisteprofiilit",
+        "data": {
+          "expose_price_arrays": "Näytä hinta-taulukot anturin attribuutteina (kasvattaa tietokannan kokoa)"
+        }
+      },
+      "add_score_profile": {
+        "title": "Lisää pisteprofiili",
+        "data": {
+          "label": "Profiilin nimi",
+          "meters": "Energiamittarientiteetit"
+        }
+      },
+      "fixed_periods": {
+        "title": "Kiinnitetyt hintajaksot / kiinteät sopimukset",
+        "description": "Hallitse kiinnitettyjä hintajaksoja tai kiinteitä sopimuksia. Kun aktiivinen, effective_price näyttää asetetun kiinteän hinnan spot-hinnan sijaan.",
+        "data": {
+          "action": "Toiminto"
+        }
+      },
+      "add_fixed_period": {
+        "title": "Lisää kiinnitetty hintajakso / kiinteä sopimus",
+        "data": {
+          "label": "Jakson nimi",
+          "start_date": "Alkamispäivä",
+          "end_date": "Päättymispäivä (mukaanlukien)",
+          "price": "Hinta (snt/kWh, sis ALV)"
+        },
+        "data_description": {
+          "price": "Syötä tämä hinta verollisena (brutto). Tätä hintaa käytetään sellaisenaan — ALV:ta ei lisätä erikseen."
+        }
+      }
+    },
+    "error": {
+      "tier_hour_range": "Päättymistunnin on oltava suurempi kuin aloitustunnin.",
+      "tier_no_months": "Valitse vähintään yksi kuukausi.",
+      "tier_no_weekdays": "Valitse vähintään yksi viikonpäivä.",
+      "period_invalid_dates": "Päättymispäivän on oltava sama tai myöhäisempi kuin alkamispäivän.",
+      "period_overlap": "Tämä jakso päällekkäinen olemassa olevan hintajakson kanssa.",
+      "period_price_zero": "Hinnan on oltava suurempi kuin nolla."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "spot_price": {"name": "Spot-hinta"},
+      "effective_price": {"name": "Toteutuva hinta"},
+      "transfer_price": {"name": "Siirtohinta"},
+      "total_price": {"name": "Kokonaishinta"},
+      "price_rank": {"name": "Sijaluku"},
+      "today_avg": {"name": "Tänään keskiarvo"},
+      "today_min": {"name": "Tänään minimi"},
+      "today_max": {"name": "Tänään maksimi"},
+      "tomorrow_avg": {"name": "Huomenna keskiarvo"},
+      "tomorrow_min": {"name": "Huomenna minimi"},
+      "tomorrow_max": {"name": "Huomenna maksimi"},
+      "next_hours_avg": {"name": "Seuraavien tuntien keskiarvo"},
+      "control_factor": {"name": "Ohjauskerroin"},
+      "control_factor_bipolar": {"name": "Ohjauskerroin (bipolaarinen)"}
+    },
+    "binary_sensor": {
+      "price_acceptable": {"name": "Hinta on hyväksyttävä"},
+      "rank_acceptable": {"name": "Sijaluku on hyväksyttävä"},
+      "price_or_rank_acceptable": {"name": "Hinta tai sijaluku on hyväksyttävä"},
+      "fixed_period_active": {"name": "Kiinteä hintajakso on aktiivinen"},
+      "tomorrow_available": {"name": "Huomisen hinnat saatavilla"}
+    }
+  }
+}
