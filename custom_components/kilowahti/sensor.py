@@ -34,6 +34,7 @@ from .const import (
     SENSOR_TOMORROW_MIN,
     SENSOR_TOTAL_PRICE,
     SENSOR_TRANSFER_PRICE,
+    SENSOR_TRANSFER_RANK,
 )
 from .coordinator import KilowahtiCoordinator
 from .models import ScoreProfile
@@ -78,6 +79,8 @@ def _price_sensor(key: str, value_fn: Callable) -> KilowahtiSensorEntityDescript
     )
 
 
+_TRANSFER_SENSOR_KEYS = frozenset({SENSOR_TRANSFER_PRICE, SENSOR_TRANSFER_RANK})
+
 SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
     _price_sensor(SENSOR_SPOT_PRICE, lambda c: c.format_price(c.spot_price_now())),
     _price_sensor(SENSOR_TRANSFER_PRICE, lambda c: c.format_price(c.transfer_price_now())),
@@ -110,6 +113,13 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         value_fn=lambda c: round(c.control_factor_bipolar() or 0.0, 3),
         native_unit_of_measurement=None,
     ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_TRANSFER_RANK,
+        translation_key=SENSOR_TRANSFER_RANK,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=None,  # handled by KilowahtiTransferRankSensor
+        native_unit_of_measurement=None,
+    ),
 )
 
 
@@ -124,11 +134,16 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     coordinator: KilowahtiCoordinator = hass.data[DOMAIN][entry.entry_id]
+    has_transfer = bool(coordinator._transfer_groups)
     entities: list[SensorEntity] = []
 
     for description in SENSOR_DESCRIPTIONS:
+        if description.key in _TRANSFER_SENSOR_KEYS and not has_transfer:
+            continue
         if description.key == SENSOR_SPOT_PRICE:
             entities.append(KilowahtiSpotPriceSensor(coordinator, entry, description))
+        elif description.key == SENSOR_TRANSFER_RANK:
+            entities.append(KilowahtiTransferRankSensor(coordinator, entry, description))
         else:
             entities.append(KilowahtiSensor(coordinator, entry, description))
 
@@ -243,6 +258,23 @@ class KilowahtiEffectivePriceSensor(KilowahtiSensor):
         if period is not None:
             return {"source": "fixed", "period_label": period.label}
         return {"source": "spot", "period_label": None}
+
+
+# ---------------------------------------------------------------------------
+# Transfer rank sensor
+# ---------------------------------------------------------------------------
+
+
+class KilowahtiTransferRankSensor(KilowahtiSensorBase):
+    @property
+    def native_value(self) -> int | None:
+        info = self.coordinator.transfer_rank_info()
+        return info[0] if info is not None else None
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        info = self.coordinator.transfer_rank_info()
+        return {"tier_count": info[1]} if info is not None else {}
 
 
 # ---------------------------------------------------------------------------

@@ -110,6 +110,7 @@ SENSOR_TOMORROW_MAX = "tomorrow_max"
 SENSOR_NEXT_HOURS_AVG = "next_hours_avg"
 SENSOR_CONTROL_FACTOR = "control_factor"
 SENSOR_CONTROL_FACTOR_BIPOLAR = "control_factor_bipolar"
+SENSOR_TRANSFER_RANK = "transfer_rank"
 
 BINARY_SENSOR_PRICE_ACCEPTABLE = "price_acceptable"
 BINARY_SENSOR_RANK_ACCEPTABLE = "rank_acceptable"

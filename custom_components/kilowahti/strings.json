@@ -239,7 +239,8 @@
       "tomorrow_max": {"name": "Tomorrow maximum"},
       "next_hours_avg": {"name": "Next hours average"},
       "control_factor": {"name": "Control factor"},
-      "control_factor_bipolar": {"name": "Control factor (bipolar)"}
+      "control_factor_bipolar": {"name": "Control factor (bipolar)"},
+      "transfer_rank": {"name": "Transfer rank"}
     },
     "binary_sensor": {
       "price_acceptable": {"name": "Price acceptable"},

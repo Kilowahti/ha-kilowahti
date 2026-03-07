@@ -72,7 +72,7 @@
         },
         "data_description": {
           "max_price": "When the current slot's price is at or below this, the price_acceptable sensor turns on.",
-          "price_threshold_includes_transfer": "ON: compare total price (spot + transfer + tax). OFF: compare energy price only (spot).",
+          "price_threshold_includes_transfer": "ON: compare total price (spot + transfer). OFF: compare energy price only (spot).",
           "max_rank": "When the current slot's rank is at or below this, the rank_acceptable sensor turns on.",
           "forward_avg_hours": "Number of hours ahead to average for the next_hours_avg sensor.",
           "control_factor_function": "Shape of the 0–1 control factor curve.",
@@ -239,13 +239,14 @@
       "tomorrow_max": {"name": "Tomorrow maximum"},
       "next_hours_avg": {"name": "Next hours average"},
       "control_factor": {"name": "Control factor"},
-      "control_factor_bipolar": {"name": "Control factor (bipolar)"}
+      "control_factor_bipolar": {"name": "Control factor (bipolar)"},
+      "transfer_rank": {"name": "Transfer rank"}
     },
     "binary_sensor": {
-      "price_acceptable": {"name": "Price is acceptable"},
-      "rank_acceptable": {"name": "Rank is acceptable"},
-      "price_or_rank_acceptable": {"name": "Price or rank is acceptable"},
-      "fixed_period_active": {"name": "Fixed price period is active"},
+      "price_acceptable": {"name": "Price acceptable"},
+      "rank_acceptable": {"name": "Rank acceptable"},
+      "price_or_rank_acceptable": {"name": "Price or rank acceptable"},
+      "fixed_period_active": {"name": "Fixed price period active"},
       "tomorrow_available": {"name": "Tomorrow's prices available"}
     }
   }

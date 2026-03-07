@@ -72,7 +72,7 @@
         },
         "data_description": {
           "max_price": "Kun hintajakson hinta on korkeintaan tämän verran, price_acceptable-anturi on aktiivinen.",
-          "price_threshold_includes_transfer": "Päällä: vertaa kokonaishintaan (spot + siirto + vero). Pois: vertaa vain energiahintaan (spot).",
+          "price_threshold_includes_transfer": "Päällä: vertaa kokonaishintaan (spot + siirto). Pois: vertaa vain energiahintaan (spot).",
           "max_rank": "Kun hintajakson sijaluku on korkeintaan tämä, rank_acceptable-anturi on aktiivinen.",
           "forward_avg_hours": "Seuraavien tuntien lukumäärä next_hours_avg-anturille.",
           "control_factor_function": "0–1-ohjauskertoimen käyrän muoto.",
@@ -239,7 +239,8 @@
       "tomorrow_max": {"name": "Huomenna maksimi"},
       "next_hours_avg": {"name": "Seuraavien tuntien keskiarvo"},
       "control_factor": {"name": "Ohjauskerroin"},
-      "control_factor_bipolar": {"name": "Ohjauskerroin (bipolaarinen)"}
+      "control_factor_bipolar": {"name": "Ohjauskerroin (bipolaarinen)"},
+      "transfer_rank": {"name": "Siirtosijaluku"}
     },
     "binary_sensor": {
       "price_acceptable": {"name": "Hinta on hyväksyttävä"},
