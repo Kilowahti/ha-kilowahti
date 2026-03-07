@@ -57,6 +57,14 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 
+
+def _to_float(value) -> float:
+    """Convert user input to float, accepting both '.' and ',' as decimal separator."""
+    if isinstance(value, str):
+        value = value.replace(",", ".")
+    return float(value)
+
+
 # Region → country preset lookup
 _REGION_TO_COUNTRY: dict[str, str] = {
     "FI": "FI",
@@ -287,7 +295,7 @@ def _validate_tier(user_input: dict) -> str | None:
 def _tier_from_input(user_input: dict) -> dict:
     return {
         "label": user_input["label"],
-        "price": float(user_input["price"]),
+        "price": _to_float(user_input["price"]),
         "months": [int(m) for m in user_input["months"]],
         "weekdays": [int(w) for w in user_input["weekdays"]],
         "hour_start": int(user_input["hour_start"]),
@@ -330,8 +338,8 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
 
         if user_input is not None:
-            self._data[CONF_VAT_RATE] = float(user_input["vat_rate_pct"]) / 100.0
-            self._data[CONF_ELECTRICITY_TAX] = float(user_input[CONF_ELECTRICITY_TAX])
+            self._data[CONF_VAT_RATE] = _to_float(user_input["vat_rate_pct"]) / 100.0
+            self._data[CONF_ELECTRICITY_TAX] = _to_float(user_input[CONF_ELECTRICITY_TAX])
             return await self.async_step_transfer_groups()
 
         # Pre-fill from region preset
@@ -470,14 +478,16 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
 
     async def async_step_thresholds(self, user_input: dict | None = None):
         if user_input is not None:
-            self._data[CONF_MAX_PRICE] = float(user_input[CONF_MAX_PRICE])
+            self._data[CONF_MAX_PRICE] = _to_float(user_input[CONF_MAX_PRICE])
             self._data[CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER] = user_input[
                 CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER
             ]
             self._data[CONF_MAX_RANK] = int(user_input[CONF_MAX_RANK])
-            self._data[CONF_FORWARD_AVG_HOURS] = float(user_input[CONF_FORWARD_AVG_HOURS])
+            self._data[CONF_FORWARD_AVG_HOURS] = _to_float(user_input[CONF_FORWARD_AVG_HOURS])
             self._data[CONF_CONTROL_FACTOR_FUNCTION] = user_input[CONF_CONTROL_FACTOR_FUNCTION]
-            self._data[CONF_CONTROL_FACTOR_SCALING] = float(user_input[CONF_CONTROL_FACTOR_SCALING])
+            self._data[CONF_CONTROL_FACTOR_SCALING] = _to_float(
+                user_input[CONF_CONTROL_FACTOR_SCALING]
+            )
             return await self.async_step_score_profiles()
 
         return self.async_show_form(
@@ -557,8 +567,8 @@ class KilowahtiOptionsFlow(OptionsFlow):
             self._options[CONF_REGION] = user_input[CONF_REGION]
             self._options[CONF_PRICE_RESOLUTION] = int(user_input[CONF_PRICE_RESOLUTION])
             self._options[CONF_DISPLAY_UNIT] = user_input[CONF_DISPLAY_UNIT]
-            self._options[CONF_VAT_RATE] = float(user_input["vat_rate_pct"]) / 100.0
-            self._options[CONF_ELECTRICITY_TAX] = float(user_input[CONF_ELECTRICITY_TAX])
+            self._options[CONF_VAT_RATE] = _to_float(user_input["vat_rate_pct"]) / 100.0
+            self._options[CONF_ELECTRICITY_TAX] = _to_float(user_input[CONF_ELECTRICITY_TAX])
             return self.async_create_entry(data=self._options)
 
         cur = self._options
@@ -694,14 +704,14 @@ class KilowahtiOptionsFlow(OptionsFlow):
 
     async def async_step_thresholds(self, user_input: dict | None = None):
         if user_input is not None:
-            self._options[CONF_MAX_PRICE] = float(user_input[CONF_MAX_PRICE])
+            self._options[CONF_MAX_PRICE] = _to_float(user_input[CONF_MAX_PRICE])
             self._options[CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER] = user_input[
                 CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER
             ]
             self._options[CONF_MAX_RANK] = int(user_input[CONF_MAX_RANK])
-            self._options[CONF_FORWARD_AVG_HOURS] = float(user_input[CONF_FORWARD_AVG_HOURS])
+            self._options[CONF_FORWARD_AVG_HOURS] = _to_float(user_input[CONF_FORWARD_AVG_HOURS])
             self._options[CONF_CONTROL_FACTOR_FUNCTION] = user_input[CONF_CONTROL_FACTOR_FUNCTION]
-            self._options[CONF_CONTROL_FACTOR_SCALING] = float(
+            self._options[CONF_CONTROL_FACTOR_SCALING] = _to_float(
                 user_input[CONF_CONTROL_FACTOR_SCALING]
             )
             return self.async_create_entry(data=self._options)
@@ -786,11 +796,14 @@ class KilowahtiOptionsFlow(OptionsFlow):
 
     # ------ Fixed-price periods -------------------------------------------
 
-    async def async_step_fixed_periods(self, user_input: dict | None = None):
-        from .storage import KilowahtiStorage
+    def _coordinator(self):
+        from .const import DOMAIN
 
-        storage = KilowahtiStorage(self.hass, self._entry.entry_id)
-        await storage.async_load()
+        return self.hass.data[DOMAIN][self._entry.entry_id]
+
+    async def async_step_fixed_periods(self, user_input: dict | None = None):
+        coordinator = self._coordinator()
+        storage = coordinator._storage
         periods = storage.periods
 
         if user_input is not None:
@@ -802,6 +815,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
             if action.startswith("remove_period_"):
                 period_id = action[len("remove_period_") :]
                 await storage.async_remove_period(period_id)
+                coordinator.async_update_listeners()
                 return await self.async_step_fixed_periods()
 
         period_options: list[dict] = []
@@ -828,7 +842,6 @@ class KilowahtiOptionsFlow(OptionsFlow):
 
     async def async_step_add_fixed_period(self, user_input: dict | None = None):
         from .models import FixedPeriod
-        from .storage import KilowahtiStorage
 
         errors: dict[str, str] = {}
 
@@ -841,12 +854,11 @@ class KilowahtiOptionsFlow(OptionsFlow):
             else:
                 if end < start:
                     errors["base"] = "period_invalid_dates"
-                elif float(user_input["price"]) <= 0:
+                elif _to_float(user_input["price"]) <= 0:
                     errors["base"] = "period_price_zero"
                 else:
-                    storage = KilowahtiStorage(self.hass, self._entry.entry_id)
-                    await storage.async_load()
-                    # Check for overlaps
+                    coordinator = self._coordinator()
+                    storage = coordinator._storage
                     new_start, new_end = start, end
                     overlap = any(
                         not (new_end < p.start_date or new_start > p.end_date)
@@ -860,9 +872,10 @@ class KilowahtiOptionsFlow(OptionsFlow):
                             label=user_input["label"],
                             start_date=start,
                             end_date=end,
-                            price=float(user_input["price"]),
+                            price=_to_float(user_input["price"]),
                         )
                         await storage.async_add_period(period)
+                        coordinator.async_update_listeners()
                         return await self.async_step_fixed_periods()
 
         return self.async_show_form(
