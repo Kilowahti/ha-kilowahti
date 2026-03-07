@@ -89,11 +89,11 @@
         "description": "Configure how sensor values are displayed in Home Assistant.",
         "data": {
           "expose_price_arrays": "Expose price arrays as sensor attributes (increases DB size)",
-          "high_precision": "High precision mode (5 decimals instead of 2)"
+          "high_precision": "High precision mode"
         },
         "data_description": {
           "expose_price_arrays": "Writes today_prices and tomorrow_prices arrays to the spot_price sensor attributes, which are then stored in the database. Makes dashboard graphs easier to build, but is not required for displaying them and adds unnecessary DB load.",
-          "high_precision": "When off (default), price sensors display 2 decimal places. When on, 5 decimal places are shown. Attributes always use full precision."
+          "high_precision": "When on, price sensors display more decimals. Attributes and calculations always use full precision."
         }
       }
     },
@@ -185,7 +185,7 @@
         "title": "Sensor display",
         "data": {
           "expose_price_arrays": "Expose price arrays as sensor attributes (increases DB size)",
-          "high_precision": "High precision mode (5 decimals instead of 2)"
+          "high_precision": "High precision mode"
         }
       },
       "add_score_profile": {

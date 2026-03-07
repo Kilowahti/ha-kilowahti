@@ -89,11 +89,11 @@
         "description": "Määritä, miten anturien arvot näytetään Home Assistantissa.",
         "data": {
           "expose_price_arrays": "Näytä hinta-taulukot anturin attribuutteina (kasvattaa tietokannan kokoa)",
-          "high_precision": "Tarkka desimaalitarkkuus (5 desimaalia 2:n sijaan)"
+          "high_precision": "Tarkka desimaalitarkkuus"
         },
         "data_description": {
           "expose_price_arrays": "Kirjoittaa today_prices- ja tomorrow_prices-taulukot spot_price-anturin attribuutteihin, jotka puolestaan tallentuvat tietokantaan. Helpottaa dashboard-graafien tekemistä, mutta ei ole pakollinen niiden näyttämiseksi ja kuormittaa turhaan tietokantaa.",
-          "high_precision": "Kun pois päältä (oletus), hinta-anturit näyttävät 2 desimaalia. Kun päällä, näytetään 5 desimaalia. Attribuutit käyttävät aina täyttä tarkkuutta."
+          "high_precision": "Kun päällä, hinta-anturit näyttävät enemmän desimaaleja. Attribuutit ja laskelmat käyttävät aina täyttä tarkkuutta."
         }
       }
     },
@@ -185,7 +185,7 @@
         "title": "Anturien näyttö",
         "data": {
           "expose_price_arrays": "Näytä hinta-taulukot anturin attribuutteina (kasvattaa tietokannan kokoa)",
-          "high_precision": "Tarkka desimaalitarkkuus (5 desimaalia 2:n sijaan)"
+          "high_precision": "Tarkka desimaalitarkkuus"
         }
       },
       "add_score_profile": {

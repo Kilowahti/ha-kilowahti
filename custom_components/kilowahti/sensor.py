@@ -35,6 +35,7 @@ from .const import (
     SENSOR_TOTAL_PRICE,
     SENSOR_TRANSFER_PRICE,
     SENSOR_TRANSFER_RANK,
+    UNIT_EUROKWH,
 )
 from .coordinator import KilowahtiCoordinator
 from .models import ScoreProfile
@@ -207,7 +208,9 @@ class KilowahtiSensorBase(CoordinatorEntity[KilowahtiCoordinator], SensorEntity)
         if key in _CONTROL_FACTOR_SENSOR_KEYS:
             return 3
         if key in _PRICE_SENSOR_KEYS:
-            return 5 if self.coordinator._high_precision else 2
+            base = 5 if self.coordinator._high_precision else 2
+            euro_extra = 2 if self.coordinator.native_unit == UNIT_EUROKWH else 0
+            return base + euro_extra
         return None
 
 
@@ -267,9 +270,16 @@ class KilowahtiEffectivePriceSensor(KilowahtiSensor):
 
 class KilowahtiTransferRankSensor(KilowahtiSensorBase):
     @property
-    def native_value(self) -> int | None:
+    def suggested_display_precision(self) -> int:
+        return 2
+
+    @property
+    def native_value(self) -> float | None:
         info = self.coordinator.transfer_rank_info()
-        return info[0] if info is not None else None
+        if info is None:
+            return None
+        rank, total = info
+        return 0.0 if total <= 1 else (rank - 1) / (total - 1)
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
