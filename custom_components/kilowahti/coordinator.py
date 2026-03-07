@@ -429,18 +429,27 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             return None
         return self._spot_effective(slot)
 
-    def fixed_period_active_now(self) -> FixedPeriod | None:
-        today = self._now_local().date()
+    def fixed_period_for_date(self, d: date) -> FixedPeriod | None:
         for p in self._storage.periods:
-            if p.is_active_on(today):
+            if p.is_active_on(d):
                 return p
         return None
+
+    def fixed_period_active_now(self) -> FixedPeriod | None:
+        return self.fixed_period_for_date(self._now_local().date())
 
     def effective_price_now(self) -> float | None:
         period = self.fixed_period_active_now()
         if period is not None:
             return period.price
         return self.spot_price_now()
+
+    def transfer_price_for_slot(self, slot: PriceSlot) -> float | None:
+        group = self._active_transfer_group
+        if group is None:
+            return None
+        slot_local = dt_util.as_local(slot.dt_utc)
+        return group.price_at(slot_local.month, slot_local.weekday(), slot_local.hour)
 
     def transfer_price_now(self) -> float | None:
         group = self._active_transfer_group

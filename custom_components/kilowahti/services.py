@@ -10,6 +10,7 @@ import voluptuous as vol
 
 from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse
 from homeassistant.helpers import config_validation as cv
+from homeassistant.util import dt as dt_util
 
 from .const import DOMAIN
 from .coordinator import KilowahtiCoordinator
@@ -71,6 +72,12 @@ LIST_FIXED_PERIODS_SCHEMA = vol.Schema(
     }
 )
 
+GET_ACTIVE_PRICES_SCHEMA = vol.Schema(
+    {
+        _OPT_ENTRY_ID: cv.string,
+    }
+)
+
 
 # ---------------------------------------------------------------------------
 # Coordinator lookup
@@ -109,7 +116,7 @@ async def _handle_get_prices(call: ServiceCall) -> ServiceResponse:
 
     slots = coordinator.slots_in_range(start, end)
     return {
-        "slots": [
+        "price_periods": [
             {
                 "time": slot.dt_utc.isoformat(),
                 "price_no_tax": slot.price_no_tax,
@@ -159,7 +166,7 @@ async def _handle_cheapest_hours(call: ServiceCall) -> ServiceResponse:
         "end": best_window[-1].dt_utc.isoformat(),
         "average_price": coordinator.format_price(avg_price),
         "unit": coordinator.native_unit,
-        "slots": [
+        "price_periods": [
             {
                 "time": s.dt_utc.isoformat(),
                 "price": coordinator.format_price(coordinator._spot_effective(s)),
@@ -237,6 +244,30 @@ async def _handle_remove_fixed_period(call: ServiceCall) -> None:
     _LOGGER.info("Removed fixed-price period %s", period_id)
 
 
+async def _handle_get_active_prices(call: ServiceCall) -> ServiceResponse:
+    coordinator = _get_coordinator(call.hass, call.data.get("config_entry_id"))
+
+    def _slot_dict(slot) -> dict:
+        slot_local = dt_util.as_local(slot.dt_utc)
+        period = coordinator.fixed_period_for_date(slot_local.date())
+        is_fixed = period is not None
+        effective = period.price if is_fixed else coordinator._spot_effective(slot)
+        transfer = coordinator.transfer_price_for_slot(slot) or 0.0
+        return {
+            "time": slot_local.isoformat(),
+            "price": coordinator.format_price(effective),
+            "total_price": coordinator.format_price(effective + transfer),
+            "rank": slot.rank,
+            "is_fixed": is_fixed,
+            "unit": coordinator.native_unit,
+        }
+
+    tomorrow = coordinator.tomorrow_slots() or []
+    return {
+        "price_periods": [_slot_dict(s) for s in coordinator.today_slots() + tomorrow],
+    }
+
+
 async def _handle_list_fixed_periods(call: ServiceCall) -> ServiceResponse:
     hass = call.hass
     coordinator = _get_coordinator(hass, call.data.get("config_entry_id"))
@@ -267,6 +298,13 @@ def async_register_services(hass: HomeAssistant) -> None:
     if hass.services.has_service(DOMAIN, "get_prices"):
         return  # Already registered
 
+    hass.services.async_register(
+        DOMAIN,
+        "get_active_prices",
+        _handle_get_active_prices,
+        schema=GET_ACTIVE_PRICES_SCHEMA,
+        supports_response=SupportsResponse.ONLY,
+    )
     hass.services.async_register(
         DOMAIN,
         "get_prices",
@@ -313,6 +351,7 @@ def async_register_services(hass: HomeAssistant) -> None:
 def async_unregister_services(hass: HomeAssistant) -> None:
     """Unregister services when the last entry is removed."""
     for service in (
+        "get_active_prices",
         "get_prices",
         "cheapest_hours",
         "average_price",

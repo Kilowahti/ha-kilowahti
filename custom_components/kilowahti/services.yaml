@@ -1,3 +1,22 @@
+get_active_prices:
+  name: Get active prices
+  description: >
+    Returns all currently loaded price slots (today and tomorrow if available)
+    as a flat list, with effective price (fixed-period override applied where
+    active), transfer price included in total_price, and an is_fixed flag per
+    slot. Prices are in the unit configured for this entry (c/kWh or €/kWh),
+    VAT included.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: >
+        Required when multiple Kilowahti entries are configured.
+        Omit when only one entry exists.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:
+
 get_prices:
   name: Get prices
   description: >
