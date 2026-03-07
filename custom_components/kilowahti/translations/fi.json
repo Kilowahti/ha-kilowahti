@@ -82,11 +82,18 @@
       "score_profiles": {
         "title": "Optimointipisteet",
         "description": "Optimointipisteet mittaavat, kuinka hyvin kulutus on siirretty halvimpiin tunteihin. Kokonaiskulutusta mittaava 'Total'-profiili on pysyvä, saat sen käyttöön helposti vain liittämällä koko kulutusta kuvaavan mittarin (tai mittarit) siihen Kilowahdin asetuksissa asennuksen jälkeen.",
+        "data": {}
+      },
+      "sensor_display": {
+        "title": "Anturien näyttö",
+        "description": "Määritä, miten anturien arvot näytetään Home Assistantissa.",
         "data": {
-          "expose_price_arrays": "Näytä hinta-taulukot anturin attribuutteina (kasvattaa tietokannan kokoa)"
+          "expose_price_arrays": "Näytä hinta-taulukot anturin attribuutteina (kasvattaa tietokannan kokoa)",
+          "high_precision": "Tarkka desimaalitarkkuus (5 desimaalia 2:n sijaan)"
         },
         "data_description": {
-          "expose_price_arrays": "Kirjoittaa today_prices- ja tomorrow_prices-taulukot spot_price-anturin attribuutteihin, jotka puolestaan tallentuvat tietokantaan. Helpottaa dashboard-graafien tekemistä, mutta ei ole pakollinen niiden näyttämiseksi ja kuormittaa turhaan tietokantaa."
+          "expose_price_arrays": "Kirjoittaa today_prices- ja tomorrow_prices-taulukot spot_price-anturin attribuutteihin, jotka puolestaan tallentuvat tietokantaan. Helpottaa dashboard-graafien tekemistä, mutta ei ole pakollinen niiden näyttämiseksi ja kuormittaa turhaan tietokantaa.",
+          "high_precision": "Kun pois päältä (oletus), hinta-anturit näyttävät 2 desimaalia. Kun päällä, näytetään 5 desimaalia. Attribuutit käyttävät aina täyttä tarkkuutta."
         }
       }
     },
@@ -114,6 +121,7 @@
           "transfer_groups": "Siirtohinnat",
           "thresholds": "Kynnysarvot ja ohjaus",
           "score_profiles": "Pisteprofiilit",
+          "sensor_display": "Anturien näyttö",
           "fixed_periods": "Kiinnitetyt hintajaksot / kiinteät sopimukset"
         }
       },
@@ -171,8 +179,13 @@
       },
       "score_profiles": {
         "title": "Pisteprofiilit",
+        "data": {}
+      },
+      "sensor_display": {
+        "title": "Anturien näyttö",
         "data": {
-          "expose_price_arrays": "Näytä hinta-taulukot anturin attribuutteina (kasvattaa tietokannan kokoa)"
+          "expose_price_arrays": "Näytä hinta-taulukot anturin attribuutteina (kasvattaa tietokannan kokoa)",
+          "high_precision": "Tarkka desimaalitarkkuus (5 desimaalia 2:n sijaan)"
         }
       },
       "add_score_profile": {

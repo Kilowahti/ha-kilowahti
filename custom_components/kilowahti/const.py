@@ -25,6 +25,7 @@ CONF_CONTROL_FACTOR_FUNCTION = "control_factor_function"
 CONF_CONTROL_FACTOR_SCALING = "control_factor_scaling"
 CONF_SCORE_PROFILES = "score_profiles"
 CONF_EXPOSE_PRICE_ARRAYS = "expose_price_arrays"
+CONF_HIGH_PRECISION = "high_precision"
 CONF_EAGER_START_HOUR = "eager_start_hour"
 CONF_EAGER_END_HOUR = "eager_end_hour"
 
@@ -41,6 +42,7 @@ DEFAULT_EAGER_START_HOUR = 13
 DEFAULT_EAGER_END_HOUR = 21
 DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER = True
 DEFAULT_EXPOSE_PRICE_ARRAYS = False
+DEFAULT_HIGH_PRECISION = False
 
 # Display units
 UNIT_SNTPERKWH = "snt/kWh"

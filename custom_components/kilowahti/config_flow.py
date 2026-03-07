@@ -23,6 +23,7 @@ from .const import (
     CONF_ELECTRICITY_TAX,
     CONF_EXPOSE_PRICE_ARRAYS,
     CONF_FORWARD_AVG_HOURS,
+    CONF_HIGH_PRECISION,
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
     CONF_PRICE_RESOLUTION,
@@ -41,6 +42,7 @@ from .const import (
     DEFAULT_ELECTRICITY_TAX,
     DEFAULT_EXPOSE_PRICE_ARRAYS,
     DEFAULT_FORWARD_AVG_HOURS,
+    DEFAULT_HIGH_PRECISION,
     DEFAULT_MAX_PRICE,
     DEFAULT_MAX_RANK,
     DEFAULT_PRICE_RESOLUTION,
@@ -212,12 +214,20 @@ def _thresholds_schema(defaults: dict, resolution: int = DEFAULT_PRICE_RESOLUTIO
     )
 
 
-def _score_profiles_schema(defaults: dict) -> vol.Schema:
+def _score_profiles_schema(_defaults: dict) -> vol.Schema:
+    return vol.Schema({})
+
+
+def _sensor_display_schema(defaults: dict) -> vol.Schema:
     return vol.Schema(
         {
             vol.Required(
                 CONF_EXPOSE_PRICE_ARRAYS,
                 default=defaults.get(CONF_EXPOSE_PRICE_ARRAYS, DEFAULT_EXPOSE_PRICE_ARRAYS),
+            ): selector.BooleanSelector(),
+            vol.Required(
+                CONF_HIGH_PRECISION,
+                default=defaults.get(CONF_HIGH_PRECISION, DEFAULT_HIGH_PRECISION),
             ): selector.BooleanSelector(),
         }
     )
@@ -481,18 +491,29 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
 
     async def async_step_score_profiles(self, user_input: dict | None = None):
         if user_input is not None:
-            self._data[CONF_EXPOSE_PRICE_ARRAYS] = user_input[CONF_EXPOSE_PRICE_ARRAYS]
             self._data[CONF_SCORE_PROFILES] = [
                 {"id": DEFAULT_SCORE_PROFILE_ID, "label": DEFAULT_SCORE_PROFILE_LABEL, "meters": []}
             ]
             self._data[CONF_EAGER_START_HOUR] = DEFAULT_EAGER_START_HOUR
             self._data[CONF_EAGER_END_HOUR] = DEFAULT_EAGER_END_HOUR
-
-            return self.async_create_entry(title=self._data["name"], data={}, options=self._data)
+            return await self.async_step_sensor_display()
 
         return self.async_show_form(
             step_id="score_profiles",
             data_schema=_score_profiles_schema({}),
+        )
+
+    # ------ Step 6: sensor display ----------------------------------------
+
+    async def async_step_sensor_display(self, user_input: dict | None = None):
+        if user_input is not None:
+            self._data[CONF_EXPOSE_PRICE_ARRAYS] = user_input[CONF_EXPOSE_PRICE_ARRAYS]
+            self._data[CONF_HIGH_PRECISION] = user_input[CONF_HIGH_PRECISION]
+            return self.async_create_entry(title=self._data["name"], data={}, options=self._data)
+
+        return self.async_show_form(
+            step_id="sensor_display",
+            data_schema=_sensor_display_schema({}),
         )
 
     @staticmethod
@@ -523,6 +544,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
                 "transfer_groups",
                 "thresholds",
                 "score_profiles",
+                "sensor_display",
                 "fixed_periods",
             ],
         )
@@ -698,9 +720,6 @@ class KilowahtiOptionsFlow(OptionsFlow):
         if user_input is not None:
             action = user_input.get("action", "save")
             if action == "save":
-                self._options[CONF_EXPOSE_PRICE_ARRAYS] = user_input.get(
-                    CONF_EXPOSE_PRICE_ARRAYS, False
-                )
                 return self.async_create_entry(data=self._options)
             if action == "add_profile":
                 return await self.async_step_add_score_profile()
@@ -711,19 +730,29 @@ class KilowahtiOptionsFlow(OptionsFlow):
             {"value": "save", "label": "✓ Save & close"},
         ]
 
-        schema = vol.Schema(
-            {
-                **_score_profiles_schema(self._options).schema,
-                vol.Required("action", default="save"): selector.SelectSelector(
-                    selector.SelectSelectorConfig(options=action_options)
-                ),
-            }
-        )
-
         return self.async_show_form(
             step_id="score_profiles",
-            data_schema=schema,
+            data_schema=vol.Schema(
+                {
+                    vol.Required("action", default="save"): selector.SelectSelector(
+                        selector.SelectSelectorConfig(options=action_options)
+                    ),
+                }
+            ),
             description_placeholders={"profile_count": str(len(profiles))},
+        )
+
+    # ------ Sensor display ------------------------------------------------
+
+    async def async_step_sensor_display(self, user_input: dict | None = None):
+        if user_input is not None:
+            self._options[CONF_EXPOSE_PRICE_ARRAYS] = user_input[CONF_EXPOSE_PRICE_ARRAYS]
+            self._options[CONF_HIGH_PRECISION] = user_input[CONF_HIGH_PRECISION]
+            return self.async_create_entry(data=self._options)
+
+        return self.async_show_form(
+            step_id="sensor_display",
+            data_schema=_sensor_display_schema(self._options),
         )
 
     async def async_step_add_score_profile(self, user_input: dict | None = None):

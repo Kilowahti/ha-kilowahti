@@ -27,6 +27,7 @@ from .const import (
     CONF_ELECTRICITY_TAX,
     CONF_EXPOSE_PRICE_ARRAYS,
     CONF_FORWARD_AVG_HOURS,
+    CONF_HIGH_PRECISION,
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
     CONF_PRICE_RESOLUTION,
@@ -43,6 +44,7 @@ from .const import (
     DEFAULT_ELECTRICITY_TAX,
     DEFAULT_EXPOSE_PRICE_ARRAYS,
     DEFAULT_FORWARD_AVG_HOURS,
+    DEFAULT_HIGH_PRECISION,
     DEFAULT_MAX_PRICE,
     DEFAULT_MAX_RANK,
     DEFAULT_PRICE_RESOLUTION,
@@ -153,6 +155,10 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     @property
     def _expose_price_arrays(self) -> bool:
         return self._opts.get(CONF_EXPOSE_PRICE_ARRAYS, DEFAULT_EXPOSE_PRICE_ARRAYS)
+
+    @property
+    def _high_precision(self) -> bool:
+        return self._opts.get(CONF_HIGH_PRECISION, DEFAULT_HIGH_PRECISION)
 
     @property
     def score_profiles(self) -> list[ScoreProfile]:

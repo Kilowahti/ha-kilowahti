@@ -40,6 +40,23 @@ from .models import ScoreProfile
 
 _LOGGER = logging.getLogger(__name__)
 
+_PRICE_SENSOR_KEYS = frozenset(
+    {
+        SENSOR_SPOT_PRICE,
+        SENSOR_EFFECTIVE_PRICE,
+        SENSOR_TRANSFER_PRICE,
+        SENSOR_TOTAL_PRICE,
+        SENSOR_TODAY_AVG,
+        SENSOR_TODAY_MIN,
+        SENSOR_TODAY_MAX,
+        SENSOR_TOMORROW_AVG,
+        SENSOR_TOMORROW_MIN,
+        SENSOR_TOMORROW_MAX,
+        SENSOR_NEXT_HOURS_AVG,
+    }
+)
+_CONTROL_FACTOR_SENSOR_KEYS = frozenset({SENSOR_CONTROL_FACTOR, SENSOR_CONTROL_FACTOR_BIPOLAR})
+
 
 # ---------------------------------------------------------------------------
 # Sensor descriptions
@@ -165,21 +182,18 @@ class KilowahtiSensorBase(CoordinatorEntity[KilowahtiCoordinator], SensorEntity)
     @property
     def native_unit_of_measurement(self) -> str | None:
         # Price sensors inherit dynamic unit from coordinator
-        if self.entity_description.key in (
-            SENSOR_SPOT_PRICE,
-            SENSOR_EFFECTIVE_PRICE,
-            SENSOR_TRANSFER_PRICE,
-            SENSOR_TOTAL_PRICE,
-            SENSOR_TODAY_AVG,
-            SENSOR_TODAY_MIN,
-            SENSOR_TODAY_MAX,
-            SENSOR_TOMORROW_AVG,
-            SENSOR_TOMORROW_MIN,
-            SENSOR_TOMORROW_MAX,
-            SENSOR_NEXT_HOURS_AVG,
-        ):
+        if self.entity_description.key in _PRICE_SENSOR_KEYS:
             return self.coordinator.native_unit
         return self.entity_description.native_unit_of_measurement
+
+    @property
+    def suggested_display_precision(self) -> int | None:
+        key = self.entity_description.key
+        if key in _CONTROL_FACTOR_SENSOR_KEYS:
+            return 4
+        if key in _PRICE_SENSOR_KEYS:
+            return 5 if self.coordinator._high_precision else 2
+        return None
 
 
 # ---------------------------------------------------------------------------
