@@ -100,14 +100,14 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         key=SENSOR_CONTROL_FACTOR,
         translation_key=SENSOR_CONTROL_FACTOR,
         state_class=SensorStateClass.MEASUREMENT,
-        value_fn=lambda c: round(c.control_factor() or 0.0, 4),
+        value_fn=lambda c: round(c.control_factor() or 0.0, 3),
         native_unit_of_measurement=None,
     ),
     KilowahtiSensorEntityDescription(
         key=SENSOR_CONTROL_FACTOR_BIPOLAR,
         translation_key=SENSOR_CONTROL_FACTOR_BIPOLAR,
         state_class=SensorStateClass.MEASUREMENT,
-        value_fn=lambda c: round(c.control_factor_bipolar() or 0.0, 4),
+        value_fn=lambda c: round(c.control_factor_bipolar() or 0.0, 3),
         native_unit_of_measurement=None,
     ),
 )
@@ -159,7 +159,7 @@ async def async_setup_entry(
 def _device_info(entry: ConfigEntry) -> DeviceInfo:
     return DeviceInfo(
         identifiers={(DOMAIN, entry.entry_id)},
-        name=entry.options.get("name", "Kilowahti"),
+        name=f"Kilowahti {entry.options.get('name', '')}".strip(),
         manufacturer="Kilowahti",
         model="Spot Price Integration",
     )
@@ -190,7 +190,7 @@ class KilowahtiSensorBase(CoordinatorEntity[KilowahtiCoordinator], SensorEntity)
     def suggested_display_precision(self) -> int | None:
         key = self.entity_description.key
         if key in _CONTROL_FACTOR_SENSOR_KEYS:
-            return 4
+            return 3
         if key in _PRICE_SENSOR_KEYS:
             return 5 if self.coordinator._high_precision else 2
         return None
