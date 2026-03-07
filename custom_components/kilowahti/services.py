@@ -12,7 +12,7 @@ from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, Supp
 from homeassistant.helpers import config_validation as cv
 from homeassistant.util import dt as dt_util
 
-from .const import DOMAIN
+from .const import DOMAIN, UNIT_EUROKWH
 from .coordinator import KilowahtiCoordinator
 from .models import FixedPeriod
 
@@ -23,12 +23,14 @@ _LOGGER = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 _OPT_ENTRY_ID = vol.Optional("config_entry_id")
+_OPT_FORMATTED = vol.Optional("formatted", default=True)
 
 GET_PRICES_SCHEMA = vol.Schema(
     {
         _OPT_ENTRY_ID: cv.string,
         vol.Required("start"): cv.datetime,
         vol.Required("end"): cv.datetime,
+        _OPT_FORMATTED: cv.boolean,
     }
 )
 
@@ -38,6 +40,7 @@ CHEAPEST_HOURS_SCHEMA = vol.Schema(
         vol.Required("start"): cv.datetime,
         vol.Required("end"): cv.datetime,
         vol.Required("hours"): vol.All(vol.Coerce(float), vol.Range(min=0.25, max=24)),
+        _OPT_FORMATTED: cv.boolean,
     }
 )
 
@@ -46,6 +49,7 @@ AVERAGE_PRICE_SCHEMA = vol.Schema(
         _OPT_ENTRY_ID: cv.string,
         vol.Required("start"): cv.datetime,
         vol.Required("end"): cv.datetime,
+        _OPT_FORMATTED: cv.boolean,
     }
 )
 
@@ -75,6 +79,9 @@ LIST_FIXED_PERIODS_SCHEMA = vol.Schema(
 GET_ACTIVE_PRICES_SCHEMA = vol.Schema(
     {
         _OPT_ENTRY_ID: cv.string,
+        vol.Optional("start"): cv.datetime,
+        vol.Optional("end"): cv.datetime,
+        _OPT_FORMATTED: cv.boolean,
     }
 )
 
@@ -104,6 +111,25 @@ def _get_coordinator(hass: HomeAssistant, entry_id: str | None) -> KilowahtiCoor
 
 
 # ---------------------------------------------------------------------------
+# Formatting helper
+# ---------------------------------------------------------------------------
+
+
+def _fmt(coordinator: KilowahtiCoordinator, price: float | None, formatted: bool) -> float | None:
+    """Apply unit conversion and display rounding when formatted=True, else return raw value."""
+    if price is None:
+        return None
+    if not formatted:
+        return price
+    converted = coordinator.format_price(price)
+    if converted is None:
+        return None
+    base = 5 if coordinator._high_precision else 2
+    extra = 2 if coordinator.native_unit == UNIT_EUROKWH else 0
+    return round(converted, base + extra)
+
+
+# ---------------------------------------------------------------------------
 # Service handlers
 # ---------------------------------------------------------------------------
 
@@ -113,19 +139,20 @@ async def _handle_get_prices(call: ServiceCall) -> ServiceResponse:
     coordinator = _get_coordinator(hass, call.data.get("config_entry_id"))
     start: datetime = call.data["start"]
     end: datetime = call.data["end"]
+    formatted: bool = call.data["formatted"]
 
     slots = coordinator.slots_in_range(start, end)
     return {
+        "unit": coordinator.native_unit,
         "price_periods": [
             {
                 "time": slot.dt_utc.isoformat(),
                 "price_no_tax": slot.price_no_tax,
-                "price": coordinator.format_price(coordinator._spot_effective(slot)),
+                "price": _fmt(coordinator, coordinator._spot_effective(slot), formatted),
                 "rank": slot.rank,
-                "unit": coordinator.native_unit,
             }
             for slot in slots
-        ]
+        ],
     }
 
 
@@ -135,6 +162,7 @@ async def _handle_cheapest_hours(call: ServiceCall) -> ServiceResponse:
     start: datetime = call.data["start"]
     end: datetime = call.data["end"]
     hours: float = call.data["hours"]
+    formatted: bool = call.data["formatted"]
 
     slots = coordinator.slots_in_range(start, end)
     if not slots:
@@ -164,12 +192,12 @@ async def _handle_cheapest_hours(call: ServiceCall) -> ServiceResponse:
     return {
         "start": best_window[0].dt_utc.isoformat(),
         "end": best_window[-1].dt_utc.isoformat(),
-        "average_price": coordinator.format_price(avg_price),
+        "average_price": _fmt(coordinator, avg_price, formatted),
         "unit": coordinator.native_unit,
         "price_periods": [
             {
                 "time": s.dt_utc.isoformat(),
-                "price": coordinator.format_price(coordinator._spot_effective(s)),
+                "price": _fmt(coordinator, coordinator._spot_effective(s), formatted),
                 "rank": s.rank,
             }
             for s in best_window
@@ -183,6 +211,8 @@ async def _handle_average_price(call: ServiceCall) -> ServiceResponse:
     start: datetime = call.data["start"]
     end: datetime = call.data["end"]
 
+    formatted: bool = call.data["formatted"]
+
     slots = coordinator.slots_in_range(start, end)
     if not slots:
         return {"error": "No price slots available in the specified range"}
@@ -191,9 +221,9 @@ async def _handle_average_price(call: ServiceCall) -> ServiceResponse:
     avg = sum(prices) / len(prices)
 
     return {
-        "average_price": coordinator.format_price(avg),
-        "min_price": coordinator.format_price(min(prices)),
-        "max_price": coordinator.format_price(max(prices)),
+        "average_price": _fmt(coordinator, avg, formatted),
+        "min_price": _fmt(coordinator, min(prices), formatted),
+        "max_price": _fmt(coordinator, max(prices), formatted),
         "unit": coordinator.native_unit,
         "slot_count": len(slots),
     }
@@ -246,6 +276,15 @@ async def _handle_remove_fixed_period(call: ServiceCall) -> None:
 
 async def _handle_get_active_prices(call: ServiceCall) -> ServiceResponse:
     coordinator = _get_coordinator(call.hass, call.data.get("config_entry_id"))
+    formatted: bool = call.data["formatted"]
+    start: datetime | None = call.data.get("start")
+    end: datetime | None = call.data.get("end")
+
+    if start is not None and end is not None:
+        slots = coordinator.slots_in_range(start, end)
+    else:
+        tomorrow = coordinator.tomorrow_slots() or []
+        slots = coordinator.today_slots() + tomorrow
 
     def _slot_dict(slot) -> dict:
         slot_local = dt_util.as_local(slot.dt_utc)
@@ -255,16 +294,15 @@ async def _handle_get_active_prices(call: ServiceCall) -> ServiceResponse:
         transfer = coordinator.transfer_price_for_slot(slot) or 0.0
         return {
             "time": slot_local.isoformat(),
-            "price": coordinator.format_price(effective),
-            "total_price": coordinator.format_price(effective + transfer),
+            "price": _fmt(coordinator, effective, formatted),
+            "total_price": _fmt(coordinator, effective + transfer, formatted),
             "rank": slot.rank,
             "is_fixed": is_fixed,
-            "unit": coordinator.native_unit,
         }
 
-    tomorrow = coordinator.tomorrow_slots() or []
     return {
-        "price_periods": [_slot_dict(s) for s in coordinator.today_slots() + tomorrow],
+        "unit": coordinator.native_unit,
+        "price_periods": [_slot_dict(s) for s in slots],
     }
 
 

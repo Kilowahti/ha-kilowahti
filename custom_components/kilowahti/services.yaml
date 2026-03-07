@@ -1,11 +1,11 @@
 get_active_prices:
   name: Get active prices
   description: >
-    Returns all currently loaded price slots (today and tomorrow if available)
-    as a flat list, with effective price (fixed-period override applied where
-    active), transfer price included in total_price, and an is_fixed flag per
-    slot. Prices are in the unit configured for this entry (c/kWh or €/kWh),
-    VAT included.
+    Returns price slots with effective price (fixed-period override applied
+    where active), transfer price included in total_price, and an is_fixed
+    flag per slot. Without start/end returns today and tomorrow. With
+    start/end returns that range. Prices are in the unit configured for this
+    entry (c/kWh or €/kWh), VAT included.
   fields:
     config_entry_id:
       name: Config entry ID
@@ -16,6 +16,30 @@ get_active_prices:
       example: "abc123def456"
       selector:
         text:
+    start:
+      name: Start
+      description: Start of the range (inclusive). Omit to use today/tomorrow.
+      required: false
+      example: "2024-01-15 00:00:00"
+      selector:
+        datetime:
+    end:
+      name: End
+      description: End of the range (exclusive). Omit to use today/tomorrow.
+      required: false
+      example: "2024-01-15 23:59:59"
+      selector:
+        datetime:
+    formatted:
+      name: Formatted
+      description: >
+        When true (default), prices are converted to the configured display unit
+        and rounded for display. When false, raw values in c/kWh are returned
+        at full precision.
+      required: false
+      default: true
+      selector:
+        boolean:
 
 get_prices:
   name: Get prices
@@ -46,6 +70,16 @@ get_prices:
       example: "2024-01-15 23:59:59"
       selector:
         datetime:
+    formatted:
+      name: Formatted
+      description: >
+        When true (default), prices are converted to the configured display unit
+        and rounded for display. When false, raw values in c/kWh are returned
+        at full precision.
+      required: false
+      default: true
+      selector:
+        boolean:
 
 cheapest_hours:
   name: Cheapest hours
@@ -86,6 +120,16 @@ cheapest_hours:
           max: 24
           step: 0.25
           unit_of_measurement: h
+    formatted:
+      name: Formatted
+      description: >
+        When true (default), prices are converted to the configured display unit
+        and rounded for display. When false, raw values in c/kWh are returned
+        at full precision.
+      required: false
+      default: true
+      selector:
+        boolean:
 
 average_price:
   name: Average price
@@ -115,6 +159,16 @@ average_price:
       example: "2024-01-15 23:59:59"
       selector:
         datetime:
+    formatted:
+      name: Formatted
+      description: >
+        When true (default), prices are converted to the configured display unit
+        and rounded for display. When false, raw values in c/kWh are returned
+        at full precision.
+      required: false
+      default: true
+      selector:
+        boolean:
 
 add_fixed_period:
   name: Add fixed-price period
