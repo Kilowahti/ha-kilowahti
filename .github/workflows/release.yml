@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Prepare release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate release
+        run: |
+          echo "Release ${{ github.event.release.tag_name }} published"
+          echo "Checking integration files..."
+          test -f hacs.json
+          test -f custom_components/kilowahti/manifest.json
+          test -f custom_components/kilowahti/__init__.py
+          echo "All required files present"
+
+      - name: Set version number
+        run: |
+          yq -i -o json '.version="${{ github.event.release.tag_name }}"' \
+            "${{ github.workspace }}/custom_components/kilowahti/manifest.json"
+
+      - name: Create ZIP
+        run: |
+          cd "${{ github.workspace }}/custom_components/kilowahti"
+          zip kilowahti.zip -r ./
+
+      - name: Upload ZIP to release
+        uses: softprops/action-gh-release@v2.2.1
+        with:
+          files: ${{ github.workspace }}/custom_components/kilowahti/kilowahti.zip
