@@ -454,7 +454,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         if effective is None:
             return None
         transfer = self.transfer_price_now() or 0.0
-        return effective + transfer + self._electricity_tax
+        return effective + transfer
 
     def _price_for_comparison(self) -> float | None:
         """Price compared against max_price threshold."""
@@ -463,8 +463,8 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             return None
         if self._price_threshold_includes_transfer:
             transfer = self.transfer_price_now() or 0.0
-            return effective + transfer + self._electricity_tax
-        return effective + self._electricity_tax
+            return effective + transfer
+        return effective
 
     def format_price(self, price_snt: float | None) -> float | None:
         """Convert c/kWh to display unit (€/kWh if configured)."""
