@@ -467,7 +467,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return effective + self._electricity_tax
 
     def format_price(self, price_snt: float | None) -> float | None:
-        """Convert snt/kWh to display unit (€/kWh if configured)."""
+        """Convert c/kWh to display unit (€/kWh if configured)."""
         if price_snt is None:
             return None
         if self._display_unit == UNIT_EUROKWH:

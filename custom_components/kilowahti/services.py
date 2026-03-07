@@ -220,7 +220,7 @@ async def _handle_add_fixed_period(call: ServiceCall) -> None:
     await storage.async_add_period(period)
     coordinator.async_update_listeners()
     _LOGGER.info(
-        "Added fixed-price period '%s' (%s – %s, %.3f snt/kWh)", period.label, start, end, price
+        "Added fixed-price period '%s' (%s – %s, %.3f c/kWh)", period.label, start, end, price
     )
 
 

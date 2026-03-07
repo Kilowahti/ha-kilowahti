@@ -2,7 +2,7 @@ get_prices:
   name: Get prices
   description: >
     Returns spot price slots for a given time range. Prices are in the
-    unit configured for this entry (snt/kWh or €/kWh), VAT included.
+    unit configured for this entry (c/kWh or €/kWh), VAT included.
   fields:
     config_entry_id:
       name: Config entry ID
@@ -101,7 +101,7 @@ add_fixed_period:
   name: Add fixed-price period
   description: >
     Adds a fixed-price period that overrides the spot price while active.
-    The price must be gross (VAT included), in snt/kWh.
+    The price must be gross (VAT included), in c/kWh.
     Periods must not overlap with existing periods.
   fields:
     config_entry_id:
@@ -135,7 +135,7 @@ add_fixed_period:
         date:
     price:
       name: Price
-      description: Fixed price in snt/kWh, gross (VAT included).
+      description: Fixed price in c/kWh, gross (VAT included).
       required: true
       example: 8.5
       selector:
@@ -143,7 +143,7 @@ add_fixed_period:
           min: 0.001
           max: 9999
           step: 0.001
-          unit_of_measurement: snt/kWh
+          unit_of_measurement: c/kWh
 
 remove_fixed_period:
   name: Remove fixed-price period

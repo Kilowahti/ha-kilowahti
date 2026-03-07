@@ -809,7 +809,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
             period_options.append(
                 {
                     "value": f"remove_period_{p.id}",
-                    "label": f"✕ Remove: {p.label} ({p.start_date} – {p.end_date}, {p.price} snt/kWh)",
+                    "label": f"✕ Remove: {p.label} ({p.start_date} – {p.end_date}, {p.price} c/kWh)",
                 }
             )
         period_options.append({"value": "add_period", "label": "➕ Add period"})

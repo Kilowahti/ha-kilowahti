@@ -19,7 +19,7 @@ class PriceResolution(IntEnum):
 @dataclass
 class PriceSlot:
     dt_utc: datetime  # always UTC
-    price_no_tax: float  # snt/kWh, excl. VAT
+    price_no_tax: float  # c/kWh, excl. VAT
     rank: int  # 1 = cheapest; max 96 (15-min) or 24 (1-hour)
 
     def to_dict(self) -> dict:
@@ -44,7 +44,7 @@ class PriceSlot:
 @dataclass
 class TransferTier:
     label: str
-    price: float  # snt/kWh, consistent with VAT toggle
+    price: float  # c/kWh, consistent with VAT toggle
     months: list[int]  # 1–12
     weekdays: list[int]  # 0=Mon … 6=Sun
     hour_start: int  # 0–23
@@ -112,7 +112,7 @@ class FixedPeriod:
     label: str
     start_date: date
     end_date: date  # inclusive
-    price: float  # snt/kWh, gross (VAT included)
+    price: float  # c/kWh, gross (VAT included)
 
     def to_dict(self) -> dict:
         return {

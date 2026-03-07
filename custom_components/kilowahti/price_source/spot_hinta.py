@@ -16,7 +16,7 @@ from . import PriceSource
 
 _LOGGER = logging.getLogger(__name__)
 
-# spot-hinta.fi returns prices in €/kWh; we store internally as snt/kWh.
+# spot-hinta.fi returns prices in €/kWh; we store internally as c/kWh.
 _EUR_TO_SNT = 100.0
 
 

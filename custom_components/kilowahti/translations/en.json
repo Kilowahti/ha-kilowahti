@@ -21,7 +21,7 @@
         "description": "Pre-filled from your region. Adjust if needed. All prices (transfer tiers, fixed periods) are entered incl. VAT.",
         "data": {
           "vat_rate_pct": "VAT rate (%)",
-          "electricity_tax": "Electricity tax (snt/kWh)"
+          "electricity_tax": "Electricity tax (c/kWh)"
         },
         "data_description": {
           "electricity_tax": "Flat per-kWh electricity tax added on top of spot/fixed price."
@@ -52,7 +52,7 @@
         "description": "Evaluated in priority order; first match wins. Add a base rate as the lowest priority with no time constraints.",
         "data": {
           "label": "Tier label",
-          "price": "Price (snt/kWh)",
+          "price": "Price (c/kWh)",
           "months": "Months active",
           "weekdays": "Weekdays active",
           "hour_start": "Start time (inclusive)",
@@ -63,7 +63,7 @@
       "thresholds": {
         "title": "Thresholds & control",
         "data": {
-          "max_price": "Control max price (snt/kWh)",
+          "max_price": "Control max price (c/kWh)",
           "price_threshold_includes_transfer": "Max price includes transfer",
           "max_rank": "Control max rank",
           "forward_avg_hours": "Forward average window length (hours)",
@@ -133,7 +133,7 @@
           "price_resolution": "Price resolution",
           "display_unit": "Display unit",
           "vat_rate_pct": "VAT rate (%)",
-          "electricity_tax": "Electricity tax (snt/kWh)"
+          "electricity_tax": "Electricity tax (c/kWh)"
         }
       },
       "transfer_groups": {
@@ -158,7 +158,7 @@
         "title": "Add transfer price",
         "data": {
           "label": "Tier name (e.g. Winter weekday)",
-          "price": "Price (snt/kWh)",
+          "price": "Price (c/kWh)",
           "months": "Months active",
           "weekdays": "Weekdays active",
           "hour_start": "Start time (inclusive)",
@@ -169,7 +169,7 @@
       "thresholds": {
         "title": "Thresholds & control",
         "data": {
-          "max_price": "Control max price (snt/kWh)",
+          "max_price": "Control max price (c/kWh)",
           "price_threshold_includes_transfer": "Max price includes transfer",
           "max_rank": "Control max rank",
           "forward_avg_hours": "Forward average window length (hours)",
@@ -208,7 +208,7 @@
           "label": "Period label",
           "start_date": "Start date",
           "end_date": "End date (inclusive)",
-          "price": "Price (snt/kWh, incl. VAT)"
+          "price": "Price (c/kWh, incl. VAT)"
         },
         "data_description": {
           "price": "Enter price incl. VAT. This price is used as-is — no VAT is added."

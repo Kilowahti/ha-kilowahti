@@ -21,7 +21,7 @@
         "description": "Arvot on esitäytetty valitun alueen mukaan, voit muuttaa niitä tarvittaessa. Kaikki hinnat (siirtohinnat, kiinteät jaksot) syötetään ALV:llisina.",
         "data": {
           "vat_rate_pct": "ALV-prosentti (%)",
-          "electricity_tax": "Sähkövero (snt/kWh)"
+          "electricity_tax": "Sähkövero (c/kWh)"
         },
         "data_description": {
           "electricity_tax": "Sähkövero per kWh, lisätään spot/kiinteään hintaan."
@@ -52,7 +52,7 @@
         "description": "Käytetty siirtohinta valitaan prioriteettijärjestyksessä; ensimmäinen osuma voittaa. Lisää ns. perushinta alimmaksi ilman ehtoja.",
         "data": {
           "label": "Tason nimi",
-          "price": "Hinta (snt/kWh)",
+          "price": "Hinta (c/kWh)",
           "months": "Voimassa kuukausina",
           "weekdays": "Voimassa viikonpäivinä",
           "hour_start": "Alkamisaika (mukaanlukien)",
@@ -63,7 +63,7 @@
       "thresholds": {
         "title": "Kynnysarvot ja ohjaus",
         "data": {
-          "max_price": "Ohjauksen maksimihinta (snt/kWh)",
+          "max_price": "Ohjauksen maksimihinta (c/kWh)",
           "price_threshold_includes_transfer": "Maksimihinta sisältää myös siirron",
           "max_rank": "Ohjauksen maksimisijaluku",
           "forward_avg_hours": "Tulevan keskiarvoikkunan pituus (tuntia)",
@@ -133,7 +133,7 @@
           "price_resolution": "Hintaresoluutio",
           "display_unit": "Näyttöyksikkö",
           "vat_rate_pct": "ALV-prosentti (%)",
-          "electricity_tax": "Sähkövero (snt/kWh)"
+          "electricity_tax": "Sähkövero (c/kWh)"
         }
       },
       "transfer_groups": {
@@ -158,7 +158,7 @@
         "title": "Lisää siirtohinta",
         "data": {
           "label": "Tason nimi (esim. Talviarkipäivä)",
-          "price": "Hinta (snt/kWh)",
+          "price": "Hinta (c/kWh)",
           "months": "Voimassaolokuukaudet",
           "weekdays": "Voimassaoloviikonpäivät",
           "hour_start": "Alkamistunti (mukaanlukien)",
@@ -169,7 +169,7 @@
       "thresholds": {
         "title": "Kynnysarvot ja ohjaus",
         "data": {
-          "max_price": "Ohjauksen maksimihinta (snt/kWh)",
+          "max_price": "Ohjauksen maksimihinta (c/kWh)",
           "price_threshold_includes_transfer": "Maksimihinta sisältää myös siirron",
           "max_rank": "Ohjauksen maksimisijaluku",
           "forward_avg_hours": "Tulevan keskiarvoikkunan pituus (tuntia)",
@@ -208,7 +208,7 @@
           "label": "Jakson nimi",
           "start_date": "Alkamispäivä",
           "end_date": "Päättymispäivä (mukaanlukien)",
-          "price": "Hinta (snt/kWh, sis ALV)"
+          "price": "Hinta (c/kWh, sis ALV)"
         },
         "data_description": {
           "price": "Syötä tämä hinta verollisena (brutto). Tätä hintaa käytetään sellaisenaan — ALV:ta ei lisätä erikseen."
