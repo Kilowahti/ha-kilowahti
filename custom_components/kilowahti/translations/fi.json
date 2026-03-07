@@ -6,7 +6,7 @@
         "description": "Alue määrittää, miltä pohjoismaiden tai baltian spot-hinta-alueelta hinnat haetaan.",
         "data": {
           "name": "Nimi",
-          "region": "Spot-hinta-alue",
+          "region": "Hinta-alue",
           "price_resolution": "Hintaresoluutio",
           "display_unit": "Näyttöyksikkö"
         },
@@ -127,9 +127,10 @@
       },
       "basic": {
         "title": "Perusasetukset",
+        "description": "Huomio: näyttöyksikön vaihtaminen anturien luomisen jälkeen aiheuttaa yksikköristiriitoja historiagraafeissa. Saatat joutua tyhjentämään anturien historian tai päivittämään dashboard-kortit manuaalisesti.",
         "data": {
           "name": "Nimi",
-          "region": "Spot-hinta-alue",
+          "region": "Hinta-alue",
           "price_resolution": "Hintaresoluutio",
           "display_unit": "Näyttöyksikkö",
           "vat_rate_pct": "ALV-prosentti (%)",
@@ -238,9 +239,9 @@
       "tomorrow_min": {"name": "Huomenna minimi"},
       "tomorrow_max": {"name": "Huomenna maksimi"},
       "next_hours_avg": {"name": "Seuraavien tuntien keskiarvo"},
-      "control_factor": {"name": "Ohjauskerroin"},
-      "control_factor_bipolar": {"name": "Ohjauskerroin (bipolaarinen)"},
-      "transfer_rank": {"name": "Siirtosijaluku"}
+      "control_factor_price": {"name": "Ohjauskerroin hinta"},
+      "control_factor_price_bipolar": {"name": "Ohjauskerroin hinta (bipolaarinen)"},
+      "control_factor_transfer": {"name": "Ohjauskerroin siirto"}
     },
     "binary_sensor": {
       "price_acceptable": {"name": "Hinta on hyväksyttävä"},

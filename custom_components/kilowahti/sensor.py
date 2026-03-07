@@ -20,8 +20,9 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
     DOMAIN,
-    SENSOR_CONTROL_FACTOR,
-    SENSOR_CONTROL_FACTOR_BIPOLAR,
+    SENSOR_CONTROL_FACTOR_PRICE,
+    SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR,
+    SENSOR_CONTROL_FACTOR_TRANSFER,
     SENSOR_EFFECTIVE_PRICE,
     SENSOR_NEXT_HOURS_AVG,
     SENSOR_PRICE_RANK,
@@ -34,7 +35,6 @@ from .const import (
     SENSOR_TOMORROW_MIN,
     SENSOR_TOTAL_PRICE,
     SENSOR_TRANSFER_PRICE,
-    SENSOR_TRANSFER_RANK,
     UNIT_EUROKWH,
 )
 from .coordinator import KilowahtiCoordinator
@@ -57,7 +57,9 @@ _PRICE_SENSOR_KEYS = frozenset(
         SENSOR_NEXT_HOURS_AVG,
     }
 )
-_CONTROL_FACTOR_SENSOR_KEYS = frozenset({SENSOR_CONTROL_FACTOR, SENSOR_CONTROL_FACTOR_BIPOLAR})
+_CONTROL_FACTOR_SENSOR_KEYS = frozenset(
+    {SENSOR_CONTROL_FACTOR_PRICE, SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR}
+)
 
 
 # ---------------------------------------------------------------------------
@@ -80,7 +82,7 @@ def _price_sensor(key: str, value_fn: Callable) -> KilowahtiSensorEntityDescript
     )
 
 
-_TRANSFER_SENSOR_KEYS = frozenset({SENSOR_TRANSFER_PRICE, SENSOR_TRANSFER_RANK})
+_TRANSFER_SENSOR_KEYS = frozenset({SENSOR_TRANSFER_PRICE, SENSOR_CONTROL_FACTOR_TRANSFER})
 
 SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
     _price_sensor(SENSOR_SPOT_PRICE, lambda c: c.format_price(c.spot_price_now())),
@@ -101,22 +103,22 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         native_unit_of_measurement=None,
     ),
     KilowahtiSensorEntityDescription(
-        key=SENSOR_CONTROL_FACTOR,
-        translation_key=SENSOR_CONTROL_FACTOR,
+        key=SENSOR_CONTROL_FACTOR_PRICE,
+        translation_key=SENSOR_CONTROL_FACTOR_PRICE,
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda c: round(c.control_factor() or 0.0, 3),
         native_unit_of_measurement=None,
     ),
     KilowahtiSensorEntityDescription(
-        key=SENSOR_CONTROL_FACTOR_BIPOLAR,
-        translation_key=SENSOR_CONTROL_FACTOR_BIPOLAR,
+        key=SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR,
+        translation_key=SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR,
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda c: round(c.control_factor_bipolar() or 0.0, 3),
         native_unit_of_measurement=None,
     ),
     KilowahtiSensorEntityDescription(
-        key=SENSOR_TRANSFER_RANK,
-        translation_key=SENSOR_TRANSFER_RANK,
+        key=SENSOR_CONTROL_FACTOR_TRANSFER,
+        translation_key=SENSOR_CONTROL_FACTOR_TRANSFER,
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=None,  # handled by KilowahtiTransferRankSensor
         native_unit_of_measurement=None,
@@ -143,7 +145,7 @@ async def async_setup_entry(
             continue
         if description.key == SENSOR_SPOT_PRICE:
             entities.append(KilowahtiSpotPriceSensor(coordinator, entry, description))
-        elif description.key == SENSOR_TRANSFER_RANK:
+        elif description.key == SENSOR_CONTROL_FACTOR_TRANSFER:
             entities.append(KilowahtiTransferRankSensor(coordinator, entry, description))
         else:
             entities.append(KilowahtiSensor(coordinator, entry, description))

@@ -6,7 +6,7 @@
         "description": "Set up your Kilowahti integration. Region determines which Nordic/Baltic spot-price area is used.",
         "data": {
           "name": "Name",
-          "region": "Spot-price region",
+          "region": "Price region",
           "price_resolution": "Price resolution",
           "display_unit": "Display unit"
         },
@@ -127,9 +127,10 @@
       },
       "basic": {
         "title": "Basic settings",
+        "description": "Warning: changing the display unit after sensors have been created will cause unit mismatches in history graphs. You may need to clear sensor history or adjust dashboard cards manually.",
         "data": {
           "name": "Name",
-          "region": "Spot-price region",
+          "region": "Price region",
           "price_resolution": "Price resolution",
           "display_unit": "Display unit",
           "vat_rate_pct": "VAT rate (%)",
@@ -238,9 +239,9 @@
       "tomorrow_min": {"name": "Tomorrow minimum"},
       "tomorrow_max": {"name": "Tomorrow maximum"},
       "next_hours_avg": {"name": "Next hours average"},
-      "control_factor": {"name": "Control factor"},
-      "control_factor_bipolar": {"name": "Control factor (bipolar)"},
-      "transfer_rank": {"name": "Transfer rank"}
+      "control_factor_price": {"name": "Control factor price"},
+      "control_factor_price_bipolar": {"name": "Control factor price (bipolar)"},
+      "control_factor_transfer": {"name": "Control factor transfer"}
     },
     "binary_sensor": {
       "price_acceptable": {"name": "Price acceptable"},
