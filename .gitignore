@@ -44,3 +44,7 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+
+# Allow project-specific Claude instructions
+!.claude/
+!.claude/CLAUDE.md
