@@ -142,9 +142,15 @@ class ScoreProfile:
     id: str
     label: str
     meters: list[str] = field(default_factory=list)  # HA entity IDs
+    formula: str = "default"  # "default" or "raw"
 
     def to_dict(self) -> dict:
-        return {"id": self.id, "label": self.label, "meters": self.meters}
+        return {
+            "id": self.id,
+            "label": self.label,
+            "meters": self.meters,
+            "formula": self.formula,
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> "ScoreProfile":
@@ -152,4 +158,5 @@ class ScoreProfile:
             id=data["id"],
             label=data["label"],
             meters=data.get("meters") or [],
+            formula=data.get("formula", "default"),
         )

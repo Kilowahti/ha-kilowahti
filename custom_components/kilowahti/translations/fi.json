@@ -193,13 +193,21 @@
         "title": "Lisää pisteprofiili",
         "data": {
           "label": "Profiilin nimi",
-          "meters": "Energiamittarientiteetit"
+          "meters": "Energiamittarientiteetit",
+          "formula": "Pisteytyslaskelma"
+        },
+        "data_description": {
+          "formula": "Oletuskaava: 50 = hyvä, 37,5 tasaisella jakaumalla (rankaisee keskimääräistä käyttöä). Raaka kaava: 50 tasaisella jakaumalla (neutraali lähtötaso)."
         }
       },
       "edit_score_profile": {
         "title": "Muokkaa pisteprofiiilia: {profile_label}",
         "data": {
-          "meters": "Energiamittarientiteetit"
+          "meters": "Energiamittarientiteetit",
+          "formula": "Pisteytyslaskelma"
+        },
+        "data_description": {
+          "formula": "Oletuskaava: 50 = hyvä, 37,5 tasaisella jakaumalla (rankaisee keskimääräistä käyttöä). Raaka kaava: 50 tasaisella jakaumalla (neutraali lähtötaso)."
         }
       },
       "fixed_periods": {

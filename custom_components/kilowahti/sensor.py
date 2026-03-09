@@ -236,10 +236,11 @@ async def async_setup_entry(
         )
     )
 
-    # Optimization score sensors (one pair per profile)
+    # Optimization score sensors (one pair per profile) + formula diagnostic
     for profile in coordinator.score_profiles:
         entities.append(KilowahtiScoreSensor(coordinator, entry, profile, "today"))
         entities.append(KilowahtiScoreSensor(coordinator, entry, profile, "month"))
+        entities.append(KilowahtiScoreFormulaSensor(coordinator, entry, profile))
 
     async_add_entities(entities)
 
@@ -398,3 +399,33 @@ class KilowahtiScoreSensor(CoordinatorEntity[KilowahtiCoordinator], SensorEntity
         if score is None:
             return None
         return round(score, 1)
+
+
+# ---------------------------------------------------------------------------
+# Score formula diagnostic sensor (one per profile)
+# ---------------------------------------------------------------------------
+
+
+class KilowahtiScoreFormulaSensor(CoordinatorEntity[KilowahtiCoordinator], SensorEntity):
+    _attr_has_entity_name = True
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
+    _attr_entity_registry_enabled_default = False
+
+    def __init__(
+        self,
+        coordinator: KilowahtiCoordinator,
+        entry: ConfigEntry,
+        profile: ScoreProfile,
+    ) -> None:
+        super().__init__(coordinator)
+        self._profile_id = profile.id
+        self._attr_unique_id = f"{entry.entry_id}_score_{profile.id}_formula"
+        self._attr_name = f"{profile.label} score formula"
+        self._attr_device_info = _device_info(entry)
+
+    @property
+    def native_value(self) -> str | None:
+        profile = next(
+            (p for p in self.coordinator.score_profiles if p.id == self._profile_id), None
+        )
+        return profile.formula if profile else None

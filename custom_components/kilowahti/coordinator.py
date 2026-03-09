@@ -51,6 +51,7 @@ from .const import (
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     DEFAULT_VAT_RATE,
     DOMAIN,
+    SCORE_FORMULA_RAW,
     UNIT_EUROKWH,
     UNIT_SNTPERKWH,
 )
@@ -738,7 +739,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         day_scores: dict[str, float] = {}
         for profile in self.score_profiles:
             bucket_data = self._score_data.get(profile.id, {})
-            day_scores[profile.id] = self._compute_score(bucket_data)
+            day_scores[profile.id] = self._compute_score(bucket_data, profile.formula)
 
         self._daily_history.append({"date": str(yesterday), "scores": day_scores})
 
@@ -751,7 +752,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         await self._async_persist_scores()
 
     @staticmethod
-    def _compute_score(bucket_data: dict[str, float]) -> float:
+    def _compute_score(bucket_data: dict[str, float], formula: str = "default") -> float:
         q1 = bucket_data.get("q1", 0.0)
         q2 = bucket_data.get("q2", 0.0)
         q3 = bucket_data.get("q3", 0.0)
@@ -759,12 +760,16 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         if total <= 0:
             return 0.0
         raw = (q1 * 3 + q2 * 2 + q3) / (total * 3) * 100
+        if formula == SCORE_FORMULA_RAW:
+            return max(0.0, min(100.0, raw))
         return max(0.0, min(100.0, (raw - 30.0) / 53.3 * 100))
 
     def get_today_score(self, profile_id: str) -> float:
         """Return the in-progress today optimization score (0–100)."""
         bucket_data = self._score_data.get(profile_id, {})
-        return self._compute_score(bucket_data)
+        profile = next((p for p in self.score_profiles if p.id == profile_id), None)
+        formula = profile.formula if profile else "default"
+        return self._compute_score(bucket_data, formula)
 
     def get_monthly_score(self, profile_id: str) -> float | None:
         """Return rolling average of completed daily scores this month."""

@@ -193,13 +193,21 @@
         "title": "Add score profile",
         "data": {
           "label": "Profile label",
-          "meters": "Energy meter entities"
+          "meters": "Energy meter entities",
+          "formula": "Scoring formula"
+        },
+        "data_description": {
+          "formula": "Default formula: 50 = good, 37.5 at even distribution (penalises average usage). Raw formula: 50 at even distribution (neutral baseline)."
         }
       },
       "edit_score_profile": {
         "title": "Edit score profile: {profile_label}",
         "data": {
-          "meters": "Energy meter entities"
+          "meters": "Energy meter entities",
+          "formula": "Scoring formula"
+        },
+        "data_description": {
+          "formula": "Default formula: 50 = good, 37.5 at even distribution (penalises average usage). Raw formula: 50 at even distribution (neutral baseline)."
         }
       },
       "fixed_periods": {

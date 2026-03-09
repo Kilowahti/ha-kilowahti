@@ -47,10 +47,13 @@ from .const import (
     DEFAULT_MAX_RANK,
     DEFAULT_PRICE_RESOLUTION,
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
+    DEFAULT_SCORE_FORMULA,
     DEFAULT_SCORE_PROFILE_ID,
     DEFAULT_SCORE_PROFILE_LABEL,
     DEFAULT_VAT_RATE,
     DOMAIN,
+    SCORE_FORMULA_DEFAULT,
+    SCORE_FORMULA_RAW,
     UNIT_EUROKWH,
     UNIT_SNTPERKWH,
 )
@@ -783,6 +786,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
                     "id": str(uuid.uuid4()),
                     "label": user_input["label"],
                     "meters": user_input.get("meters") or [],
+                    "formula": user_input.get("formula", DEFAULT_SCORE_FORMULA),
                 }
             )
             self._options[CONF_SCORE_PROFILES] = profiles
@@ -799,6 +803,14 @@ class KilowahtiOptionsFlow(OptionsFlow):
                             multiple=True,
                         )
                     ),
+                    vol.Required("formula", default=SCORE_FORMULA_DEFAULT): selector.SelectSelector(
+                        selector.SelectSelectorConfig(
+                            options=[
+                                {"value": SCORE_FORMULA_DEFAULT, "label": "Default formula"},
+                                {"value": SCORE_FORMULA_RAW, "label": "Raw formula"},
+                            ]
+                        )
+                    ),
                 }
             ),
         )
@@ -809,6 +821,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
 
         if user_input is not None:
             profile["meters"] = user_input.get("meters") or []
+            profile["formula"] = user_input.get("formula", DEFAULT_SCORE_FORMULA)
             profiles[self._current_profile_idx] = profile
             self._options[CONF_SCORE_PROFILES] = profiles
             return await self.async_step_score_profiles()
@@ -823,6 +836,16 @@ class KilowahtiOptionsFlow(OptionsFlow):
                         selector.EntitySelectorConfig(
                             domain="sensor",
                             multiple=True,
+                        )
+                    ),
+                    vol.Required(
+                        "formula", default=profile.get("formula", SCORE_FORMULA_DEFAULT)
+                    ): selector.SelectSelector(
+                        selector.SelectSelectorConfig(
+                            options=[
+                                {"value": SCORE_FORMULA_DEFAULT, "label": "Default formula"},
+                                {"value": SCORE_FORMULA_RAW, "label": "Raw formula"},
+                            ]
                         )
                     ),
                 }
