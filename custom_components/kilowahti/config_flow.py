@@ -543,6 +543,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
         self._options: dict[str, Any] = dict(config_entry.options)
         self._groups: list[dict] = list(self._options.get(CONF_TRANSFER_GROUPS, []))
         self._current_group_idx: int = 0
+        self._current_profile_idx: int = 0
 
     # ------ Top-level menu ------------------------------------------------
 
@@ -733,12 +734,22 @@ class KilowahtiOptionsFlow(OptionsFlow):
                 return self.async_create_entry(data=self._options)
             if action == "add_profile":
                 return await self.async_step_add_score_profile()
+            if action.startswith("edit_profile_"):
+                self._current_profile_idx = int(action[len("edit_profile_") :])
+                return await self.async_step_edit_score_profile()
 
         profiles = self._options.get(CONF_SCORE_PROFILES, [])
-        action_options = [
-            {"value": "add_profile", "label": "➕ Add score profile"},
-            {"value": "save", "label": "✓ Save & close"},
-        ]
+        action_options = []
+        for i, p in enumerate(profiles):
+            meter_count = len(p.get("meters", []))
+            action_options.append(
+                {
+                    "value": f"edit_profile_{i}",
+                    "label": f"✎ Edit: {p['label']} ({meter_count} meter{'s' if meter_count != 1 else ''})",
+                }
+            )
+        action_options.append({"value": "add_profile", "label": "➕ Add score profile"})
+        action_options.append({"value": "save", "label": "✓ Save & close"})
 
         return self.async_show_form(
             step_id="score_profiles",
@@ -749,7 +760,6 @@ class KilowahtiOptionsFlow(OptionsFlow):
                     ),
                 }
             ),
-            description_placeholders={"profile_count": str(len(profiles))},
         )
 
     # ------ Sensor display ------------------------------------------------
@@ -792,6 +802,34 @@ class KilowahtiOptionsFlow(OptionsFlow):
                     ),
                 }
             ),
+        )
+
+    async def async_step_edit_score_profile(self, user_input: dict | None = None):
+        profiles = list(self._options.get(CONF_SCORE_PROFILES, []))
+        profile = profiles[self._current_profile_idx]
+
+        if user_input is not None:
+            profile["meters"] = user_input.get("meters", [])
+            profiles[self._current_profile_idx] = profile
+            self._options[CONF_SCORE_PROFILES] = profiles
+            return await self.async_step_score_profiles()
+
+        return self.async_show_form(
+            step_id="edit_score_profile",
+            data_schema=vol.Schema(
+                {
+                    vol.Optional(
+                        "meters", default=profile.get("meters", [])
+                    ): selector.EntitySelector(
+                        selector.EntitySelectorConfig(
+                            domain="sensor",
+                            device_class="energy",
+                            multiple=True,
+                        )
+                    ),
+                }
+            ),
+            description_placeholders={"profile_label": profile["label"]},
         )
 
     # ------ Fixed-price periods -------------------------------------------

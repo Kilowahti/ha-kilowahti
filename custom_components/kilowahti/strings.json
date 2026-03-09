@@ -196,6 +196,12 @@
           "meters": "Energy meter entities"
         }
       },
+      "edit_score_profile": {
+        "title": "Edit score profile: {profile_label}",
+        "data": {
+          "meters": "Energy meter entities"
+        }
+      },
       "fixed_periods": {
         "title": "Fixed-price periods",
         "description": "Manage fixed-price contract periods. When active, effective_price reflects the fixed price instead of spot.",

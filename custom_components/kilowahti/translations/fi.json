@@ -196,6 +196,12 @@
           "meters": "Energiamittarientiteetit"
         }
       },
+      "edit_score_profile": {
+        "title": "Muokkaa pisteprofiiilia: {profile_label}",
+        "data": {
+          "meters": "Energiamittarientiteetit"
+        }
+      },
       "fixed_periods": {
         "title": "Kiinnitetyt hintajaksot / kiinteät sopimukset",
         "description": "Hallitse kiinnitettyjä hintajaksoja tai kiinteitä sopimuksia. Kun aktiivinen, effective_price näyttää asetetun kiinteän hinnan spot-hinnan sijaan.",
