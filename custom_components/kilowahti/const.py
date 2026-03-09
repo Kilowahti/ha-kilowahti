@@ -111,7 +111,7 @@ SENSOR_NEXT_HOURS_AVG = "next_hours_avg"
 SENSOR_CONTROL_FACTOR_PRICE = "control_factor_price"
 SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR = "control_factor_price_bipolar"
 SENSOR_CONTROL_FACTOR_TRANSFER = "control_factor_transfer"
-SENSOR_PRICE_RANK_QUARTILE = "price_rank_quartile"
+SENSOR_PRICE_QUARTILE = "price_quartile"
 
 BINARY_SENSOR_PRICE_ACCEPTABLE = "price_acceptable"
 BINARY_SENSOR_RANK_ACCEPTABLE = "rank_acceptable"

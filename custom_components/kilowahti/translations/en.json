@@ -242,7 +242,7 @@
       "control_factor_price": {"name": "Control factor price"},
       "control_factor_price_bipolar": {"name": "Control factor price (bipolar)"},
       "control_factor_transfer": {"name": "Control factor transfer"},
-      "price_rank_quartile": {"name": "Price rank quartile"}
+      "price_quartile": {"name": "Price quartile"}
     },
     "binary_sensor": {
       "price_acceptable": {"name": "Price acceptable"},

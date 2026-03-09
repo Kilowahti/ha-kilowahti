@@ -8,12 +8,12 @@
 
 - Real-time spot price data from [spot-hinta.fi](https://spot-hinta.fi) (no API key required)
 - 15-minute or 1-hour price resolution
-- VAT and electricity tax applied automatically
+- VAT applied automatically; user-entered prices (transfer, fixed periods) are always gross
 - Fixed-price contract period management
 - Transfer price tier groups (switch between multiple contracts without re-entering data)
 - Optimization scores (daily and monthly) per configurable meter group
-- Price rank, control factors, and threshold binary sensors
-- Service calls: `get_prices`, `cheapest_hours`, `average_price`, `add_fixed_period`, `remove_fixed_period`, `list_fixed_periods`
+- Price rank, rank quartile, control factors, and threshold binary sensors
+- Service calls: `get_active_prices`, `get_prices`, `cheapest_hours`, `average_price`, `add_fixed_period`, `remove_fixed_period`, `list_fixed_periods`
 - ENTSO-E and Kilowahti proxy support planned for V2
 
 ## Supported Regions
@@ -22,7 +22,7 @@
 
 ## Installation
 
-1. Install via HACS → Custom Repositories → add `https://github.com/geekuality/ha-kilowahti`
+1. Install via HACS → Custom Repositories → add `https://github.com/Kilowahti/ha-kilowahti`
 2. Restart Home Assistant
 3. Go to **Settings → Devices & Services → Add Integration → Kilowahti**
 4. Complete the setup wizard
@@ -36,13 +36,14 @@
 | `sensor.{name}_spot_price` | Current slot's spot price |
 | `sensor.{name}_effective_price` | Spot or fixed-period price |
 | `sensor.{name}_transfer_price` | Active transfer tier price |
-| `sensor.{name}_total_price` | All-in: energy + transfer + electricity tax |
+| `sensor.{name}_total_price` | Energy + transfer price |
 | `sensor.{name}_price_rank` | Rank 1–96 (15 min) or 1–24 (1 hour); 1 = cheapest |
+| `sensor.{name}_price_quartile` | Price quartile 1–4; 1 = cheapest quarter |
 | `sensor.{name}_today_avg/min/max` | Today's spot stats |
 | `sensor.{name}_tomorrow_avg/min/max` | Tomorrow's stats (0 when unavailable) |
 | `sensor.{name}_next_hours_avg` | Average over next N hours |
-| `sensor.{name}_control_factor` | Normalized 0–1 price factor |
-| `sensor.{name}_control_factor_bipolar` | ±1 bipolar factor |
+| `sensor.{name}_control_factor_price` | Normalized 0–1 price factor |
+| `sensor.{name}_control_factor_price_bipolar` | ±1 bipolar factor |
 | `sensor.{name}_score_{profile}_today` | Daily optimization score 0–100 |
 | `sensor.{name}_score_{profile}_month` | Monthly optimization score 0–100 |
 
@@ -59,13 +60,17 @@
 ## Services
 
 ```yaml
+# Get active prices (today + tomorrow by default, or a custom range)
+service: kilowahti.get_active_prices
+data: {}
+
 # Get price slots for a time range
 service: kilowahti.get_prices
 data:
   start: "2026-03-07T00:00:00"
   end: "2026-03-07T23:59:59"
 
-# Find cheapest window
+# Find cheapest consecutive window
 service: kilowahti.cheapest_hours
 data:
   start: "2026-03-07T18:00:00"
@@ -80,6 +85,8 @@ data:
   end_date: "2026-03-31"
   price: 8.5
 ```
+
+All price services accept an optional `formatted` boolean (default `true`). Set to `false` to get raw c/kWh values at full precision.
 
 ## Optimization Score Algorithm
 

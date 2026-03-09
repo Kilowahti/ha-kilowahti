@@ -242,7 +242,7 @@
       "control_factor_price": {"name": "Ohjauskerroin hinta"},
       "control_factor_price_bipolar": {"name": "Ohjauskerroin hinta (bipolaarinen)"},
       "control_factor_transfer": {"name": "Ohjauskerroin siirto"},
-      "price_rank_quartile": {"name": "Hintakvartiili"}
+      "price_quartile": {"name": "Hintakvartiili"}
     },
     "binary_sensor": {
       "price_acceptable": {"name": "Hinta on hyväksyttävä"},
