@@ -782,7 +782,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
                 {
                     "id": str(uuid.uuid4()),
                     "label": user_input["label"],
-                    "meters": user_input.get("meters", []),
+                    "meters": user_input.get("meters") or [],
                 }
             )
             self._options[CONF_SCORE_PROFILES] = profiles
@@ -796,7 +796,6 @@ class KilowahtiOptionsFlow(OptionsFlow):
                     vol.Optional("meters", default=[]): selector.EntitySelector(
                         selector.EntitySelectorConfig(
                             domain="sensor",
-                            device_class="energy",
                             multiple=True,
                         )
                     ),
@@ -809,7 +808,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
         profile = profiles[self._current_profile_idx]
 
         if user_input is not None:
-            profile["meters"] = user_input.get("meters", [])
+            profile["meters"] = user_input.get("meters") or []
             profiles[self._current_profile_idx] = profile
             self._options[CONF_SCORE_PROFILES] = profiles
             return await self.async_step_score_profiles()
@@ -819,11 +818,10 @@ class KilowahtiOptionsFlow(OptionsFlow):
             data_schema=vol.Schema(
                 {
                     vol.Optional(
-                        "meters", default=profile.get("meters", [])
+                        "meters", default=profile.get("meters") or []
                     ): selector.EntitySelector(
                         selector.EntitySelectorConfig(
                             domain="sensor",
-                            device_class="energy",
                             multiple=True,
                         )
                     ),

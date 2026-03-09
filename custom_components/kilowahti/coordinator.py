@@ -761,11 +761,9 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         raw = (q1 * 3 + q2 * 2 + q3) / (total * 3) * 100
         return max(0.0, min(100.0, (raw - 30.0) / 53.3 * 100))
 
-    def get_today_score(self, profile_id: str) -> float | None:
+    def get_today_score(self, profile_id: str) -> float:
         """Return the in-progress today optimization score (0–100)."""
-        bucket_data = self._score_data.get(profile_id)
-        if bucket_data is None:
-            return None
+        bucket_data = self._score_data.get(profile_id, {})
         return self._compute_score(bucket_data)
 
     def get_monthly_score(self, profile_id: str) -> float | None:

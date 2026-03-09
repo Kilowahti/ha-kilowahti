@@ -151,5 +151,5 @@ class ScoreProfile:
         return cls(
             id=data["id"],
             label=data["label"],
-            meters=data.get("meters", []),
+            meters=data.get("meters") or [],
         )
