@@ -4,7 +4,7 @@
   "codeowners": ["@geekuality"],
   "config_flow": true,
   "dependencies": ["recorder"],
-  "documentation": "https://github.com/Kilowahti/ha-kilowahti",
+  "documentation": "https://docs.kilowahti.fi/",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Kilowahti/ha-kilowahti/issues",
   "requirements": [],
