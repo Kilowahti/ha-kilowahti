@@ -20,6 +20,8 @@
 
 `FI`, `EE`, `LT`, `LV`, `DK1`, `DK2`, `NO1`–`NO5`, `SE1`–`SE4`
 
+> **Currency notice:** Kilowahti currently supports only the official electricity market currency EUR. Conversions to DKK, NOK and SEK will become possible later.
+
 ## Installation
 
 1. Install via HACS → Custom Repositories → add `https://github.com/Kilowahti/ha-kilowahti`
