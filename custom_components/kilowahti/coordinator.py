@@ -450,6 +450,20 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             return period.price
         return self.spot_price_now()
 
+    def active_transfer_group_label(self) -> str | None:
+        group = self._active_transfer_group
+        return group.label if group else None
+
+    def active_transfer_tier_label(self) -> str | None:
+        group = self._active_transfer_group
+        if group is None:
+            return None
+        now = self._now_local()
+        for tier in sorted(group.tiers, key=lambda t: t.priority):
+            if tier.matches(now.month, now.weekday(), now.hour):
+                return tier.label
+        return None
+
     def transfer_rank_info(self) -> tuple[int, int] | None:
         """Return (rank, tier_count) for the current transfer price among today's unique tiers.
 

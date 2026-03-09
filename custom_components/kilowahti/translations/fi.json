@@ -289,6 +289,21 @@
       },
       "setting_control_factor_function": {
         "name": "Ohjausfunktion muoto"
+      },
+      "setting_acceptable_rank": {
+        "name": "Hyväksyttävä sijaluku"
+      },
+      "setting_forward_window": {
+        "name": "Ennakkoikkuna"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktiivinen siirtoryhmä"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktiivinen siirtotaso"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktiivinen kiinteä jakso"
       }
     },
     "binary_sensor": {

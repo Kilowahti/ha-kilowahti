@@ -13,7 +13,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import EntityCategory
+from homeassistant.const import EntityCategory, UnitOfTime
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -28,7 +28,12 @@ from .const import (
     SENSOR_NEXT_HOURS_AVG,
     SENSOR_PRICE_QUARTILE,
     SENSOR_PRICE_RANK,
+    SENSOR_SETTING_ACCEPTABLE_RANK,
+    SENSOR_SETTING_ACTIVE_FIXED_PERIOD,
+    SENSOR_SETTING_ACTIVE_TRANSFER_GROUP,
+    SENSOR_SETTING_ACTIVE_TRANSFER_TIER,
     SENSOR_SETTING_CONTROL_FACTOR_FUNCTION,
+    SENSOR_SETTING_FORWARD_WINDOW,
     SENSOR_SETTING_MAX_PRICE,
     SENSOR_SETTING_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     SENSOR_SPOT_PRICE,
@@ -140,19 +145,58 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         key=SENSOR_SETTING_MAX_PRICE,
         translation_key=SENSOR_SETTING_MAX_PRICE,
         entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
         value_fn=lambda c: c._max_price,
     ),
     KilowahtiSensorEntityDescription(
         key=SENSOR_SETTING_PRICE_THRESHOLD_INCLUDES_TRANSFER,
         translation_key=SENSOR_SETTING_PRICE_THRESHOLD_INCLUDES_TRANSFER,
         entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
         value_fn=lambda c: c._price_threshold_includes_transfer,
     ),
     KilowahtiSensorEntityDescription(
         key=SENSOR_SETTING_CONTROL_FACTOR_FUNCTION,
         translation_key=SENSOR_SETTING_CONTROL_FACTOR_FUNCTION,
         entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
         value_fn=lambda c: c._control_factor_function,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_SETTING_ACCEPTABLE_RANK,
+        translation_key=SENSOR_SETTING_ACCEPTABLE_RANK,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+        value_fn=lambda c: c._max_rank,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_SETTING_FORWARD_WINDOW,
+        translation_key=SENSOR_SETTING_FORWARD_WINDOW,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+        native_unit_of_measurement=UnitOfTime.HOURS,
+        value_fn=lambda c: c._forward_avg_hours,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_SETTING_ACTIVE_TRANSFER_GROUP,
+        translation_key=SENSOR_SETTING_ACTIVE_TRANSFER_GROUP,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+        value_fn=lambda c: c.active_transfer_group_label(),
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_SETTING_ACTIVE_TRANSFER_TIER,
+        translation_key=SENSOR_SETTING_ACTIVE_TRANSFER_TIER,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+        value_fn=lambda c: c.active_transfer_tier_label(),
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_SETTING_ACTIVE_FIXED_PERIOD,
+        translation_key=SENSOR_SETTING_ACTIVE_FIXED_PERIOD,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+        value_fn=lambda c: (fp := c.fixed_period_active_now()) and fp.label,
     ),
 )
 

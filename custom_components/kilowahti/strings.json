@@ -289,6 +289,21 @@
       },
       "setting_control_factor_function": {
         "name": "Control factor shape"
+      },
+      "setting_acceptable_rank": {
+        "name": "Acceptable rank"
+      },
+      "setting_forward_window": {
+        "name": "Forward window"
+      },
+      "setting_active_transfer_group": {
+        "name": "Active transfer group"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Active transfer tier"
+      },
+      "setting_active_fixed_period": {
+        "name": "Active fixed period"
       }
     },
     "binary_sensor": {
