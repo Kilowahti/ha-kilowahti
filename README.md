@@ -33,29 +33,29 @@
 
 | Entity | Description |
 |---|---|
-| `sensor.{name}_spot_price` | Current slot's spot price |
-| `sensor.{name}_effective_price` | Spot or fixed-period price |
-| `sensor.{name}_transfer_price` | Active transfer tier price |
-| `sensor.{name}_total_price` | Energy + transfer price |
-| `sensor.{name}_price_rank` | Rank 1–96 (15 min) or 1–24 (1 hour); 1 = cheapest |
-| `sensor.{name}_price_quartile` | Price quartile 1–4; 1 = cheapest quarter |
-| `sensor.{name}_today_avg/min/max` | Today's spot stats |
-| `sensor.{name}_tomorrow_avg/min/max` | Tomorrow's stats (0 when unavailable) |
-| `sensor.{name}_next_hours_avg` | Average over next N hours |
-| `sensor.{name}_control_factor_price` | Normalized 0–1 price factor |
-| `sensor.{name}_control_factor_price_bipolar` | ±1 bipolar factor |
-| `sensor.{name}_score_{profile}_today` | Daily optimization score 0–100 |
-| `sensor.{name}_score_{profile}_month` | Monthly optimization score 0–100 |
+| `sensor.kilowahti_{name}_spot_price` | Current slot's spot price |
+| `sensor.kilowahti_{name}_effective_price` | Spot or fixed-period price |
+| `sensor.kilowahti_{name}_transfer_price` | Active transfer tier price |
+| `sensor.kilowahti_{name}_total_price` | Energy + transfer price |
+| `sensor.kilowahti_{name}_price_rank` | Rank 1–96 (15 min) or 1–24 (1 hour); 1 = cheapest |
+| `sensor.kilowahti_{name}_price_quartile` | Price quartile 1–4; 1 = cheapest quarter |
+| `sensor.kilowahti_{name}_today_avg/min/max` | Today's spot stats |
+| `sensor.kilowahti_{name}_tomorrow_avg/min/max` | Tomorrow's stats (0 when unavailable) |
+| `sensor.kilowahti_{name}_next_hours_avg` | Average over next N hours |
+| `sensor.kilowahti_{name}_control_factor_price` | Normalized 0–1 price factor |
+| `sensor.kilowahti_{name}_control_factor_price_bipolar` | ±1 bipolar factor |
+| `sensor.kilowahti_{name}_score_{profile}_today` | Daily optimization score 0–100 |
+| `sensor.kilowahti_{name}_score_{profile}_month` | Monthly optimization score 0–100 |
 
 ### Binary Sensors
 
 | Entity | Description |
 |---|---|
-| `binary_sensor.{name}_price_acceptable` | Price ≤ configured threshold |
-| `binary_sensor.{name}_rank_acceptable` | Rank ≤ configured threshold |
-| `binary_sensor.{name}_price_or_rank_acceptable` | Either condition met |
-| `binary_sensor.{name}_fixed_period_active` | Currently in a fixed-price period |
-| `binary_sensor.{name}_tomorrow_available` | Tomorrow's prices fetched |
+| `binary_sensor.kilowahti_{name}_price_acceptable` | Price ≤ configured threshold |
+| `binary_sensor.kilowahti_{name}_rank_acceptable` | Rank ≤ configured threshold |
+| `binary_sensor.kilowahti_{name}_price_or_rank_acceptable` | Either condition met |
+| `binary_sensor.kilowahti_{name}_fixed_period_active` | Currently in a fixed-price period |
+| `binary_sensor.kilowahti_{name}_tomorrow_available` | Tomorrow's prices fetched |
 
 ## Services
 
@@ -102,5 +102,5 @@ score = clamp((raw − 30.0) / 53.3 × 100, 0, 100)
 
 1. Disable `packages/spot_price.yaml`
 2. Install Kilowahti via HACS → configure
-3. Swap entity IDs in automations: `sensor.shf_*` → `sensor.{name}_*`
+3. Swap entity IDs in automations: `sensor.shf_*` → `sensor.kilowahti_{name}_*`
 4. Remove `input_number.shf_*` and `input_datetime.shf_*` helpers
