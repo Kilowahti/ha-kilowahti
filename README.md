@@ -24,7 +24,11 @@
 
 ## Installation
 
-1. [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Kilowahti&repository=ha-kilowahti&category=Integration) or add `https://github.com/Kilowahti/ha-kilowahti` manually via HACS → Custom Repositories
+1. Install via HACS:
+
+   [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Kilowahti&repository=ha-kilowahti&category=Integration)
+
+   Or add `https://github.com/Kilowahti/ha-kilowahti` manually via HACS → Custom Repositories
 2. Restart Home Assistant
 3. Go to **Settings → Devices & Services → Add Integration → Kilowahti**
 4. Complete the setup wizard
