@@ -304,7 +304,6 @@ class KilowahtiTransferRankSensor(KilowahtiSensorBase):
 
 class KilowahtiScoreSensor(CoordinatorEntity[KilowahtiCoordinator], SensorEntity):
     _attr_has_entity_name = True
-    _attr_native_unit_of_measurement = "%"
     _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(
