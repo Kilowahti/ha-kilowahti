@@ -6,7 +6,7 @@
 
 ## Features
 
-- Real-time spot price data from [spot-hinta.fi](https://spot-hinta.fi) (no API key required)
+- Day-ahead spot price data from [spot-hinta.fi](https://spot-hinta.fi) (no API key required)
 - 15-minute or 1-hour price resolution
 - VAT applied automatically; user-entered prices (transfer, fixed periods) are always gross
 - Fixed-price contract period management
