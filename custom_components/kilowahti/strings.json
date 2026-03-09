@@ -241,7 +241,8 @@
       "next_hours_avg": {"name": "Next hours average"},
       "control_factor_price": {"name": "Control factor price"},
       "control_factor_price_bipolar": {"name": "Control factor price (bipolar)"},
-      "control_factor_transfer": {"name": "Control factor transfer"}
+      "control_factor_transfer": {"name": "Control factor transfer"},
+      "price_rank_quartile": {"name": "Price rank quartile"}
     },
     "binary_sensor": {
       "price_acceptable": {"name": "Price acceptable"},

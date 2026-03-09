@@ -26,6 +26,7 @@ from .const import (
     SENSOR_EFFECTIVE_PRICE,
     SENSOR_NEXT_HOURS_AVG,
     SENSOR_PRICE_RANK,
+    SENSOR_PRICE_RANK_QUARTILE,
     SENSOR_SPOT_PRICE,
     SENSOR_TODAY_AVG,
     SENSOR_TODAY_MAX,
@@ -121,6 +122,13 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         translation_key=SENSOR_CONTROL_FACTOR_TRANSFER,
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=None,  # handled by KilowahtiTransferRankSensor
+        native_unit_of_measurement=None,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_PRICE_RANK_QUARTILE,
+        translation_key=SENSOR_PRICE_RANK_QUARTILE,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda c: c.current_quartile(),
         native_unit_of_measurement=None,
     ),
 )

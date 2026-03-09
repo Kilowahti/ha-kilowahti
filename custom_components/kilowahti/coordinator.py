@@ -402,6 +402,12 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         slot = self.current_slot()
         return slot.rank if slot else None
 
+    def current_quartile(self) -> int | None:
+        rank = self.current_rank()
+        if rank is None:
+            return None
+        return int(self._rank_to_bucket(rank)[1])
+
     def today_slots(self) -> list[PriceSlot]:
         return list(self._today_slots)
 
