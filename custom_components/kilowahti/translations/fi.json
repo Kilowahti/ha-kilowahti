@@ -202,8 +202,20 @@
       },
       "edit_score_profile": {
         "title": "Muokkaa pisteprofiiilia: {profile_label}",
+        "description": "{meter_count} mittaria konfiguroitu.",
         "data": {
-          "meters": "Energiamittarientiteetit",
+          "action": "Toiminto"
+        }
+      },
+      "add_profile_meters": {
+        "title": "Lisää mittareita",
+        "data": {
+          "meters": "Energiamittarientiteetit"
+        }
+      },
+      "edit_profile_formula": {
+        "title": "Pisteytyslaskelma: {profile_label}",
+        "data": {
           "formula": "Pisteytyslaskelma"
         },
         "data_description": {

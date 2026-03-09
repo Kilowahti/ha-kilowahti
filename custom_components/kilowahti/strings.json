@@ -202,8 +202,20 @@
       },
       "edit_score_profile": {
         "title": "Edit score profile: {profile_label}",
+        "description": "{meter_count} meter(s) configured.",
         "data": {
-          "meters": "Energy meter entities",
+          "action": "Action"
+        }
+      },
+      "add_profile_meters": {
+        "title": "Add meter(s)",
+        "data": {
+          "meters": "Energy meter entities"
+        }
+      },
+      "edit_profile_formula": {
+        "title": "Scoring formula: {profile_label}",
+        "data": {
           "formula": "Scoring formula"
         },
         "data_description": {

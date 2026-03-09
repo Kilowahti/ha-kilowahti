@@ -816,28 +816,87 @@ class KilowahtiOptionsFlow(OptionsFlow):
         )
 
     async def async_step_edit_score_profile(self, user_input: dict | None = None):
-        profiles = list(self._options.get(CONF_SCORE_PROFILES, []))
+        profiles = [dict(p) for p in self._options.get(CONF_SCORE_PROFILES, [])]
         profile = profiles[self._current_profile_idx]
+        meters = list(profile.get("meters") or [])
 
         if user_input is not None:
-            profile["meters"] = user_input.get("meters") or []
-            profile["formula"] = user_input.get("formula", DEFAULT_SCORE_FORMULA)
-            profiles[self._current_profile_idx] = profile
-            self._options[CONF_SCORE_PROFILES] = profiles
-            return await self.async_step_score_profiles()
+            action = user_input.get("action", "done")
+            if action == "done":
+                return await self.async_step_score_profiles()
+            if action == "add_meters":
+                return await self.async_step_add_profile_meters()
+            if action == "edit_formula":
+                return await self.async_step_edit_profile_formula()
+            if action.startswith("remove_meter_"):
+                idx = int(action[len("remove_meter_") :])
+                meters.pop(idx)
+                profile["meters"] = meters
+                profiles[self._current_profile_idx] = profile
+                self._options[CONF_SCORE_PROFILES] = profiles
+                return await self.async_step_edit_score_profile()
+
+        action_options = []
+        for i, entity_id in enumerate(meters):
+            action_options.append({"value": f"remove_meter_{i}", "label": f"✕ Remove: {entity_id}"})
+        action_options.append({"value": "add_meters", "label": "➕ Add meter(s)"})
+        formula = profile.get("formula", SCORE_FORMULA_DEFAULT)
+        action_options.append({"value": "edit_formula", "label": f"⚙ Formula: {formula}"})
+        action_options.append({"value": "done", "label": "← Back"})
 
         return self.async_show_form(
             step_id="edit_score_profile",
             data_schema=vol.Schema(
                 {
-                    vol.Optional(
-                        "meters", default=profile.get("meters") or []
-                    ): selector.EntitySelector(
-                        selector.EntitySelectorConfig(
-                            domain="sensor",
-                            multiple=True,
-                        )
+                    vol.Required("action", default="done"): selector.SelectSelector(
+                        selector.SelectSelectorConfig(options=action_options)
                     ),
+                }
+            ),
+            description_placeholders={
+                "profile_label": profile["label"],
+                "meter_count": str(len(meters)),
+            },
+        )
+
+    async def async_step_add_profile_meters(self, user_input: dict | None = None):
+        if user_input is not None:
+            profiles = [dict(p) for p in self._options.get(CONF_SCORE_PROFILES, [])]
+            profile = profiles[self._current_profile_idx]
+            existing = list(profile.get("meters") or [])
+            for m in user_input.get("meters") or []:
+                if m not in existing:
+                    existing.append(m)
+            profile["meters"] = existing
+            profiles[self._current_profile_idx] = profile
+            self._options[CONF_SCORE_PROFILES] = profiles
+            return await self.async_step_edit_score_profile()
+
+        return self.async_show_form(
+            step_id="add_profile_meters",
+            data_schema=vol.Schema(
+                {
+                    vol.Optional("meters", default=[]): selector.EntitySelector(
+                        selector.EntitySelectorConfig(domain="sensor", multiple=True)
+                    ),
+                }
+            ),
+        )
+
+    async def async_step_edit_profile_formula(self, user_input: dict | None = None):
+        profiles = [dict(p) for p in self._options.get(CONF_SCORE_PROFILES, [])]
+        profile = profiles[self._current_profile_idx]
+
+        if user_input is not None:
+            profile["formula"] = user_input.get("formula", DEFAULT_SCORE_FORMULA)
+            profiles[self._current_profile_idx] = profile
+            self._options[CONF_SCORE_PROFILES] = profiles
+            return await self.async_step_edit_score_profile()
+
+        return self.async_show_form(
+            step_id="edit_profile_formula",
+            data_schema=vol.Schema(
+                {
                     vol.Required(
                         "formula", default=profile.get("formula", SCORE_FORMULA_DEFAULT)
                     ): selector.SelectSelector(
