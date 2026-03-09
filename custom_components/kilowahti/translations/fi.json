@@ -233,29 +233,80 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {"name": "Spot-hinta"},
-      "effective_price": {"name": "Toteutuva hinta"},
-      "transfer_price": {"name": "Siirtohinta"},
-      "total_price": {"name": "Kokonaishinta"},
-      "price_rank": {"name": "Sijaluku"},
-      "today_avg": {"name": "Tänään keskiarvo"},
-      "today_min": {"name": "Tänään minimi"},
-      "today_max": {"name": "Tänään maksimi"},
-      "tomorrow_avg": {"name": "Huomenna keskiarvo"},
-      "tomorrow_min": {"name": "Huomenna minimi"},
-      "tomorrow_max": {"name": "Huomenna maksimi"},
-      "next_hours_avg": {"name": "Seuraavien tuntien keskiarvo"},
-      "control_factor_price": {"name": "Ohjauskerroin hinta"},
-      "control_factor_price_bipolar": {"name": "Ohjauskerroin hinta (bipolaarinen)"},
-      "control_factor_transfer": {"name": "Ohjauskerroin siirto"},
-      "price_quartile": {"name": "Hintakvartiili"}
+      "spot_price": {
+        "name": "Spot-hinta"
+      },
+      "effective_price": {
+        "name": "Toteutuva hinta"
+      },
+      "transfer_price": {
+        "name": "Siirtohinta"
+      },
+      "total_price": {
+        "name": "Kokonaishinta"
+      },
+      "price_rank": {
+        "name": "Sijaluku"
+      },
+      "today_avg": {
+        "name": "Tänään keskiarvo"
+      },
+      "today_min": {
+        "name": "Tänään minimi"
+      },
+      "today_max": {
+        "name": "Tänään maksimi"
+      },
+      "tomorrow_avg": {
+        "name": "Huomenna keskiarvo"
+      },
+      "tomorrow_min": {
+        "name": "Huomenna minimi"
+      },
+      "tomorrow_max": {
+        "name": "Huomenna maksimi"
+      },
+      "next_hours_avg": {
+        "name": "Seuraavien tuntien keskiarvo"
+      },
+      "control_factor_price": {
+        "name": "Ohjauskerroin hinta"
+      },
+      "control_factor_price_bipolar": {
+        "name": "Ohjauskerroin hinta (bipolaarinen)"
+      },
+      "control_factor_transfer": {
+        "name": "Ohjauskerroin siirto"
+      },
+      "price_quartile": {
+        "name": "Hintakvartiili"
+      },
+      "setting_max_price": {
+        "name": "Hintaraja"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Hintaraja sisältää siirron"
+      },
+      "setting_control_factor_function": {
+        "name": "Ohjausfunktion muoto"
+      }
     },
     "binary_sensor": {
-      "price_acceptable": {"name": "Hinta on hyväksyttävä"},
-      "rank_acceptable": {"name": "Sijaluku on hyväksyttävä"},
-      "price_or_rank_acceptable": {"name": "Hinta tai sijaluku on hyväksyttävä"},
-      "fixed_period_active": {"name": "Kiinteä hintajakso on aktiivinen"},
-      "tomorrow_available": {"name": "Huomisen hinnat saatavilla"}
+      "price_acceptable": {
+        "name": "Hinta on hyväksyttävä"
+      },
+      "rank_acceptable": {
+        "name": "Sijaluku on hyväksyttävä"
+      },
+      "price_or_rank_acceptable": {
+        "name": "Hinta tai sijaluku on hyväksyttävä"
+      },
+      "fixed_period_active": {
+        "name": "Kiinteä hintajakso on aktiivinen"
+      },
+      "tomorrow_available": {
+        "name": "Huomisen hinnat saatavilla"
+      }
     }
   }
 }

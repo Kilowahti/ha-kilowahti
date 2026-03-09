@@ -13,6 +13,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -27,6 +28,9 @@ from .const import (
     SENSOR_NEXT_HOURS_AVG,
     SENSOR_PRICE_QUARTILE,
     SENSOR_PRICE_RANK,
+    SENSOR_SETTING_CONTROL_FACTOR_FUNCTION,
+    SENSOR_SETTING_MAX_PRICE,
+    SENSOR_SETTING_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     SENSOR_SPOT_PRICE,
     SENSOR_TODAY_AVG,
     SENSOR_TODAY_MAX,
@@ -56,6 +60,7 @@ _PRICE_SENSOR_KEYS = frozenset(
         SENSOR_TOMORROW_MIN,
         SENSOR_TOMORROW_MAX,
         SENSOR_NEXT_HOURS_AVG,
+        SENSOR_SETTING_MAX_PRICE,
     }
 )
 _CONTROL_FACTOR_SENSOR_KEYS = frozenset(
@@ -130,6 +135,24 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda c: c.current_quartile(),
         native_unit_of_measurement=None,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_SETTING_MAX_PRICE,
+        translation_key=SENSOR_SETTING_MAX_PRICE,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda c: c._max_price,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_SETTING_PRICE_THRESHOLD_INCLUDES_TRANSFER,
+        translation_key=SENSOR_SETTING_PRICE_THRESHOLD_INCLUDES_TRANSFER,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda c: c._price_threshold_includes_transfer,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_SETTING_CONTROL_FACTOR_FUNCTION,
+        translation_key=SENSOR_SETTING_CONTROL_FACTOR_FUNCTION,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda c: c._control_factor_function,
     ),
 )
 

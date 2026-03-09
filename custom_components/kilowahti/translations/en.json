@@ -233,29 +233,80 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {"name": "Spot price"},
-      "effective_price": {"name": "Active price"},
-      "transfer_price": {"name": "Transfer price"},
-      "total_price": {"name": "Total price"},
-      "price_rank": {"name": "Rank"},
-      "today_avg": {"name": "Today average"},
-      "today_min": {"name": "Today minimum"},
-      "today_max": {"name": "Today maximum"},
-      "tomorrow_avg": {"name": "Tomorrow average"},
-      "tomorrow_min": {"name": "Tomorrow minimum"},
-      "tomorrow_max": {"name": "Tomorrow maximum"},
-      "next_hours_avg": {"name": "Next hours average"},
-      "control_factor_price": {"name": "Control factor price"},
-      "control_factor_price_bipolar": {"name": "Control factor price (bipolar)"},
-      "control_factor_transfer": {"name": "Control factor transfer"},
-      "price_quartile": {"name": "Price quartile"}
+      "spot_price": {
+        "name": "Spot price"
+      },
+      "effective_price": {
+        "name": "Active price"
+      },
+      "transfer_price": {
+        "name": "Transfer price"
+      },
+      "total_price": {
+        "name": "Total price"
+      },
+      "price_rank": {
+        "name": "Rank"
+      },
+      "today_avg": {
+        "name": "Today average"
+      },
+      "today_min": {
+        "name": "Today minimum"
+      },
+      "today_max": {
+        "name": "Today maximum"
+      },
+      "tomorrow_avg": {
+        "name": "Tomorrow average"
+      },
+      "tomorrow_min": {
+        "name": "Tomorrow minimum"
+      },
+      "tomorrow_max": {
+        "name": "Tomorrow maximum"
+      },
+      "next_hours_avg": {
+        "name": "Next hours average"
+      },
+      "control_factor_price": {
+        "name": "Control factor price"
+      },
+      "control_factor_price_bipolar": {
+        "name": "Control factor price (bipolar)"
+      },
+      "control_factor_transfer": {
+        "name": "Control factor transfer"
+      },
+      "price_quartile": {
+        "name": "Price quartile"
+      },
+      "setting_max_price": {
+        "name": "Price threshold"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Price threshold includes transfer"
+      },
+      "setting_control_factor_function": {
+        "name": "Control factor shape"
+      }
     },
     "binary_sensor": {
-      "price_acceptable": {"name": "Price acceptable"},
-      "rank_acceptable": {"name": "Rank acceptable"},
-      "price_or_rank_acceptable": {"name": "Price or rank acceptable"},
-      "fixed_period_active": {"name": "Fixed price period active"},
-      "tomorrow_available": {"name": "Tomorrow's prices available"}
+      "price_acceptable": {
+        "name": "Price acceptable"
+      },
+      "rank_acceptable": {
+        "name": "Rank acceptable"
+      },
+      "price_or_rank_acceptable": {
+        "name": "Price or rank acceptable"
+      },
+      "fixed_period_active": {
+        "name": "Fixed price period active"
+      },
+      "tomorrow_available": {
+        "name": "Tomorrow's prices available"
+      }
     }
   }
 }
