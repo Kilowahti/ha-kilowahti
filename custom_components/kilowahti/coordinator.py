@@ -13,7 +13,6 @@ from homeassistant.helpers.event import (
     async_call_later,
     async_track_state_change_event,
     async_track_time_change,
-    async_track_time_interval,
 )
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.util import dt as dt_util
@@ -226,14 +225,20 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         eager_start = self._opts.get(CONF_EAGER_START_HOUR, DEFAULT_EAGER_START_HOUR)
         eager_end = self._opts.get(CONF_EAGER_END_HOUR, DEFAULT_EAGER_END_HOUR)
 
-        self._unsubscribers.extend(
-            [
-                # Slot boundary updates (no network I/O — just reads from in-memory cache)
-                async_track_time_interval(
+        # Slot boundary updates: fire at actual clock boundaries (:00/:15/:30/:45 or :00 only)
+        # async_track_time_interval would drift if registered mid-slot; time_change aligns to wall clock.
+        for _minute in range(0, 60, resolution_minutes):
+            self._unsubscribers.append(
+                async_track_time_change(
                     self.hass,
                     self._on_slot_boundary,
-                    timedelta(minutes=resolution_minutes),
-                ),
+                    minute=_minute,
+                    second=0,
+                )
+            )
+
+        self._unsubscribers.extend(
+            [
                 # Midnight rollover
                 async_track_time_change(
                     self.hass,
