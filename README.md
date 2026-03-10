@@ -3,9 +3,9 @@
   <img alt="Kilowahti" src="custom_components/kilowahti/brands/logo.png" width="400">
 </picture>
 
-[![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-
 **Kilowahti** (*kilowatti* + *vahti* — "the kilowatt sentinel") is a Home Assistant custom integration for Nordic/Baltic electricity spot price tracking.
+
+[![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
 
 ## Features
 
