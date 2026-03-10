@@ -53,8 +53,8 @@
 | `sensor.kilowahti_{name}_next_hours_avg` | Average over next N hours |
 | `sensor.kilowahti_{name}_control_factor_price` | Normalized 0–1 price factor |
 | `sensor.kilowahti_{name}_control_factor_price_bipolar` | ±1 bipolar factor |
-| `sensor.kilowahti_{name}_score_{profile}_today` | Daily optimization score 0–100 |
-| `sensor.kilowahti_{name}_score_{profile}_month` | Monthly optimization score 0–100 |
+| `sensor.kilowahti_{name}_score_{profile}_daily` | Daily optimization score 0–100 |
+| `sensor.kilowahti_{name}_score_{profile}_monthly` | Monthly optimization score 0–100 |
 
 ### Binary Sensors
 
