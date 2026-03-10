@@ -30,6 +30,7 @@ from .const import (
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
     CONF_SCORE_PROFILES,
+    CONF_SPOT_COMMISSION,
     CONF_TRANSFER_GROUPS,
     CONF_VAT_RATE,
     CONTROL_FACTOR_LINEAR,
@@ -50,6 +51,7 @@ from .const import (
     DEFAULT_SCORE_FORMULA,
     DEFAULT_SCORE_PROFILE_ID,
     DEFAULT_SCORE_PROFILE_LABEL,
+    DEFAULT_SPOT_COMMISSION,
     DEFAULT_VAT_RATE,
     DOMAIN,
     SCORE_FORMULA_DEFAULT,
@@ -172,6 +174,12 @@ def _vat_schema(defaults: dict) -> vol.Schema:
                 default=defaults.get(CONF_ELECTRICITY_TAX, DEFAULT_ELECTRICITY_TAX),
             ): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=0, max=100, step=0.001, mode="box")
+            ),
+            vol.Required(
+                CONF_SPOT_COMMISSION,
+                default=defaults.get(CONF_SPOT_COMMISSION, DEFAULT_SPOT_COMMISSION),
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(min=0, max=20, step=0.01, mode="box")
             ),
         }
     )
@@ -343,6 +351,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             self._data[CONF_VAT_RATE] = _to_float(user_input["vat_rate_pct"]) / 100.0
             self._data[CONF_ELECTRICITY_TAX] = _to_float(user_input[CONF_ELECTRICITY_TAX])
+            self._data[CONF_SPOT_COMMISSION] = _to_float(user_input.get(CONF_SPOT_COMMISSION, 0.0))
             return await self.async_step_transfer_groups()
 
         # Pre-fill from region preset
@@ -350,6 +359,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
         defaults = {
             "vat_rate_pct": round(vat_rate * 100, 1),
             CONF_ELECTRICITY_TAX: elec_tax,
+            CONF_SPOT_COMMISSION: DEFAULT_SPOT_COMMISSION,
         }
 
         return self.async_show_form(
@@ -573,6 +583,9 @@ class KilowahtiOptionsFlow(OptionsFlow):
             self._options[CONF_DISPLAY_UNIT] = user_input[CONF_DISPLAY_UNIT]
             self._options[CONF_VAT_RATE] = _to_float(user_input["vat_rate_pct"]) / 100.0
             self._options[CONF_ELECTRICITY_TAX] = _to_float(user_input[CONF_ELECTRICITY_TAX])
+            self._options[CONF_SPOT_COMMISSION] = _to_float(
+                user_input.get(CONF_SPOT_COMMISSION, 0.0)
+            )
             return self.async_create_entry(data=self._options)
 
         cur = self._options
@@ -585,6 +598,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
         vat_defaults = {
             "vat_rate_pct": round(cur.get(CONF_VAT_RATE, DEFAULT_VAT_RATE) * 100, 1),
             CONF_ELECTRICITY_TAX: cur.get(CONF_ELECTRICITY_TAX, DEFAULT_ELECTRICITY_TAX),
+            CONF_SPOT_COMMISSION: cur.get(CONF_SPOT_COMMISSION, DEFAULT_SPOT_COMMISSION),
         }
         schema = vol.Schema(
             {**_user_schema(basic_defaults).schema, **_vat_schema(vat_defaults).schema}

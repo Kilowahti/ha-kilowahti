@@ -21,10 +21,12 @@
         "description": "Arvot on esitäytetty valitun alueen mukaan, voit muuttaa niitä tarvittaessa. Kaikki hinnat (siirtohinnat, kiinteät jaksot) syötetään ALV:llisina.",
         "data": {
           "vat_rate_pct": "ALV-prosentti (%)",
-          "electricity_tax": "Sähkövero (c/kWh)"
+          "electricity_tax": "Sähkövero (c/kWh)",
+          "spot_commission": "Marginaali (c/kWh)"
         },
         "data_description": {
-          "electricity_tax": "Sähkövero per kWh, lisätään spot/kiinteään hintaan."
+          "electricity_tax": "Sähkövero per kWh, lisätään spot/kiinteään hintaan.",
+          "spot_commission": "Myyjän per-kWh-marginaali spottihinnan päälle. Syötä ALV:llisena. Jätä nollaksi, jos ei sovelleta."
         }
       },
       "transfer_groups": {
@@ -134,7 +136,8 @@
           "price_resolution": "Hintaresoluutio",
           "display_unit": "Näyttöyksikkö",
           "vat_rate_pct": "ALV-prosentti (%)",
-          "electricity_tax": "Sähkövero (c/kWh)"
+          "electricity_tax": "Sähkövero (c/kWh)",
+          "spot_commission": "Marginaali (c/kWh)"
         }
       },
       "transfer_groups": {

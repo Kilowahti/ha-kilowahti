@@ -33,6 +33,7 @@ from .const import (
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
     CONF_SCORE_PROFILES,
+    CONF_SPOT_COMMISSION,
     CONF_TRANSFER_GROUPS,
     CONF_VAT_RATE,
     CONTROL_FACTOR_SINUSOIDAL,
@@ -48,6 +49,7 @@ from .const import (
     DEFAULT_MAX_RANK,
     DEFAULT_PRICE_RESOLUTION,
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
+    DEFAULT_SPOT_COMMISSION,
     DEFAULT_VAT_RATE,
     DOMAIN,
     SCORE_FORMULA_RAW,
@@ -118,6 +120,10 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     @property
     def _vat_rate(self) -> float:
         return self._opts.get(CONF_VAT_RATE, DEFAULT_VAT_RATE)
+
+    @property
+    def _spot_commission(self) -> float:
+        return self._opts.get(CONF_SPOT_COMMISSION, DEFAULT_SPOT_COMMISSION)
 
     @property
     def _electricity_tax(self) -> float:
@@ -434,8 +440,8 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     # ------------------------------------------------------------------
 
     def _spot_effective(self, slot: PriceSlot) -> float:
-        """Apply VAT to raw spot price. API always returns prices excl. VAT."""
-        return slot.price_no_tax * (1 + self._vat_rate)
+        """Apply VAT to raw spot price, then add commission (gross). API always returns prices excl. VAT."""
+        return slot.price_no_tax * (1 + self._vat_rate) + self._spot_commission
 
     def spot_price_now(self) -> float | None:
         slot = self.current_slot()

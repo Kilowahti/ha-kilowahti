@@ -21,10 +21,12 @@
         "description": "Pre-filled from your region. Adjust if needed. All prices (transfer tiers, fixed periods) are entered incl. VAT.",
         "data": {
           "vat_rate_pct": "VAT rate (%)",
-          "electricity_tax": "Electricity tax (c/kWh)"
+          "electricity_tax": "Electricity tax (c/kWh)",
+          "spot_commission": "Spot price commission (c/kWh)"
         },
         "data_description": {
-          "electricity_tax": "Flat per-kWh electricity tax added on top of spot/fixed price."
+          "electricity_tax": "Flat per-kWh electricity tax added on top of spot/fixed price.",
+          "spot_commission": "Retailer's per-kWh commission added on top of the spot price. Enter gross (VAT included). Leave at 0 if not applicable."
         }
       },
       "transfer_groups": {
@@ -134,7 +136,8 @@
           "price_resolution": "Price resolution",
           "display_unit": "Display unit",
           "vat_rate_pct": "VAT rate (%)",
-          "electricity_tax": "Electricity tax (c/kWh)"
+          "electricity_tax": "Electricity tax (c/kWh)",
+          "spot_commission": "Spot price commission (c/kWh)"
         }
       },
       "transfer_groups": {
