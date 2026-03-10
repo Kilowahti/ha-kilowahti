@@ -1,4 +1,7 @@
-# Kilowahti
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="custom_components/kilowahti/brands/dark_logo.png">
+  <img alt="Kilowahti" src="custom_components/kilowahti/brands/logo.png" width="400">
+</picture>
 
 [![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
 
