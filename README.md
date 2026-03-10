@@ -98,22 +98,11 @@ data:
 
 All price services accept an optional `formatted` boolean (default `true`). Set to `false` to get raw c/kWh values at full precision.
 
-## Optimization Score Algorithm
+## Optimization scores
 
-Scores are computed from consumption in each price-rank quartile:
+Kilowahti tracks how well your electricity consumption is shifted to cheap hours and computes a daily and monthly score (0–100) per configured meter group. A score of 100 means all consumption was in the cheapest slots; a score near 0 means consumption was concentrated in the most expensive ones.
 
-```
-Q = slots_per_day // 4  (24 for 15-min, 6 for 1-hour)
-raw = (Q1×3 + Q2×2 + Q3×1) / (Total×3) × 100
-score = clamp((raw − 30.0) / 53.3 × 100, 0, 100)
-```
-
-## Migration from spot_price.yaml
-
-1. Disable `packages/spot_price.yaml`
-2. Install Kilowahti via HACS → configure
-3. Swap entity IDs in automations: `sensor.shf_*` → `sensor.kilowahti_{name}_*`
-4. Remove `input_number.shf_*` and `input_datetime.shf_*` helpers
+See [Optimization scores](https://docs.kilowahti.fi/scores/) for formula details and setup instructions.
 
 ## Acknowledgments
 
