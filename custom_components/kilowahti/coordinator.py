@@ -92,6 +92,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         # Score state
         self._score_data: dict[str, dict[str, float]] = {}
         self._daily_history: list[dict] = []
+        self._month_scores: list[dict] = []
         self._last_meter_values: dict[str, float] = {}
         self._score_persist_unsub: Callable | None = None
 
@@ -210,6 +211,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         # Restore score accumulators
         self._score_data = self._storage.get_score_data()
         self._daily_history = self._storage.get_daily_history()
+        self._month_scores = self._storage.get_month_scores()
         self._last_meter_values = self._storage.get_last_meter_values()
 
         return None
@@ -731,11 +733,13 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             self._score_data,
             self._daily_history,
             self._last_meter_values,
+            self._month_scores,
         )
 
     async def _async_finalise_daily_scores(self) -> None:
         """At midnight: save today's scores to history, reset accumulators."""
-        yesterday = (dt_util.as_local(dt_util.utcnow()) - timedelta(days=1)).date()
+        now_local = self._now_local()
+        yesterday = (now_local - timedelta(days=1)).date()
         day_scores: dict[str, float] = {}
         for profile in self.score_profiles:
             bucket_data = self._score_data.get(profile.id, {})
@@ -745,6 +749,22 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
         # Keep only 90 days of history
         self._daily_history = self._daily_history[-90:]
+
+        # If yesterday was the last day of its month, finalise that month's score
+        if yesterday.month != now_local.month:
+            month_key = f"{yesterday.year}-{yesterday.month:02d}"
+            month_day_scores: dict[str, list[float]] = {}
+            for entry in self._daily_history:
+                if entry["date"].startswith(month_key):
+                    for pid, score in entry.get("scores", {}).items():
+                        month_day_scores.setdefault(pid, []).append(score)
+            if month_day_scores:
+                finalised: dict[str, float] = {
+                    pid: sum(scores) / len(scores) for pid, scores in month_day_scores.items()
+                }
+                self._month_scores.append({"month": month_key, "scores": finalised})
+                # Keep only last two completed months
+                self._month_scores = self._month_scores[-2:]
 
         # Reset accumulators
         self._score_data = {}
@@ -764,15 +784,24 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             return max(0.0, min(100.0, raw))
         return max(0.0, min(100.0, (raw - 30.0) / 53.3 * 100))
 
-    def get_today_score(self, profile_id: str) -> float:
-        """Return the in-progress today optimization score (0–100)."""
+    def get_daily_score(self, profile_id: str) -> float:
+        """Return the in-progress daily optimization score (0–100)."""
         bucket_data = self._score_data.get(profile_id, {})
         profile = next((p for p in self.score_profiles if p.id == profile_id), None)
         formula = profile.formula if profile else "default"
         return self._compute_score(bucket_data, formula)
 
+    def get_previous_daily_score(self, profile_id: str) -> float | None:
+        """Return yesterday's completed daily score, or None if unavailable."""
+        yesterday = (self._now_local() - timedelta(days=1)).date()
+        yesterday_str = str(yesterday)
+        for entry in reversed(self._daily_history):
+            if entry["date"] == yesterday_str:
+                return entry.get("scores", {}).get(profile_id)
+        return None
+
     def get_monthly_score(self, profile_id: str) -> float | None:
-        """Return rolling average of completed daily scores this month."""
+        """Return average of completed daily scores for the current calendar month."""
         now_local = self._now_local()
         month_key = f"{now_local.year}-{now_local.month:02d}"
 
@@ -784,3 +813,16 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         if not scores:
             return None
         return sum(scores) / len(scores)
+
+    def get_previous_monthly_score(self, profile_id: str) -> float | None:
+        """Return the finalised score for the previous calendar month, or None."""
+        now_local = self._now_local()
+        # Previous month key
+        if now_local.month == 1:
+            prev_key = f"{now_local.year - 1}-12"
+        else:
+            prev_key = f"{now_local.year}-{now_local.month - 1:02d}"
+        for entry in reversed(self._month_scores):
+            if entry["month"] == prev_key:
+                return entry.get("scores", {}).get(profile_id)
+        return None

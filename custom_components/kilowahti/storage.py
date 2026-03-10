@@ -102,23 +102,29 @@ class KilowahtiStorage:
     # ------------------------------------------------------------------
 
     def get_score_data(self) -> dict:
-        """Return the persisted today-score accumulator dict."""
+        """Return the persisted daily-score accumulator dict."""
         return dict(self._scores.get("today_accumulators", {}))
 
     def get_daily_history(self) -> list[dict]:
-        """Return list of completed-day score dicts for monthly score computation."""
+        """Return list of completed-day score dicts."""
         return list(self._scores.get("daily_history", []))
+
+    def get_month_scores(self) -> list[dict]:
+        """Return list of last two completed calendar-month scores."""
+        return list(self._scores.get("month_scores", []))
 
     async def async_save_score_data(
         self,
         today_accumulators: dict,
         daily_history: list[dict],
         last_meter_values: dict,
+        month_scores: list[dict],
     ) -> None:
         self._scores = {
             "today_accumulators": today_accumulators,
             "daily_history": daily_history,
             "last_meter_values": last_meter_values,
+            "month_scores": month_scores,
         }
         await self._store_scores.async_save(self._scores)
 

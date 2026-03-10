@@ -238,8 +238,8 @@ async def async_setup_entry(
 
     # Optimization score sensors (one pair per profile) + formula diagnostic
     for profile in coordinator.score_profiles:
-        entities.append(KilowahtiScoreSensor(coordinator, entry, profile, "today"))
-        entities.append(KilowahtiScoreSensor(coordinator, entry, profile, "month"))
+        entities.append(KilowahtiScoreSensor(coordinator, entry, profile, "daily"))
+        entities.append(KilowahtiScoreSensor(coordinator, entry, profile, "monthly"))
         entities.append(KilowahtiScoreFormulaSensor(coordinator, entry, profile))
 
     async_add_entities(entities)
@@ -379,7 +379,7 @@ class KilowahtiScoreSensor(CoordinatorEntity[KilowahtiCoordinator], SensorEntity
         coordinator: KilowahtiCoordinator,
         entry: ConfigEntry,
         profile: ScoreProfile,
-        period: str,  # "today" or "month"
+        period: str,  # "daily" or "monthly"
     ) -> None:
         super().__init__(coordinator)
         self._profile = profile
@@ -391,14 +391,22 @@ class KilowahtiScoreSensor(CoordinatorEntity[KilowahtiCoordinator], SensorEntity
 
     @property
     def native_value(self) -> float | None:
-        if self._period == "today":
-            score = self.coordinator.get_today_score(self._profile.id)
+        if self._period == "daily":
+            score = self.coordinator.get_daily_score(self._profile.id)
         else:
             score = self.coordinator.get_monthly_score(self._profile.id)
 
         if score is None:
             return None
         return round(score, 1)
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        if self._period == "daily":
+            prev = self.coordinator.get_previous_daily_score(self._profile.id)
+        else:
+            prev = self.coordinator.get_previous_monthly_score(self._profile.id)
+        return {"previous": round(prev, 1) if prev is not None else None}
 
 
 # ---------------------------------------------------------------------------
