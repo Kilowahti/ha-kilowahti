@@ -44,6 +44,7 @@ from .const import (
     SENSOR_TOMORROW_MAX,
     SENSOR_TOMORROW_MIN,
     SENSOR_TOTAL_PRICE,
+    SENSOR_TOTAL_PRICE_RANK,
     SENSOR_TRANSFER_PRICE,
     UNIT_EUROKWH,
 )
@@ -93,8 +94,6 @@ def _price_sensor(key: str, value_fn: Callable) -> KilowahtiSensorEntityDescript
     )
 
 
-_TRANSFER_SENSOR_KEYS = frozenset({SENSOR_TRANSFER_PRICE, SENSOR_CONTROL_FACTOR_TRANSFER})
-
 SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
     _price_sensor(SENSOR_SPOT_PRICE, lambda c: c.format_price(c.spot_price_now())),
     _price_sensor(SENSOR_TRANSFER_PRICE, lambda c: c.format_price(c.transfer_price_now())),
@@ -111,6 +110,13 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         translation_key=SENSOR_PRICE_RANK,
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda c: c.current_rank(),
+        native_unit_of_measurement=None,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_TOTAL_PRICE_RANK,
+        translation_key=SENSOR_TOTAL_PRICE_RANK,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda c: c.total_price_rank_now(),
         native_unit_of_measurement=None,
     ),
     KilowahtiSensorEntityDescription(
@@ -212,12 +218,9 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     coordinator: KilowahtiCoordinator = hass.data[DOMAIN][entry.entry_id]
-    has_transfer = bool(coordinator._transfer_groups)
     entities: list[SensorEntity] = []
 
     for description in SENSOR_DESCRIPTIONS:
-        if description.key in _TRANSFER_SENSOR_KEYS and not has_transfer:
-            continue
         if description.key == SENSOR_SPOT_PRICE:
             entities.append(KilowahtiSpotPriceSensor(coordinator, entry, description))
         elif description.key == SENSOR_CONTROL_FACTOR_TRANSFER:

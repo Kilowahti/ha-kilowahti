@@ -416,6 +416,26 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         slot = self.current_slot()
         return slot.rank if slot else None
 
+    def total_price_rank_now(self) -> int | None:
+        """Return rank of the current slot's total price (spot + transfer) among today's slots.
+
+        1 = cheapest. Tied slots share the lowest rank (competition ranking).
+        Returns None if today's slots are unavailable or the current slot is not among them
+        (can happen during the brief midnight rollover window).
+        """
+        current = self.current_slot()
+        if current is None or not self._today_slots:
+            return None
+
+        def _total(s: PriceSlot) -> float:
+            return round(self._spot_effective(s) + (self.transfer_price_for_slot(s) or 0.0), 5)
+
+        totals = {s.dt_utc: _total(s) for s in self._today_slots}
+        current_total = totals.get(current.dt_utc)
+        if current_total is None:
+            return None
+        return sum(1 for p in totals.values() if p < current_total) + 1
+
     def current_quartile(self) -> int | None:
         rank = self.current_rank()
         if rank is None:
@@ -569,18 +589,18 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
     def tomorrow_avg(self) -> float | None:
         if not self._tomorrow_slots:
-            return 0.0
+            return None
         prices = self._effective_prices_for_slots(self._tomorrow_slots)
         return sum(prices) / len(prices)
 
     def tomorrow_min(self) -> float | None:
         if not self._tomorrow_slots:
-            return 0.0
+            return None
         return min(self._effective_prices_for_slots(self._tomorrow_slots))
 
     def tomorrow_max(self) -> float | None:
         if not self._tomorrow_slots:
-            return 0.0
+            return None
         return max(self._effective_prices_for_slots(self._tomorrow_slots))
 
     def next_hours_avg(self) -> float | None:

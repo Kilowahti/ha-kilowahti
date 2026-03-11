@@ -271,6 +271,9 @@
       "price_rank": {
         "name": "Rank"
       },
+      "total_price_rank": {
+        "name": "Total price rank"
+      },
       "today_avg": {
         "name": "Today average"
       },

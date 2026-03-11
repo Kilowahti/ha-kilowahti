@@ -271,6 +271,9 @@
       "price_rank": {
         "name": "Sijaluku"
       },
+      "total_price_rank": {
+        "name": "Kokonaishinnan sijaluku"
+      },
       "today_avg": {
         "name": "Tänään keskiarvo"
       },
