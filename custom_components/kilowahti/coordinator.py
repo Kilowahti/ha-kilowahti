@@ -85,6 +85,11 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         self._storage = storage
         self._source = SpotHintaSource()
 
+        # Threshold instance vars — updated by number entities and synced in the options listener
+        self._max_price_value: float = entry.options.get(CONF_MAX_PRICE, DEFAULT_MAX_PRICE)
+        self._max_rank_value: int = entry.options.get(CONF_MAX_RANK, DEFAULT_MAX_RANK)
+        self._last_known_options: dict = dict(entry.options)
+
         # Price state
         self._today_slots: list[PriceSlot] = []
         self._tomorrow_slots: list[PriceSlot] | None = None
@@ -135,11 +140,11 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
     @property
     def _max_price(self) -> float:
-        return self._opts.get(CONF_MAX_PRICE, DEFAULT_MAX_PRICE)
+        return self._max_price_value
 
     @property
     def _max_rank(self) -> int:
-        return self._opts.get(CONF_MAX_RANK, DEFAULT_MAX_RANK)
+        return self._max_rank_value
 
     @property
     def _price_threshold_includes_transfer(self) -> bool:
@@ -181,6 +186,24 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             if g.active:
                 return g
         return None
+
+    # ------------------------------------------------------------------
+    # Threshold setters — called by number entities
+    # ------------------------------------------------------------------
+
+    def set_price_threshold(self, value: float) -> None:
+        """Update price threshold in memory and persist to options."""
+        self._max_price_value = value
+        self._last_known_options = {**self._entry.options, CONF_MAX_PRICE: value}
+        self.hass.config_entries.async_update_entry(self._entry, options=self._last_known_options)
+        self.async_update_listeners()
+
+    def set_rank_threshold(self, value: int) -> None:
+        """Update rank threshold in memory and persist to options."""
+        self._max_rank_value = value
+        self._last_known_options = {**self._entry.options, CONF_MAX_RANK: value}
+        self.hass.config_entries.async_update_entry(self._entry, options=self._last_known_options)
+        self.async_update_listeners()
 
     # ------------------------------------------------------------------
     # DataUpdateCoordinator overrides

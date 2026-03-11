@@ -129,6 +129,9 @@ SENSOR_SETTING_ACTIVE_TRANSFER_GROUP = "setting_active_transfer_group"
 SENSOR_SETTING_ACTIVE_TRANSFER_TIER = "setting_active_transfer_tier"
 SENSOR_SETTING_ACTIVE_FIXED_PERIOD = "setting_active_fixed_period"
 
+NUMBER_PRICE_THRESHOLD = "price_threshold"
+NUMBER_RANK_THRESHOLD = "rank_threshold"
+
 BINARY_SENSOR_PRICE_ACCEPTABLE = "price_acceptable"
 BINARY_SENSOR_RANK_ACCEPTABLE = "rank_acceptable"
 BINARY_SENSOR_PRICE_OR_RANK_ACCEPTABLE = "price_or_rank_acceptable"

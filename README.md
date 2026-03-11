@@ -17,7 +17,7 @@
 - Transfer price tier groups (switch between multiple contracts without re-entering data)
 - Optimization scores (daily and monthly) per configurable meter group
 - Price rank, rank quartile, control factors, and threshold binary sensors
-- Service calls: `get_active_prices`, `get_prices`, `cheapest_hours`, `average_price`, `add_fixed_period`, `remove_fixed_period`, `list_fixed_periods`
+- Actions: `get_active_prices`, `get_prices`, `cheapest_hours`, `average_price`, `add_fixed_period`, `remove_fixed_period`, `list_fixed_periods`
 - ENTSO-E and Kilowahti proxy support planned for V2
 
 ## Supported Regions

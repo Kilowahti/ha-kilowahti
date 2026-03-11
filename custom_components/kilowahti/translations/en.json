@@ -332,6 +332,14 @@
         "name": "Active fixed period"
       }
     },
+    "number": {
+      "price_threshold": {
+        "name": "Price threshold"
+      },
+      "rank_threshold": {
+        "name": "Rank threshold"
+      }
+    },
     "binary_sensor": {
       "price_acceptable": {
         "name": "Price acceptable"

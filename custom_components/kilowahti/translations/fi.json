@@ -332,6 +332,14 @@
         "name": "Aktiivinen kiinteä jakso"
       }
     },
+    "number": {
+      "price_threshold": {
+        "name": "Hintaraja"
+      },
+      "rank_threshold": {
+        "name": "Sijalukuraja"
+      }
+    },
     "binary_sensor": {
       "price_acceptable": {
         "name": "Hinta on hyväksyttävä"
