@@ -11,6 +11,7 @@ import voluptuous as vol
 from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse
 from homeassistant.helpers import config_validation as cv
 from homeassistant.util import dt as dt_util
+from kilowahti import calc
 
 from .const import DOMAIN, UNIT_EUROKWH
 from .coordinator import KilowahtiCoordinator
@@ -171,23 +172,13 @@ async def _handle_cheapest_hours(call: ServiceCall) -> ServiceResponse:
     resolution_minutes = coordinator._resolution.value
     slots_needed = max(1, round(hours * 60 / resolution_minutes))
 
-    if slots_needed > len(slots):
+    result = calc.cheapest_window(
+        slots, slots_needed, coordinator._vat_rate, coordinator._spot_commission
+    )
+    if result is None:
         return {"error": f"Requested {hours}h but only {len(slots)} slots available in range"}
 
-    # Sliding window: find the window of `slots_needed` consecutive slots with lowest avg
-    best_start_idx = 0
-    best_total = sum(coordinator._spot_effective(s) for s in slots[:slots_needed])
-    current_total = best_total
-
-    for i in range(1, len(slots) - slots_needed + 1):
-        current_total -= coordinator._spot_effective(slots[i - 1])
-        current_total += coordinator._spot_effective(slots[i + slots_needed - 1])
-        if current_total < best_total:
-            best_total = current_total
-            best_start_idx = i
-
-    best_window = slots[best_start_idx : best_start_idx + slots_needed]
-    avg_price = best_total / slots_needed
+    best_window, avg_price = result
 
     return {
         "start": best_window[0].dt_utc.isoformat(),

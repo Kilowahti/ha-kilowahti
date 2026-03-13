@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import logging
-import math
 from collections.abc import Callable
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, timedelta
 from typing import Any
 
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.event import (
     async_call_later,
     async_track_state_change_event,
@@ -16,6 +16,8 @@ from homeassistant.helpers.event import (
 )
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.util import dt as dt_util
+from kilowahti import calc
+from kilowahti.sources.spot_hinta import SpotHintaRateLimitError, SpotHintaSource
 
 from .const import (
     CONF_CONTROL_FACTOR_FUNCTION,
@@ -36,7 +38,6 @@ from .const import (
     CONF_SPOT_COMMISSION,
     CONF_TRANSFER_GROUPS,
     CONF_VAT_RATE,
-    CONTROL_FACTOR_SINUSOIDAL,
     DEFAULT_CONTROL_FACTOR_FUNCTION,
     DEFAULT_CONTROL_FACTOR_SCALING,
     DEFAULT_EAGER_END_HOUR,
@@ -52,12 +53,10 @@ from .const import (
     DEFAULT_SPOT_COMMISSION,
     DEFAULT_VAT_RATE,
     DOMAIN,
-    SCORE_FORMULA_RAW,
     UNIT_EUROKWH,
     UNIT_SNTPERKWH,
 )
 from .models import FixedPeriod, PriceResolution, PriceSlot, ScoreProfile, TransferGroup
-from .price_source.spot_hinta import SpotHintaRateLimitError, SpotHintaSource
 from .storage import KilowahtiStorage
 
 _LOGGER = logging.getLogger(__name__)
@@ -226,7 +225,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             # Cache stale or missing — fetch from API
             try:
                 self._today_slots = await self._source.fetch_today(
-                    self.hass, self._region, self._resolution
+                    async_get_clientsession(self.hass), self._region, self._resolution
                 )
             except Exception as err:
                 raise UpdateFailed(f"Failed to fetch today's prices: {err}") from err
@@ -347,7 +346,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             # No tomorrow cache — fetch today fresh
             try:
                 self._today_slots = await self._source.fetch_today(
-                    self.hass, self._region, self._resolution
+                    async_get_clientsession(self.hass), self._region, self._resolution
                 )
                 self._today_date = today
                 _LOGGER.info(
@@ -379,7 +378,9 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             return
 
         try:
-            slots = await self._source.fetch_tomorrow(self.hass, self._region, self._resolution)
+            slots = await self._source.fetch_tomorrow(
+                async_get_clientsession(self.hass), self._region, self._resolution
+            )
         except SpotHintaRateLimitError as err:
             _LOGGER.warning("Eager fetch: rate-limited; retrying in %ds", err.retry_after)
             self._schedule_eager_poll(err.retry_after)
@@ -443,27 +444,25 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         """Return rank of the current slot's total price (spot + transfer) among today's slots.
 
         1 = cheapest. Tied slots share the lowest rank (competition ranking).
-        Returns None if today's slots are unavailable or the current slot is not among them
-        (can happen during the brief midnight rollover window).
+        Returns None if today's slots are unavailable or the current slot is not among them.
         """
         current = self.current_slot()
-        if current is None or not self._today_slots:
+        if current is None:
             return None
-
-        def _total(s: PriceSlot) -> float:
-            return round(self._spot_effective(s) + (self.transfer_price_for_slot(s) or 0.0), 5)
-
-        totals = {s.dt_utc: _total(s) for s in self._today_slots}
-        current_total = totals.get(current.dt_utc)
-        if current_total is None:
-            return None
-        return sum(1 for p in totals.values() if p < current_total) + 1
+        return calc.total_price_rank(
+            current,
+            self._today_slots,
+            self._vat_rate,
+            self._spot_commission,
+            self._active_transfer_group,
+            dt_util.as_local,
+        )
 
     def current_quartile(self) -> int | None:
         rank = self.current_rank()
         if rank is None:
             return None
-        return int(self._rank_to_bucket(rank)[1])
+        return calc.price_quartile(rank, self._resolution.slots_per_day)
 
     def today_slots(self) -> list[PriceSlot]:
         return list(self._today_slots)
@@ -473,10 +472,8 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
     def slots_in_range(self, start: datetime, end: datetime) -> list[PriceSlot]:
         """Return all slots whose start time falls within [start, end)."""
-        start_utc = start.astimezone(timezone.utc)
-        end_utc = end.astimezone(timezone.utc)
         all_slots = self._today_slots + (self._tomorrow_slots or [])
-        return [s for s in all_slots if start_utc <= s.dt_utc < end_utc]
+        return calc.slots_in_range(all_slots, start, end)
 
     # ------------------------------------------------------------------
     # Price calculations
@@ -484,7 +481,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
     def _spot_effective(self, slot: PriceSlot) -> float:
         """Apply VAT to raw spot price, then add commission (gross). API always returns prices excl. VAT."""
-        return slot.price_no_tax * (1 + self._vat_rate) + self._spot_commission
+        return calc.spot_effective(slot, self._vat_rate, self._spot_commission)
 
     def spot_price_now(self) -> float | None:
         slot = self.current_slot()
@@ -493,10 +490,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return self._spot_effective(slot)
 
     def fixed_period_for_date(self, d: date) -> FixedPeriod | None:
-        for p in self._storage.periods:
-            if p.is_active_on(d):
-                return p
-        return None
+        return calc.fixed_period_for_date(self._storage.periods, d)
 
     def fixed_period_active_now(self) -> FixedPeriod | None:
         return self.fixed_period_for_date(self._now_local().date())
@@ -530,26 +524,10 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         group = self._active_transfer_group
         if group is None:
             return None
-        now = self._now_local()
-        current = group.price_at(now.month, now.weekday(), now.hour)
-        if current is None:
-            return None
-        prices: set[float] = set()
-        for hour in range(24):
-            p = group.price_at(now.month, now.weekday(), hour)
-            if p is not None:
-                prices.add(p)
-        if not prices:
-            return None
-        sorted_prices = sorted(prices)
-        return sorted_prices.index(current) + 1, len(sorted_prices)
+        return calc.transfer_rank_info(group, self._now_local())
 
     def transfer_price_for_slot(self, slot: PriceSlot) -> float | None:
-        group = self._active_transfer_group
-        if group is None:
-            return None
-        slot_local = dt_util.as_local(slot.dt_utc)
-        return group.price_at(slot_local.month, slot_local.weekday(), slot_local.hour)
+        return calc.transfer_price_for_slot(slot, self._active_transfer_group, dt_util.as_local)
 
     def transfer_price_now(self) -> float | None:
         group = self._active_transfer_group
@@ -592,7 +570,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     # ------------------------------------------------------------------
 
     def _effective_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
-        return [self._spot_effective(s) for s in slots]
+        return calc.effective_prices(slots, self._vat_rate, self._spot_commission)
 
     def today_avg(self) -> float | None:
         if not self._today_slots:
@@ -643,27 +621,18 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         rank = self.current_rank()
         if rank is None:
             return None
-        max_rank = self._resolution.slots_per_day
-        if max_rank <= 1:
-            return 0.5
-
-        t = (rank - 1) / (max_rank - 1)  # 0 = cheapest, 1 = most expensive
-
-        fn = self._control_factor_function
-        if fn == CONTROL_FACTOR_SINUSOIDAL:
-            cf = (1.0 + math.cos(math.pi * t)) / 2.0
-        else:  # linear
-            cf = 1.0 - t
-
-        scaling = self._control_factor_scaling
-        cf = cf**scaling
-        return max(0.0, min(1.0, cf))
+        return calc.control_factor(
+            rank,
+            self._resolution.slots_per_day,
+            self._control_factor_function,
+            self._control_factor_scaling,
+        )
 
     def control_factor_bipolar(self) -> float | None:
         cf = self.control_factor()
         if cf is None:
             return None
-        return 2.0 * cf - 1.0
+        return calc.control_factor_bipolar(cf)
 
     # ------------------------------------------------------------------
     # Price arrays (for optional attribute exposure)
@@ -747,7 +716,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         if rank is None:
             return
 
-        bucket = self._rank_to_bucket(rank)
+        bucket = calc.rank_to_bucket(rank, self._resolution.slots_per_day)
         for profile in self.score_profiles:
             if entity_id in profile.meters:
                 self._score_data.setdefault(profile.id, {})
@@ -757,16 +726,6 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
         # Debounced persist
         self._schedule_score_persist()
-
-    def _rank_to_bucket(self, rank: int) -> str:
-        Q = self._resolution.slots_per_day // 4
-        if rank <= Q:
-            return "q1"
-        if rank <= 2 * Q:
-            return "q2"
-        if rank <= 3 * Q:
-            return "q3"
-        return "q4"
 
     def _schedule_score_persist(self) -> None:
         if self._score_persist_unsub is not None:
@@ -797,7 +756,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         day_scores: dict[str, float] = {}
         for profile in self.score_profiles:
             bucket_data = self._score_data.get(profile.id, {})
-            day_scores[profile.id] = self._compute_score(bucket_data, profile.formula)
+            day_scores[profile.id] = calc.compute_score(bucket_data, profile.formula)
 
         self._daily_history.append({"date": str(yesterday), "scores": day_scores})
 
@@ -825,25 +784,12 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
         await self._async_persist_scores()
 
-    @staticmethod
-    def _compute_score(bucket_data: dict[str, float], formula: str = "default") -> float:
-        q1 = bucket_data.get("q1", 0.0)
-        q2 = bucket_data.get("q2", 0.0)
-        q3 = bucket_data.get("q3", 0.0)
-        total = q1 + q2 + bucket_data.get("q4", 0.0) + q3
-        if total <= 0:
-            return 0.0
-        raw = (q1 * 3 + q2 * 2 + q3) / (total * 3) * 100
-        if formula == SCORE_FORMULA_RAW:
-            return max(0.0, min(100.0, raw))
-        return max(0.0, min(100.0, (raw - 30.0) / 53.3 * 100))
-
     def get_daily_score(self, profile_id: str) -> float:
         """Return the in-progress daily optimization score (0–100)."""
         bucket_data = self._score_data.get(profile_id, {})
         profile = next((p for p in self.score_profiles if p.id == profile_id), None)
         formula = profile.formula if profile else "default"
-        return self._compute_score(bucket_data, formula)
+        return calc.compute_score(bucket_data, formula)
 
     def get_previous_daily_score(self, profile_id: str) -> float | None:
         """Return yesterday's completed daily score, or None if unavailable."""
