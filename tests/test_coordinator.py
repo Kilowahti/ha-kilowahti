@@ -6,15 +6,19 @@ from datetime import datetime, timezone
 from unittest.mock import patch
 
 from aioresponses import aioresponses
+from kilowahti import calc
 from kilowahti.models import PriceSlot
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.kilowahti.const import (
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
     CONF_REGION,
+    CONF_SCORE_PROFILES,
     CONF_VAT_RATE,
     DOMAIN,
 )
+from homeassistant.config_entries import ConfigEntryState
 
 from .conftest import (
     FROZEN_DATE,
@@ -67,6 +71,25 @@ async def test_startup_uses_valid_cache(hass, mock_config_entry, mock_utcnow):
 
     coord = hass.data[DOMAIN][mock_config_entry.entry_id]
     assert len(coord.today_slots()) == 3
+
+
+# ---------------------------------------------------------------------------
+# API failure on startup
+# ---------------------------------------------------------------------------
+
+
+async def test_startup_fails_gracefully_on_api_error(hass, mock_config_entry, mock_utcnow):
+    """When the spot-hinta.fi API returns 500, setup retries rather than crashing."""
+    await hass.config.async_set_time_zone("UTC")
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, status=500, repeat=True)
+        mock_config_entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(mock_config_entry.entry_id)
+        await hass.async_block_till_done()
+
+    # ConfigEntryNotReady → SETUP_RETRY (will be retried by HA automatically)
+    assert mock_config_entry.state == ConfigEntryState.SETUP_RETRY
+    assert mock_config_entry.entry_id not in hass.data.get(DOMAIN, {})
 
 
 # ---------------------------------------------------------------------------
@@ -230,3 +253,60 @@ async def test_total_price_rank_now_returns_1_for_cheapest(hass, setup_integrati
     rank = coord.total_price_rank_now()
 
     assert rank == 1
+
+
+# ---------------------------------------------------------------------------
+# Score accumulation
+# ---------------------------------------------------------------------------
+
+
+async def test_score_accumulation_on_meter_change(hass, options, mock_utcnow):
+    """Meter consumption (kWh delta) is accumulated into the correct price bucket.
+
+    FROZEN_UTC = 00:30 UTC → current slot is at 00:00 UTC with rank 1.
+    rank_to_bucket(1, 24) → "q1" (cheapest quartile).
+    Consuming 10 kWh in q1 and then computing score should yield 100 (all cheap).
+    """
+    from types import SimpleNamespace
+
+    await hass.config.async_set_time_zone("UTC")
+
+    # Options with a score profile tracking sensor.energy_meter.
+    opts = dict(options)
+    opts[CONF_SCORE_PROFILES] = [
+        {
+            "id": "total",
+            "label": "Total",
+            "meters": ["sensor.energy_meter"],
+            "formula": "default",
+        }
+    ]
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=opts)
+
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    coord = hass.data[DOMAIN][entry.entry_id]
+
+    # Simulate a meter reporting 10 kWh consumed.
+    mock_event = SimpleNamespace(
+        data={
+            "entity_id": "sensor.energy_meter",
+            "old_state": SimpleNamespace(state="90.0"),
+            "new_state": SimpleNamespace(state="100.0"),
+        }
+    )
+    coord._on_meter_state_change(mock_event)
+
+    # Verify bucket accumulation: rank 1 of 24 slots → q1.
+    expected_bucket = calc.rank_to_bucket(1, 24)
+    assert coord._score_data["total"][expected_bucket] == 10.0
+
+    # Clean up the debounce timer to avoid test teardown warnings.
+    if coord._score_persist_unsub is not None:
+        coord._score_persist_unsub()
+        coord._score_persist_unsub = None
