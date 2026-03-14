@@ -112,7 +112,7 @@
         "data_description": {
           "expose_price_arrays": "Writes today_prices and tomorrow_prices arrays to the spot_price sensor attribute. Useful for dashboard graphs but adds DB load.",
           "high_precision": "When on, price sensors display more decimals. Attributes and calculations always use full precision.",
-          "show_rolling_averages": "Adds sensors for average price over the next 30, 60, and 120 minutes. Only useful with 15-min price resolution.",
+          "show_rolling_averages": "Adds sensors for average price over the next 30, 60, and 120 minutes.",
           "generation_enabled": "Enables export price, battery, and arbitrage sensors and services. Configure generation settings in the Generation & export settings menu."
         }
       }
@@ -228,7 +228,7 @@
           "generation_enabled": "Enable generation & export features"
         },
         "data_description": {
-          "show_rolling_averages": "Adds sensors for average price over the next 30, 60, and 120 minutes. Only useful with 15-min price resolution.",
+          "show_rolling_averages": "Adds sensors for average price over the next 30, 60, and 120 minutes.",
           "generation_enabled": "Enables export price, battery, and arbitrage sensors and services. Configure generation settings in the Generation & export settings menu."
         }
       },
@@ -436,14 +436,14 @@
       "self_consumption_value": {
         "name": "Self-consumption value"
       },
-      "current_30min_avg": {
-        "name": "Current 30 min average"
+      "avg_price_30min": {
+        "name": "Average price 30 min"
       },
-      "current_60min_avg": {
-        "name": "Current 60 min average"
+      "avg_price_60min": {
+        "name": "Average price 60 min"
       },
-      "current_120min_avg": {
-        "name": "Current 120 min average"
+      "avg_price_120min": {
+        "name": "Average price 120 min"
       },
       "next_solar_window_avg": {
         "name": "Next solar window average"

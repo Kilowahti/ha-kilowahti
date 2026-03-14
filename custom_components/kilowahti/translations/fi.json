@@ -112,7 +112,7 @@
         "data_description": {
           "expose_price_arrays": "Kirjoittaa today_prices- ja tomorrow_prices-taulukot spot_price-anturin attribuutteihin, jotka puolestaan tallentuvat tietokantaan. Helpottaa dashboard-graafien tekemistä, mutta ei ole pakollinen niiden näyttämiseksi ja kuormittaa turhaan tietokantaa.",
           "high_precision": "Kun päällä, hinta-anturit näyttävät enemmän desimaaleja. Attribuutit ja laskelmat käyttävät aina täyttä tarkkuutta.",
-          "show_rolling_averages": "Lisää anturit seuraavan 30, 60 ja 120 minuutin keskihinnoille. Hyödyllinen vain 15 min hintaresoluutiolla.",
+          "show_rolling_averages": "Lisää anturit seuraavan 30, 60 ja 120 minuutin keskihinnoille.",
           "generation_enabled": "Ottaa käyttöön myyntihinnan, akun ja arbitraasianturit sekä palvelut. Määritä tuotantoasetukset Tuotanto ja myynti -valikosta."
         }
       }
@@ -228,7 +228,7 @@
           "generation_enabled": "Ota tuotanto- ja myyntiominaisuudet käyttöön"
         },
         "data_description": {
-          "show_rolling_averages": "Lisää anturit seuraavan 30, 60 ja 120 minuutin keskihinnoille. Hyödyllinen vain 15 min hintaresoluutiolla.",
+          "show_rolling_averages": "Lisää anturit seuraavan 30, 60 ja 120 minuutin keskihinnoille.",
           "generation_enabled": "Ottaa käyttöön myyntihinnan, akun ja arbitraasianturit sekä palvelut. Määritä tuotantoasetukset Tuotanto ja myynti -valikosta."
         }
       },
@@ -436,14 +436,14 @@
       "self_consumption_value": {
         "name": "Omakulutuksen arvo"
       },
-      "current_30min_avg": {
-        "name": "Nykyinen 30 min keskiarvo"
+      "avg_price_30min": {
+        "name": "Keskihinta 30 min"
       },
-      "current_60min_avg": {
-        "name": "Nykyinen 60 min keskiarvo"
+      "avg_price_60min": {
+        "name": "Keskihinta 60 min"
       },
-      "current_120min_avg": {
-        "name": "Nykyinen 120 min keskiarvo"
+      "avg_price_120min": {
+        "name": "Keskihinta 120 min"
       },
       "next_solar_window_avg": {
         "name": "Seuraavan aurinkoikkunan keskiarvo"
