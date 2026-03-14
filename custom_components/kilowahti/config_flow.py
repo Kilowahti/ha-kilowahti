@@ -480,7 +480,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
             group_options.append(
                 {
                     "value": f"manage_{i}",
-                    "label": f"⚙ Manage: {g['label']}{active_label} ({tier_count} tiers)",
+                    "label": f"⚙ Manage: {g['label']} ({tier_count} tiers){active_label}",
                 }
             )
         group_options.append({"value": "add_group", "label": "➕ Add group"})
@@ -735,7 +735,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
             group_options.append(
                 {
                     "value": f"manage_{i}",
-                    "label": f"⚙ Manage: {g['label']}{active_label} ({tier_count} tiers)",
+                    "label": f"⚙ Manage: {g['label']} ({tier_count} tiers){active_label}",
                 }
             )
         group_options.append({"value": "add_group", "label": "➕ Add group"})
