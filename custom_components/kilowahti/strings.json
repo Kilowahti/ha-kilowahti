@@ -39,7 +39,21 @@
       "add_transfer_group": {
         "title": "Add transfer price group",
         "data": {
-          "label": "Group name"
+          "label": "Group name",
+          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Edit group settings",
+        "data": {
+          "label": "Group name",
+          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
         }
       },
       "transfer_group_detail": {
@@ -150,7 +164,21 @@
       "add_transfer_group": {
         "title": "Add transfer price group",
         "data": {
-          "label": "Group name"
+          "label": "Group name",
+          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Edit group settings",
+        "data": {
+          "label": "Group name",
+          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
         }
       },
       "transfer_group_detail": {
@@ -235,7 +263,7 @@
       },
       "generation_settings": {
         "title": "Generation & export settings",
-        "description": "Configure export pricing, battery, and fixed cost settings. Set battery capacity to 0 to disable battery sensors.",
+        "description": "Configure export pricing and battery settings. Set battery capacity to 0 to disable battery sensors.",
         "data": {
           "export_pricing_mode": "Export pricing mode",
           "export_commission": "Export commission (c/kWh deducted from spot)",
@@ -244,8 +272,7 @@
           "solar_window_start": "Solar window start hour",
           "solar_window_end": "Solar window end hour",
           "battery_capacity_kwh": "Battery capacity (kWh, 0 = disabled)",
-          "battery_charge_power_kw": "Battery charge power (kW)",
-          "monthly_fixed_cost": "Monthly fixed cost — grid connection + contract base fee (€/month)"
+          "battery_charge_power_kw": "Battery charge power (kW)"
         },
         "data_description": {
           "export_commission": "Spot-linked mode only. Seller's margin deducted from the spot API price (excl. VAT). Small producers typically don't collect VAT on exports.",

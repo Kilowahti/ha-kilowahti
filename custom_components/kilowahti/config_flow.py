@@ -328,6 +328,15 @@ def _generation_settings_schema(defaults: dict) -> vol.Schema:
             ): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=0, max=99, step=0.1, mode="box")
             ),
+        }
+    )
+
+
+def _group_settings_schema(defaults: dict | None = None) -> vol.Schema:
+    defaults = defaults or {}
+    return vol.Schema(
+        {
+            vol.Required("label", default=defaults.get("label", "")): selector.TextSelector(),
             vol.Required(
                 CONF_MONTHLY_FIXED_COST,
                 default=defaults.get(CONF_MONTHLY_FIXED_COST, DEFAULT_MONTHLY_FIXED_COST),
@@ -339,11 +348,7 @@ def _generation_settings_schema(defaults: dict) -> vol.Schema:
 
 
 def _add_group_schema() -> vol.Schema:
-    return vol.Schema(
-        {
-            vol.Required("label"): selector.TextSelector(),
-        }
-    )
+    return _group_settings_schema()
 
 
 def _add_tier_schema(defaults: dict | None = None) -> vol.Schema:
@@ -499,6 +504,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
                 "label": user_input["label"],
                 "active": len(self._groups) == 0,  # first group is active by default
                 "tiers": [],
+                CONF_MONTHLY_FIXED_COST: _to_float(user_input[CONF_MONTHLY_FIXED_COST]),
             }
             self._groups.append(new_group)
             self._current_group_idx = len(self._groups) - 1
@@ -513,6 +519,8 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
                 return await self.async_step_transfer_groups()
             if action == "add_tier":
                 return await self.async_step_add_transfer_tier()
+            if action == "edit_group_settings":
+                return await self.async_step_edit_group_settings()
             if action == "set_active":
                 for i, g in enumerate(self._groups):
                     g["active"] = i == self._current_group_idx
@@ -531,6 +539,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
         group = self._groups[self._current_group_idx]
         action_options: list[dict] = [
             {"value": "add_tier", "label": "➕ Add tier"},
+            {"value": "edit_group_settings", "label": "✎ Edit group settings"},
         ]
         if not group.get("active"):
             action_options.append({"value": "set_active", "label": "★ Set as active group"})
@@ -554,6 +563,18 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
                 "group_label": group["label"],
                 "tier_count": str(len(group.get("tiers", []))),
             },
+        )
+
+    async def async_step_edit_group_settings(self, user_input: dict | None = None):
+        group = self._groups[self._current_group_idx]
+        if user_input is not None:
+            group["label"] = user_input["label"]
+            group[CONF_MONTHLY_FIXED_COST] = _to_float(user_input[CONF_MONTHLY_FIXED_COST])
+            return await self.async_step_transfer_group_detail()
+
+        return self.async_show_form(
+            step_id="edit_group_settings",
+            data_schema=_group_settings_schema(group),
         )
 
     async def async_step_add_transfer_tier(self, user_input: dict | None = None):
@@ -738,6 +759,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
                 "label": user_input["label"],
                 "active": len(self._groups) == 0,
                 "tiers": [],
+                CONF_MONTHLY_FIXED_COST: _to_float(user_input[CONF_MONTHLY_FIXED_COST]),
             }
             self._groups.append(new_group)
             self._current_group_idx = len(self._groups) - 1
@@ -752,6 +774,8 @@ class KilowahtiOptionsFlow(OptionsFlow):
                 return await self.async_step_transfer_groups()
             if action == "add_tier":
                 return await self.async_step_add_transfer_tier()
+            if action == "edit_group_settings":
+                return await self.async_step_edit_group_settings()
             if action == "set_active":
                 for i, g in enumerate(self._groups):
                     g["active"] = i == self._current_group_idx
@@ -767,7 +791,10 @@ class KilowahtiOptionsFlow(OptionsFlow):
                 return await self.async_step_transfer_group_detail()
 
         group = self._groups[self._current_group_idx]
-        action_options: list[dict] = [{"value": "add_tier", "label": "➕ Add tier"}]
+        action_options: list[dict] = [
+            {"value": "add_tier", "label": "➕ Add tier"},
+            {"value": "edit_group_settings", "label": "✎ Edit group settings"},
+        ]
         if not group.get("active"):
             action_options.append({"value": "set_active", "label": "★ Set as active group"})
         for i, tier in enumerate(group.get("tiers", [])):
@@ -786,6 +813,18 @@ class KilowahtiOptionsFlow(OptionsFlow):
                     )
                 }
             ),
+        )
+
+    async def async_step_edit_group_settings(self, user_input: dict | None = None):
+        group = self._groups[self._current_group_idx]
+        if user_input is not None:
+            group["label"] = user_input["label"]
+            group[CONF_MONTHLY_FIXED_COST] = _to_float(user_input[CONF_MONTHLY_FIXED_COST])
+            return await self.async_step_transfer_group_detail()
+
+        return self.async_show_form(
+            step_id="edit_group_settings",
+            data_schema=_group_settings_schema(group),
         )
 
     async def async_step_add_transfer_tier(self, user_input: dict | None = None):
@@ -895,7 +934,6 @@ class KilowahtiOptionsFlow(OptionsFlow):
             self._options[CONF_BATTERY_CHARGE_POWER_KW] = _to_float(
                 user_input[CONF_BATTERY_CHARGE_POWER_KW]
             )
-            self._options[CONF_MONTHLY_FIXED_COST] = _to_float(user_input[CONF_MONTHLY_FIXED_COST])
             return self.async_create_entry(data=self._options)
 
         return self.async_show_form(

@@ -39,7 +39,21 @@
       "add_transfer_group": {
         "title": "Lisää ryhmä",
         "data": {
-          "label": "Ryhmän nimi"
+          "label": "Ryhmän nimi",
+          "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus (€/kk)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Siirtoliittymä + sopimuksen perusmaksu. Bruttohinta (sis. ALV)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Muokkaa ryhmän asetuksia",
+        "data": {
+          "label": "Ryhmän nimi",
+          "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus (€/kk)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Siirtoliittymä + sopimuksen perusmaksu. Bruttohinta (sis. ALV)."
         }
       },
       "transfer_group_detail": {
@@ -150,7 +164,21 @@
       "add_transfer_group": {
         "title": "Lisää ryhmä",
         "data": {
-          "label": "Ryhmän nimi"
+          "label": "Ryhmän nimi",
+          "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus (€/kk)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Siirtoliittymä + sopimuksen perusmaksu. Bruttohinta (sis. ALV)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Muokkaa ryhmän asetuksia",
+        "data": {
+          "label": "Ryhmän nimi",
+          "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus (€/kk)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Siirtoliittymä + sopimuksen perusmaksu. Bruttohinta (sis. ALV)."
         }
       },
       "transfer_group_detail": {
@@ -235,7 +263,7 @@
       },
       "generation_settings": {
         "title": "Tuotanto- ja myyntiasetukset",
-        "description": "Määritä sähkön myyntihinta, akkuasetukset ja kiinteät kuukausikustannukset. Aseta akun kapasiteetti nollaksi poistaaksesi akkusensorit käytöstä.",
+        "description": "Määritä sähkön myyntihinta ja akkuasetukset. Aseta akun kapasiteetti nollaksi poistaaksesi akkusensorit käytöstä.",
         "data": {
           "export_pricing_mode": "Myyntihinnan laskentatapa",
           "export_commission": "Myyntikomissio (snt/kWh vähennetään spot-hinnasta)",
@@ -244,8 +272,7 @@
           "solar_window_start": "Aurinkotuotantoikkunan alkutunti",
           "solar_window_end": "Aurinkotuotantoikkunan lopputunti",
           "battery_capacity_kwh": "Akun kapasiteetti (kWh, 0 = poistettu käytöstä)",
-          "battery_charge_power_kw": "Akun latausteho (kW)",
-          "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus — siirtoliittymä + sopimuksen perusmaksu (€/kk)"
+          "battery_charge_power_kw": "Akun latausteho (kW)"
         },
         "data_description": {
           "export_commission": "Vain spot-linkitetty tila. Myyjän kate vähennetään spot-API:n hinnasta (alv 0%). Pienet tuottajat eivät yleensä peri arvonlisäveroa myydystä sähköstä.",

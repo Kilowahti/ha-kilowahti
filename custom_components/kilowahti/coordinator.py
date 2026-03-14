@@ -38,7 +38,6 @@ from .const import (
     CONF_HIGH_PRECISION,
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
-    CONF_MONTHLY_FIXED_COST,
     CONF_PRICE_RESOLUTION,
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
@@ -64,7 +63,6 @@ from .const import (
     DEFAULT_HIGH_PRECISION,
     DEFAULT_MAX_PRICE,
     DEFAULT_MAX_RANK,
-    DEFAULT_MONTHLY_FIXED_COST,
     DEFAULT_PRICE_RESOLUTION,
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     DEFAULT_SOLAR_WINDOW_END,
@@ -225,7 +223,10 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
     @property
     def _monthly_fixed_cost(self) -> float:
-        return self._opts.get(CONF_MONTHLY_FIXED_COST, DEFAULT_MONTHLY_FIXED_COST)
+        group = self._active_transfer_group
+        if group is None:
+            return 0.0
+        return group.monthly_fixed_cost
 
     @property
     def score_profiles(self) -> list[ScoreProfile]:
