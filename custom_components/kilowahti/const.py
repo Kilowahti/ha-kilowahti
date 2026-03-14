@@ -44,7 +44,7 @@ CONF_EAGER_END_HOUR = "eager_end_hour"
 CONF_EXPORT_PRICING_MODE = "export_pricing_mode"
 CONF_EXPORT_COMMISSION = "export_commission"
 CONF_FIXED_EXPORT_RATE = "fixed_export_rate"
-CONF_EXPORT_MAX_PRICE = "export_max_price"
+CONF_EXPORT_PRICE_THRESHOLD = "export_price_threshold"
 CONF_SOLAR_WINDOW_START = "solar_window_start"
 CONF_SOLAR_WINDOW_END = "solar_window_end"
 # E2 — Battery
@@ -78,7 +78,7 @@ DEFAULT_SHOW_ROLLING_AVERAGES = False
 DEFAULT_EXPORT_PRICING_MODE = EXPORT_PRICING_SPOT_LINKED
 DEFAULT_EXPORT_COMMISSION = 0.0  # c/kWh deducted from spot
 DEFAULT_FIXED_EXPORT_RATE = 0.0  # c/kWh, used when mode = fixed
-DEFAULT_EXPORT_MAX_PRICE = 5.0  # c/kWh threshold for export_price_acceptable
+DEFAULT_EXPORT_PRICE_THRESHOLD = 5.0  # c/kWh threshold for export_price_acceptable
 DEFAULT_SOLAR_WINDOW_START = 9  # hour (local)
 DEFAULT_SOLAR_WINDOW_END = 14  # hour (local), exclusive
 # E2 defaults

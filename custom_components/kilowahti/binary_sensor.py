@@ -48,11 +48,18 @@ async def async_setup_entry(
         KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_TOMORROW_AVAILABLE),
     ]
     if coordinator.generation_enabled:
-        entities += [
-            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_EXPORT_PRICE_ACCEPTABLE),
-            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_CHARGE_FROM_GRID_RECOMMENDED),
-            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_DISCHARGE_TO_GRID_RECOMMENDED),
-        ]
+        entities.append(
+            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_EXPORT_PRICE_ACCEPTABLE)
+        )
+        if coordinator._battery_capacity_kwh > 0:
+            entities += [
+                KilowahtiBinarySensor(
+                    coordinator, entry, BINARY_SENSOR_CHARGE_FROM_GRID_RECOMMENDED
+                ),
+                KilowahtiBinarySensor(
+                    coordinator, entry, BINARY_SENSOR_DISCHARGE_TO_GRID_RECOMMENDED
+                ),
+            ]
     async_add_entities(entities)
 
 
@@ -112,7 +119,7 @@ class KilowahtiBinarySensor(CoordinatorEntity[KilowahtiCoordinator], BinarySenso
             export = c.export_price_now()
             if export is None:
                 return None
-            return export >= c._export_max_price
+            return export >= c._export_price_threshold
 
         if key == BINARY_SENSOR_CHARGE_FROM_GRID_RECOMMENDED:
             return c.charge_from_grid_recommended()

@@ -123,7 +123,6 @@ _ROLLING_AVG_SENSOR_KEYS = frozenset(
 _GENERATION_SENSOR_KEYS = frozenset(
     {
         SENSOR_ARBITRAGE_SPREAD_TODAY,
-        SENSOR_BATTERY_CHARGE_RECOMMENDATION,
         SENSOR_EXPORT_PRICE,
         SENSOR_EXPORT_TODAY_AVG,
         SENSOR_EXPORT_TODAY_MIN,
@@ -131,13 +130,17 @@ _GENERATION_SENSOR_KEYS = frozenset(
         SENSOR_EXPORT_TOMORROW_AVG,
         SENSOR_EXPORT_TOMORROW_MIN,
         SENSOR_EXPORT_TOMORROW_MAX,
-        SENSOR_GRID_ARBITRAGE_OPPORTUNITY,
         SENSOR_IMPORT_EXPORT_SPREAD,
-        SENSOR_MONTHLY_FIXED_COST_TODAY,
         SENSOR_NEXT_SOLAR_WINDOW_AVG,
+        SENSOR_SELF_CONSUMPTION_VALUE,
+    }
+)
+_BATTERY_SENSOR_KEYS = frozenset(
+    {
+        SENSOR_BATTERY_CHARGE_RECOMMENDATION,
+        SENSOR_GRID_ARBITRAGE_OPPORTUNITY,
         SENSOR_OPTIMAL_CHARGE_WINDOW_END,
         SENSOR_OPTIMAL_CHARGE_WINDOW_START,
-        SENSOR_SELF_CONSUMPTION_VALUE,
     }
 )
 
@@ -354,6 +357,10 @@ async def async_setup_entry(
     for description in SENSOR_DESCRIPTIONS:
         key = description.key
         if key in _GENERATION_SENSOR_KEYS and not coordinator.generation_enabled:
+            continue
+        if key in _BATTERY_SENSOR_KEYS and (
+            not coordinator.generation_enabled or coordinator._battery_capacity_kwh <= 0
+        ):
             continue
         if key in _ROLLING_AVG_SENSOR_KEYS and not coordinator.show_rolling_averages:
             continue

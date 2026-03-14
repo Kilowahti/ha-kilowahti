@@ -30,7 +30,7 @@ from .const import (
     CONF_EAGER_START_HOUR,
     CONF_ELECTRICITY_TAX,
     CONF_EXPORT_COMMISSION,
-    CONF_EXPORT_MAX_PRICE,
+    CONF_EXPORT_PRICE_THRESHOLD,
     CONF_EXPORT_PRICING_MODE,
     CONF_EXPOSE_PRICE_ARRAYS,
     CONF_FIXED_EXPORT_RATE,
@@ -57,7 +57,7 @@ from .const import (
     DEFAULT_EAGER_START_HOUR,
     DEFAULT_ELECTRICITY_TAX,
     DEFAULT_EXPORT_COMMISSION,
-    DEFAULT_EXPORT_MAX_PRICE,
+    DEFAULT_EXPORT_PRICE_THRESHOLD,
     DEFAULT_EXPORT_PRICING_MODE,
     DEFAULT_EXPOSE_PRICE_ARRAYS,
     DEFAULT_FIXED_EXPORT_RATE,
@@ -216,8 +216,8 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return self._opts.get(CONF_FIXED_EXPORT_RATE, DEFAULT_FIXED_EXPORT_RATE)
 
     @property
-    def _export_max_price(self) -> float:
-        return self._opts.get(CONF_EXPORT_MAX_PRICE, DEFAULT_EXPORT_MAX_PRICE)
+    def _export_price_threshold(self) -> float:
+        return self._opts.get(CONF_EXPORT_PRICE_THRESHOLD, DEFAULT_EXPORT_PRICE_THRESHOLD)
 
     @property
     def _solar_window_start(self) -> int:

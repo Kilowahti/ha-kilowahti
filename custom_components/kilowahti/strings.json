@@ -279,7 +279,7 @@
           "export_pricing_mode": "Export pricing mode",
           "export_commission": "Export commission (c/kWh deducted from spot)",
           "fixed_export_rate": "Fixed export rate (c/kWh)",
-          "export_max_price": "Export price threshold for export_price_acceptable (c/kWh)",
+          "export_price_threshold": "Export price threshold (c/kWh)",
           "solar_window_start": "Solar window start hour",
           "solar_window_end": "Solar window end hour",
           "battery_capacity_kwh": "Battery capacity (kWh, 0 = disabled)",

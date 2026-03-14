@@ -24,7 +24,7 @@ from .const import (
     CONF_EAGER_START_HOUR,
     CONF_ELECTRICITY_TAX,
     CONF_EXPORT_COMMISSION,
-    CONF_EXPORT_MAX_PRICE,
+    CONF_EXPORT_PRICE_THRESHOLD,
     CONF_EXPORT_PRICING_MODE,
     CONF_EXPOSE_PRICE_ARRAYS,
     CONF_FIXED_EXPORT_RATE,
@@ -55,7 +55,7 @@ from .const import (
     DEFAULT_EAGER_START_HOUR,
     DEFAULT_ELECTRICITY_TAX,
     DEFAULT_EXPORT_COMMISSION,
-    DEFAULT_EXPORT_MAX_PRICE,
+    DEFAULT_EXPORT_PRICE_THRESHOLD,
     DEFAULT_EXPORT_PRICING_MODE,
     DEFAULT_EXPOSE_PRICE_ARRAYS,
     DEFAULT_FIXED_EXPORT_RATE,
@@ -316,8 +316,8 @@ def _generation_settings_schema(defaults: dict) -> vol.Schema:
                 selector.NumberSelectorConfig(min=0, max=100, step=0.01, mode="box")
             ),
             vol.Required(
-                CONF_EXPORT_MAX_PRICE,
-                default=defaults.get(CONF_EXPORT_MAX_PRICE, DEFAULT_EXPORT_MAX_PRICE),
+                CONF_EXPORT_PRICE_THRESHOLD,
+                default=defaults.get(CONF_EXPORT_PRICE_THRESHOLD, DEFAULT_EXPORT_PRICE_THRESHOLD),
             ): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=0, max=100, step=0.1, mode="box")
             ),
@@ -954,7 +954,9 @@ class KilowahtiOptionsFlow(OptionsFlow):
             self._options[CONF_EXPORT_PRICING_MODE] = user_input[CONF_EXPORT_PRICING_MODE]
             self._options[CONF_EXPORT_COMMISSION] = _to_float(user_input[CONF_EXPORT_COMMISSION])
             self._options[CONF_FIXED_EXPORT_RATE] = _to_float(user_input[CONF_FIXED_EXPORT_RATE])
-            self._options[CONF_EXPORT_MAX_PRICE] = _to_float(user_input[CONF_EXPORT_MAX_PRICE])
+            self._options[CONF_EXPORT_PRICE_THRESHOLD] = _to_float(
+                user_input[CONF_EXPORT_PRICE_THRESHOLD]
+            )
             self._options[CONF_SOLAR_WINDOW_START] = int(user_input[CONF_SOLAR_WINDOW_START])
             self._options[CONF_SOLAR_WINDOW_END] = int(user_input[CONF_SOLAR_WINDOW_END])
             self._options[CONF_BATTERY_CAPACITY_KWH] = _to_float(

@@ -279,7 +279,7 @@
           "export_pricing_mode": "Myyntihinnan laskentatapa",
           "export_commission": "Myyntikomissio (snt/kWh vähennetään spot-hinnasta)",
           "fixed_export_rate": "Kiinteä myyntihinta (snt/kWh)",
-          "export_max_price": "Myyntihinnan kynnysarvo export_price_acceptable-sensorille (snt/kWh)",
+          "export_price_threshold": "Myyntihinnan kynnysarvo (snt/kWh)",
           "solar_window_start": "Aurinkotuotantoikkunan alkutunti",
           "solar_window_end": "Aurinkotuotantoikkunan lopputunti",
           "battery_capacity_kwh": "Akun kapasiteetti (kWh, 0 = poistettu käytöstä)",

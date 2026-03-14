@@ -9,6 +9,7 @@ from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 
 from .const import (
+    CONF_BATTERY_CAPACITY_KWH,
     CONF_EAGER_END_HOUR,
     CONF_EAGER_START_HOUR,
     CONF_GENERATION_ENABLED,
@@ -34,6 +35,7 @@ PLATFORMS: list[Platform] = [Platform.BINARY_SENSOR, Platform.NUMBER, Platform.S
 # All other options are read dynamically from entry.options and only need async_update_listeners().
 _RELOAD_REQUIRED_KEYS = frozenset(
     {
+        CONF_BATTERY_CAPACITY_KWH,  # gates battery sensors (zero vs non-zero)
         CONF_EAGER_END_HOUR,
         CONF_EAGER_START_HOUR,
         CONF_GENERATION_ENABLED,  # gates E1-E4 sensors
