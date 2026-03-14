@@ -480,7 +480,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
             group_options.append(
                 {
                     "value": f"manage_{i}",
-                    "label": f"Manage: {g['label']}{active_label} ({tier_count} tiers)",
+                    "label": f"⚙ Manage: {g['label']}{active_label} ({tier_count} tiers)",
                 }
             )
         group_options.append({"value": "add_group", "label": "➕ Add group"})
@@ -539,7 +539,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
         group = self._groups[self._current_group_idx]
         action_options: list[dict] = [
             {"value": "add_tier", "label": "➕ Add tier"},
-            {"value": "edit_group_settings", "label": "✎ Edit group settings"},
+            {"value": "edit_group_settings", "label": "⚙ Edit group settings"},
         ]
         if not group.get("active"):
             action_options.append({"value": "set_active", "label": "★ Set as active group"})
@@ -735,7 +735,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
             group_options.append(
                 {
                     "value": f"manage_{i}",
-                    "label": f"Manage: {g['label']}{active_label} ({tier_count} tiers)",
+                    "label": f"⚙ Manage: {g['label']}{active_label} ({tier_count} tiers)",
                 }
             )
         group_options.append({"value": "add_group", "label": "➕ Add group"})
@@ -793,7 +793,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
         group = self._groups[self._current_group_idx]
         action_options: list[dict] = [
             {"value": "add_tier", "label": "➕ Add tier"},
-            {"value": "edit_group_settings", "label": "✎ Edit group settings"},
+            {"value": "edit_group_settings", "label": "⚙ Edit group settings"},
         ]
         if not group.get("active"):
             action_options.append({"value": "set_active", "label": "★ Set as active group"})
@@ -813,6 +813,10 @@ class KilowahtiOptionsFlow(OptionsFlow):
                     )
                 }
             ),
+            description_placeholders={
+                "group_label": group["label"],
+                "tier_count": str(len(group.get("tiers", []))),
+            },
         )
 
     async def async_step_edit_group_settings(self, user_input: dict | None = None):

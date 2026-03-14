@@ -58,7 +58,7 @@
       },
       "transfer_group_detail": {
         "title": "Manage group",
-        "description": "Add or remove tiers, or set this group as active.",
+        "description": "**{group_label}** — Add or remove tiers, or set this group as active.",
         "data": {
           "action": "Action"
         }
@@ -183,6 +183,7 @@
       },
       "transfer_group_detail": {
         "title": "Manage group",
+        "description": "**{group_label}**",
         "data": {
           "action": "Action"
         }
