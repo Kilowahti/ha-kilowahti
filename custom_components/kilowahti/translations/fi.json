@@ -292,6 +292,24 @@
       "tomorrow_max": {
         "name": "Huomenna maksimi"
       },
+      "today_total_avg": {
+        "name": "Tänään kokonaishinta keskiarvo"
+      },
+      "today_total_min": {
+        "name": "Tänään kokonaishinta minimi"
+      },
+      "today_total_max": {
+        "name": "Tänään kokonaishinta maksimi"
+      },
+      "tomorrow_total_avg": {
+        "name": "Huomenna kokonaishinta keskiarvo"
+      },
+      "tomorrow_total_min": {
+        "name": "Huomenna kokonaishinta minimi"
+      },
+      "tomorrow_total_max": {
+        "name": "Huomenna kokonaishinta maksimi"
+      },
       "next_hours_avg": {
         "name": "Seuraavien tuntien keskiarvo"
       },

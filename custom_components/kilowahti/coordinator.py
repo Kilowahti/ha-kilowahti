@@ -572,6 +572,9 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     def _effective_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
         return calc.effective_prices(slots, self._vat_rate, self._spot_commission)
 
+    def _total_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
+        return [self._spot_effective(s) + (self.transfer_price_for_slot(s) or 0.0) for s in slots]
+
     def today_avg(self) -> float | None:
         if not self._today_slots:
             return None
@@ -603,6 +606,38 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         if not self._tomorrow_slots:
             return None
         return max(self._effective_prices_for_slots(self._tomorrow_slots))
+
+    def today_total_avg(self) -> float | None:
+        if not self._today_slots:
+            return None
+        prices = self._total_prices_for_slots(self._today_slots)
+        return sum(prices) / len(prices)
+
+    def today_total_min(self) -> float | None:
+        if not self._today_slots:
+            return None
+        return min(self._total_prices_for_slots(self._today_slots))
+
+    def today_total_max(self) -> float | None:
+        if not self._today_slots:
+            return None
+        return max(self._total_prices_for_slots(self._today_slots))
+
+    def tomorrow_total_avg(self) -> float | None:
+        if not self._tomorrow_slots:
+            return None
+        prices = self._total_prices_for_slots(self._tomorrow_slots)
+        return sum(prices) / len(prices)
+
+    def tomorrow_total_min(self) -> float | None:
+        if not self._tomorrow_slots:
+            return None
+        return min(self._total_prices_for_slots(self._tomorrow_slots))
+
+    def tomorrow_total_max(self) -> float | None:
+        if not self._tomorrow_slots:
+            return None
+        return max(self._total_prices_for_slots(self._tomorrow_slots))
 
     def next_hours_avg(self) -> float | None:
         now = self._now_local()

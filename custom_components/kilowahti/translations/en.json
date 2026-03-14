@@ -292,6 +292,24 @@
       "tomorrow_max": {
         "name": "Tomorrow maximum"
       },
+      "today_total_avg": {
+        "name": "Today total average"
+      },
+      "today_total_min": {
+        "name": "Today total minimum"
+      },
+      "today_total_max": {
+        "name": "Today total maximum"
+      },
+      "tomorrow_total_avg": {
+        "name": "Tomorrow total average"
+      },
+      "tomorrow_total_min": {
+        "name": "Tomorrow total minimum"
+      },
+      "tomorrow_total_max": {
+        "name": "Tomorrow total maximum"
+      },
       "next_hours_avg": {
         "name": "Next hours average"
       },
