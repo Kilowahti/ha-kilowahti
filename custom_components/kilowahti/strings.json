@@ -124,7 +124,8 @@
           "thresholds": "Thresholds & control",
           "score_profiles": "Score profiles",
           "sensor_display": "Sensor display",
-          "fixed_periods": "Fixed-price periods"
+          "fixed_periods": "Fixed-price periods",
+          "generation_settings": "Generation & export"
         }
       },
       "basic": {
@@ -230,6 +231,27 @@
         "description": "Manage fixed-price contract periods. When active, effective_price reflects the fixed price instead of spot.",
         "data": {
           "action": "Action"
+        }
+      },
+      "generation_settings": {
+        "title": "Generation & export settings",
+        "description": "Configure export pricing, battery, and fixed cost settings. Set battery capacity to 0 to disable battery sensors.",
+        "data": {
+          "export_pricing_mode": "Export pricing mode",
+          "export_commission": "Export commission (c/kWh deducted from spot)",
+          "fixed_export_rate": "Fixed export rate (c/kWh)",
+          "export_max_price": "Export price threshold for export_price_acceptable (c/kWh)",
+          "solar_window_start": "Solar window start hour",
+          "solar_window_end": "Solar window end hour",
+          "battery_capacity_kwh": "Battery capacity (kWh, 0 = disabled)",
+          "battery_charge_power_kw": "Battery charge power (kW)",
+          "monthly_fixed_cost": "Monthly fixed cost — grid connection + contract base fee (€/month)"
+        },
+        "data_description": {
+          "export_commission": "Spot-linked mode only. Seller's margin deducted from the spot API price (excl. VAT). Small producers typically don't collect VAT on exports.",
+          "fixed_export_rate": "Fixed mode only. Flat rate you receive per exported kWh.",
+          "solar_window_start": "Start hour of your typical solar production window (used by next_solar_window_avg sensor).",
+          "solar_window_end": "End hour (exclusive) of your typical solar production window."
         }
       },
       "add_fixed_period": {
@@ -348,6 +370,68 @@
       },
       "setting_active_fixed_period": {
         "name": "Active fixed period"
+      },
+      "export_price": {
+        "name": "Export price"
+      },
+      "export_today_avg": {
+        "name": "Export today average"
+      },
+      "export_today_min": {
+        "name": "Export today minimum"
+      },
+      "export_today_max": {
+        "name": "Export today maximum"
+      },
+      "export_tomorrow_avg": {
+        "name": "Export tomorrow average"
+      },
+      "export_tomorrow_min": {
+        "name": "Export tomorrow minimum"
+      },
+      "export_tomorrow_max": {
+        "name": "Export tomorrow maximum"
+      },
+      "import_export_spread": {
+        "name": "Import-export spread"
+      },
+      "self_consumption_value": {
+        "name": "Self-consumption value"
+      },
+      "current_30min_avg": {
+        "name": "Current 30 min average"
+      },
+      "current_60min_avg": {
+        "name": "Current 60 min average"
+      },
+      "current_120min_avg": {
+        "name": "Current 120 min average"
+      },
+      "next_solar_window_avg": {
+        "name": "Next solar window average"
+      },
+      "arbitrage_spread_today": {
+        "name": "Arbitrage spread today"
+      },
+      "grid_arbitrage_opportunity": {
+        "name": "Grid arbitrage opportunity"
+      },
+      "optimal_charge_window_start": {
+        "name": "Optimal charge window start"
+      },
+      "optimal_charge_window_end": {
+        "name": "Optimal charge window end"
+      },
+      "battery_charge_recommendation": {
+        "name": "Battery charge recommendation",
+        "state": {
+          "charge_from_grid": "Charge from grid",
+          "discharge": "Discharge",
+          "hold": "Hold"
+        }
+      },
+      "monthly_fixed_cost_today": {
+        "name": "Monthly fixed cost today"
       }
     },
     "number": {
@@ -373,6 +457,15 @@
       },
       "tomorrow_available": {
         "name": "Tomorrow available"
+      },
+      "export_price_acceptable": {
+        "name": "Export price acceptable"
+      },
+      "charge_from_grid_recommended": {
+        "name": "Charge from grid recommended"
+      },
+      "discharge_to_grid_recommended": {
+        "name": "Discharge to grid recommended"
       }
     }
   }

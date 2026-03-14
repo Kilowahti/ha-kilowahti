@@ -124,7 +124,8 @@
           "thresholds": "Kynnysarvot ja ohjaus",
           "score_profiles": "Pisteprofiilit",
           "sensor_display": "Anturien näyttö",
-          "fixed_periods": "Kiinnitetyt hintajaksot / kiinteät sopimukset"
+          "fixed_periods": "Kiinnitetyt hintajaksot / kiinteät sopimukset",
+          "generation_settings": "Tuotanto ja myynti"
         }
       },
       "basic": {
@@ -230,6 +231,27 @@
         "description": "Hallitse kiinnitettyjä hintajaksoja tai kiinteitä sopimuksia. Kun aktiivinen, effective_price näyttää asetetun kiinteän hinnan spot-hinnan sijaan.",
         "data": {
           "action": "Toiminto"
+        }
+      },
+      "generation_settings": {
+        "title": "Tuotanto- ja myyntiasetukset",
+        "description": "Määritä sähkön myyntihinta, akkuasetukset ja kiinteät kuukausikustannukset. Aseta akun kapasiteetti nollaksi poistaaksesi akkusensorit käytöstä.",
+        "data": {
+          "export_pricing_mode": "Myyntihinnan laskentatapa",
+          "export_commission": "Myyntikomissio (snt/kWh vähennetään spot-hinnasta)",
+          "fixed_export_rate": "Kiinteä myyntihinta (snt/kWh)",
+          "export_max_price": "Myyntihinnan kynnysarvo export_price_acceptable-sensorille (snt/kWh)",
+          "solar_window_start": "Aurinkotuotantoikkunan alkutunti",
+          "solar_window_end": "Aurinkotuotantoikkunan lopputunti",
+          "battery_capacity_kwh": "Akun kapasiteetti (kWh, 0 = poistettu käytöstä)",
+          "battery_charge_power_kw": "Akun latausteho (kW)",
+          "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus — siirtoliittymä + sopimuksen perusmaksu (€/kk)"
+        },
+        "data_description": {
+          "export_commission": "Vain spot-linkitetty tila. Myyjän kate vähennetään spot-API:n hinnasta (alv 0%). Pienet tuottajat eivät yleensä peri arvonlisäveroa myydystä sähköstä.",
+          "fixed_export_rate": "Vain kiinteä tila. Kiinteä hinta jonka saat jokaisesta myydystä kilowattitunnista.",
+          "solar_window_start": "Tyypillisen aurinkotuotantoikkunasi alkutunti (käytetään next_solar_window_avg-sensorissa).",
+          "solar_window_end": "Tyypillisen aurinkotuotantoikkunasi lopputunti (poissulkeva)."
         }
       },
       "add_fixed_period": {
@@ -348,6 +370,68 @@
       },
       "setting_active_fixed_period": {
         "name": "Aktiivinen kiinteä jakso"
+      },
+      "export_price": {
+        "name": "Myyntihinta"
+      },
+      "export_today_avg": {
+        "name": "Tänään myyntihinta keskiarvo"
+      },
+      "export_today_min": {
+        "name": "Tänään myyntihinta minimi"
+      },
+      "export_today_max": {
+        "name": "Tänään myyntihinta maksimi"
+      },
+      "export_tomorrow_avg": {
+        "name": "Huomenna myyntihinta keskiarvo"
+      },
+      "export_tomorrow_min": {
+        "name": "Huomenna myyntihinta minimi"
+      },
+      "export_tomorrow_max": {
+        "name": "Huomenna myyntihinta maksimi"
+      },
+      "import_export_spread": {
+        "name": "Osto-myyntiero"
+      },
+      "self_consumption_value": {
+        "name": "Omakulutuksen arvo"
+      },
+      "current_30min_avg": {
+        "name": "Nykyinen 30 min keskiarvo"
+      },
+      "current_60min_avg": {
+        "name": "Nykyinen 60 min keskiarvo"
+      },
+      "current_120min_avg": {
+        "name": "Nykyinen 120 min keskiarvo"
+      },
+      "next_solar_window_avg": {
+        "name": "Seuraavan aurinkoikkunan keskiarvo"
+      },
+      "arbitrage_spread_today": {
+        "name": "Arbitraasiero tänään"
+      },
+      "grid_arbitrage_opportunity": {
+        "name": "Verkkoarbitraasimahdollisuus"
+      },
+      "optimal_charge_window_start": {
+        "name": "Optimaalisen latausikkunan alku"
+      },
+      "optimal_charge_window_end": {
+        "name": "Optimaalisen latausikkunan loppu"
+      },
+      "battery_charge_recommendation": {
+        "name": "Akun lataussuositus",
+        "state": {
+          "charge_from_grid": "Lataa verkosta",
+          "discharge": "Pura",
+          "hold": "Pidä"
+        }
+      },
+      "monthly_fixed_cost_today": {
+        "name": "Kiinteä kuukausikustannus tänään"
       }
     },
     "number": {
@@ -373,6 +457,15 @@
       },
       "tomorrow_available": {
         "name": "Huomisen hinnat saatavilla"
+      },
+      "export_price_acceptable": {
+        "name": "Myyntihinta hyväksyttävä"
+      },
+      "charge_from_grid_recommended": {
+        "name": "Verkosta lataaminen suositeltavaa"
+      },
+      "discharge_to_grid_recommended": {
+        "name": "Verkkoon myyminen suositeltavaa"
       }
     }
   }

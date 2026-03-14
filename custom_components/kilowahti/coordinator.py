@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import calendar
 import logging
 from collections.abc import Callable
 from datetime import date, datetime, timedelta
@@ -20,39 +21,58 @@ from kilowahti import calc
 from kilowahti.sources.spot_hinta import SpotHintaRateLimitError, SpotHintaSource
 
 from .const import (
+    CONF_BATTERY_CAPACITY_KWH,
+    CONF_BATTERY_CHARGE_POWER_KW,
     CONF_CONTROL_FACTOR_FUNCTION,
     CONF_CONTROL_FACTOR_SCALING,
     CONF_DISPLAY_UNIT,
     CONF_EAGER_END_HOUR,
     CONF_EAGER_START_HOUR,
     CONF_ELECTRICITY_TAX,
+    CONF_EXPORT_COMMISSION,
+    CONF_EXPORT_MAX_PRICE,
+    CONF_EXPORT_PRICING_MODE,
     CONF_EXPOSE_PRICE_ARRAYS,
+    CONF_FIXED_EXPORT_RATE,
     CONF_FORWARD_AVG_HOURS,
     CONF_HIGH_PRECISION,
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
+    CONF_MONTHLY_FIXED_COST,
     CONF_PRICE_RESOLUTION,
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
     CONF_SCORE_PROFILES,
+    CONF_SOLAR_WINDOW_END,
+    CONF_SOLAR_WINDOW_START,
     CONF_SPOT_COMMISSION,
     CONF_TRANSFER_GROUPS,
     CONF_VAT_RATE,
+    DEFAULT_BATTERY_CAPACITY_KWH,
+    DEFAULT_BATTERY_CHARGE_POWER_KW,
     DEFAULT_CONTROL_FACTOR_FUNCTION,
     DEFAULT_CONTROL_FACTOR_SCALING,
     DEFAULT_EAGER_END_HOUR,
     DEFAULT_EAGER_START_HOUR,
     DEFAULT_ELECTRICITY_TAX,
+    DEFAULT_EXPORT_COMMISSION,
+    DEFAULT_EXPORT_MAX_PRICE,
+    DEFAULT_EXPORT_PRICING_MODE,
     DEFAULT_EXPOSE_PRICE_ARRAYS,
+    DEFAULT_FIXED_EXPORT_RATE,
     DEFAULT_FORWARD_AVG_HOURS,
     DEFAULT_HIGH_PRECISION,
     DEFAULT_MAX_PRICE,
     DEFAULT_MAX_RANK,
+    DEFAULT_MONTHLY_FIXED_COST,
     DEFAULT_PRICE_RESOLUTION,
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
+    DEFAULT_SOLAR_WINDOW_END,
+    DEFAULT_SOLAR_WINDOW_START,
     DEFAULT_SPOT_COMMISSION,
     DEFAULT_VAT_RATE,
     DOMAIN,
+    EXPORT_PRICING_FIXED,
     UNIT_EUROKWH,
     UNIT_SNTPERKWH,
 )
@@ -170,6 +190,42 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     @property
     def _high_precision(self) -> bool:
         return self._opts.get(CONF_HIGH_PRECISION, DEFAULT_HIGH_PRECISION)
+
+    @property
+    def _export_pricing_mode(self) -> str:
+        return self._opts.get(CONF_EXPORT_PRICING_MODE, DEFAULT_EXPORT_PRICING_MODE)
+
+    @property
+    def _export_commission(self) -> float:
+        return self._opts.get(CONF_EXPORT_COMMISSION, DEFAULT_EXPORT_COMMISSION)
+
+    @property
+    def _fixed_export_rate(self) -> float:
+        return self._opts.get(CONF_FIXED_EXPORT_RATE, DEFAULT_FIXED_EXPORT_RATE)
+
+    @property
+    def _export_max_price(self) -> float:
+        return self._opts.get(CONF_EXPORT_MAX_PRICE, DEFAULT_EXPORT_MAX_PRICE)
+
+    @property
+    def _solar_window_start(self) -> int:
+        return self._opts.get(CONF_SOLAR_WINDOW_START, DEFAULT_SOLAR_WINDOW_START)
+
+    @property
+    def _solar_window_end(self) -> int:
+        return self._opts.get(CONF_SOLAR_WINDOW_END, DEFAULT_SOLAR_WINDOW_END)
+
+    @property
+    def _battery_capacity_kwh(self) -> float:
+        return self._opts.get(CONF_BATTERY_CAPACITY_KWH, DEFAULT_BATTERY_CAPACITY_KWH)
+
+    @property
+    def _battery_charge_power_kw(self) -> float:
+        return self._opts.get(CONF_BATTERY_CHARGE_POWER_KW, DEFAULT_BATTERY_CHARGE_POWER_KW)
+
+    @property
+    def _monthly_fixed_cost(self) -> float:
+        return self._opts.get(CONF_MONTHLY_FIXED_COST, DEFAULT_MONTHLY_FIXED_COST)
 
     @property
     def score_profiles(self) -> list[ScoreProfile]:
@@ -647,6 +703,255 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             return None
         prices = self._effective_prices_for_slots(slots)
         return sum(prices) / len(prices)
+
+    # ------------------------------------------------------------------
+    # E1 — Export price methods
+    # ------------------------------------------------------------------
+
+    def export_price_for_slot(self, slot: PriceSlot) -> float:
+        """Feed-in price for a given slot. No VAT (small producers don't collect VAT in FI)."""
+        if self._export_pricing_mode == EXPORT_PRICING_FIXED:
+            return self._fixed_export_rate
+        return max(0.0, slot.price_no_tax - self._export_commission)
+
+    def _export_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
+        return [self.export_price_for_slot(s) for s in slots]
+
+    def export_price_now(self) -> float | None:
+        slot = self.current_slot()
+        if slot is None:
+            return None
+        return self.export_price_for_slot(slot)
+
+    def export_today_avg(self) -> float | None:
+        if not self._today_slots:
+            return None
+        prices = self._export_prices_for_slots(self._today_slots)
+        return sum(prices) / len(prices)
+
+    def export_today_min(self) -> float | None:
+        if not self._today_slots:
+            return None
+        return min(self._export_prices_for_slots(self._today_slots))
+
+    def export_today_max(self) -> float | None:
+        if not self._today_slots:
+            return None
+        return max(self._export_prices_for_slots(self._today_slots))
+
+    def export_tomorrow_avg(self) -> float | None:
+        if not self._tomorrow_slots:
+            return None
+        prices = self._export_prices_for_slots(self._tomorrow_slots)
+        return sum(prices) / len(prices)
+
+    def export_tomorrow_min(self) -> float | None:
+        if not self._tomorrow_slots:
+            return None
+        return min(self._export_prices_for_slots(self._tomorrow_slots))
+
+    def export_tomorrow_max(self) -> float | None:
+        if not self._tomorrow_slots:
+            return None
+        return max(self._export_prices_for_slots(self._tomorrow_slots))
+
+    def import_export_spread_now(self) -> float | None:
+        """Difference between total import price and export price now."""
+        total = self.total_price_now()
+        export = self.export_price_now()
+        if total is None or export is None:
+            return None
+        return total - export
+
+    def self_consumption_value_now(self) -> float | None:
+        """Value of each kWh consumed from own generation (= avoided import cost)."""
+        return self.total_price_now()
+
+    def current_rolling_avg(self, minutes: int) -> float | None:
+        """Average total price over slots covering the past `minutes` minutes (incl. current)."""
+        now = self._now_local()
+        start = now - timedelta(minutes=minutes)
+        slots = self.slots_in_range(start, now + timedelta(seconds=1))
+        if not slots:
+            return None
+        prices = self._total_prices_for_slots(slots)
+        return sum(prices) / len(prices)
+
+    def next_solar_window_avg(self) -> float | None:
+        """Average total price for the next upcoming solar production window."""
+        now = self._now_local()
+        start_h = self._solar_window_start
+        end_h = self._solar_window_end
+
+        # Try today's window first if it hasn't ended yet
+        today_end = now.replace(hour=end_h, minute=0, second=0, microsecond=0)
+        if now < today_end:
+            today_start = now.replace(hour=start_h, minute=0, second=0, microsecond=0)
+            window_start = today_start if now < today_start else now
+            slots = self.slots_in_range(window_start, today_end)
+            if slots:
+                prices = self._total_prices_for_slots(slots)
+                return sum(prices) / len(prices)
+
+        # Fall through to tomorrow's window
+        if not self._tomorrow_slots:
+            return None
+        tomorrow = now.date() + timedelta(days=1)
+        tmrw_start = now.replace(
+            year=tomorrow.year,
+            month=tomorrow.month,
+            day=tomorrow.day,
+            hour=start_h,
+            minute=0,
+            second=0,
+            microsecond=0,
+        )
+        tmrw_end = tmrw_start.replace(hour=end_h)
+        slots = self.slots_in_range(tmrw_start, tmrw_end)
+        if not slots:
+            return None
+        prices = self._total_prices_for_slots(slots)
+        return sum(prices) / len(prices)
+
+    # ------------------------------------------------------------------
+    # E2 — Battery optimization methods
+    # ------------------------------------------------------------------
+
+    def arbitrage_spread_today(self) -> float | None:
+        """Price spread between cheapest and most expensive total price slot today."""
+        max_p = self.today_total_max()
+        min_p = self.today_total_min()
+        if max_p is None or min_p is None:
+            return None
+        return max_p - min_p
+
+    def grid_arbitrage_opportunity(self) -> float | None:
+        """Normalized 0–1 indicator of how good now is for grid charging.
+
+        1.0 = current slot is the cheapest today (best time to charge).
+        0.0 = current slot is the most expensive today (worst time to charge).
+        """
+        total = self.total_price_now()
+        min_p = self.today_total_min()
+        max_p = self.today_total_max()
+        if total is None or min_p is None or max_p is None:
+            return None
+        spread = max_p - min_p
+        if spread == 0.0:
+            return 0.5
+        return round(1.0 - (total - min_p) / spread, 4)
+
+    def optimal_charge_window(self) -> tuple[datetime, datetime] | None:
+        """Start and end of the cheapest window for a full battery charge cycle.
+
+        Returns None if battery is not configured or no price data is available.
+        """
+        if self._battery_capacity_kwh <= 0 or self._battery_charge_power_kw <= 0:
+            return None
+        all_slots = self._today_slots + (self._tomorrow_slots or [])
+        if not all_slots:
+            return None
+
+        charge_hours = self._battery_capacity_kwh / self._battery_charge_power_kw
+        resolution_minutes = self._resolution.value
+        slots_needed = max(1, round(charge_hours * 60 / resolution_minutes))
+
+        if slots_needed > len(all_slots):
+            return None
+
+        # Find the window with the lowest average total price
+        best_start = 0
+        best_avg = float("inf")
+        for i in range(len(all_slots) - slots_needed + 1):
+            window = all_slots[i : i + slots_needed]
+            prices = self._total_prices_for_slots(window)
+            avg = sum(prices) / len(prices)
+            if avg < best_avg:
+                best_avg = avg
+                best_start = i
+
+        window = all_slots[best_start : best_start + slots_needed]
+        start_dt = dt_util.as_local(window[0].dt_utc)
+        end_slot_start = dt_util.as_local(window[-1].dt_utc)
+        end_dt = end_slot_start + timedelta(minutes=resolution_minutes)
+        return start_dt, end_dt
+
+    def battery_charge_recommendation(self) -> str | None:
+        """String recommendation for battery action based on current total price rank.
+
+        Returns None when battery is not configured.
+        Recommendation is based solely on price position; does not account for SoC.
+        """
+        if self._battery_capacity_kwh <= 0:
+            return None
+        if not self._today_slots:
+            return None
+
+        total = self.total_price_now()
+        min_p = self.today_total_min()
+        max_p = self.today_total_max()
+        if total is None or min_p is None or max_p is None:
+            return None
+
+        spread = max_p - min_p
+        if spread == 0.0:
+            return "hold"
+
+        position = (total - min_p) / spread  # 0 = cheapest, 1 = most expensive
+        if position <= 0.25:
+            return "charge_from_grid"
+        if position >= 0.75:
+            return "discharge"
+        return "hold"
+
+    def charge_from_grid_recommended(self) -> bool | None:
+        """True if current slot is in the cheapest quartile and more expensive slots follow."""
+        if self._battery_capacity_kwh <= 0:
+            return None
+        if not self._today_slots:
+            return None
+
+        recommendation = self.battery_charge_recommendation()
+        if recommendation != "charge_from_grid":
+            return False
+
+        # Also check that at least one more expensive slot exists later today
+        now = self._now_local()
+        total = self.total_price_now()
+        if total is None:
+            return None
+        future_slots = [s for s in self._today_slots if dt_util.as_local(s.dt_utc) > now]
+        future_prices = self._total_prices_for_slots(future_slots)
+        return any(p > total for p in future_prices)
+
+    def discharge_to_grid_recommended(self) -> bool | None:
+        """True if current export price is in the top quartile of today's export prices."""
+        if self._battery_capacity_kwh <= 0:
+            return None
+        if not self._today_slots:
+            return None
+
+        export_now = self.export_price_now()
+        if export_now is None:
+            return None
+        export_prices = self._export_prices_for_slots(self._today_slots)
+        if not export_prices:
+            return None
+        sorted_prices = sorted(export_prices)
+        top_quartile_threshold = sorted_prices[int(len(sorted_prices) * 0.75)]
+        return export_now >= top_quartile_threshold
+
+    # ------------------------------------------------------------------
+    # E3 — Fixed cost methods
+    # ------------------------------------------------------------------
+
+    def monthly_fixed_cost_today(self) -> float | None:
+        """Today's share of monthly fixed costs: monthly_cost * 12 / days_in_month (€/day)."""
+        if self._monthly_fixed_cost == 0.0:
+            return None
+        now = self._now_local()
+        days_in_month = calendar.monthrange(now.year, now.month)[1]
+        return round(self._monthly_fixed_cost * 12 / days_in_month, 4)
 
     # ------------------------------------------------------------------
     # Control factor

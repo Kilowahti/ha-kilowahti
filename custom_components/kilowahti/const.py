@@ -38,6 +38,22 @@ CONF_EXPOSE_PRICE_ARRAYS = "expose_price_arrays"
 CONF_HIGH_PRECISION = "high_precision"
 CONF_EAGER_START_HOUR = "eager_start_hour"
 CONF_EAGER_END_HOUR = "eager_end_hour"
+# E1 — Export
+CONF_EXPORT_PRICING_MODE = "export_pricing_mode"
+CONF_EXPORT_COMMISSION = "export_commission"
+CONF_FIXED_EXPORT_RATE = "fixed_export_rate"
+CONF_EXPORT_MAX_PRICE = "export_max_price"
+CONF_SOLAR_WINDOW_START = "solar_window_start"
+CONF_SOLAR_WINDOW_END = "solar_window_end"
+# E2 — Battery
+CONF_BATTERY_CAPACITY_KWH = "battery_capacity_kwh"
+CONF_BATTERY_CHARGE_POWER_KW = "battery_charge_power_kw"
+# E3 — Fixed costs
+CONF_MONTHLY_FIXED_COST = "monthly_fixed_cost"
+
+# Export pricing modes
+EXPORT_PRICING_SPOT_LINKED = "spot_linked"
+EXPORT_PRICING_FIXED = "fixed"
 
 # Defaults
 DEFAULT_PRICE_RESOLUTION = 15
@@ -54,6 +70,18 @@ DEFAULT_EAGER_END_HOUR = 21
 DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER = True
 DEFAULT_EXPOSE_PRICE_ARRAYS = False
 DEFAULT_HIGH_PRECISION = False
+# E1 defaults
+DEFAULT_EXPORT_PRICING_MODE = EXPORT_PRICING_SPOT_LINKED
+DEFAULT_EXPORT_COMMISSION = 0.0  # c/kWh deducted from spot
+DEFAULT_FIXED_EXPORT_RATE = 0.0  # c/kWh, used when mode = fixed
+DEFAULT_EXPORT_MAX_PRICE = 5.0  # c/kWh threshold for export_price_acceptable
+DEFAULT_SOLAR_WINDOW_START = 9  # hour (local)
+DEFAULT_SOLAR_WINDOW_END = 14  # hour (local), exclusive
+# E2 defaults
+DEFAULT_BATTERY_CAPACITY_KWH = 0.0
+DEFAULT_BATTERY_CHARGE_POWER_KW = 0.0
+# E3 defaults
+DEFAULT_MONTHLY_FIXED_COST = 0.0  # €/month
 
 # Storage
 STORAGE_VERSION = 1
@@ -81,6 +109,28 @@ SENSOR_TOMORROW_TOTAL_AVG = "tomorrow_total_avg"
 SENSOR_TOMORROW_TOTAL_MIN = "tomorrow_total_min"
 SENSOR_TOMORROW_TOTAL_MAX = "tomorrow_total_max"
 SENSOR_NEXT_HOURS_AVG = "next_hours_avg"
+# E1 — Export & generation sensors
+SENSOR_EXPORT_PRICE = "export_price"
+SENSOR_EXPORT_TODAY_AVG = "export_today_avg"
+SENSOR_EXPORT_TODAY_MIN = "export_today_min"
+SENSOR_EXPORT_TODAY_MAX = "export_today_max"
+SENSOR_EXPORT_TOMORROW_AVG = "export_tomorrow_avg"
+SENSOR_EXPORT_TOMORROW_MIN = "export_tomorrow_min"
+SENSOR_EXPORT_TOMORROW_MAX = "export_tomorrow_max"
+SENSOR_IMPORT_EXPORT_SPREAD = "import_export_spread"
+SENSOR_SELF_CONSUMPTION_VALUE = "self_consumption_value"
+SENSOR_CURRENT_30MIN_AVG = "current_30min_avg"
+SENSOR_CURRENT_60MIN_AVG = "current_60min_avg"
+SENSOR_CURRENT_120MIN_AVG = "current_120min_avg"
+SENSOR_NEXT_SOLAR_WINDOW_AVG = "next_solar_window_avg"
+# E2 — Battery sensors
+SENSOR_ARBITRAGE_SPREAD_TODAY = "arbitrage_spread_today"
+SENSOR_GRID_ARBITRAGE_OPPORTUNITY = "grid_arbitrage_opportunity"
+SENSOR_OPTIMAL_CHARGE_WINDOW_START = "optimal_charge_window_start"
+SENSOR_OPTIMAL_CHARGE_WINDOW_END = "optimal_charge_window_end"
+SENSOR_BATTERY_CHARGE_RECOMMENDATION = "battery_charge_recommendation"
+# E3 — Fixed cost sensors
+SENSOR_MONTHLY_FIXED_COST_TODAY = "monthly_fixed_cost_today"
 SENSOR_CONTROL_FACTOR_PRICE = "control_factor_price"
 SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR = "control_factor_price_bipolar"
 SENSOR_CONTROL_FACTOR_TRANSFER = "control_factor_transfer"
@@ -102,6 +152,10 @@ BINARY_SENSOR_RANK_ACCEPTABLE = "rank_acceptable"
 BINARY_SENSOR_PRICE_OR_RANK_ACCEPTABLE = "price_or_rank_acceptable"
 BINARY_SENSOR_FIXED_PERIOD_ACTIVE = "fixed_period_active"
 BINARY_SENSOR_TOMORROW_AVAILABLE = "tomorrow_available"
+# E1/E2 binary sensors
+BINARY_SENSOR_EXPORT_PRICE_ACCEPTABLE = "export_price_acceptable"
+BINARY_SENSOR_CHARGE_FROM_GRID_RECOMMENDED = "charge_from_grid_recommended"
+BINARY_SENSOR_DISCHARGE_TO_GRID_RECOMMENDED = "discharge_to_grid_recommended"
 
 # Default score profile
 DEFAULT_SCORE_PROFILE_ID = "total"

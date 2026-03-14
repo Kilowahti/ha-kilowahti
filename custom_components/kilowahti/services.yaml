@@ -252,3 +252,173 @@ list_fixed_periods:
       example: "abc123def456"
       selector:
         text:
+
+get_export_prices:
+  name: Get export prices
+  description: >
+    Returns feed-in prices (what you receive when exporting to the grid) for a
+    time range. Without start/end returns today and tomorrow. Uses export pricing
+    mode and commission configured in generation settings.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: Required when multiple Kilowahti entries are configured.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:
+    start:
+      name: Start
+      description: Start of the range (inclusive). Omit to use today/tomorrow.
+      required: false
+      example: "2024-01-15 00:00:00"
+      selector:
+        datetime:
+    end:
+      name: End
+      description: End of the range (exclusive). Omit to use today/tomorrow.
+      required: false
+      example: "2024-01-15 23:59:59"
+      selector:
+        datetime:
+    formatted:
+      name: Formatted
+      description: >
+        When true (default), prices are converted to the configured display unit
+        and rounded. When false, raw c/kWh values are returned.
+      required: false
+      default: true
+      selector:
+        boolean:
+
+best_export_hours:
+  name: Best export hours
+  description: >
+    Finds the consecutive window with the highest average export price within a
+    time range. Use this to schedule battery discharge or grid export.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: Required when multiple Kilowahti entries are configured.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:
+    start:
+      name: Start
+      description: Start of the search range.
+      required: true
+      example: "2024-01-15 00:00:00"
+      selector:
+        datetime:
+    end:
+      name: End
+      description: End of the search range.
+      required: true
+      example: "2024-01-15 23:59:59"
+      selector:
+        datetime:
+    hours:
+      name: Hours
+      description: Length of the window in hours (minimum 0.25, maximum 24).
+      required: true
+      example: 2
+      selector:
+        number:
+          min: 0.25
+          max: 24
+          step: 0.25
+          unit_of_measurement: h
+    formatted:
+      name: Formatted
+      description: >
+        When true (default), prices are converted to the configured display unit
+        and rounded. When false, raw c/kWh values are returned.
+      required: false
+      default: true
+      selector:
+        boolean:
+
+best_charge_hours:
+  name: Best charge hours
+  description: >
+    Finds the consecutive window with the lowest average total price (spot +
+    transfer) within a time range. Use this to schedule battery charging from
+    the grid.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: Required when multiple Kilowahti entries are configured.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:
+    start:
+      name: Start
+      description: Start of the search range.
+      required: true
+      example: "2024-01-15 00:00:00"
+      selector:
+        datetime:
+    end:
+      name: End
+      description: End of the search range.
+      required: true
+      example: "2024-01-15 23:59:59"
+      selector:
+        datetime:
+    hours:
+      name: Hours
+      description: Length of the window in hours (minimum 0.25, maximum 24).
+      required: true
+      example: 3
+      selector:
+        number:
+          min: 0.25
+          max: 24
+          step: 0.25
+          unit_of_measurement: h
+    formatted:
+      name: Formatted
+      description: >
+        When true (default), prices are converted to the configured display unit
+        and rounded. When false, raw c/kWh values are returned.
+      required: false
+      default: true
+      selector:
+        boolean:
+
+generation_schedule:
+  name: Generation schedule
+  description: >
+    Given a per-slot generation forecast, returns a recommended action for each
+    slot: self_consume (own generation is more valuable as avoided import cost),
+    export (export price exceeds total import price, very rare), or idle (no
+    generation). Self-consumption value equals the total import price (spot +
+    transfer) for that slot.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: Required when multiple Kilowahti entries are configured.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:
+    forecast:
+      name: Forecast
+      description: >
+        List of forecast slots. Each entry must have a "time" (ISO datetime) and
+        "kwh" (expected generation in that slot, >= 0).
+      required: true
+      example: '[{"time": "2024-01-15 10:00:00", "kwh": 1.5}]'
+      selector:
+        object:
+    formatted:
+      name: Formatted
+      description: >
+        When true (default), prices are converted to the configured display unit
+        and rounded. When false, raw c/kWh values are returned.
+      required: false
+      default: true
+      selector:
+        boolean:
