@@ -10,7 +10,9 @@ from custom_components.kilowahti.const import (
     CONF_DISPLAY_UNIT,
     CONF_EXPOSE_PRICE_ARRAYS,
     CONF_FORWARD_AVG_HOURS,
+    CONF_GENERATION_ENABLED,
     CONF_HIGH_PRECISION,
+    CONF_SHOW_ROLLING_AVERAGES,
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
     CONF_PRICE_RESOLUTION,
@@ -21,7 +23,9 @@ from custom_components.kilowahti.const import (
     DEFAULT_CONTROL_FACTOR_SCALING,
     DEFAULT_EXPOSE_PRICE_ARRAYS,
     DEFAULT_FORWARD_AVG_HOURS,
+    DEFAULT_GENERATION_ENABLED,
     DEFAULT_HIGH_PRECISION,
+    DEFAULT_SHOW_ROLLING_AVERAGES,
     DEFAULT_MAX_PRICE,
     DEFAULT_MAX_RANK,
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
@@ -87,13 +91,15 @@ async def _complete_config_flow(hass) -> dict:
         result["flow_id"],
         user_input={},
     )
-    assert result["step_id"] == "sensor_display"
+    assert result["step_id"] == "advanced_options"
 
     result = await hass.config_entries.flow.async_configure(
         result["flow_id"],
         user_input={
             CONF_EXPOSE_PRICE_ARRAYS: DEFAULT_EXPOSE_PRICE_ARRAYS,
+            CONF_GENERATION_ENABLED: DEFAULT_GENERATION_ENABLED,
             CONF_HIGH_PRECISION: DEFAULT_HIGH_PRECISION,
+            CONF_SHOW_ROLLING_AVERAGES: DEFAULT_SHOW_ROLLING_AVERAGES,
         },
     )
     return result

@@ -117,6 +117,32 @@ _PRICE_SENSOR_KEYS = frozenset(
 _CONTROL_FACTOR_SENSOR_KEYS = frozenset(
     {SENSOR_CONTROL_FACTOR_PRICE, SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR}
 )
+_ROLLING_AVG_SENSOR_KEYS = frozenset(
+    {SENSOR_CURRENT_30MIN_AVG, SENSOR_CURRENT_60MIN_AVG, SENSOR_CURRENT_120MIN_AVG}
+)
+_GENERATION_SENSOR_KEYS = frozenset(
+    {
+        SENSOR_EXPORT_PRICE,
+        SENSOR_EXPORT_TODAY_AVG,
+        SENSOR_EXPORT_TODAY_MIN,
+        SENSOR_EXPORT_TODAY_MAX,
+        SENSOR_EXPORT_TOMORROW_AVG,
+        SENSOR_EXPORT_TOMORROW_MIN,
+        SENSOR_EXPORT_TOMORROW_MAX,
+        SENSOR_IMPORT_EXPORT_SPREAD,
+        SENSOR_SELF_CONSUMPTION_VALUE,
+        SENSOR_CURRENT_30MIN_AVG,
+        SENSOR_CURRENT_60MIN_AVG,
+        SENSOR_CURRENT_120MIN_AVG,
+        SENSOR_NEXT_SOLAR_WINDOW_AVG,
+        SENSOR_ARBITRAGE_SPREAD_TODAY,
+        SENSOR_GRID_ARBITRAGE_OPPORTUNITY,
+        SENSOR_OPTIMAL_CHARGE_WINDOW_START,
+        SENSOR_OPTIMAL_CHARGE_WINDOW_END,
+        SENSOR_BATTERY_CHARGE_RECOMMENDATION,
+        SENSOR_MONTHLY_FIXED_COST_TODAY,
+    }
+)
 
 
 # ---------------------------------------------------------------------------
@@ -329,14 +355,16 @@ async def async_setup_entry(
     entities: list[SensorEntity] = []
 
     for description in SENSOR_DESCRIPTIONS:
-        if description.key == SENSOR_SPOT_PRICE:
+        key = description.key
+        if key in _GENERATION_SENSOR_KEYS and not coordinator.generation_enabled:
+            continue
+        if key in _ROLLING_AVG_SENSOR_KEYS and not coordinator.show_rolling_averages:
+            continue
+        if key == SENSOR_SPOT_PRICE:
             entities.append(KilowahtiSpotPriceSensor(coordinator, entry, description))
-        elif description.key == SENSOR_CONTROL_FACTOR_TRANSFER:
+        elif key == SENSOR_CONTROL_FACTOR_TRANSFER:
             entities.append(KilowahtiTransferRankSensor(coordinator, entry, description))
-        elif description.key in (
-            SENSOR_OPTIMAL_CHARGE_WINDOW_START,
-            SENSOR_OPTIMAL_CHARGE_WINDOW_END,
-        ):
+        elif key in (SENSOR_OPTIMAL_CHARGE_WINDOW_START, SENSOR_OPTIMAL_CHARGE_WINDOW_END):
             entities.append(KilowahtiOptimalChargeWindowSensor(coordinator, entry, description))
         else:
             entities.append(KilowahtiSensor(coordinator, entry, description))

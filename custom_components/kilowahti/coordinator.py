@@ -35,6 +35,7 @@ from .const import (
     CONF_EXPOSE_PRICE_ARRAYS,
     CONF_FIXED_EXPORT_RATE,
     CONF_FORWARD_AVG_HOURS,
+    CONF_GENERATION_ENABLED,
     CONF_HIGH_PRECISION,
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
@@ -42,6 +43,7 @@ from .const import (
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
     CONF_SCORE_PROFILES,
+    CONF_SHOW_ROLLING_AVERAGES,
     CONF_SOLAR_WINDOW_END,
     CONF_SOLAR_WINDOW_START,
     CONF_SPOT_COMMISSION,
@@ -60,11 +62,13 @@ from .const import (
     DEFAULT_EXPOSE_PRICE_ARRAYS,
     DEFAULT_FIXED_EXPORT_RATE,
     DEFAULT_FORWARD_AVG_HOURS,
+    DEFAULT_GENERATION_ENABLED,
     DEFAULT_HIGH_PRECISION,
     DEFAULT_MAX_PRICE,
     DEFAULT_MAX_RANK,
     DEFAULT_PRICE_RESOLUTION,
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
+    DEFAULT_SHOW_ROLLING_AVERAGES,
     DEFAULT_SOLAR_WINDOW_END,
     DEFAULT_SOLAR_WINDOW_START,
     DEFAULT_SPOT_COMMISSION,
@@ -188,6 +192,16 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     @property
     def _high_precision(self) -> bool:
         return self._opts.get(CONF_HIGH_PRECISION, DEFAULT_HIGH_PRECISION)
+
+    @property
+    def generation_enabled(self) -> bool:
+        return self._opts.get(CONF_GENERATION_ENABLED, DEFAULT_GENERATION_ENABLED)
+
+    @property
+    def show_rolling_averages(self) -> bool:
+        if self._resolution == PriceResolution.HOUR:
+            return False
+        return self._opts.get(CONF_SHOW_ROLLING_AVERAGES, DEFAULT_SHOW_ROLLING_AVERAGES)
 
     @property
     def _export_pricing_mode(self) -> str:
@@ -769,10 +783,13 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return self.total_price_now()
 
     def current_rolling_avg(self, minutes: int) -> float | None:
-        """Average total price over slots covering the past `minutes` minutes (incl. current)."""
+        """Average total price for the current slot and the next `minutes` minutes forward."""
         now = self._now_local()
-        start = now - timedelta(minutes=minutes)
-        slots = self.slots_in_range(start, now + timedelta(seconds=1))
+        current = self.current_slot()
+        if current is None:
+            return None
+        slot_start = dt_util.as_local(current.dt_utc)
+        slots = self.slots_in_range(slot_start, now + timedelta(minutes=minutes))
         if not slots:
             return None
         prices = self._total_prices_for_slots(slots)

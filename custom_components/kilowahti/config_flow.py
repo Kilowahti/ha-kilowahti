@@ -29,6 +29,7 @@ from .const import (
     CONF_EXPOSE_PRICE_ARRAYS,
     CONF_FIXED_EXPORT_RATE,
     CONF_FORWARD_AVG_HOURS,
+    CONF_GENERATION_ENABLED,
     CONF_HIGH_PRECISION,
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
@@ -37,6 +38,7 @@ from .const import (
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
     CONF_SCORE_PROFILES,
+    CONF_SHOW_ROLLING_AVERAGES,
     CONF_SOLAR_WINDOW_END,
     CONF_SOLAR_WINDOW_START,
     CONF_SPOT_COMMISSION,
@@ -58,6 +60,7 @@ from .const import (
     DEFAULT_EXPOSE_PRICE_ARRAYS,
     DEFAULT_FIXED_EXPORT_RATE,
     DEFAULT_FORWARD_AVG_HOURS,
+    DEFAULT_GENERATION_ENABLED,
     DEFAULT_HIGH_PRECISION,
     DEFAULT_MAX_PRICE,
     DEFAULT_MAX_RANK,
@@ -67,6 +70,7 @@ from .const import (
     DEFAULT_SCORE_FORMULA,
     DEFAULT_SCORE_PROFILE_ID,
     DEFAULT_SCORE_PROFILE_LABEL,
+    DEFAULT_SHOW_ROLLING_AVERAGES,
     DEFAULT_SOLAR_WINDOW_END,
     DEFAULT_SOLAR_WINDOW_START,
     DEFAULT_SPOT_COMMISSION,
@@ -257,19 +261,32 @@ def _score_profiles_schema(_defaults: dict) -> vol.Schema:
     return vol.Schema({})
 
 
-def _sensor_display_schema(defaults: dict) -> vol.Schema:
-    return vol.Schema(
-        {
+def _advanced_options_schema(defaults: dict) -> vol.Schema:
+    is_hourly = int(defaults.get(CONF_PRICE_RESOLUTION, DEFAULT_PRICE_RESOLUTION)) == 60
+    fields: dict = {
+        vol.Required(
+            CONF_EXPOSE_PRICE_ARRAYS,
+            default=defaults.get(CONF_EXPOSE_PRICE_ARRAYS, DEFAULT_EXPOSE_PRICE_ARRAYS),
+        ): selector.BooleanSelector(),
+        vol.Required(
+            CONF_HIGH_PRECISION,
+            default=defaults.get(CONF_HIGH_PRECISION, DEFAULT_HIGH_PRECISION),
+        ): selector.BooleanSelector(),
+    }
+    if not is_hourly:
+        fields[
             vol.Required(
-                CONF_EXPOSE_PRICE_ARRAYS,
-                default=defaults.get(CONF_EXPOSE_PRICE_ARRAYS, DEFAULT_EXPOSE_PRICE_ARRAYS),
-            ): selector.BooleanSelector(),
-            vol.Required(
-                CONF_HIGH_PRECISION,
-                default=defaults.get(CONF_HIGH_PRECISION, DEFAULT_HIGH_PRECISION),
-            ): selector.BooleanSelector(),
-        }
-    )
+                CONF_SHOW_ROLLING_AVERAGES,
+                default=defaults.get(CONF_SHOW_ROLLING_AVERAGES, DEFAULT_SHOW_ROLLING_AVERAGES),
+            )
+        ] = selector.BooleanSelector()
+    fields[
+        vol.Required(
+            CONF_GENERATION_ENABLED,
+            default=defaults.get(CONF_GENERATION_ENABLED, DEFAULT_GENERATION_ENABLED),
+        )
+    ] = selector.BooleanSelector()
+    return vol.Schema(fields)
 
 
 def _generation_settings_schema(defaults: dict) -> vol.Schema:
@@ -626,7 +643,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
             ]
             self._data[CONF_EAGER_START_HOUR] = DEFAULT_EAGER_START_HOUR
             self._data[CONF_EAGER_END_HOUR] = DEFAULT_EAGER_END_HOUR
-            return await self.async_step_sensor_display()
+            return await self.async_step_advanced_options()
 
         return self.async_show_form(
             step_id="score_profiles",
@@ -635,15 +652,19 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
 
     # ------ Step 6: sensor display ----------------------------------------
 
-    async def async_step_sensor_display(self, user_input: dict | None = None):
+    async def async_step_advanced_options(self, user_input: dict | None = None):
         if user_input is not None:
             self._data[CONF_EXPOSE_PRICE_ARRAYS] = user_input[CONF_EXPOSE_PRICE_ARRAYS]
             self._data[CONF_HIGH_PRECISION] = user_input[CONF_HIGH_PRECISION]
+            self._data[CONF_SHOW_ROLLING_AVERAGES] = user_input.get(
+                CONF_SHOW_ROLLING_AVERAGES, False
+            )
+            self._data[CONF_GENERATION_ENABLED] = user_input[CONF_GENERATION_ENABLED]
             return self.async_create_entry(title=self._data["name"], data={}, options=self._data)
 
         return self.async_show_form(
-            step_id="sensor_display",
-            data_schema=_sensor_display_schema({}),
+            step_id="advanced_options",
+            data_schema=_advanced_options_schema({}),
         )
 
     @staticmethod
@@ -675,7 +696,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
                 "transfer_groups",
                 "thresholds",
                 "score_profiles",
-                "sensor_display",
+                "advanced_options",
                 "fixed_periods",
                 "generation_settings",
             ],
@@ -909,17 +930,21 @@ class KilowahtiOptionsFlow(OptionsFlow):
             ),
         )
 
-    # ------ Sensor display ------------------------------------------------
+    # ------ Advanced options ------------------------------------------------
 
-    async def async_step_sensor_display(self, user_input: dict | None = None):
+    async def async_step_advanced_options(self, user_input: dict | None = None):
         if user_input is not None:
             self._options[CONF_EXPOSE_PRICE_ARRAYS] = user_input[CONF_EXPOSE_PRICE_ARRAYS]
             self._options[CONF_HIGH_PRECISION] = user_input[CONF_HIGH_PRECISION]
+            self._options[CONF_SHOW_ROLLING_AVERAGES] = user_input.get(
+                CONF_SHOW_ROLLING_AVERAGES, False
+            )
+            self._options[CONF_GENERATION_ENABLED] = user_input[CONF_GENERATION_ENABLED]
             return self.async_create_entry(data=self._options)
 
         return self.async_show_form(
-            step_id="sensor_display",
-            data_schema=_sensor_display_schema(self._options),
+            step_id="advanced_options",
+            data_schema=_advanced_options_schema(self._options),
         )
 
     # ------ Generation & export settings ---------------------------------

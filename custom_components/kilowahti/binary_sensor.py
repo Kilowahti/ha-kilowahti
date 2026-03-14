@@ -40,18 +40,20 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     coordinator: KilowahtiCoordinator = hass.data[DOMAIN][entry.entry_id]
-    async_add_entities(
-        [
-            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_PRICE_ACCEPTABLE),
-            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_RANK_ACCEPTABLE),
-            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_PRICE_OR_RANK_ACCEPTABLE),
-            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_FIXED_PERIOD_ACTIVE),
-            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_TOMORROW_AVAILABLE),
+    entities = [
+        KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_PRICE_ACCEPTABLE),
+        KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_RANK_ACCEPTABLE),
+        KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_PRICE_OR_RANK_ACCEPTABLE),
+        KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_FIXED_PERIOD_ACTIVE),
+        KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_TOMORROW_AVAILABLE),
+    ]
+    if coordinator.generation_enabled:
+        entities += [
             KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_EXPORT_PRICE_ACCEPTABLE),
             KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_CHARGE_FROM_GRID_RECOMMENDED),
             KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_DISCHARGE_TO_GRID_RECOMMENDED),
         ]
-    )
+    async_add_entities(entities)
 
 
 # ---------------------------------------------------------------------------

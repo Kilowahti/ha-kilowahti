@@ -100,16 +100,20 @@
         "description": "Optimointipisteet mittaavat, kuinka hyvin kulutus on siirretty halvimpiin tunteihin. Kokonaiskulutusta mittaava 'Total'-profiili on pysyvä, saat sen käyttöön helposti vain liittämällä koko kulutusta kuvaavan mittarin (tai mittarit) siihen Kilowahdin asetuksissa asennuksen jälkeen.",
         "data": {}
       },
-      "sensor_display": {
-        "title": "Anturien näyttö",
+      "advanced_options": {
+        "title": "Lisäasetukset",
         "description": "Määritä, miten anturien arvot näytetään Home Assistantissa.",
         "data": {
           "expose_price_arrays": "Näytä hinta-taulukot anturin attribuutteina (kasvattaa tietokannan kokoa)",
-          "high_precision": "Tarkka desimaalitarkkuus"
+          "high_precision": "Tarkka desimaalitarkkuus",
+          "show_rolling_averages": "Näytä seuraavan 30 min, 1h ja 2h keskihinnat",
+          "generation_enabled": "Ota tuotanto- ja myyntiominaisuudet käyttöön"
         },
         "data_description": {
           "expose_price_arrays": "Kirjoittaa today_prices- ja tomorrow_prices-taulukot spot_price-anturin attribuutteihin, jotka puolestaan tallentuvat tietokantaan. Helpottaa dashboard-graafien tekemistä, mutta ei ole pakollinen niiden näyttämiseksi ja kuormittaa turhaan tietokantaa.",
-          "high_precision": "Kun päällä, hinta-anturit näyttävät enemmän desimaaleja. Attribuutit ja laskelmat käyttävät aina täyttä tarkkuutta."
+          "high_precision": "Kun päällä, hinta-anturit näyttävät enemmän desimaaleja. Attribuutit ja laskelmat käyttävät aina täyttä tarkkuutta.",
+          "show_rolling_averages": "Lisää anturit seuraavan 30, 60 ja 120 minuutin keskihinnoille. Hyödyllinen vain 15 min hintaresoluutiolla.",
+          "generation_enabled": "Ottaa käyttöön myyntihinnan, akun ja arbitraasianturit sekä palvelut. Määritä tuotantoasetukset Tuotanto ja myynti -valikosta."
         }
       }
     },
@@ -137,7 +141,7 @@
           "transfer_groups": "Siirtohinnat",
           "thresholds": "Kynnysarvot ja ohjaus",
           "score_profiles": "Pisteprofiilit",
-          "sensor_display": "Anturien näyttö",
+          "advanced_options": "Lisäasetukset",
           "fixed_periods": "Kiinnitetyt hintajaksot / kiinteät sopimukset",
           "generation_settings": "Tuotanto ja myynti"
         }
@@ -215,11 +219,17 @@
         "title": "Pisteprofiilit",
         "data": {}
       },
-      "sensor_display": {
-        "title": "Anturien näyttö",
+      "advanced_options": {
+        "title": "Lisäasetukset",
         "data": {
           "expose_price_arrays": "Näytä hinta-taulukot anturin attribuutteina (kasvattaa tietokannan kokoa)",
-          "high_precision": "Tarkka desimaalitarkkuus"
+          "high_precision": "Tarkka desimaalitarkkuus",
+          "show_rolling_averages": "Näytä seuraavan 30 min, 1h ja 2h keskihinnat",
+          "generation_enabled": "Ota tuotanto- ja myyntiominaisuudet käyttöön"
+        },
+        "data_description": {
+          "show_rolling_averages": "Lisää anturit seuraavan 30, 60 ja 120 minuutin keskihinnoille. Hyödyllinen vain 15 min hintaresoluutiolla.",
+          "generation_enabled": "Ottaa käyttöön myyntihinnan, akun ja arbitraasianturit sekä palvelut. Määritä tuotantoasetukset Tuotanto ja myynti -valikosta."
         }
       },
       "add_score_profile": {
