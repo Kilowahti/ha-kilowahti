@@ -183,7 +183,7 @@
       },
       "transfer_group_detail": {
         "title": "Manage group",
-        "description": "**{group_label}**",
+        "description": "Group: {group_label}",
         "data": {
           "action": "Action"
         }

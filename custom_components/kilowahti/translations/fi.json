@@ -58,7 +58,7 @@
       },
       "transfer_group_detail": {
         "title": "Muokkaa ryhmää",
-        "description": "**{group_label}** — Lisää tai poista hintoja tai aseta ryhmä aktiiviseksi.",
+        "description": "Ryhmä: {group_label} — Lisää tai poista hintoja tai aseta ryhmä aktiiviseksi.",
         "data": {
           "action": "Toiminto"
         }
@@ -183,7 +183,7 @@
       },
       "transfer_group_detail": {
         "title": "Muokkaa ryhmää",
-        "description": "**{group_label}**",
+        "description": "Ryhmä: {group_label}",
         "data": {
           "action": "Toiminto"
         }
