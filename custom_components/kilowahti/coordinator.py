@@ -483,6 +483,22 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         """Apply VAT to raw spot price, then add commission (gross). API always returns prices excl. VAT."""
         return calc.spot_effective(slot, self._vat_rate, self._spot_commission)
 
+    def _energy_price_for_slot(self, slot: PriceSlot) -> float:
+        """Return effective energy price for a slot, respecting fixed-price periods."""
+        slot_date = dt_util.as_local(slot.dt_utc).date()
+        fixed = self.fixed_period_for_date(slot_date)
+        return fixed.price if fixed is not None else self._spot_effective(slot)
+
+    def _synthetic_slots_for_date(self, d: date) -> list[PriceSlot]:
+        """Generate zero-price slots for a date (used when no spot data but fixed period is active)."""
+        tz_local = dt_util.get_time_zone(self.hass.config.time_zone)
+        current = datetime(d.year, d.month, d.day, 0, 0, tzinfo=tz_local)
+        slots = []
+        while current.date() == d:
+            slots.append(PriceSlot(dt_utc=current.astimezone(dt_util.UTC), price=0.0))
+            current += timedelta(minutes=self._resolution)
+        return slots
+
     def spot_price_now(self) -> float | None:
         slot = self.current_slot()
         if slot is None:
@@ -573,7 +589,9 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return calc.effective_prices(slots, self._vat_rate, self._spot_commission)
 
     def _total_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
-        return [self._spot_effective(s) + (self.transfer_price_for_slot(s) or 0.0) for s in slots]
+        return [
+            self._energy_price_for_slot(s) + (self.transfer_price_for_slot(s) or 0.0) for s in slots
+        ]
 
     def today_avg(self) -> float | None:
         if not self._today_slots:
@@ -623,21 +641,33 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             return None
         return max(self._total_prices_for_slots(self._today_slots))
 
+    def _tomorrow_total_slots(self) -> list[PriceSlot] | None:
+        """Return slots for tomorrow total stats: spot slots if available, synthetic if fixed period active."""
+        if self._tomorrow_slots:
+            return self._tomorrow_slots
+        tomorrow = (self._now_local() + timedelta(days=1)).date()
+        if self.fixed_period_for_date(tomorrow) is not None:
+            return self._synthetic_slots_for_date(tomorrow)
+        return None
+
     def tomorrow_total_avg(self) -> float | None:
-        if not self._tomorrow_slots:
+        slots = self._tomorrow_total_slots()
+        if not slots:
             return None
-        prices = self._total_prices_for_slots(self._tomorrow_slots)
+        prices = self._total_prices_for_slots(slots)
         return sum(prices) / len(prices)
 
     def tomorrow_total_min(self) -> float | None:
-        if not self._tomorrow_slots:
+        slots = self._tomorrow_total_slots()
+        if not slots:
             return None
-        return min(self._total_prices_for_slots(self._tomorrow_slots))
+        return min(self._total_prices_for_slots(slots))
 
     def tomorrow_total_max(self) -> float | None:
-        if not self._tomorrow_slots:
+        slots = self._tomorrow_total_slots()
+        if not slots:
             return None
-        return max(self._total_prices_for_slots(self._tomorrow_slots))
+        return max(self._total_prices_for_slots(slots))
 
     def next_hours_avg(self) -> float | None:
         now = self._now_local()
