@@ -7,6 +7,7 @@
 
 [![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
 [![Documentation](https://img.shields.io/badge/docs-kilowahti.fi-blue)](https://docs.kilowahti.fi/)
+[![Feedback](https://img.shields.io/badge/feedback-share%20yours-brightgreen)](https://tally.so/r/QK05XY)
 
 ## Features
 
