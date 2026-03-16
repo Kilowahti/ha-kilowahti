@@ -337,23 +337,23 @@
       "total_price_rank": {
         "name": "Kokonaishinnan sijaluku"
       },
-      "today_avg": {
-        "name": "Tänään keskiarvo"
+      "today_spot_avg": {
+        "name": "Tänään spot-keskiarvo"
       },
-      "today_min": {
-        "name": "Tänään minimi"
+      "today_spot_min": {
+        "name": "Tänään spot-minimi"
       },
-      "today_max": {
-        "name": "Tänään maksimi"
+      "today_spot_max": {
+        "name": "Tänään spot-maksimi"
       },
-      "tomorrow_avg": {
-        "name": "Huomenna keskiarvo"
+      "tomorrow_spot_avg": {
+        "name": "Huomenna spot-keskiarvo"
       },
-      "tomorrow_min": {
-        "name": "Huomenna minimi"
+      "tomorrow_spot_min": {
+        "name": "Huomenna spot-minimi"
       },
-      "tomorrow_max": {
-        "name": "Huomenna maksimi"
+      "tomorrow_spot_max": {
+        "name": "Huomenna spot-maksimi"
       },
       "today_total_avg": {
         "name": "Tänään kokonaishinta keskiarvo"

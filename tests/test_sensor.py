@@ -8,9 +8,9 @@ from custom_components.kilowahti.const import (
     DOMAIN,
     SENSOR_CONTROL_FACTOR_TRANSFER,
     SENSOR_SPOT_PRICE,
-    SENSOR_TOMORROW_AVG,
-    SENSOR_TOMORROW_MAX,
-    SENSOR_TOMORROW_MIN,
+    SENSOR_TOMORROW_SPOT_AVG,
+    SENSOR_TOMORROW_SPOT_MAX,
+    SENSOR_TOMORROW_SPOT_MIN,
     SENSOR_TRANSFER_PRICE,
 )
 from homeassistant.const import STATE_UNKNOWN
@@ -39,12 +39,12 @@ async def test_spot_price_state_is_numeric(hass, setup_integration, mock_utcnow)
 
 
 async def test_tomorrow_stats_unknown_when_no_tomorrow(hass, setup_integration, mock_utcnow):
-    """tomorrow_avg/min/max sensors are unknown when tomorrow prices are not available."""
+    """tomorrow_spot_avg/min/max sensors are unknown when tomorrow prices are not available."""
     entry = setup_integration
     coord = hass.data[DOMAIN][entry.entry_id]
     assert coord._tomorrow_slots is None
 
-    for key in (SENSOR_TOMORROW_AVG, SENSOR_TOMORROW_MIN, SENSOR_TOMORROW_MAX):
+    for key in (SENSOR_TOMORROW_SPOT_AVG, SENSOR_TOMORROW_SPOT_MIN, SENSOR_TOMORROW_SPOT_MAX):
         entity_id = _entity_id(hass, "sensor", entry.entry_id, key)
         assert entity_id is not None, f"missing entity for {key}"
         state = hass.states.get(entity_id)

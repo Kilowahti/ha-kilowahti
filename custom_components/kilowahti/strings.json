@@ -337,23 +337,23 @@
       "total_price_rank": {
         "name": "Total price rank"
       },
-      "today_avg": {
-        "name": "Today average"
+      "today_spot_avg": {
+        "name": "Today spot average"
       },
-      "today_min": {
-        "name": "Today minimum"
+      "today_spot_min": {
+        "name": "Today spot minimum"
       },
-      "today_max": {
-        "name": "Today maximum"
+      "today_spot_max": {
+        "name": "Today spot maximum"
       },
-      "tomorrow_avg": {
-        "name": "Tomorrow average"
+      "tomorrow_spot_avg": {
+        "name": "Tomorrow spot average"
       },
-      "tomorrow_min": {
-        "name": "Tomorrow minimum"
+      "tomorrow_spot_min": {
+        "name": "Tomorrow spot minimum"
       },
-      "tomorrow_max": {
-        "name": "Tomorrow maximum"
+      "tomorrow_spot_max": {
+        "name": "Tomorrow spot maximum"
       },
       "today_total_avg": {
         "name": "Today total average"
