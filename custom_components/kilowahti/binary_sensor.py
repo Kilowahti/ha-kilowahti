@@ -13,6 +13,9 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
+    BINARY_SENSOR_CHARGE_FROM_GRID_RECOMMENDED,
+    BINARY_SENSOR_DISCHARGE_TO_GRID_RECOMMENDED,
+    BINARY_SENSOR_EXPORT_PRICE_ACCEPTABLE,
     BINARY_SENSOR_FIXED_PERIOD_ACTIVE,
     BINARY_SENSOR_PRICE_ACCEPTABLE,
     BINARY_SENSOR_PRICE_OR_RANK_ACCEPTABLE,
@@ -37,15 +40,27 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     coordinator: KilowahtiCoordinator = hass.data[DOMAIN][entry.entry_id]
-    async_add_entities(
-        [
-            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_PRICE_ACCEPTABLE),
-            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_RANK_ACCEPTABLE),
-            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_PRICE_OR_RANK_ACCEPTABLE),
-            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_FIXED_PERIOD_ACTIVE),
-            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_TOMORROW_AVAILABLE),
-        ]
-    )
+    entities = [
+        KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_PRICE_ACCEPTABLE),
+        KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_RANK_ACCEPTABLE),
+        KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_PRICE_OR_RANK_ACCEPTABLE),
+        KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_FIXED_PERIOD_ACTIVE),
+        KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_TOMORROW_AVAILABLE),
+    ]
+    if coordinator.generation_enabled:
+        entities.append(
+            KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_EXPORT_PRICE_ACCEPTABLE)
+        )
+        if coordinator.battery_sensors_enabled:
+            entities += [
+                KilowahtiBinarySensor(
+                    coordinator, entry, BINARY_SENSOR_CHARGE_FROM_GRID_RECOMMENDED
+                ),
+                KilowahtiBinarySensor(
+                    coordinator, entry, BINARY_SENSOR_DISCHARGE_TO_GRID_RECOMMENDED
+                ),
+            ]
+    async_add_entities(entities)
 
 
 # ---------------------------------------------------------------------------
@@ -99,5 +114,17 @@ class KilowahtiBinarySensor(CoordinatorEntity[KilowahtiCoordinator], BinarySenso
 
         if key == BINARY_SENSOR_TOMORROW_AVAILABLE:
             return c.tomorrow_slots() is not None
+
+        if key == BINARY_SENSOR_EXPORT_PRICE_ACCEPTABLE:
+            export = c.export_price_now()
+            if export is None:
+                return None
+            return export >= c._export_price_threshold
+
+        if key == BINARY_SENSOR_CHARGE_FROM_GRID_RECOMMENDED:
+            return c.charge_from_grid_recommended()
+
+        if key == BINARY_SENSOR_DISCHARGE_TO_GRID_RECOMMENDED:
+            return c.discharge_to_grid_recommended()
 
         return None

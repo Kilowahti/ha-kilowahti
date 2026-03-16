@@ -22,11 +22,13 @@
         "data": {
           "vat_rate_pct": "VAT rate (%)",
           "electricity_tax": "Electricity tax (c/kWh)",
-          "spot_commission": "Spot price commission (c/kWh)"
+          "spot_commission": "Spot price commission (c/kWh)",
+          "monthly_fixed_cost": "Electricity contract fixed cost (€/month)"
         },
         "data_description": {
           "electricity_tax": "Flat per-kWh electricity tax added on top of spot/fixed price.",
-          "spot_commission": "Retailer's per-kWh commission added on top of the spot price. Enter gross (VAT included). Leave at 0 if not applicable."
+          "spot_commission": "Retailer's per-kWh commission added on top of the spot price. Enter gross (VAT included). Leave at 0 if not applicable.",
+          "monthly_fixed_cost": "Fixed monthly fee from your electricity contract (e.g. basic service fee). Gross amount (VAT included). Leave at 0 if not applicable."
         }
       },
       "transfer_groups": {
@@ -39,12 +41,26 @@
       "add_transfer_group": {
         "title": "Add transfer price group",
         "data": {
-          "label": "Group name"
+          "label": "Group name",
+          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Edit group settings",
+        "data": {
+          "label": "Group name",
+          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
         }
       },
       "transfer_group_detail": {
         "title": "Manage group",
-        "description": "Add or remove tiers, or set this group as active.",
+        "description": "{group_label} — Add or remove tiers, or set this group as active.",
         "data": {
           "action": "Action"
         }
@@ -86,16 +102,20 @@
         "description": "Score profiles measure how well your consumption is shifted to cheap hours. The default 'Total' profile is pre-created.",
         "data": {}
       },
-      "sensor_display": {
-        "title": "Sensor display",
+      "advanced_options": {
+        "title": "Advanced options",
         "description": "Configure how sensor values are displayed in Home Assistant.",
         "data": {
           "expose_price_arrays": "Expose price arrays as sensor attributes (increases DB size)",
-          "high_precision": "High precision mode"
+          "high_precision": "High precision mode",
+          "show_rolling_averages": "Show next 30min, 1h and 2h average prices",
+          "generation_enabled": "Enable generation & export features"
         },
         "data_description": {
           "expose_price_arrays": "Writes today_prices and tomorrow_prices arrays to the spot_price sensor attribute. Useful for dashboard graphs but adds DB load.",
-          "high_precision": "When on, price sensors display more decimals. Attributes and calculations always use full precision."
+          "high_precision": "When on, price sensors display more decimals. Attributes and calculations always use full precision.",
+          "show_rolling_averages": "Adds sensors for average price over the next 30, 60, and 120 minutes.",
+          "generation_enabled": "Enables export price, battery, and arbitrage sensors and services. Configure generation settings in the Generation & export settings menu."
         }
       }
     },
@@ -123,8 +143,9 @@
           "transfer_groups": "Transfer price groups",
           "thresholds": "Thresholds & control",
           "score_profiles": "Score profiles",
-          "sensor_display": "Sensor display",
-          "fixed_periods": "Fixed-price periods"
+          "advanced_options": "Advanced options",
+          "fixed_periods": "Fixed-price periods",
+          "generation_settings": "Generation & export"
         }
       },
       "basic": {
@@ -137,7 +158,8 @@
           "display_unit": "Display unit",
           "vat_rate_pct": "VAT rate (%)",
           "electricity_tax": "Electricity tax (c/kWh)",
-          "spot_commission": "Spot price commission (c/kWh)"
+          "spot_commission": "Spot price commission (c/kWh)",
+          "monthly_fixed_cost": "Electricity contract fixed cost (€/month)"
         }
       },
       "transfer_groups": {
@@ -149,11 +171,26 @@
       "add_transfer_group": {
         "title": "Add transfer price group",
         "data": {
-          "label": "Group name"
+          "label": "Group name",
+          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Edit group settings",
+        "data": {
+          "label": "Group name",
+          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
         }
       },
       "transfer_group_detail": {
         "title": "Manage group",
+        "description": "{group_label}",
         "data": {
           "action": "Action"
         }
@@ -185,11 +222,17 @@
         "title": "Score profiles",
         "data": {}
       },
-      "sensor_display": {
-        "title": "Sensor display",
+      "advanced_options": {
+        "title": "Advanced options",
         "data": {
           "expose_price_arrays": "Expose price arrays as sensor attributes (increases DB size)",
-          "high_precision": "High precision mode"
+          "high_precision": "High precision mode",
+          "show_rolling_averages": "Show next 30min, 1h and 2h average prices",
+          "generation_enabled": "Enable generation & export features"
+        },
+        "data_description": {
+          "show_rolling_averages": "Adds sensors for average price over the next 30, 60, and 120 minutes.",
+          "generation_enabled": "Enables export price, battery, and arbitrage sensors and services. Configure generation settings in the Generation & export settings menu."
         }
       },
       "add_score_profile": {
@@ -230,6 +273,26 @@
         "description": "Manage fixed-price contract periods. When active, effective_price reflects the fixed price instead of spot.",
         "data": {
           "action": "Action"
+        }
+      },
+      "generation_settings": {
+        "title": "Generation & export settings",
+        "description": "Configure export pricing and battery settings. Set battery capacity to 0 to disable battery sensors.",
+        "data": {
+          "export_pricing_mode": "Export pricing mode",
+          "export_commission": "Export commission (c/kWh deducted from spot)",
+          "fixed_export_rate": "Fixed export rate (c/kWh)",
+          "export_price_threshold": "Export price threshold (c/kWh)",
+          "solar_window_start": "Solar window start hour",
+          "solar_window_end": "Solar window end hour",
+          "battery_capacity_kwh": "Battery capacity (kWh, 0 = disabled)",
+          "battery_charge_power_kw": "Battery charge power (kW)"
+        },
+        "data_description": {
+          "export_commission": "Spot-linked mode only. Seller's margin deducted from the spot API price (excl. VAT). Small producers typically don't collect VAT on exports.",
+          "fixed_export_rate": "Fixed mode only. Flat rate you receive per exported kWh.",
+          "solar_window_start": "Start hour of your typical solar production window (used by next_solar_window_avg sensor).",
+          "solar_window_end": "End hour (exclusive) of your typical solar production window."
         }
       },
       "add_fixed_period": {
@@ -274,23 +337,23 @@
       "total_price_rank": {
         "name": "Total price rank"
       },
-      "today_avg": {
-        "name": "Today average"
+      "today_spot_avg": {
+        "name": "Today spot average"
       },
-      "today_min": {
-        "name": "Today minimum"
+      "today_spot_min": {
+        "name": "Today spot minimum"
       },
-      "today_max": {
-        "name": "Today maximum"
+      "today_spot_max": {
+        "name": "Today spot maximum"
       },
-      "tomorrow_avg": {
-        "name": "Tomorrow average"
+      "tomorrow_spot_avg": {
+        "name": "Tomorrow spot average"
       },
-      "tomorrow_min": {
-        "name": "Tomorrow minimum"
+      "tomorrow_spot_min": {
+        "name": "Tomorrow spot minimum"
       },
-      "tomorrow_max": {
-        "name": "Tomorrow maximum"
+      "tomorrow_spot_max": {
+        "name": "Tomorrow spot maximum"
       },
       "today_total_avg": {
         "name": "Today total average"
@@ -348,6 +411,68 @@
       },
       "setting_active_fixed_period": {
         "name": "Active fixed period"
+      },
+      "export_price": {
+        "name": "Export price"
+      },
+      "export_today_avg": {
+        "name": "Export today average"
+      },
+      "export_today_min": {
+        "name": "Export today minimum"
+      },
+      "export_today_max": {
+        "name": "Export today maximum"
+      },
+      "export_tomorrow_avg": {
+        "name": "Export tomorrow average"
+      },
+      "export_tomorrow_min": {
+        "name": "Export tomorrow minimum"
+      },
+      "export_tomorrow_max": {
+        "name": "Export tomorrow maximum"
+      },
+      "import_export_spread": {
+        "name": "Import-export spread"
+      },
+      "self_consumption_value": {
+        "name": "Self-consumption value"
+      },
+      "avg_price_30min": {
+        "name": "Average price 30 min"
+      },
+      "avg_price_60min": {
+        "name": "Average price 60 min"
+      },
+      "avg_price_120min": {
+        "name": "Average price 120 min"
+      },
+      "next_solar_window_avg": {
+        "name": "Next solar window average"
+      },
+      "arbitrage_spread_today": {
+        "name": "Arbitrage spread today"
+      },
+      "charge_opportunity_factor": {
+        "name": "Charge opportunity factor"
+      },
+      "optimal_charge_window_start": {
+        "name": "Optimal charge window start"
+      },
+      "optimal_charge_window_end": {
+        "name": "Optimal charge window end"
+      },
+      "battery_charge_recommendation": {
+        "name": "Battery charge recommendation",
+        "state": {
+          "charge_from_grid": "Charge from grid",
+          "discharge": "Discharge",
+          "hold": "Hold"
+        }
+      },
+      "monthly_fixed_cost_today": {
+        "name": "Monthly fixed cost today"
       }
     },
     "number": {
@@ -373,6 +498,15 @@
       },
       "tomorrow_available": {
         "name": "Tomorrow available"
+      },
+      "export_price_acceptable": {
+        "name": "Export price acceptable"
+      },
+      "charge_from_grid_recommended": {
+        "name": "Charge from grid recommended"
+      },
+      "discharge_to_grid_recommended": {
+        "name": "Discharge to grid recommended"
       }
     }
   }

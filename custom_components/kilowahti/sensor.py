@@ -5,9 +5,11 @@ from __future__ import annotations
 import logging
 from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
 
 from homeassistant.components.sensor import (
+    SensorDeviceClass,
     SensorEntity,
     SensorEntityDescription,
     SensorStateClass,
@@ -21,13 +23,32 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
     DOMAIN,
+    SENSOR_ARBITRAGE_SPREAD_TODAY,
+    SENSOR_BATTERY_CHARGE_RECOMMENDATION,
+    SENSOR_CHARGE_OPPORTUNITY_FACTOR,
     SENSOR_CONTROL_FACTOR_PRICE,
     SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR,
     SENSOR_CONTROL_FACTOR_TRANSFER,
+    SENSOR_CURRENT_30MIN_AVG,
+    SENSOR_CURRENT_60MIN_AVG,
+    SENSOR_CURRENT_120MIN_AVG,
     SENSOR_EFFECTIVE_PRICE,
+    SENSOR_EXPORT_PRICE,
+    SENSOR_EXPORT_TODAY_AVG,
+    SENSOR_EXPORT_TODAY_MAX,
+    SENSOR_EXPORT_TODAY_MIN,
+    SENSOR_EXPORT_TOMORROW_AVG,
+    SENSOR_EXPORT_TOMORROW_MAX,
+    SENSOR_EXPORT_TOMORROW_MIN,
+    SENSOR_IMPORT_EXPORT_SPREAD,
+    SENSOR_MONTHLY_FIXED_COST_TODAY,
     SENSOR_NEXT_HOURS_AVG,
+    SENSOR_NEXT_SOLAR_WINDOW_AVG,
+    SENSOR_OPTIMAL_CHARGE_WINDOW_END,
+    SENSOR_OPTIMAL_CHARGE_WINDOW_START,
     SENSOR_PRICE_QUARTILE,
     SENSOR_PRICE_RANK,
+    SENSOR_SELF_CONSUMPTION_VALUE,
     SENSOR_SETTING_ACCEPTABLE_RANK,
     SENSOR_SETTING_ACTIVE_FIXED_PERIOD,
     SENSOR_SETTING_ACTIVE_TRANSFER_GROUP,
@@ -37,15 +58,15 @@ from .const import (
     SENSOR_SETTING_MAX_PRICE,
     SENSOR_SETTING_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     SENSOR_SPOT_PRICE,
-    SENSOR_TODAY_AVG,
-    SENSOR_TODAY_MAX,
-    SENSOR_TODAY_MIN,
+    SENSOR_TODAY_SPOT_AVG,
+    SENSOR_TODAY_SPOT_MAX,
+    SENSOR_TODAY_SPOT_MIN,
     SENSOR_TODAY_TOTAL_AVG,
     SENSOR_TODAY_TOTAL_MAX,
     SENSOR_TODAY_TOTAL_MIN,
-    SENSOR_TOMORROW_AVG,
-    SENSOR_TOMORROW_MAX,
-    SENSOR_TOMORROW_MIN,
+    SENSOR_TOMORROW_SPOT_AVG,
+    SENSOR_TOMORROW_SPOT_MAX,
+    SENSOR_TOMORROW_SPOT_MIN,
     SENSOR_TOMORROW_TOTAL_AVG,
     SENSOR_TOMORROW_TOTAL_MAX,
     SENSOR_TOMORROW_TOTAL_MIN,
@@ -65,12 +86,12 @@ _PRICE_SENSOR_KEYS = frozenset(
         SENSOR_EFFECTIVE_PRICE,
         SENSOR_TRANSFER_PRICE,
         SENSOR_TOTAL_PRICE,
-        SENSOR_TODAY_AVG,
-        SENSOR_TODAY_MIN,
-        SENSOR_TODAY_MAX,
-        SENSOR_TOMORROW_AVG,
-        SENSOR_TOMORROW_MIN,
-        SENSOR_TOMORROW_MAX,
+        SENSOR_TODAY_SPOT_AVG,
+        SENSOR_TODAY_SPOT_MIN,
+        SENSOR_TODAY_SPOT_MAX,
+        SENSOR_TOMORROW_SPOT_AVG,
+        SENSOR_TOMORROW_SPOT_MIN,
+        SENSOR_TOMORROW_SPOT_MAX,
         SENSOR_TODAY_TOTAL_AVG,
         SENSOR_TODAY_TOTAL_MIN,
         SENSOR_TODAY_TOTAL_MAX,
@@ -78,11 +99,51 @@ _PRICE_SENSOR_KEYS = frozenset(
         SENSOR_TOMORROW_TOTAL_MIN,
         SENSOR_TOMORROW_TOTAL_MAX,
         SENSOR_NEXT_HOURS_AVG,
+        SENSOR_EXPORT_PRICE,
+        SENSOR_EXPORT_TODAY_AVG,
+        SENSOR_EXPORT_TODAY_MIN,
+        SENSOR_EXPORT_TODAY_MAX,
+        SENSOR_EXPORT_TOMORROW_AVG,
+        SENSOR_EXPORT_TOMORROW_MIN,
+        SENSOR_EXPORT_TOMORROW_MAX,
+        SENSOR_IMPORT_EXPORT_SPREAD,
+        SENSOR_SELF_CONSUMPTION_VALUE,
+        SENSOR_CURRENT_30MIN_AVG,
+        SENSOR_CURRENT_60MIN_AVG,
+        SENSOR_CURRENT_120MIN_AVG,
+        SENSOR_NEXT_SOLAR_WINDOW_AVG,
+        SENSOR_ARBITRAGE_SPREAD_TODAY,
         SENSOR_SETTING_MAX_PRICE,
     }
 )
 _CONTROL_FACTOR_SENSOR_KEYS = frozenset(
     {SENSOR_CONTROL_FACTOR_PRICE, SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR}
+)
+_ROLLING_AVG_SENSOR_KEYS = frozenset(
+    {SENSOR_CURRENT_30MIN_AVG, SENSOR_CURRENT_60MIN_AVG, SENSOR_CURRENT_120MIN_AVG}
+)
+_GENERATION_SENSOR_KEYS = frozenset(
+    {
+        SENSOR_ARBITRAGE_SPREAD_TODAY,
+        SENSOR_EXPORT_PRICE,
+        SENSOR_EXPORT_TODAY_AVG,
+        SENSOR_EXPORT_TODAY_MIN,
+        SENSOR_EXPORT_TODAY_MAX,
+        SENSOR_EXPORT_TOMORROW_AVG,
+        SENSOR_EXPORT_TOMORROW_MIN,
+        SENSOR_EXPORT_TOMORROW_MAX,
+        SENSOR_IMPORT_EXPORT_SPREAD,
+        SENSOR_NEXT_SOLAR_WINDOW_AVG,
+        SENSOR_SELF_CONSUMPTION_VALUE,
+    }
+)
+_BATTERY_SENSOR_KEYS = frozenset(
+    {
+        SENSOR_BATTERY_CHARGE_RECOMMENDATION,
+        SENSOR_CHARGE_OPPORTUNITY_FACTOR,
+        SENSOR_OPTIMAL_CHARGE_WINDOW_END,
+        SENSOR_OPTIMAL_CHARGE_WINDOW_START,
+    }
 )
 
 
@@ -110,12 +171,12 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
     _price_sensor(SENSOR_SPOT_PRICE, lambda c: c.format_price(c.spot_price_now())),
     _price_sensor(SENSOR_TRANSFER_PRICE, lambda c: c.format_price(c.transfer_price_now())),
     _price_sensor(SENSOR_TOTAL_PRICE, lambda c: c.format_price(c.total_price_now())),
-    _price_sensor(SENSOR_TODAY_AVG, lambda c: c.format_price(c.today_avg())),
-    _price_sensor(SENSOR_TODAY_MIN, lambda c: c.format_price(c.today_min())),
-    _price_sensor(SENSOR_TODAY_MAX, lambda c: c.format_price(c.today_max())),
-    _price_sensor(SENSOR_TOMORROW_AVG, lambda c: c.format_price(c.tomorrow_avg())),
-    _price_sensor(SENSOR_TOMORROW_MIN, lambda c: c.format_price(c.tomorrow_min())),
-    _price_sensor(SENSOR_TOMORROW_MAX, lambda c: c.format_price(c.tomorrow_max())),
+    _price_sensor(SENSOR_TODAY_SPOT_AVG, lambda c: c.format_price(c.today_spot_avg())),
+    _price_sensor(SENSOR_TODAY_SPOT_MIN, lambda c: c.format_price(c.today_spot_min())),
+    _price_sensor(SENSOR_TODAY_SPOT_MAX, lambda c: c.format_price(c.today_spot_max())),
+    _price_sensor(SENSOR_TOMORROW_SPOT_AVG, lambda c: c.format_price(c.tomorrow_spot_avg())),
+    _price_sensor(SENSOR_TOMORROW_SPOT_MIN, lambda c: c.format_price(c.tomorrow_spot_min())),
+    _price_sensor(SENSOR_TOMORROW_SPOT_MAX, lambda c: c.format_price(c.tomorrow_spot_max())),
     _price_sensor(SENSOR_TODAY_TOTAL_AVG, lambda c: c.format_price(c.today_total_avg())),
     _price_sensor(SENSOR_TODAY_TOTAL_MIN, lambda c: c.format_price(c.today_total_min())),
     _price_sensor(SENSOR_TODAY_TOTAL_MAX, lambda c: c.format_price(c.today_total_max())),
@@ -222,6 +283,66 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         entity_registry_enabled_default=False,
         value_fn=lambda c: (fp := c.fixed_period_active_now()) and fp.label,
     ),
+    # E1 — Export & generation sensors
+    _price_sensor(SENSOR_EXPORT_PRICE, lambda c: c.format_price(c.export_price_now())),
+    _price_sensor(SENSOR_EXPORT_TODAY_AVG, lambda c: c.format_price(c.export_today_avg())),
+    _price_sensor(SENSOR_EXPORT_TODAY_MIN, lambda c: c.format_price(c.export_today_min())),
+    _price_sensor(SENSOR_EXPORT_TODAY_MAX, lambda c: c.format_price(c.export_today_max())),
+    _price_sensor(SENSOR_EXPORT_TOMORROW_AVG, lambda c: c.format_price(c.export_tomorrow_avg())),
+    _price_sensor(SENSOR_EXPORT_TOMORROW_MIN, lambda c: c.format_price(c.export_tomorrow_min())),
+    _price_sensor(SENSOR_EXPORT_TOMORROW_MAX, lambda c: c.format_price(c.export_tomorrow_max())),
+    _price_sensor(
+        SENSOR_IMPORT_EXPORT_SPREAD, lambda c: c.format_price(c.import_export_spread_now())
+    ),
+    _price_sensor(
+        SENSOR_SELF_CONSUMPTION_VALUE, lambda c: c.format_price(c.self_consumption_value_now())
+    ),
+    _price_sensor(SENSOR_CURRENT_30MIN_AVG, lambda c: c.format_price(c.current_rolling_avg(30))),
+    _price_sensor(SENSOR_CURRENT_60MIN_AVG, lambda c: c.format_price(c.current_rolling_avg(60))),
+    _price_sensor(SENSOR_CURRENT_120MIN_AVG, lambda c: c.format_price(c.current_rolling_avg(120))),
+    _price_sensor(
+        SENSOR_NEXT_SOLAR_WINDOW_AVG, lambda c: c.format_price(c.next_solar_window_avg())
+    ),
+    # E2 — Battery sensors
+    _price_sensor(
+        SENSOR_ARBITRAGE_SPREAD_TODAY, lambda c: c.format_price(c.arbitrage_spread_today())
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_CHARGE_OPPORTUNITY_FACTOR,
+        translation_key=SENSOR_CHARGE_OPPORTUNITY_FACTOR,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda c: c.charge_opportunity_factor(),
+        native_unit_of_measurement=None,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_BATTERY_CHARGE_RECOMMENDATION,
+        translation_key=SENSOR_BATTERY_CHARGE_RECOMMENDATION,
+        device_class=SensorDeviceClass.ENUM,
+        value_fn=lambda c: c.battery_charge_recommendation(),
+        native_unit_of_measurement=None,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_OPTIMAL_CHARGE_WINDOW_START,
+        translation_key=SENSOR_OPTIMAL_CHARGE_WINDOW_START,
+        device_class=SensorDeviceClass.TIMESTAMP,
+        value_fn=None,  # handled by KilowahtiOptimalChargeWindowSensor
+        native_unit_of_measurement=None,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_OPTIMAL_CHARGE_WINDOW_END,
+        translation_key=SENSOR_OPTIMAL_CHARGE_WINDOW_END,
+        device_class=SensorDeviceClass.TIMESTAMP,
+        value_fn=None,  # handled by KilowahtiOptimalChargeWindowSensor
+        native_unit_of_measurement=None,
+    ),
+    # E3 — Fixed cost sensor
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_MONTHLY_FIXED_COST_TODAY,
+        translation_key=SENSOR_MONTHLY_FIXED_COST_TODAY,
+        state_class=SensorStateClass.MEASUREMENT,
+        native_unit_of_measurement="€",
+        value_fn=lambda c: c.monthly_fixed_cost_today(),
+    ),
 )
 
 
@@ -239,10 +360,19 @@ async def async_setup_entry(
     entities: list[SensorEntity] = []
 
     for description in SENSOR_DESCRIPTIONS:
-        if description.key == SENSOR_SPOT_PRICE:
+        key = description.key
+        if key in _GENERATION_SENSOR_KEYS and not coordinator.generation_enabled:
+            continue
+        if key in _BATTERY_SENSOR_KEYS and not coordinator.battery_sensors_enabled:
+            continue
+        if key in _ROLLING_AVG_SENSOR_KEYS and not coordinator.show_rolling_averages:
+            continue
+        if key == SENSOR_SPOT_PRICE:
             entities.append(KilowahtiSpotPriceSensor(coordinator, entry, description))
-        elif description.key == SENSOR_CONTROL_FACTOR_TRANSFER:
+        elif key == SENSOR_CONTROL_FACTOR_TRANSFER:
             entities.append(KilowahtiTransferRankSensor(coordinator, entry, description))
+        elif key in (SENSOR_OPTIMAL_CHARGE_WINDOW_START, SENSOR_OPTIMAL_CHARGE_WINDOW_END):
+            entities.append(KilowahtiOptimalChargeWindowSensor(coordinator, entry, description))
         else:
             entities.append(KilowahtiSensor(coordinator, entry, description))
 
@@ -327,6 +457,7 @@ class KilowahtiSensor(KilowahtiSensorBase):
         try:
             return fn(self.coordinator)
         except Exception:
+            _LOGGER.warning("Error computing sensor value for %s", self.entity_id, exc_info=True)
             return None
 
 
@@ -384,6 +515,25 @@ class KilowahtiTransferRankSensor(KilowahtiSensorBase):
     def extra_state_attributes(self) -> dict[str, Any]:
         info = self.coordinator.transfer_rank_info()
         return {"tier_count": info[1]} if info is not None else {}
+
+
+# ---------------------------------------------------------------------------
+# Optimal charge window sensor (E2)
+# ---------------------------------------------------------------------------
+
+
+class KilowahtiOptimalChargeWindowSensor(KilowahtiSensorBase):
+    """Returns the start or end of the cheapest battery charge window as a timestamp."""
+
+    @property
+    def native_value(self) -> datetime | None:
+        result = self.coordinator.optimal_charge_window()
+        if result is None:
+            return None
+        start_dt, end_dt = result
+        if self.entity_description.key == SENSOR_OPTIMAL_CHARGE_WINDOW_START:
+            return start_dt
+        return end_dt
 
 
 # ---------------------------------------------------------------------------

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import voluptuous as vol
 
@@ -82,6 +82,50 @@ GET_ACTIVE_PRICES_SCHEMA = vol.Schema(
         _OPT_ENTRY_ID: cv.string,
         vol.Optional("start"): cv.datetime,
         vol.Optional("end"): cv.datetime,
+        _OPT_FORMATTED: cv.boolean,
+    }
+)
+
+GET_EXPORT_PRICES_SCHEMA = vol.Schema(
+    {
+        _OPT_ENTRY_ID: cv.string,
+        vol.Optional("start"): cv.datetime,
+        vol.Optional("end"): cv.datetime,
+        _OPT_FORMATTED: cv.boolean,
+    }
+)
+
+BEST_EXPORT_HOURS_SCHEMA = vol.Schema(
+    {
+        _OPT_ENTRY_ID: cv.string,
+        vol.Required("start"): cv.datetime,
+        vol.Required("end"): cv.datetime,
+        vol.Required("hours"): vol.All(vol.Coerce(float), vol.Range(min=0.25, max=24)),
+        _OPT_FORMATTED: cv.boolean,
+    }
+)
+
+BEST_CHARGE_HOURS_SCHEMA = vol.Schema(
+    {
+        _OPT_ENTRY_ID: cv.string,
+        vol.Required("start"): cv.datetime,
+        vol.Required("end"): cv.datetime,
+        vol.Required("hours"): vol.All(vol.Coerce(float), vol.Range(min=0.25, max=24)),
+        _OPT_FORMATTED: cv.boolean,
+    }
+)
+
+GENERATION_SCHEDULE_SCHEMA = vol.Schema(
+    {
+        _OPT_ENTRY_ID: cv.string,
+        vol.Required("forecast"): [
+            vol.Schema(
+                {
+                    vol.Required("time"): cv.datetime,
+                    vol.Required("kwh"): vol.All(vol.Coerce(float), vol.Range(min=0)),
+                }
+            )
+        ],
         _OPT_FORMATTED: cv.boolean,
     }
 )
@@ -317,6 +361,183 @@ async def _handle_list_fixed_periods(call: ServiceCall) -> ServiceResponse:
     }
 
 
+async def _handle_get_export_prices(call: ServiceCall) -> ServiceResponse:
+    coordinator = _get_coordinator(call.hass, call.data.get("config_entry_id"))
+    formatted: bool = call.data["formatted"]
+    start: datetime | None = call.data.get("start")
+    end: datetime | None = call.data.get("end")
+
+    if start is not None and end is not None:
+        slots = coordinator.slots_in_range(start, end)
+    else:
+        tomorrow = coordinator.tomorrow_slots() or []
+        slots = coordinator.today_slots() + tomorrow
+
+    return {
+        "unit": coordinator.native_unit,
+        "price_periods": [
+            {
+                "time": dt_util.as_local(slot.dt_utc).isoformat(),
+                "export_price": _fmt(
+                    coordinator, coordinator.export_price_for_slot(slot), formatted
+                ),
+            }
+            for slot in slots
+        ],
+    }
+
+
+async def _handle_best_export_hours(call: ServiceCall) -> ServiceResponse:
+    coordinator = _get_coordinator(call.hass, call.data.get("config_entry_id"))
+    start: datetime = call.data["start"]
+    end: datetime = call.data["end"]
+    hours: float = call.data["hours"]
+    formatted: bool = call.data["formatted"]
+
+    slots = coordinator.slots_in_range(start, end)
+    if not slots:
+        return {"error": "No price slots available in the specified range"}
+
+    resolution_minutes = coordinator._resolution.value
+    slots_needed = max(1, round(hours * 60 / resolution_minutes))
+
+    # Find consecutive window with highest average export price
+    if slots_needed > len(slots):
+        return {"error": f"Requested {hours}h but only {len(slots)} slots available in range"}
+
+    best_start = 0
+    best_avg = -1.0
+    for i in range(len(slots) - slots_needed + 1):
+        window = slots[i : i + slots_needed]
+        prices = [coordinator.export_price_for_slot(s) for s in window]
+        avg = sum(prices) / len(prices)
+        if avg > best_avg:
+            best_avg = avg
+            best_start = i
+
+    best_window = slots[best_start : best_start + slots_needed]
+    return {
+        "start": best_window[0].dt_utc.isoformat(),
+        "end": best_window[-1].dt_utc.isoformat(),
+        "average_export_price": _fmt(coordinator, best_avg, formatted),
+        "unit": coordinator.native_unit,
+        "price_periods": [
+            {
+                "time": dt_util.as_local(s.dt_utc).isoformat(),
+                "export_price": _fmt(coordinator, coordinator.export_price_for_slot(s), formatted),
+            }
+            for s in best_window
+        ],
+    }
+
+
+async def _handle_best_charge_hours(call: ServiceCall) -> ServiceResponse:
+    coordinator = _get_coordinator(call.hass, call.data.get("config_entry_id"))
+    start: datetime = call.data["start"]
+    end: datetime = call.data["end"]
+    hours: float = call.data["hours"]
+    formatted: bool = call.data["formatted"]
+
+    slots = coordinator.slots_in_range(start, end)
+    if not slots:
+        return {"error": "No price slots available in the specified range"}
+
+    resolution_minutes = coordinator._resolution.value
+    slots_needed = max(1, round(hours * 60 / resolution_minutes))
+
+    if slots_needed > len(slots):
+        return {"error": f"Requested {hours}h but only {len(slots)} slots available in range"}
+
+    # Find the consecutive window with the lowest average total price
+    best_start = 0
+    best_avg = float("inf")
+    for i in range(len(slots) - slots_needed + 1):
+        window = slots[i : i + slots_needed]
+        prices = coordinator._total_prices_for_slots(window)
+        avg = sum(prices) / len(prices)
+        if avg < best_avg:
+            best_avg = avg
+            best_start = i
+
+    best_window = slots[best_start : best_start + slots_needed]
+    return {
+        "start": best_window[0].dt_utc.isoformat(),
+        "end": best_window[-1].dt_utc.isoformat(),
+        "average_total_price": _fmt(coordinator, best_avg, formatted),
+        "unit": coordinator.native_unit,
+        "price_periods": [
+            {
+                "time": dt_util.as_local(s.dt_utc).isoformat(),
+                "total_price": _fmt(
+                    coordinator,
+                    coordinator._spot_effective(s)
+                    + (coordinator.transfer_price_for_slot(s) or 0.0),
+                    formatted,
+                ),
+            }
+            for s in best_window
+        ],
+    }
+
+
+async def _handle_generation_schedule(call: ServiceCall) -> ServiceResponse:
+    coordinator = _get_coordinator(call.hass, call.data.get("config_entry_id"))
+    formatted: bool = call.data["formatted"]
+    forecast: list[dict] = call.data["forecast"]
+
+    schedule = []
+    for entry in forecast:
+        slot_time: datetime = entry["time"]
+        kwh: float = entry["kwh"]
+
+        # Find the matching price slot
+        matching = coordinator.slots_in_range(slot_time, slot_time + _SLOT_SEARCH_WINDOW)
+        if not matching:
+            schedule.append(
+                {
+                    "time": dt_util.as_local(slot_time).isoformat(),
+                    "kwh": kwh,
+                    "action": "unknown",
+                    "self_consumption_value": None,
+                    "export_price": None,
+                }
+            )
+            continue
+
+        slot = matching[0]
+        transfer = coordinator.transfer_price_for_slot(slot) or 0.0
+        self_value = coordinator._spot_effective(slot) + transfer
+        export_p = coordinator.export_price_for_slot(slot)
+
+        # Recommendation: self-consume is almost always better due to VAT + transfer
+        # Export recommended only if export_price >= self_consumption_value (very rare)
+        if export_p >= self_value:
+            action = "export"
+        elif kwh > 0:
+            action = "self_consume"
+        else:
+            action = "idle"
+
+        schedule.append(
+            {
+                "time": dt_util.as_local(slot.dt_utc).isoformat(),
+                "kwh": kwh,
+                "action": action,
+                "self_consumption_value": _fmt(coordinator, self_value, formatted),
+                "export_price": _fmt(coordinator, export_p, formatted),
+            }
+        )
+
+    return {
+        "unit": coordinator.native_unit,
+        "schedule": schedule,
+    }
+
+
+# Slot search window: wide enough to match the start of any resolution slot
+_SLOT_SEARCH_WINDOW = timedelta(minutes=60)
+
+
 # ---------------------------------------------------------------------------
 # Registration
 # ---------------------------------------------------------------------------
@@ -374,6 +595,34 @@ def async_register_services(hass: HomeAssistant) -> None:
         schema=LIST_FIXED_PERIODS_SCHEMA,
         supports_response=SupportsResponse.ONLY,
     )
+    hass.services.async_register(
+        DOMAIN,
+        "get_export_prices",
+        _handle_get_export_prices,
+        schema=GET_EXPORT_PRICES_SCHEMA,
+        supports_response=SupportsResponse.ONLY,
+    )
+    hass.services.async_register(
+        DOMAIN,
+        "best_export_hours",
+        _handle_best_export_hours,
+        schema=BEST_EXPORT_HOURS_SCHEMA,
+        supports_response=SupportsResponse.ONLY,
+    )
+    hass.services.async_register(
+        DOMAIN,
+        "best_charge_hours",
+        _handle_best_charge_hours,
+        schema=BEST_CHARGE_HOURS_SCHEMA,
+        supports_response=SupportsResponse.ONLY,
+    )
+    hass.services.async_register(
+        DOMAIN,
+        "generation_schedule",
+        _handle_generation_schedule,
+        schema=GENERATION_SCHEDULE_SCHEMA,
+        supports_response=SupportsResponse.ONLY,
+    )
     _LOGGER.debug("Kilowahti services registered")
 
 
@@ -387,5 +636,9 @@ def async_unregister_services(hass: HomeAssistant) -> None:
         "add_fixed_period",
         "remove_fixed_period",
         "list_fixed_periods",
+        "get_export_prices",
+        "best_export_hours",
+        "best_charge_hours",
+        "generation_schedule",
     ):
         hass.services.async_remove(DOMAIN, service)

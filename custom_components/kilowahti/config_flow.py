@@ -15,45 +15,69 @@ from homeassistant.helpers import selector
 
 from .const import (
     API_REGIONS,
+    CONF_BATTERY_CAPACITY_KWH,
+    CONF_BATTERY_CHARGE_POWER_KW,
     CONF_CONTROL_FACTOR_FUNCTION,
     CONF_CONTROL_FACTOR_SCALING,
     CONF_DISPLAY_UNIT,
     CONF_EAGER_END_HOUR,
     CONF_EAGER_START_HOUR,
     CONF_ELECTRICITY_TAX,
+    CONF_EXPORT_COMMISSION,
+    CONF_EXPORT_PRICE_THRESHOLD,
+    CONF_EXPORT_PRICING_MODE,
     CONF_EXPOSE_PRICE_ARRAYS,
+    CONF_FIXED_EXPORT_RATE,
     CONF_FORWARD_AVG_HOURS,
+    CONF_GENERATION_ENABLED,
     CONF_HIGH_PRECISION,
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
+    CONF_MONTHLY_FIXED_COST,
     CONF_PRICE_RESOLUTION,
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
     CONF_SCORE_PROFILES,
+    CONF_SHOW_ROLLING_AVERAGES,
+    CONF_SOLAR_WINDOW_END,
+    CONF_SOLAR_WINDOW_START,
     CONF_SPOT_COMMISSION,
     CONF_TRANSFER_GROUPS,
     CONF_VAT_RATE,
     CONTROL_FACTOR_LINEAR,
     CONTROL_FACTOR_SINUSOIDAL,
     COUNTRY_PRESETS,
+    DEFAULT_BATTERY_CAPACITY_KWH,
+    DEFAULT_BATTERY_CHARGE_POWER_KW,
     DEFAULT_CONTROL_FACTOR_FUNCTION,
     DEFAULT_CONTROL_FACTOR_SCALING,
     DEFAULT_EAGER_END_HOUR,
     DEFAULT_EAGER_START_HOUR,
     DEFAULT_ELECTRICITY_TAX,
+    DEFAULT_EXPORT_COMMISSION,
+    DEFAULT_EXPORT_PRICE_THRESHOLD,
+    DEFAULT_EXPORT_PRICING_MODE,
     DEFAULT_EXPOSE_PRICE_ARRAYS,
+    DEFAULT_FIXED_EXPORT_RATE,
     DEFAULT_FORWARD_AVG_HOURS,
+    DEFAULT_GENERATION_ENABLED,
     DEFAULT_HIGH_PRECISION,
     DEFAULT_MAX_PRICE,
     DEFAULT_MAX_RANK,
+    DEFAULT_MONTHLY_FIXED_COST,
     DEFAULT_PRICE_RESOLUTION,
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     DEFAULT_SCORE_FORMULA,
     DEFAULT_SCORE_PROFILE_ID,
     DEFAULT_SCORE_PROFILE_LABEL,
+    DEFAULT_SHOW_ROLLING_AVERAGES,
+    DEFAULT_SOLAR_WINDOW_END,
+    DEFAULT_SOLAR_WINDOW_START,
     DEFAULT_SPOT_COMMISSION,
     DEFAULT_VAT_RATE,
     DOMAIN,
+    EXPORT_PRICING_FIXED,
+    EXPORT_PRICING_SPOT_LINKED,
     SCORE_FORMULA_DEFAULT,
     SCORE_FORMULA_RAW,
     UNIT_EUROKWH,
@@ -181,6 +205,12 @@ def _vat_schema(defaults: dict) -> vol.Schema:
             ): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=0, max=20, step=0.01, mode="box")
             ),
+            vol.Required(
+                CONF_MONTHLY_FIXED_COST,
+                default=defaults.get(CONF_MONTHLY_FIXED_COST, DEFAULT_MONTHLY_FIXED_COST),
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(min=0, max=500, step=0.01, mode="box")
+            ),
         }
     )
 
@@ -237,27 +267,111 @@ def _score_profiles_schema(_defaults: dict) -> vol.Schema:
     return vol.Schema({})
 
 
-def _sensor_display_schema(defaults: dict) -> vol.Schema:
+def _advanced_options_schema(defaults: dict) -> vol.Schema:
+    is_hourly = int(defaults.get(CONF_PRICE_RESOLUTION, DEFAULT_PRICE_RESOLUTION)) == 60
+    fields: dict = {
+        vol.Required(
+            CONF_EXPOSE_PRICE_ARRAYS,
+            default=defaults.get(CONF_EXPOSE_PRICE_ARRAYS, DEFAULT_EXPOSE_PRICE_ARRAYS),
+        ): selector.BooleanSelector(),
+        vol.Required(
+            CONF_HIGH_PRECISION,
+            default=defaults.get(CONF_HIGH_PRECISION, DEFAULT_HIGH_PRECISION),
+        ): selector.BooleanSelector(),
+    }
+    if not is_hourly:
+        fields[
+            vol.Required(
+                CONF_SHOW_ROLLING_AVERAGES,
+                default=defaults.get(CONF_SHOW_ROLLING_AVERAGES, DEFAULT_SHOW_ROLLING_AVERAGES),
+            )
+        ] = selector.BooleanSelector()
+    fields[
+        vol.Required(
+            CONF_GENERATION_ENABLED,
+            default=defaults.get(CONF_GENERATION_ENABLED, DEFAULT_GENERATION_ENABLED),
+        )
+    ] = selector.BooleanSelector()
+    return vol.Schema(fields)
+
+
+def _generation_settings_schema(defaults: dict) -> vol.Schema:
     return vol.Schema(
         {
             vol.Required(
-                CONF_EXPOSE_PRICE_ARRAYS,
-                default=defaults.get(CONF_EXPOSE_PRICE_ARRAYS, DEFAULT_EXPOSE_PRICE_ARRAYS),
-            ): selector.BooleanSelector(),
+                CONF_EXPORT_PRICING_MODE,
+                default=defaults.get(CONF_EXPORT_PRICING_MODE, DEFAULT_EXPORT_PRICING_MODE),
+            ): selector.SelectSelector(
+                selector.SelectSelectorConfig(
+                    options=[
+                        {"value": EXPORT_PRICING_SPOT_LINKED, "label": "Spot-linked"},
+                        {"value": EXPORT_PRICING_FIXED, "label": "Fixed rate"},
+                    ]
+                )
+            ),
             vol.Required(
-                CONF_HIGH_PRECISION,
-                default=defaults.get(CONF_HIGH_PRECISION, DEFAULT_HIGH_PRECISION),
-            ): selector.BooleanSelector(),
+                CONF_EXPORT_COMMISSION,
+                default=defaults.get(CONF_EXPORT_COMMISSION, DEFAULT_EXPORT_COMMISSION),
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(min=0, max=10, step=0.01, mode="box")
+            ),
+            vol.Required(
+                CONF_FIXED_EXPORT_RATE,
+                default=defaults.get(CONF_FIXED_EXPORT_RATE, DEFAULT_FIXED_EXPORT_RATE),
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(min=0, max=100, step=0.01, mode="box")
+            ),
+            vol.Required(
+                CONF_EXPORT_PRICE_THRESHOLD,
+                default=defaults.get(CONF_EXPORT_PRICE_THRESHOLD, DEFAULT_EXPORT_PRICE_THRESHOLD),
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(min=0, max=100, step=0.1, mode="box")
+            ),
+            vol.Required(
+                CONF_SOLAR_WINDOW_START,
+                default=defaults.get(CONF_SOLAR_WINDOW_START, DEFAULT_SOLAR_WINDOW_START),
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(min=0, max=23, step=1, mode="box")
+            ),
+            vol.Required(
+                CONF_SOLAR_WINDOW_END,
+                default=defaults.get(CONF_SOLAR_WINDOW_END, DEFAULT_SOLAR_WINDOW_END),
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(min=1, max=24, step=1, mode="box")
+            ),
+            vol.Required(
+                CONF_BATTERY_CAPACITY_KWH,
+                default=defaults.get(CONF_BATTERY_CAPACITY_KWH, DEFAULT_BATTERY_CAPACITY_KWH),
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(min=0, max=999, step=0.1, mode="box")
+            ),
+            vol.Required(
+                CONF_BATTERY_CHARGE_POWER_KW,
+                default=defaults.get(CONF_BATTERY_CHARGE_POWER_KW, DEFAULT_BATTERY_CHARGE_POWER_KW),
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(min=0, max=99, step=0.1, mode="box")
+            ),
+        }
+    )
+
+
+def _group_settings_schema(defaults: dict | None = None) -> vol.Schema:
+    defaults = defaults or {}
+    return vol.Schema(
+        {
+            vol.Required("label", default=defaults.get("label", "")): selector.TextSelector(),
+            vol.Required(
+                CONF_MONTHLY_FIXED_COST,
+                default=defaults.get(CONF_MONTHLY_FIXED_COST, DEFAULT_MONTHLY_FIXED_COST),
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(min=0, max=999, step=0.01, mode="box")
+            ),
         }
     )
 
 
 def _add_group_schema() -> vol.Schema:
-    return vol.Schema(
-        {
-            vol.Required("label"): selector.TextSelector(),
-        }
-    )
+    return _group_settings_schema()
 
 
 def _add_tier_schema(defaults: dict | None = None) -> vol.Schema:
@@ -352,6 +466,9 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
             self._data[CONF_VAT_RATE] = _to_float(user_input["vat_rate_pct"]) / 100.0
             self._data[CONF_ELECTRICITY_TAX] = _to_float(user_input[CONF_ELECTRICITY_TAX])
             self._data[CONF_SPOT_COMMISSION] = _to_float(user_input.get(CONF_SPOT_COMMISSION, 0.0))
+            self._data[CONF_MONTHLY_FIXED_COST] = _to_float(
+                user_input.get(CONF_MONTHLY_FIXED_COST, 0.0)
+            )
             return await self.async_step_transfer_groups()
 
         # Pre-fill from region preset
@@ -389,7 +506,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
             group_options.append(
                 {
                     "value": f"manage_{i}",
-                    "label": f"Manage: {g['label']}{active_label} ({tier_count} tiers)",
+                    "label": f"⚙ Manage: {g['label']} ({tier_count} tiers){active_label}",
                 }
             )
         group_options.append({"value": "add_group", "label": "➕ Add group"})
@@ -413,6 +530,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
                 "label": user_input["label"],
                 "active": len(self._groups) == 0,  # first group is active by default
                 "tiers": [],
+                CONF_MONTHLY_FIXED_COST: _to_float(user_input[CONF_MONTHLY_FIXED_COST]),
             }
             self._groups.append(new_group)
             self._current_group_idx = len(self._groups) - 1
@@ -427,6 +545,8 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
                 return await self.async_step_transfer_groups()
             if action == "add_tier":
                 return await self.async_step_add_transfer_tier()
+            if action == "edit_group_settings":
+                return await self.async_step_edit_group_settings()
             if action == "set_active":
                 for i, g in enumerate(self._groups):
                     g["active"] = i == self._current_group_idx
@@ -445,6 +565,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
         group = self._groups[self._current_group_idx]
         action_options: list[dict] = [
             {"value": "add_tier", "label": "➕ Add tier"},
+            {"value": "edit_group_settings", "label": "⚙ Edit group settings"},
         ]
         if not group.get("active"):
             action_options.append({"value": "set_active", "label": "★ Set as active group"})
@@ -468,6 +589,18 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
                 "group_label": group["label"],
                 "tier_count": str(len(group.get("tiers", []))),
             },
+        )
+
+    async def async_step_edit_group_settings(self, user_input: dict | None = None):
+        group = self._groups[self._current_group_idx]
+        if user_input is not None:
+            group["label"] = user_input["label"]
+            group[CONF_MONTHLY_FIXED_COST] = _to_float(user_input[CONF_MONTHLY_FIXED_COST])
+            return await self.async_step_transfer_group_detail()
+
+        return self.async_show_form(
+            step_id="edit_group_settings",
+            data_schema=_group_settings_schema(group),
         )
 
     async def async_step_add_transfer_tier(self, user_input: dict | None = None):
@@ -519,7 +652,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
             ]
             self._data[CONF_EAGER_START_HOUR] = DEFAULT_EAGER_START_HOUR
             self._data[CONF_EAGER_END_HOUR] = DEFAULT_EAGER_END_HOUR
-            return await self.async_step_sensor_display()
+            return await self.async_step_advanced_options()
 
         return self.async_show_form(
             step_id="score_profiles",
@@ -528,15 +661,19 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
 
     # ------ Step 6: sensor display ----------------------------------------
 
-    async def async_step_sensor_display(self, user_input: dict | None = None):
+    async def async_step_advanced_options(self, user_input: dict | None = None):
         if user_input is not None:
             self._data[CONF_EXPOSE_PRICE_ARRAYS] = user_input[CONF_EXPOSE_PRICE_ARRAYS]
             self._data[CONF_HIGH_PRECISION] = user_input[CONF_HIGH_PRECISION]
+            self._data[CONF_SHOW_ROLLING_AVERAGES] = user_input.get(
+                CONF_SHOW_ROLLING_AVERAGES, False
+            )
+            self._data[CONF_GENERATION_ENABLED] = user_input[CONF_GENERATION_ENABLED]
             return self.async_create_entry(title=self._data["name"], data={}, options=self._data)
 
         return self.async_show_form(
-            step_id="sensor_display",
-            data_schema=_sensor_display_schema({}),
+            step_id="advanced_options",
+            data_schema=_advanced_options_schema({}),
         )
 
     @staticmethod
@@ -568,8 +705,9 @@ class KilowahtiOptionsFlow(OptionsFlow):
                 "transfer_groups",
                 "thresholds",
                 "score_profiles",
-                "sensor_display",
+                "advanced_options",
                 "fixed_periods",
+                "generation_settings",
             ],
         )
 
@@ -586,6 +724,9 @@ class KilowahtiOptionsFlow(OptionsFlow):
             self._options[CONF_SPOT_COMMISSION] = _to_float(
                 user_input.get(CONF_SPOT_COMMISSION, 0.0)
             )
+            self._options[CONF_MONTHLY_FIXED_COST] = _to_float(
+                user_input.get(CONF_MONTHLY_FIXED_COST, 0.0)
+            )
             return self.async_create_entry(data=self._options)
 
         cur = self._options
@@ -599,6 +740,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
             "vat_rate_pct": round(cur.get(CONF_VAT_RATE, DEFAULT_VAT_RATE) * 100, 1),
             CONF_ELECTRICITY_TAX: cur.get(CONF_ELECTRICITY_TAX, DEFAULT_ELECTRICITY_TAX),
             CONF_SPOT_COMMISSION: cur.get(CONF_SPOT_COMMISSION, DEFAULT_SPOT_COMMISSION),
+            CONF_MONTHLY_FIXED_COST: cur.get(CONF_MONTHLY_FIXED_COST, DEFAULT_MONTHLY_FIXED_COST),
         }
         schema = vol.Schema(
             {**_user_schema(basic_defaults).schema, **_vat_schema(vat_defaults).schema}
@@ -627,7 +769,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
             group_options.append(
                 {
                     "value": f"manage_{i}",
-                    "label": f"Manage: {g['label']}{active_label} ({tier_count} tiers)",
+                    "label": f"⚙ Manage: {g['label']} ({tier_count} tiers){active_label}",
                 }
             )
         group_options.append({"value": "add_group", "label": "➕ Add group"})
@@ -651,6 +793,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
                 "label": user_input["label"],
                 "active": len(self._groups) == 0,
                 "tiers": [],
+                CONF_MONTHLY_FIXED_COST: _to_float(user_input[CONF_MONTHLY_FIXED_COST]),
             }
             self._groups.append(new_group)
             self._current_group_idx = len(self._groups) - 1
@@ -665,6 +808,8 @@ class KilowahtiOptionsFlow(OptionsFlow):
                 return await self.async_step_transfer_groups()
             if action == "add_tier":
                 return await self.async_step_add_transfer_tier()
+            if action == "edit_group_settings":
+                return await self.async_step_edit_group_settings()
             if action == "set_active":
                 for i, g in enumerate(self._groups):
                     g["active"] = i == self._current_group_idx
@@ -680,7 +825,10 @@ class KilowahtiOptionsFlow(OptionsFlow):
                 return await self.async_step_transfer_group_detail()
 
         group = self._groups[self._current_group_idx]
-        action_options: list[dict] = [{"value": "add_tier", "label": "➕ Add tier"}]
+        action_options: list[dict] = [
+            {"value": "add_tier", "label": "➕ Add tier"},
+            {"value": "edit_group_settings", "label": "⚙ Edit group settings"},
+        ]
         if not group.get("active"):
             action_options.append({"value": "set_active", "label": "★ Set as active group"})
         for i, tier in enumerate(group.get("tiers", [])):
@@ -699,6 +847,22 @@ class KilowahtiOptionsFlow(OptionsFlow):
                     )
                 }
             ),
+            description_placeholders={
+                "group_label": group["label"],
+                "tier_count": str(len(group.get("tiers", []))),
+            },
+        )
+
+    async def async_step_edit_group_settings(self, user_input: dict | None = None):
+        group = self._groups[self._current_group_idx]
+        if user_input is not None:
+            group["label"] = user_input["label"]
+            group[CONF_MONTHLY_FIXED_COST] = _to_float(user_input[CONF_MONTHLY_FIXED_COST])
+            return await self.async_step_transfer_group_detail()
+
+        return self.async_show_form(
+            step_id="edit_group_settings",
+            data_schema=_group_settings_schema(group),
         )
 
     async def async_step_add_transfer_tier(self, user_input: dict | None = None):
@@ -779,17 +943,46 @@ class KilowahtiOptionsFlow(OptionsFlow):
             ),
         )
 
-    # ------ Sensor display ------------------------------------------------
+    # ------ Advanced options ------------------------------------------------
 
-    async def async_step_sensor_display(self, user_input: dict | None = None):
+    async def async_step_advanced_options(self, user_input: dict | None = None):
         if user_input is not None:
             self._options[CONF_EXPOSE_PRICE_ARRAYS] = user_input[CONF_EXPOSE_PRICE_ARRAYS]
             self._options[CONF_HIGH_PRECISION] = user_input[CONF_HIGH_PRECISION]
+            self._options[CONF_SHOW_ROLLING_AVERAGES] = user_input.get(
+                CONF_SHOW_ROLLING_AVERAGES, False
+            )
+            self._options[CONF_GENERATION_ENABLED] = user_input[CONF_GENERATION_ENABLED]
             return self.async_create_entry(data=self._options)
 
         return self.async_show_form(
-            step_id="sensor_display",
-            data_schema=_sensor_display_schema(self._options),
+            step_id="advanced_options",
+            data_schema=_advanced_options_schema(self._options),
+        )
+
+    # ------ Generation & export settings ---------------------------------
+
+    async def async_step_generation_settings(self, user_input: dict | None = None):
+        if user_input is not None:
+            self._options[CONF_EXPORT_PRICING_MODE] = user_input[CONF_EXPORT_PRICING_MODE]
+            self._options[CONF_EXPORT_COMMISSION] = _to_float(user_input[CONF_EXPORT_COMMISSION])
+            self._options[CONF_FIXED_EXPORT_RATE] = _to_float(user_input[CONF_FIXED_EXPORT_RATE])
+            self._options[CONF_EXPORT_PRICE_THRESHOLD] = _to_float(
+                user_input[CONF_EXPORT_PRICE_THRESHOLD]
+            )
+            self._options[CONF_SOLAR_WINDOW_START] = int(user_input[CONF_SOLAR_WINDOW_START])
+            self._options[CONF_SOLAR_WINDOW_END] = int(user_input[CONF_SOLAR_WINDOW_END])
+            self._options[CONF_BATTERY_CAPACITY_KWH] = _to_float(
+                user_input[CONF_BATTERY_CAPACITY_KWH]
+            )
+            self._options[CONF_BATTERY_CHARGE_POWER_KW] = _to_float(
+                user_input[CONF_BATTERY_CHARGE_POWER_KW]
+            )
+            return self.async_create_entry(data=self._options)
+
+        return self.async_show_form(
+            step_id="generation_settings",
+            data_schema=_generation_settings_schema(self._options),
         )
 
     async def async_step_add_score_profile(self, user_input: dict | None = None):
@@ -1018,7 +1211,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
                     vol.Required("start_date"): selector.DateSelector(),
                     vol.Required("end_date"): selector.DateSelector(),
                     vol.Required("price"): selector.NumberSelector(
-                        selector.NumberSelectorConfig(min=0.001, max=999, step=0.001, mode="box")
+                        selector.NumberSelectorConfig(min=0, max=999, step=0.01, mode="box")
                     ),
                 }
             ),

@@ -7,15 +7,22 @@ from unittest.mock import patch
 
 from aioresponses import aioresponses
 
+from pytest_homeassistant_custom_component.common import MockConfigEntry
+
 from custom_components.kilowahti.const import (
+    BINARY_SENSOR_CHARGE_FROM_GRID_RECOMMENDED,
+    BINARY_SENSOR_DISCHARGE_TO_GRID_RECOMMENDED,
+    BINARY_SENSOR_EXPORT_PRICE_ACCEPTABLE,
     BINARY_SENSOR_PRICE_ACCEPTABLE,
     BINARY_SENSOR_RANK_ACCEPTABLE,
     BINARY_SENSOR_TOMORROW_AVAILABLE,
+    CONF_BATTERY_CAPACITY_KWH,
+    CONF_GENERATION_ENABLED,
     DOMAIN,
 )
 from homeassistant.helpers import entity_registry as er
 
-from .conftest import TOMORROW_PAYLOAD, TOMORROW_URL_RE
+from .conftest import TODAY_URL_RE, TOMORROW_PAYLOAD, TOMORROW_URL_RE
 
 
 def _entity_id(hass, entry_id: str, key: str) -> str | None:
@@ -88,3 +95,74 @@ async def test_tomorrow_available_transitions_on_eager_fetch(hass, setup_integra
 
     state = hass.states.get(entity_id)
     assert state.state == "on"
+
+
+# ---------------------------------------------------------------------------
+# Generation / battery sensor gating
+# ---------------------------------------------------------------------------
+
+
+async def test_export_price_acceptable_absent_when_generation_disabled(
+    hass, options, mock_utcnow
+):
+    """export_price_acceptable binary sensor is not registered when generation_enabled=False."""
+    from .conftest import TODAY_PAYLOAD
+
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=options)
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    entity_id = _entity_id(hass, entry.entry_id, BINARY_SENSOR_EXPORT_PRICE_ACCEPTABLE)
+    assert entity_id is None
+
+
+async def test_charge_discharge_sensors_absent_when_no_battery(
+    hass, options, mock_utcnow
+):
+    """charge/discharge binary sensors are not registered when generation_enabled=True but battery_capacity=0."""
+    gen_options = {**options, CONF_GENERATION_ENABLED: True}
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=gen_options)
+
+    from .conftest import TODAY_PAYLOAD
+
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    # export_price_acceptable SHOULD be present (generation enabled).
+    assert _entity_id(hass, entry.entry_id, BINARY_SENSOR_EXPORT_PRICE_ACCEPTABLE) is not None
+    # Charge/discharge should NOT be present (battery_capacity_kwh = 0.0).
+    assert _entity_id(hass, entry.entry_id, BINARY_SENSOR_CHARGE_FROM_GRID_RECOMMENDED) is None
+    assert _entity_id(hass, entry.entry_id, BINARY_SENSOR_DISCHARGE_TO_GRID_RECOMMENDED) is None
+
+
+async def test_charge_discharge_sensors_present_with_battery(
+    hass, options, mock_utcnow
+):
+    """charge/discharge binary sensors are registered when generation_enabled=True and battery_capacity>0."""
+    gen_options = {
+        **options,
+        CONF_GENERATION_ENABLED: True,
+        CONF_BATTERY_CAPACITY_KWH: 10.0,
+    }
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=gen_options)
+
+    from .conftest import TODAY_PAYLOAD
+
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    assert _entity_id(hass, entry.entry_id, BINARY_SENSOR_EXPORT_PRICE_ACCEPTABLE) is not None
+    assert _entity_id(hass, entry.entry_id, BINARY_SENSOR_CHARGE_FROM_GRID_RECOMMENDED) is not None
+    assert _entity_id(hass, entry.entry_id, BINARY_SENSOR_DISCHARGE_TO_GRID_RECOMMENDED) is not None

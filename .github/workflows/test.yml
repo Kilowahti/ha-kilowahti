@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev
   pull_request:
   workflow_dispatch:
 
@@ -13,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -27,7 +28,7 @@ jobs:
             pytest-asyncio>=0.23 \
             pytest-homeassistant-custom-component>=0.13 \
             aioresponses>=0.7 \
-            "kilowahti@git+https://github.com/Kilowahti/kilowahti-py.git@484e619"
+            "kilowahti==2026.3.0"
 
       - name: Run tests
         run: pytest tests/
