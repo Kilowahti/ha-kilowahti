@@ -18,7 +18,7 @@
       },
       "vat_and_tax": {
         "title": "ALV ja sähkövero",
-        "description": "Arvot on esitäytetty valitun alueen mukaan, voit muuttaa niitä tarvittaessa. Kaikki hinnat (siirtohinnat, kiinteät jaksot) syötetään ALV:llisina.",
+        "description": "Arvot on esitäytetty valitun alueen mukaan, voit muuttaa niitä tarvittaessa. Kaikki hinnat (siirtohinnat, kiinteät jaksot) syötetään verollisina.",
         "data": {
           "vat_rate_pct": "ALV-prosentti (%)",
           "electricity_tax": "Sähkövero (c/kWh)",
@@ -27,8 +27,8 @@
         },
         "data_description": {
           "electricity_tax": "Sähkövero per kWh, lisätään spot/kiinteään hintaan.",
-          "spot_commission": "Myyjän per-kWh-marginaali spottihinnan päälle. Syötä ALV:llisena. Jätä nollaksi, jos ei sovelleta.",
-          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu (esim. perusmaksu). ALV:llinen. Jätä nollaksi, jos ei sovelleta."
+          "spot_commission": "Myyjän per-kWh-marginaali spottihinnan päälle. Syötä verollinen hinta. Jätä nollaksi, jos ei sovelleta.",
+          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu (esim. perusmaksu). Syötä verollinen hinta. Jätä nollaksi, jos ei sovelleta."
         }
       },
       "transfer_groups": {
@@ -45,7 +45,7 @@
           "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus (€/kk)"
         },
         "data_description": {
-          "monthly_fixed_cost": "Siirtoliittymä + sopimuksen perusmaksu. Bruttohinta (sis. ALV)."
+          "monthly_fixed_cost": "Sähkönsiirron sopimuksen kk-maksu (sis. ALV)."
         }
       },
       "edit_group_settings": {
@@ -55,7 +55,7 @@
           "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus (€/kk)"
         },
         "data_description": {
-          "monthly_fixed_cost": "Siirtoliittymä + sopimuksen perusmaksu. Bruttohinta (sis. ALV)."
+          "monthly_fixed_cost": "Sähkönsiirron sopimuksen kk-maksu (sis. ALV)."
         }
       },
       "transfer_group_detail": {
@@ -175,7 +175,7 @@
           "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus (€/kk)"
         },
         "data_description": {
-          "monthly_fixed_cost": "Siirtoliittymä + sopimuksen perusmaksu. Bruttohinta (sis. ALV)."
+          "monthly_fixed_cost": "Sähkönsiirron sopimuksen kk-maksu (sis. ALV)."
         }
       },
       "edit_group_settings": {
@@ -185,7 +185,7 @@
           "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus (€/kk)"
         },
         "data_description": {
-          "monthly_fixed_cost": "Siirtoliittymä + sopimuksen perusmaksu. Bruttohinta (sis. ALV)."
+          "monthly_fixed_cost": "Sähkönsiirron sopimuksen kk-maksu (sis. ALV)."
         }
       },
       "transfer_group_detail": {
@@ -304,7 +304,7 @@
           "price": "Hinta (c/kWh, sis ALV)"
         },
         "data_description": {
-          "price": "Syötä tämä hinta verollisena (brutto). Tätä hintaa käytetään sellaisenaan — ALV:ta ei lisätä erikseen."
+          "price": "Syötä tämä hinta verollisena. Tätä hintaa käytetään sellaisenaan — ALV:ta ei lisätä erikseen."
         }
       }
     },
