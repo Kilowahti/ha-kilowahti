@@ -129,7 +129,7 @@ SENSOR_CURRENT_120MIN_AVG = "avg_price_120min"
 SENSOR_NEXT_SOLAR_WINDOW_AVG = "next_solar_window_avg"
 # E2 — Battery sensors
 SENSOR_ARBITRAGE_SPREAD_TODAY = "arbitrage_spread_today"
-SENSOR_GRID_ARBITRAGE_OPPORTUNITY = "grid_arbitrage_opportunity"
+SENSOR_CHARGE_OPPORTUNITY_FACTOR = "charge_opportunity_factor"
 SENSOR_OPTIMAL_CHARGE_WINDOW_START = "optimal_charge_window_start"
 SENSOR_OPTIMAL_CHARGE_WINDOW_END = "optimal_charge_window_end"
 SENSOR_BATTERY_CHARGE_RECOMMENDATION = "battery_charge_recommendation"
