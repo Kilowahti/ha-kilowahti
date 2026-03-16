@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+import threading
 from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
@@ -131,6 +132,28 @@ def mock_utcnow():
     """Freeze homeassistant.util.dt.utcnow() to FROZEN_UTC (2026-03-13 00:30 UTC)."""
     with patch("homeassistant.util.dt.utcnow", return_value=FROZEN_UTC):
         yield FROZEN_UTC
+
+
+# ---------------------------------------------------------------------------
+# Teardown workaround
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture(autouse=True, scope="session")
+def _filter_shutdown_thread():
+    """Filter HA's _run_safe_shutdown_loop daemon thread from threading.enumerate.
+
+    phcc's verify_cleanup fixture asserts no unexpected threads are left after
+    each test. HA spawns a short-lived daemon thread named _run_safe_shutdown_loop
+    when stopping; this session-scoped patch hides it from the check.
+    """
+    _orig = threading.enumerate
+    with patch.object(
+        threading,
+        "enumerate",
+        lambda: [t for t in _orig() if "_run_safe_shutdown_loop" not in t.name],
+    ):
+        yield
 
 
 # ---------------------------------------------------------------------------
