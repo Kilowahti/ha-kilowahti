@@ -7,9 +7,14 @@ from datetime import date
 import pytest
 from kilowahti.models import FixedPeriod
 
+from aioresponses import aioresponses
+from pytest_homeassistant_custom_component.common import MockConfigEntry
+
 from custom_components.kilowahti.const import (
+    CONF_GENERATION_ENABLED,
     DOMAIN,
     SENSOR_CONTROL_FACTOR_TRANSFER,
+    SENSOR_EXPORT_PRICE,
     SENSOR_SPOT_PRICE,
     SENSOR_TOMORROW_SPOT_AVG,
     SENSOR_TOMORROW_SPOT_MAX,
@@ -125,3 +130,32 @@ async def test_tomorrow_total_stats_with_fixed_period(hass, setup_integration, m
     assert coord.tomorrow_total_avg() == pytest.approx(7.5, rel=1e-3)
     assert coord.tomorrow_total_min() == pytest.approx(7.5, rel=1e-3)
     assert coord.tomorrow_total_max() == pytest.approx(7.5, rel=1e-3)
+
+
+async def test_export_price_sensor_state_is_numeric(hass, options, mock_utcnow):
+    """export_price sensor has a numeric state when generation is enabled.
+
+    Slot at 00:00 UTC: price_no_tax = 3.0 c/kWh (spot-linked, zero commission).
+    export_price_now = max(0.0, 3.0 - 0.0) = 3.0 c/kWh.
+
+    The sensor is only registered when generation_enabled=True; this test also
+    confirms the sensor is absent in the default (generation disabled) fixture.
+    """
+    from .conftest import TODAY_PAYLOAD, TODAY_URL_RE, TOMORROW_URL_RE
+
+    gen_options = {**options, CONF_GENERATION_ENABLED: True}
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=gen_options)
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    entity_id = _entity_id(hass, "sensor", entry.entry_id, SENSOR_EXPORT_PRICE)
+    assert entity_id is not None
+
+    state = hass.states.get(entity_id)
+    assert state is not None
+    assert state.state not in (STATE_UNKNOWN, "unavailable")
+    assert float(state.state) == pytest.approx(3.0, rel=1e-3)

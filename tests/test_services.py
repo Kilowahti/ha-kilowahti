@@ -126,6 +126,93 @@ async def test_add_fixed_period_rejects_overlap(hass, setup_integration, mock_ut
 # ---------------------------------------------------------------------------
 
 
+async def test_get_export_prices_returns_export_prices(hass, setup_integration, mock_utcnow):
+    """get_export_prices returns one entry per slot with an export_price field.
+
+    Slot 0 (00:00 UTC): PriceNoTax=0.03 €/kWh, no commission → export_price = 0.03 €/kWh.
+    In c/kWh display mode: 3.0 c/kWh.
+    """
+    result = await hass.services.async_call(
+        DOMAIN,
+        "get_export_prices",
+        {"start": _T0.isoformat(), "end": _T3.isoformat(), "formatted": True},
+        blocking=True,
+        return_response=True,
+    )
+
+    assert "unit" in result
+    periods = result["price_periods"]
+    assert len(periods) == 3
+    assert "export_price" in periods[0]
+    # Slot 0 has the lowest export price (PriceNoTax=0.03).
+    prices = [p["export_price"] for p in periods]
+    assert prices == sorted(prices)
+
+
+async def test_best_charge_hours_returns_cheapest_window(hass, setup_integration, mock_utcnow):
+    """best_charge_hours selects the 1-hour window with the lowest average total price.
+
+    With no transfer price configured, total price = spot_effective.
+    Slot at 00:00 UTC (PriceNoTax=0.03) is cheapest → should be selected.
+    """
+    result = await hass.services.async_call(
+        DOMAIN,
+        "best_charge_hours",
+        {"start": _T0.isoformat(), "end": _T3.isoformat(), "hours": 1, "formatted": True},
+        blocking=True,
+        return_response=True,
+    )
+
+    assert result["start"].startswith("2026-03-13T00:00:00")
+    periods = result["price_periods"]
+    assert len(periods) == 1
+    assert "total_price" in periods[0]
+
+
+async def test_best_export_hours_returns_most_expensive_window(hass, setup_integration, mock_utcnow):
+    """best_export_hours selects the 1-hour window with the highest average export price.
+
+    Slot at 02:00 UTC (PriceNoTax=0.10) has highest export price → should be selected.
+    """
+    result = await hass.services.async_call(
+        DOMAIN,
+        "best_export_hours",
+        {"start": _T0.isoformat(), "end": _T3.isoformat(), "hours": 1, "formatted": True},
+        blocking=True,
+        return_response=True,
+    )
+
+    assert result["start"].startswith("2026-03-13T02:00:00")
+    periods = result["price_periods"]
+    assert len(periods) == 1
+    assert "export_price" in periods[0]
+
+
+async def test_generation_schedule_recommends_self_consume(hass, setup_integration, mock_utcnow):
+    """generation_schedule recommends self_consume when export price < self-consumption value.
+
+    Slot at 00:00 UTC:
+      export_price  = 0.03 €/kWh (no VAT)
+      self_value    = 0.03 * 1.255 + 0 = 0.03765 €/kWh (spot + VAT, no transfer)
+    export_p < self_value → action = 'self_consume'.
+    """
+    result = await hass.services.async_call(
+        DOMAIN,
+        "generation_schedule",
+        {
+            "forecast": [{"time": _T0.isoformat(), "kwh": 1.5}],
+            "formatted": False,
+        },
+        blocking=True,
+        return_response=True,
+    )
+
+    schedule = result["schedule"]
+    assert len(schedule) == 1
+    assert schedule[0]["action"] == "self_consume"
+    assert schedule[0]["kwh"] == pytest.approx(1.5)
+
+
 async def test_get_active_prices_uses_fixed_price(hass, setup_integration, mock_utcnow):
     """get_active_prices substitutes fixed period price for spot when a period is active."""
     coord = hass.data[DOMAIN][setup_integration.entry_id]
