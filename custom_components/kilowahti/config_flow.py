@@ -1211,7 +1211,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
                     vol.Required("start_date"): selector.DateSelector(),
                     vol.Required("end_date"): selector.DateSelector(),
                     vol.Required("price"): selector.NumberSelector(
-                        selector.NumberSelectorConfig(min=0.001, max=999, step=0.001, mode="box")
+                        selector.NumberSelectorConfig(min=0, max=999, step=0.01, mode="box")
                     ),
                 }
             ),
