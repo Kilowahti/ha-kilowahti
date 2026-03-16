@@ -1150,7 +1150,8 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         day_scores: dict[str, float] = {}
         for profile in self.score_profiles:
             bucket_data = self._score_data.get(profile.id, {})
-            day_scores[profile.id] = calc.compute_score(bucket_data, profile.formula)
+            if bucket_data:
+                day_scores[profile.id] = calc.compute_score(bucket_data, profile.formula)
 
         self._daily_history.append({"date": str(yesterday), "scores": day_scores})
 
@@ -1178,9 +1179,11 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
         await self._async_persist_scores()
 
-    def get_daily_score(self, profile_id: str) -> float:
-        """Return the in-progress daily optimization score (0–100)."""
+    def get_daily_score(self, profile_id: str) -> float | None:
+        """Return the in-progress daily optimization score (0–100), or None if no data yet."""
         bucket_data = self._score_data.get(profile_id, {})
+        if not bucket_data:
+            return None
         profile = next((p for p in self.score_profiles if p.id == profile_id), None)
         formula = profile.formula if profile else "default"
         return calc.compute_score(bucket_data, formula)
@@ -1194,11 +1197,8 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
                 return entry.get("scores", {}).get(profile_id)
         return None
 
-    def get_monthly_score(self, profile_id: str) -> float:
-        """Return average of completed daily scores for the current calendar month.
-
-        Returns 0.0 when no completed days exist yet (consistent with get_daily_score).
-        """
+    def get_monthly_score(self, profile_id: str) -> float | None:
+        """Return average of completed daily scores for the current calendar month."""
         now_local = self._now_local()
         month_key = f"{now_local.year}-{now_local.month:02d}"
 
@@ -1208,7 +1208,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             if entry["date"].startswith(month_key) and profile_id in entry.get("scores", {})
         ]
         if not scores:
-            return 0.0
+            return None
         return sum(scores) / len(scores)
 
     def get_previous_monthly_score(self, profile_id: str) -> float | None:
