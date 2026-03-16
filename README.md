@@ -3,29 +3,46 @@
   <img alt="Kilowahti" src="custom_components/kilowahti/brand/logo.png" width="400">
 </picture>
 
-**Kilowahti** (*kilowatti* + *vahti* — "the kilowatt sentinel") is a Home Assistant custom integration for Nordic/Baltic electricity spot price tracking.
+**Kilowahti** (*kilowatti* + *vahti* — "the kilowatt sentinel") is a Home Assistant integration for Nordic/Baltic electricity cost awareness and optimization — whether you are on a spot contract or a fixed rate.
 
-[![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
+[![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz/)
 [![Documentation](https://img.shields.io/badge/docs-kilowahti.fi-blue)](https://docs.kilowahti.fi/)
 [![Feedback](https://img.shields.io/badge/feedback-share%20yours-brightgreen)](https://tally.so/r/QK05XY)
 
-## Features
+## What Kilowahti can do for you
 
-- Day-ahead spot price data from [spot-hinta.fi](https://spot-hinta.fi) (no API key required)
-- 15-minute or 1-hour price resolution
-- VAT applied automatically; user-entered prices (transfer, fixed periods) are always gross
-- Fixed-price contract period management
-- Transfer price tier groups (switch between multiple contracts without re-entering data)
-- Optimization scores (daily and monthly) per configurable meter group
-- Price rank, rank quartile, control factors, and threshold binary sensors
-- Actions: `get_active_prices`, `get_prices`, `cheapest_hours`, `average_price`, `add_fixed_period`, `remove_fixed_period`, `list_fixed_periods`
-- ENTSO-E and Kilowahti proxy support planned for V2
+**On a fixed-rate contract?** You still get transfer tariff management, monthly fixed cost tracking, a true total cost-per-kWh sensor, optimization scores, and — if you have solar or a battery — the full generation and battery feature set. Kilowahti is not a spot-only tool.
 
-## Supported Regions
+**On a spot contract?** Electricity prices change every hour — or every 15 minutes if your contract/meter supports it — and can swing dramatically across the day. Kilowahti brings those prices into Home Assistant with live sensors, smart threshold binary sensors that flip on when it's cheap, price rankings, control factors, and service actions to find the cheapest windows — so your automations can act on prices instead of just a schedule.
+
+**For every household:**
+- Fixed-price contract support — define periods; all sensors and stats reflect them automatically
+- Full cost picture: combine spot price with your actual transfer tariff for the true cost-per-kWh you pay
+- Live spot price with rank, quartile, and control factors — ready to wire into any automation
+- Price and rank threshold binary sensors — turn on when electricity is cheap, turn off when it isn't
+- Today's price statistics, forward-window averages, and tomorrow's prices as soon as they publish
+- Transfer tariff tier groups — model your exact contract and switch between tiers without re-entering data
+- Monthly fixed cost tracking — spread your base fee across days for an accurate daily cost figure
+- Optimization scores (daily & monthly) that show how well your household shifts consumption to cheap hours
+
+**For solar panel and battery owners:**
+- Live export price and today's export statistics — see what you'd earn by selling to the grid right now
+- Self-consumption value sensor — know what each kWh of your own generation saves you in avoided import costs
+- Charge opportunity factor showing how good right now is for grid charging (0 = worst, 1 = best)
+- Charge and discharge recommendation binary sensors
+- Optimal charge window for a full battery cycle, calculated from today's and tomorrow's prices
+- Generation schedule service — feed in a solar forecast and get hour-by-hour recommendations: self-consume, export, or charge the battery (if battery is configured)
+
+**For automations and dashboards:**
+- Rich service actions: query price windows, find cheapest hours, find best export hours, get generation schedules — usable from scripts, automations, and dashboard cards
+
+→ Full entity reference and service documentation at **[docs.kilowahti.fi](https://docs.kilowahti.fi/)**
+
+## Supported regions
 
 `FI`, `EE`, `LT`, `LV`, `DK1`, `DK2`, `NO1`–`NO5`, `SE1`–`SE4`
 
-> **Currency notice:** Kilowahti currently supports only the official electricity market currency EUR. Conversions to DKK, NOK and SEK will become possible later.
+> **Currency notice:** Kilowahti currently displays prices in EUR for all regions. Conversion to local currencies (DKK, NOK, SEK) is planned for a future release.
 
 ## Installation
 
@@ -38,72 +55,13 @@
 3. Go to **Settings → Devices & Services → Add Integration → Kilowahti**
 4. Complete the setup wizard
 
-## Entities
+See the [installation guide](https://docs.kilowahti.fi/installation/) and [configuration reference](https://docs.kilowahti.fi/configuration/) for full details.
 
-### Sensors
+## Feedback
 
-| Entity | Description |
-|---|---|
-| `sensor.kilowahti_{name}_spot_price` | Current slot's spot price |
-| `sensor.kilowahti_{name}_effective_price` | Spot or fixed-period price |
-| `sensor.kilowahti_{name}_transfer_price` | Active transfer tier price |
-| `sensor.kilowahti_{name}_total_price` | Energy + transfer price |
-| `sensor.kilowahti_{name}_price_rank` | Rank 1–96 (15 min) or 1–24 (1 hour); 1 = cheapest |
-| `sensor.kilowahti_{name}_price_quartile` | Price quartile 1–4; 1 = cheapest quarter |
-| `sensor.kilowahti_{name}_today_avg/min/max` | Today's spot stats |
-| `sensor.kilowahti_{name}_tomorrow_avg/min/max` | Tomorrow's stats (0 when unavailable) |
-| `sensor.kilowahti_{name}_next_hours_avg` | Average over next N hours |
-| `sensor.kilowahti_{name}_control_factor_price` | Normalized 0–1 price factor |
-| `sensor.kilowahti_{name}_control_factor_price_bipolar` | ±1 bipolar factor |
-| `sensor.kilowahti_{name}_score_{profile}_daily` | Daily optimization score 0–100 |
-| `sensor.kilowahti_{name}_score_{profile}_monthly` | Monthly optimization score 0–100 |
+Found a bug or have a feature idea? Open an [issue](https://github.com/Kilowahti/ha-kilowahti/issues) or start a [discussion](https://github.com/Kilowahti/ha-kilowahti/discussions) on GitHub.
 
-### Binary Sensors
-
-| Entity | Description |
-|---|---|
-| `binary_sensor.kilowahti_{name}_price_acceptable` | Price ≤ configured threshold |
-| `binary_sensor.kilowahti_{name}_rank_acceptable` | Rank ≤ configured threshold |
-| `binary_sensor.kilowahti_{name}_price_or_rank_acceptable` | Either condition met |
-| `binary_sensor.kilowahti_{name}_fixed_period_active` | Currently in a fixed-price period |
-| `binary_sensor.kilowahti_{name}_tomorrow_available` | Tomorrow's prices fetched |
-
-## Services
-
-```yaml
-# Get active prices (today + tomorrow by default, or a custom range)
-service: kilowahti.get_active_prices
-data: {}
-
-# Get price slots for a time range
-service: kilowahti.get_prices
-data:
-  start: "2026-03-07T00:00:00"
-  end: "2026-03-07T23:59:59"
-
-# Find cheapest consecutive window
-service: kilowahti.cheapest_hours
-data:
-  start: "2026-03-07T18:00:00"
-  end: "2026-03-08T08:00:00"
-  hours: 3
-
-# Add a fixed-price period
-service: kilowahti.add_fixed_period
-data:
-  label: "Q1 2026 fixation"
-  start_date: "2026-01-01"
-  end_date: "2026-03-31"
-  price: 8.5
-```
-
-All price services accept an optional `formatted` boolean (default `true`). Set to `false` to get raw c/kWh values at full precision.
-
-## Optimization scores
-
-Kilowahti tracks how well your electricity consumption is shifted to cheap hours and computes a daily and monthly score (0–100) per configured meter group. A score of 100 means all consumption was in the cheapest slots; a score near 0 means consumption was concentrated in the most expensive ones.
-
-See [Optimization scores](https://docs.kilowahti.fi/scores/) for formula details and setup instructions.
+If you don't have a GitHub account, you can share feedback via [this short form](https://tally.so/r/QK05XY) — no account needed.
 
 ## Acknowledgments
 

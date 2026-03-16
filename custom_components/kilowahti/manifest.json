@@ -6,6 +6,6 @@
   "documentation": "https://docs.kilowahti.fi/",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Kilowahti/ha-kilowahti/issues",
-  "requirements": ["kilowahti@git+https://github.com/Kilowahti/kilowahti-py.git@08a350a"],
+  "requirements": ["kilowahti==2026.3.0"],
   "version": "0.1.0"
 }
