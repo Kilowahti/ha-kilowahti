@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+from datetime import date
+
 import pytest
+from kilowahti.models import FixedPeriod
 
 from custom_components.kilowahti.const import (
     DOMAIN,
@@ -11,6 +14,9 @@ from custom_components.kilowahti.const import (
     SENSOR_TOMORROW_SPOT_AVG,
     SENSOR_TOMORROW_SPOT_MAX,
     SENSOR_TOMORROW_SPOT_MIN,
+    SENSOR_TOMORROW_TOTAL_AVG,
+    SENSOR_TOMORROW_TOTAL_MAX,
+    SENSOR_TOMORROW_TOTAL_MIN,
     SENSOR_TRANSFER_PRICE,
 )
 from homeassistant.const import STATE_UNKNOWN
@@ -72,3 +78,28 @@ async def test_control_factor_transfer_unknown_when_no_group(hass, setup_integra
     state = hass.states.get(entity_id)
     assert state is not None
     assert state.state == STATE_UNKNOWN
+
+
+async def test_tomorrow_total_stats_with_fixed_period(hass, setup_integration, mock_utcnow):
+    """tomorrow_total_avg/min/max return the fixed price when a fixed period covers tomorrow.
+
+    Frozen date: 2026-03-13 → tomorrow = 2026-03-14.
+    No spot prices for tomorrow (404 in fixture).
+    Fixed period at 7.5 c/kWh covering 2026-03-14 → stats should equal 7.5 (no transfer).
+    """
+    entry = setup_integration
+    coord = hass.data[DOMAIN][entry.entry_id]
+
+    tomorrow = date(2026, 3, 14)
+    period = FixedPeriod(
+        id="test-period",
+        label="Test",
+        start_date=tomorrow,
+        end_date=tomorrow,
+        price=7.5,
+    )
+    coord._storage._periods = [period]
+
+    assert coord.tomorrow_total_avg() == pytest.approx(7.5, rel=1e-3)
+    assert coord.tomorrow_total_min() == pytest.approx(7.5, rel=1e-3)
+    assert coord.tomorrow_total_max() == pytest.approx(7.5, rel=1e-3)

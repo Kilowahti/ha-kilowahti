@@ -572,7 +572,9 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         current = datetime(d.year, d.month, d.day, 0, 0, tzinfo=tz_local)
         slots = []
         while current.date() == d:
-            slots.append(PriceSlot(dt_utc=current.astimezone(dt_util.UTC), price=0.0))
+            slots.append(
+                PriceSlot(dt_utc=current.astimezone(dt_util.UTC), price_no_tax=0.0, rank=0)
+            )
             current += timedelta(minutes=self._resolution)
         return slots
 
@@ -670,34 +672,34 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             self._energy_price_for_slot(s) + (self.transfer_price_for_slot(s) or 0.0) for s in slots
         ]
 
-    def today_avg(self) -> float | None:
+    def today_spot_avg(self) -> float | None:
         if not self._today_slots:
             return None
         prices = self._effective_prices_for_slots(self._today_slots)
         return sum(prices) / len(prices)
 
-    def today_min(self) -> float | None:
+    def today_spot_min(self) -> float | None:
         if not self._today_slots:
             return None
         return min(self._effective_prices_for_slots(self._today_slots))
 
-    def today_max(self) -> float | None:
+    def today_spot_max(self) -> float | None:
         if not self._today_slots:
             return None
         return max(self._effective_prices_for_slots(self._today_slots))
 
-    def tomorrow_avg(self) -> float | None:
+    def tomorrow_spot_avg(self) -> float | None:
         if not self._tomorrow_slots:
             return None
         prices = self._effective_prices_for_slots(self._tomorrow_slots)
         return sum(prices) / len(prices)
 
-    def tomorrow_min(self) -> float | None:
+    def tomorrow_spot_min(self) -> float | None:
         if not self._tomorrow_slots:
             return None
         return min(self._effective_prices_for_slots(self._tomorrow_slots))
 
-    def tomorrow_max(self) -> float | None:
+    def tomorrow_spot_max(self) -> float | None:
         if not self._tomorrow_slots:
             return None
         return max(self._effective_prices_for_slots(self._tomorrow_slots))

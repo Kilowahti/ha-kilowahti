@@ -457,6 +457,7 @@ class KilowahtiSensor(KilowahtiSensorBase):
         try:
             return fn(self.coordinator)
         except Exception:
+            _LOGGER.exception("Error computing sensor value for %s", self.entity_id)
             return None
 
 
