@@ -39,6 +39,7 @@ from .const import (
     CONF_HIGH_PRECISION,
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
+    CONF_MONTHLY_FIXED_COST,
     CONF_PRICE_RESOLUTION,
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
@@ -66,6 +67,7 @@ from .const import (
     DEFAULT_HIGH_PRECISION,
     DEFAULT_MAX_PRICE,
     DEFAULT_MAX_RANK,
+    DEFAULT_MONTHLY_FIXED_COST,
     DEFAULT_PRICE_RESOLUTION,
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     DEFAULT_SHOW_ROLLING_AVERAGES,
@@ -204,6 +206,10 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return self._opts.get(CONF_SHOW_ROLLING_AVERAGES, DEFAULT_SHOW_ROLLING_AVERAGES)
 
     @property
+    def battery_sensors_enabled(self) -> bool:
+        return self.generation_enabled and self._battery_capacity_kwh > 0
+
+    @property
     def _export_pricing_mode(self) -> str:
         return self._opts.get(CONF_EXPORT_PRICING_MODE, DEFAULT_EXPORT_PRICING_MODE)
 
@@ -237,10 +243,10 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
     @property
     def _monthly_fixed_cost(self) -> float:
+        main = self._opts.get(CONF_MONTHLY_FIXED_COST, DEFAULT_MONTHLY_FIXED_COST)
         group = self._active_transfer_group
-        if group is None:
-            return 0.0
-        return group.monthly_fixed_cost
+        group_cost = group.monthly_fixed_cost if group is not None else 0.0
+        return main + group_cost
 
     @property
     def score_profiles(self) -> list[ScoreProfile]:
@@ -824,7 +830,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return sum(prices) / len(prices)
 
     def next_solar_window_avg(self) -> float | None:
-        """Average total price for the next upcoming solar production window."""
+        """Average export price for the next upcoming solar production window."""
         now = self._now_local()
         start_h = self._solar_window_start
         end_h = self._solar_window_end
@@ -836,7 +842,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             window_start = today_start if now < today_start else now
             slots = self.slots_in_range(window_start, today_end)
             if slots:
-                prices = self._total_prices_for_slots(slots)
+                prices = self._export_prices_for_slots(slots)
                 return sum(prices) / len(prices)
 
         # Fall through to tomorrow's window
@@ -856,7 +862,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         slots = self.slots_in_range(tmrw_start, tmrw_end)
         if not slots:
             return None
-        prices = self._total_prices_for_slots(slots)
+        prices = self._export_prices_for_slots(slots)
         return sum(prices) / len(prices)
 
     # ------------------------------------------------------------------
@@ -871,7 +877,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             return None
         return max_p - min_p
 
-    def grid_arbitrage_opportunity(self) -> float | None:
+    def charge_opportunity_factor(self) -> float | None:
         """Normalized 0–1 indicator of how good now is for grid charging.
 
         1.0 = current slot is the cheapest today (best time to charge).

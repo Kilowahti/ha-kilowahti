@@ -205,6 +205,12 @@ def _vat_schema(defaults: dict) -> vol.Schema:
             ): selector.NumberSelector(
                 selector.NumberSelectorConfig(min=0, max=20, step=0.01, mode="box")
             ),
+            vol.Required(
+                CONF_MONTHLY_FIXED_COST,
+                default=defaults.get(CONF_MONTHLY_FIXED_COST, DEFAULT_MONTHLY_FIXED_COST),
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(min=0, max=500, step=0.01, mode="box")
+            ),
         }
     )
 
@@ -460,6 +466,9 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
             self._data[CONF_VAT_RATE] = _to_float(user_input["vat_rate_pct"]) / 100.0
             self._data[CONF_ELECTRICITY_TAX] = _to_float(user_input[CONF_ELECTRICITY_TAX])
             self._data[CONF_SPOT_COMMISSION] = _to_float(user_input.get(CONF_SPOT_COMMISSION, 0.0))
+            self._data[CONF_MONTHLY_FIXED_COST] = _to_float(
+                user_input.get(CONF_MONTHLY_FIXED_COST, 0.0)
+            )
             return await self.async_step_transfer_groups()
 
         # Pre-fill from region preset
@@ -715,6 +724,9 @@ class KilowahtiOptionsFlow(OptionsFlow):
             self._options[CONF_SPOT_COMMISSION] = _to_float(
                 user_input.get(CONF_SPOT_COMMISSION, 0.0)
             )
+            self._options[CONF_MONTHLY_FIXED_COST] = _to_float(
+                user_input.get(CONF_MONTHLY_FIXED_COST, 0.0)
+            )
             return self.async_create_entry(data=self._options)
 
         cur = self._options
@@ -728,6 +740,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
             "vat_rate_pct": round(cur.get(CONF_VAT_RATE, DEFAULT_VAT_RATE) * 100, 1),
             CONF_ELECTRICITY_TAX: cur.get(CONF_ELECTRICITY_TAX, DEFAULT_ELECTRICITY_TAX),
             CONF_SPOT_COMMISSION: cur.get(CONF_SPOT_COMMISSION, DEFAULT_SPOT_COMMISSION),
+            CONF_MONTHLY_FIXED_COST: cur.get(CONF_MONTHLY_FIXED_COST, DEFAULT_MONTHLY_FIXED_COST),
         }
         schema = vol.Schema(
             {**_user_schema(basic_defaults).schema, **_vat_schema(vat_defaults).schema}

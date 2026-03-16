@@ -22,11 +22,13 @@
         "data": {
           "vat_rate_pct": "ALV-prosentti (%)",
           "electricity_tax": "Sähkövero (c/kWh)",
-          "spot_commission": "Marginaali (c/kWh)"
+          "spot_commission": "Marginaali (c/kWh)",
+          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu (€/kk)"
         },
         "data_description": {
           "electricity_tax": "Sähkövero per kWh, lisätään spot/kiinteään hintaan.",
-          "spot_commission": "Myyjän per-kWh-marginaali spottihinnan päälle. Syötä ALV:llisena. Jätä nollaksi, jos ei sovelleta."
+          "spot_commission": "Myyjän per-kWh-marginaali spottihinnan päälle. Syötä ALV:llisena. Jätä nollaksi, jos ei sovelleta.",
+          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu (esim. perusmaksu). ALV:llinen. Jätä nollaksi, jos ei sovelleta."
         }
       },
       "transfer_groups": {
@@ -156,7 +158,8 @@
           "display_unit": "Näyttöyksikkö",
           "vat_rate_pct": "ALV-prosentti (%)",
           "electricity_tax": "Sähkövero (c/kWh)",
-          "spot_commission": "Marginaali (c/kWh)"
+          "spot_commission": "Marginaali (c/kWh)",
+          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu (€/kk)"
         }
       },
       "transfer_groups": {

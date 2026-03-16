@@ -22,11 +22,13 @@
         "data": {
           "vat_rate_pct": "VAT rate (%)",
           "electricity_tax": "Electricity tax (c/kWh)",
-          "spot_commission": "Spot price commission (c/kWh)"
+          "spot_commission": "Spot price commission (c/kWh)",
+          "monthly_fixed_cost": "Electricity contract fixed cost (€/month)"
         },
         "data_description": {
           "electricity_tax": "Flat per-kWh electricity tax added on top of spot/fixed price.",
-          "spot_commission": "Retailer's per-kWh commission added on top of the spot price. Enter gross (VAT included). Leave at 0 if not applicable."
+          "spot_commission": "Retailer's per-kWh commission added on top of the spot price. Enter gross (VAT included). Leave at 0 if not applicable.",
+          "monthly_fixed_cost": "Fixed monthly fee from your electricity contract (e.g. basic service fee). Gross amount (VAT included). Leave at 0 if not applicable."
         }
       },
       "transfer_groups": {
@@ -156,7 +158,8 @@
           "display_unit": "Display unit",
           "vat_rate_pct": "VAT rate (%)",
           "electricity_tax": "Electricity tax (c/kWh)",
-          "spot_commission": "Spot price commission (c/kWh)"
+          "spot_commission": "Spot price commission (c/kWh)",
+          "monthly_fixed_cost": "Electricity contract fixed cost (€/month)"
         }
       },
       "transfer_groups": {
