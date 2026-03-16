@@ -1,6 +1,6 @@
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="custom_components/kilowahti/brands/dark_logo.png">
-  <img alt="Kilowahti" src="custom_components/kilowahti/brands/logo.png" width="400">
+  <source media="(prefers-color-scheme: dark)" srcset="custom_components/kilowahti/brand/dark_logo.png">
+  <img alt="Kilowahti" src="custom_components/kilowahti/brand/logo.png" width="400">
 </picture>
 
 **Kilowahti** (*kilowatti* + *vahti* — "the kilowatt sentinel") is a Home Assistant custom integration for Nordic/Baltic electricity spot price tracking.
