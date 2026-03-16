@@ -451,8 +451,8 @@
       "arbitrage_spread_today": {
         "name": "Arbitraasiero tänään"
       },
-      "grid_arbitrage_opportunity": {
-        "name": "Verkkoarbitraasimahdollisuus"
+      "charge_opportunity_factor": {
+        "name": "Latausmahdollisuuskerroin"
       },
       "optimal_charge_window_start": {
         "name": "Optimaalisen latausikkunan alku"

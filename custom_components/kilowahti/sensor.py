@@ -5,9 +5,11 @@ from __future__ import annotations
 import logging
 from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
 
 from homeassistant.components.sensor import (
+    SensorDeviceClass,
     SensorEntity,
     SensorEntityDescription,
     SensorStateClass,
@@ -23,6 +25,7 @@ from .const import (
     DOMAIN,
     SENSOR_ARBITRAGE_SPREAD_TODAY,
     SENSOR_BATTERY_CHARGE_RECOMMENDATION,
+    SENSOR_CHARGE_OPPORTUNITY_FACTOR,
     SENSOR_CONTROL_FACTOR_PRICE,
     SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR,
     SENSOR_CONTROL_FACTOR_TRANSFER,
@@ -37,7 +40,6 @@ from .const import (
     SENSOR_EXPORT_TOMORROW_AVG,
     SENSOR_EXPORT_TOMORROW_MAX,
     SENSOR_EXPORT_TOMORROW_MIN,
-    SENSOR_GRID_ARBITRAGE_OPPORTUNITY,
     SENSOR_IMPORT_EXPORT_SPREAD,
     SENSOR_MONTHLY_FIXED_COST_TODAY,
     SENSOR_NEXT_HOURS_AVG,
@@ -138,7 +140,7 @@ _GENERATION_SENSOR_KEYS = frozenset(
 _BATTERY_SENSOR_KEYS = frozenset(
     {
         SENSOR_BATTERY_CHARGE_RECOMMENDATION,
-        SENSOR_GRID_ARBITRAGE_OPPORTUNITY,
+        SENSOR_CHARGE_OPPORTUNITY_FACTOR,
         SENSOR_OPTIMAL_CHARGE_WINDOW_END,
         SENSOR_OPTIMAL_CHARGE_WINDOW_START,
     }
@@ -306,27 +308,30 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         SENSOR_ARBITRAGE_SPREAD_TODAY, lambda c: c.format_price(c.arbitrage_spread_today())
     ),
     KilowahtiSensorEntityDescription(
-        key=SENSOR_GRID_ARBITRAGE_OPPORTUNITY,
-        translation_key=SENSOR_GRID_ARBITRAGE_OPPORTUNITY,
+        key=SENSOR_CHARGE_OPPORTUNITY_FACTOR,
+        translation_key=SENSOR_CHARGE_OPPORTUNITY_FACTOR,
         state_class=SensorStateClass.MEASUREMENT,
-        value_fn=lambda c: c.grid_arbitrage_opportunity(),
+        value_fn=lambda c: c.charge_opportunity_factor(),
         native_unit_of_measurement=None,
     ),
     KilowahtiSensorEntityDescription(
         key=SENSOR_BATTERY_CHARGE_RECOMMENDATION,
         translation_key=SENSOR_BATTERY_CHARGE_RECOMMENDATION,
+        device_class=SensorDeviceClass.ENUM,
         value_fn=lambda c: c.battery_charge_recommendation(),
         native_unit_of_measurement=None,
     ),
     KilowahtiSensorEntityDescription(
         key=SENSOR_OPTIMAL_CHARGE_WINDOW_START,
         translation_key=SENSOR_OPTIMAL_CHARGE_WINDOW_START,
+        device_class=SensorDeviceClass.TIMESTAMP,
         value_fn=None,  # handled by KilowahtiOptimalChargeWindowSensor
         native_unit_of_measurement=None,
     ),
     KilowahtiSensorEntityDescription(
         key=SENSOR_OPTIMAL_CHARGE_WINDOW_END,
         translation_key=SENSOR_OPTIMAL_CHARGE_WINDOW_END,
+        device_class=SensorDeviceClass.TIMESTAMP,
         value_fn=None,  # handled by KilowahtiOptimalChargeWindowSensor
         native_unit_of_measurement=None,
     ),
@@ -358,9 +363,7 @@ async def async_setup_entry(
         key = description.key
         if key in _GENERATION_SENSOR_KEYS and not coordinator.generation_enabled:
             continue
-        if key in _BATTERY_SENSOR_KEYS and (
-            not coordinator.generation_enabled or coordinator._battery_capacity_kwh <= 0
-        ):
+        if key in _BATTERY_SENSOR_KEYS and not coordinator.battery_sensors_enabled:
             continue
         if key in _ROLLING_AVG_SENSOR_KEYS and not coordinator.show_rolling_averages:
             continue
@@ -519,17 +522,17 @@ class KilowahtiTransferRankSensor(KilowahtiSensorBase):
 
 
 class KilowahtiOptimalChargeWindowSensor(KilowahtiSensorBase):
-    """Returns the start or end of the cheapest battery charge window as an ISO string."""
+    """Returns the start or end of the cheapest battery charge window as a timestamp."""
 
     @property
-    def native_value(self) -> str | None:
+    def native_value(self) -> datetime | None:
         result = self.coordinator.optimal_charge_window()
         if result is None:
             return None
         start_dt, end_dt = result
-        if self._description.key == SENSOR_OPTIMAL_CHARGE_WINDOW_START:
-            return start_dt.isoformat()
-        return end_dt.isoformat()
+        if self.entity_description.key == SENSOR_OPTIMAL_CHARGE_WINDOW_START:
+            return start_dt
+        return end_dt
 
 
 # ---------------------------------------------------------------------------

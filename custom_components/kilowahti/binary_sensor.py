@@ -51,7 +51,7 @@ async def async_setup_entry(
         entities.append(
             KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_EXPORT_PRICE_ACCEPTABLE)
         )
-        if coordinator._battery_capacity_kwh > 0:
+        if coordinator.battery_sensors_enabled:
             entities += [
                 KilowahtiBinarySensor(
                     coordinator, entry, BINARY_SENSOR_CHARGE_FROM_GRID_RECOMMENDED

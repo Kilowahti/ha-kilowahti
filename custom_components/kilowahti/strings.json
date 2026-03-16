@@ -451,8 +451,8 @@
       "arbitrage_spread_today": {
         "name": "Arbitrage spread today"
       },
-      "grid_arbitrage_opportunity": {
-        "name": "Grid arbitrage opportunity"
+      "charge_opportunity_factor": {
+        "name": "Charge opportunity factor"
       },
       "optimal_charge_window_start": {
         "name": "Optimal charge window start"
