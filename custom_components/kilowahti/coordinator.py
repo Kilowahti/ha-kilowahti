@@ -1194,8 +1194,11 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
                 return entry.get("scores", {}).get(profile_id)
         return None
 
-    def get_monthly_score(self, profile_id: str) -> float | None:
-        """Return average of completed daily scores for the current calendar month."""
+    def get_monthly_score(self, profile_id: str) -> float:
+        """Return average of completed daily scores for the current calendar month.
+
+        Returns 0.0 when no completed days exist yet (consistent with get_daily_score).
+        """
         now_local = self._now_local()
         month_key = f"{now_local.year}-{now_local.month:02d}"
 
@@ -1205,7 +1208,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             if entry["date"].startswith(month_key) and profile_id in entry.get("scores", {})
         ]
         if not scores:
-            return None
+            return 0.0
         return sum(scores) / len(scores)
 
     def get_previous_monthly_score(self, profile_id: str) -> float | None:
