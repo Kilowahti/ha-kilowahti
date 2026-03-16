@@ -713,13 +713,11 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return max(self._total_prices_for_slots(self._today_slots))
 
     def _tomorrow_total_slots(self) -> list[PriceSlot] | None:
-        """Return slots to use for tomorrow total stats: spot slots if available, synthetic if fixed period active."""
-        if self._tomorrow_slots:
-            return self._tomorrow_slots
+        """Return slots for tomorrow total stats: synthetic if fixed period active, otherwise spot slots."""
         tomorrow = (self._now_local() + timedelta(days=1)).date()
         if self.fixed_period_for_date(tomorrow) is not None:
             return self._synthetic_slots_for_date(tomorrow)
-        return None
+        return self._tomorrow_slots or None
 
     def tomorrow_total_avg(self) -> float | None:
         slots = self._tomorrow_total_slots()
