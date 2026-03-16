@@ -80,6 +80,28 @@ async def test_control_factor_transfer_unknown_when_no_group(hass, setup_integra
     assert state.state == STATE_UNKNOWN
 
 
+async def test_synthetic_slots_dst_spring_forward(hass, setup_integration, mock_utcnow):
+    """_synthetic_slots_for_date produces 23 slots on a spring-forward day, not 24.
+
+    Europe/Helsinki springs forward on 2026-03-29: 03:00 EET → 04:00 EEST.
+    UTC arithmetic must be used to avoid duplicate slots at the DST boundary.
+    """
+    from datetime import date
+
+    entry = setup_integration
+    coord = hass.data[DOMAIN][entry.entry_id]
+
+    # Temporarily set HA timezone to Helsinki to exercise DST logic
+    await hass.config.async_set_time_zone("Europe/Helsinki")
+    slots = coord._synthetic_slots_for_date(date(2026, 3, 29))
+    await hass.config.async_set_time_zone("UTC")
+
+    assert len(slots) == 23, f"Expected 23 slots on spring-forward day, got {len(slots)}"
+    # All UTC timestamps must be unique
+    utc_times = [s.dt_utc for s in slots]
+    assert len(set(utc_times)) == len(utc_times), "Duplicate UTC timestamps in synthetic slots"
+
+
 async def test_tomorrow_total_stats_with_fixed_period(hass, setup_integration, mock_utcnow):
     """tomorrow_total_avg/min/max return the fixed price when a fixed period covers tomorrow.
 

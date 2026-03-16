@@ -567,15 +567,18 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return fixed.price if fixed is not None else self._spot_effective(slot)
 
     def _synthetic_slots_for_date(self, d: date) -> list[PriceSlot]:
-        """Generate zero-price slots for a date (used when no spot data but fixed period is active)."""
+        """Generate zero-price slots for a date (used when no spot data but fixed period is active).
+
+        Arithmetic is done in UTC to correctly handle DST transitions (spring-forward produces
+        23 slots, fall-back 25), matching the slot count the price API would return.
+        """
         tz_local = dt_util.get_time_zone(self.hass.config.time_zone)
-        current = datetime(d.year, d.month, d.day, 0, 0, tzinfo=tz_local)
+        start_local = datetime(d.year, d.month, d.day, 0, 0, tzinfo=tz_local)
+        current_utc = start_local.astimezone(dt_util.UTC)
         slots = []
-        while current.date() == d:
-            slots.append(
-                PriceSlot(dt_utc=current.astimezone(dt_util.UTC), price_no_tax=0.0, rank=0)
-            )
-            current += timedelta(minutes=self._resolution)
+        while dt_util.as_local(current_utc).date() == d:
+            slots.append(PriceSlot(dt_utc=current_utc, price_no_tax=0.0, rank=0))
+            current_utc += timedelta(minutes=self._resolution)
         return slots
 
     def spot_price_now(self) -> float | None:
