@@ -1080,6 +1080,29 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             )
         )
 
+    def _score_rank_now(self) -> int | None:
+        """Rank of the current slot by true total price among today's slots.
+
+        Uses _energy_price_for_slot (fixed-period aware) plus transfer price.
+        Competition ranking: tied slots share the lowest rank (1 = cheapest).
+        Returns None when today's slots are unavailable or the current slot is absent.
+        """
+        current = self.current_slot()
+        if current is None or not self._today_slots:
+            return None
+
+        def _true_total(s: PriceSlot) -> float:
+            return round(
+                self._energy_price_for_slot(s) + (self.transfer_price_for_slot(s) or 0.0),
+                5,
+            )
+
+        totals = {s.dt_utc: _true_total(s) for s in self._today_slots}
+        current_total = totals.get(current.dt_utc)
+        if current_total is None:
+            return None
+        return sum(1 for p in totals.values() if p < current_total) + 1
+
     @callback
     def _on_meter_state_change(self, event: Any) -> None:
         """Handle meter entity state change for score accumulation."""
@@ -1109,7 +1132,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         if kwh_delta <= 0:
             return  # Ignore resets or unchanged
 
-        rank = self.current_rank()
+        rank = self._score_rank_now()
         if rank is None:
             return
 

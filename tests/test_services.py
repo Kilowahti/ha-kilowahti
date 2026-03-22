@@ -169,7 +169,9 @@ async def test_best_charge_hours_returns_cheapest_window(hass, setup_integration
     assert "total_price" in periods[0]
 
 
-async def test_best_export_hours_returns_most_expensive_window(hass, setup_integration, mock_utcnow):
+async def test_best_export_hours_returns_most_expensive_window(
+    hass, setup_integration, mock_utcnow
+):
     """best_export_hours selects the 1-hour window with the highest average export price.
 
     Slot at 02:00 UTC (PriceNoTax=0.10) has highest export price → should be selected.
