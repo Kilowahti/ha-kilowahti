@@ -518,22 +518,12 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return slot.rank if slot else None
 
     def total_price_rank_now(self) -> int | None:
-        """Return rank of the current slot's total price (spot + transfer) among today's slots.
+        """Rank of the current slot by total price among today's slots.
 
-        1 = cheapest. Tied slots share the lowest rank (competition ranking).
-        Returns None if today's slots are unavailable or the current slot is not among them.
+        Uses fixed-period price when active, otherwise spot. Includes transfer.
+        Normalized: 1 = cheapest, slots_per_day = most expensive.
         """
-        current = self.current_slot()
-        if current is None:
-            return None
-        return calc.total_price_rank(
-            current,
-            self._today_slots,
-            self._vat_rate,
-            self._spot_commission,
-            self._active_transfer_group,
-            dt_util.as_local,
-        )
+        return self._score_rank_now()
 
     def current_quartile(self) -> int | None:
         rank = self.current_rank()
@@ -1080,6 +1070,37 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             )
         )
 
+    def _score_rank_now(self) -> int | None:
+        """Rank of the current slot by true total price among today's slots.
+
+        Uses _energy_price_for_slot (fixed-period aware) plus transfer price.
+        Normalized: cheapest tier(s) = 1, most expensive = slots_per_day.
+        Returns None when today's slots are unavailable or the current slot is absent.
+        """
+        current = self.current_slot()
+        if current is None or not self._today_slots:
+            return None
+
+        def _true_total(s: PriceSlot) -> float:
+            return round(
+                self._energy_price_for_slot(s) + (self.transfer_price_for_slot(s) or 0.0),
+                5,
+            )
+
+        totals = {s.dt_utc: _true_total(s) for s in self._today_slots}
+        current_total = totals.get(current.dt_utc)
+        if current_total is None:
+            return None
+
+        unique_prices = sorted(set(totals.values()))
+        k = len(unique_prices)
+        n = self._resolution.slots_per_day
+        tier_index = unique_prices.index(current_total)
+
+        if k == 1:
+            return 1
+        return round(1 + tier_index * (n - 1) / (k - 1))
+
     @callback
     def _on_meter_state_change(self, event: Any) -> None:
         """Handle meter entity state change for score accumulation."""
@@ -1109,7 +1130,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         if kwh_delta <= 0:
             return  # Ignore resets or unchanged
 
-        rank = self.current_rank()
+        rank = self._score_rank_now()
         if rank is None:
             return
 
