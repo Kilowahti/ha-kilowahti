@@ -26,9 +26,9 @@ jobs:
           pip install \
             pytest>=8.0 \
             pytest-asyncio>=0.23 \
-            pytest-homeassistant-custom-component>=0.13 \
+            pytest-homeassistant-custom-component==0.13.317 \
             aioresponses>=0.7 \
-            "kilowahti==2026.3.0"
+            "kilowahti @ git+https://github.com/Kilowahti/kilowahti-py.git@99e0d69e5098dcf9fafd062a09e520c8364b1778"
 
       - name: Run tests
         run: pytest tests/

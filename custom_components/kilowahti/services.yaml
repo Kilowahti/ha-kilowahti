@@ -85,7 +85,7 @@ cheapest_hours:
   name: Cheapest hours
   description: >
     Finds the cheapest consecutive window of the given length within a
-    time range, using a sliding-window search over spot prices.
+    time range, using total price (spot or fixed-period rate plus transfer).
   fields:
     config_entry_id:
       name: Config entry ID

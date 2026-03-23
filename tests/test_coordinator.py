@@ -245,20 +245,6 @@ async def test_structural_options_change_triggers_reload(hass, setup_integration
 # ---------------------------------------------------------------------------
 
 
-async def test_total_price_rank_now_returns_1_for_cheapest(hass, setup_integration, mock_utcnow):
-    """total_price_rank_now returns 1 when the current slot is the cheapest today."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
-
-    # Fixture slots (sorted by time):
-    #   00:00 UTC — 0.03 €/kWh → rank 1 (cheapest by total price, no transfer)
-    #   01:00 UTC — 0.05 €/kWh → rank 2
-    #   02:00 UTC — 0.10 €/kWh → rank 3
-    # FROZEN_UTC = 00:30 UTC → current_slot is the 00:00 slot (cheapest).
-    rank = coord.total_price_rank_now()
-
-    assert rank == 1
-
-
 @pytest.mark.asyncio
 async def test_total_price_rank_now_uses_fixed_period_price(hass, options, mock_utcnow):
     """total_price_rank_now uses fixed-period price, matching total_price sensor.
@@ -300,6 +286,20 @@ async def test_total_price_rank_now_uses_fixed_period_price(hass, options, mock_
     ]
 
     assert coord.total_price_rank_now() == 1
+
+
+async def test_total_price_rank_now_returns_1_for_cheapest(hass, setup_integration, mock_utcnow):
+    """total_price_rank_now returns 1 when the current slot is the cheapest today."""
+    coord = hass.data[DOMAIN][setup_integration.entry_id]
+
+    # Fixture slots (sorted by time):
+    #   00:00 UTC — 0.03 €/kWh → rank 1 (cheapest by total price, no transfer)
+    #   01:00 UTC — 0.05 €/kWh → rank 2
+    #   02:00 UTC — 0.10 €/kWh → rank 3
+    # FROZEN_UTC = 00:30 UTC → current_slot is the 00:00 slot (cheapest).
+    rank = coord.total_price_rank_now()
+
+    assert rank == 1
 
 
 # ---------------------------------------------------------------------------
@@ -352,7 +352,6 @@ async def test_score_accumulation_on_meter_change(hass, options, mock_utcnow):
     if coord._score_persist_unsub is not None:
         coord._score_persist_unsub()
         coord._score_persist_unsub = None
-
 
 
 # ---------------------------------------------------------------------------

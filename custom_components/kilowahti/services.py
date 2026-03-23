@@ -12,6 +12,7 @@ from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, Supp
 from homeassistant.helpers import config_validation as cv
 from homeassistant.util import dt as dt_util
 from kilowahti import calc
+from kilowahti.models import PriceSlot
 
 from .const import DOMAIN, UNIT_EUROKWH
 from .coordinator import KilowahtiCoordinator
@@ -216,13 +217,27 @@ async def _handle_cheapest_hours(call: ServiceCall) -> ServiceResponse:
     resolution_minutes = coordinator._resolution.value
     slots_needed = max(1, round(hours * 60 / resolution_minutes))
 
-    result = calc.cheapest_window(
-        slots, slots_needed, coordinator._vat_rate, coordinator._spot_commission
-    )
+    def _total_price(s: PriceSlot) -> float:
+        return coordinator._energy_price_for_slot(s) + (
+            coordinator.transfer_price_for_slot(s) or 0.0
+        )
+
+    result = calc.cheapest_window(slots, slots_needed, _total_price)
     if result is None:
         return {"error": f"Requested {hours}h but only {len(slots)} slots available in range"}
 
     best_window, avg_price = result
+
+    # Normalized total price rank within the search range.
+    # 1 = cheapest slot in range, len(slots) = most expensive.
+    all_prices = [_total_price(s) for s in slots]
+    unique_prices = sorted({round(p, 5) for p in all_prices})
+    k = len(unique_prices)
+    n = len(slots)
+
+    def _rank(p: float) -> int:
+        tier = unique_prices.index(round(p, 5))
+        return 1 if k == 1 else round(1 + tier * (n - 1) / (k - 1))
 
     return {
         "start": best_window[0].dt_utc.isoformat(),
@@ -232,8 +247,8 @@ async def _handle_cheapest_hours(call: ServiceCall) -> ServiceResponse:
         "price_periods": [
             {
                 "time": s.dt_utc.isoformat(),
-                "price": _fmt(coordinator, coordinator._spot_effective(s), formatted),
-                "rank": s.rank,
+                "price": _fmt(coordinator, _total_price(s), formatted),
+                "rank": _rank(_total_price(s)),
             }
             for s in best_window
         ],
