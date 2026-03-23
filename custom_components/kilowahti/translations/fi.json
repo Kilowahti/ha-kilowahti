@@ -337,6 +337,9 @@
       "total_price_rank": {
         "name": "Kokonaishinnan sijaluku"
       },
+      "total_price_quartile": {
+        "name": "Kokonaishinnan kvartiili"
+      },
       "today_spot_avg": {
         "name": "Tänään spot-keskiarvo"
       },

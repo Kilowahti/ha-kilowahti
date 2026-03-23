@@ -525,6 +525,13 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         """
         return self._score_rank_now()
 
+    def total_price_quartile(self) -> int | None:
+        """Quartile (1–4) of the current slot by total price among today's slots."""
+        rank = self.total_price_rank_now()
+        if rank is None:
+            return None
+        return calc.price_quartile(rank, self._resolution.slots_per_day)
+
     def current_quartile(self) -> int | None:
         rank = self.current_rank()
         if rank is None:

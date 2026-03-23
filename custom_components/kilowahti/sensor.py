@@ -71,6 +71,7 @@ from .const import (
     SENSOR_TOMORROW_TOTAL_MAX,
     SENSOR_TOMORROW_TOTAL_MIN,
     SENSOR_TOTAL_PRICE,
+    SENSOR_TOTAL_PRICE_QUARTILE,
     SENSOR_TOTAL_PRICE_RANK,
     SENSOR_TRANSFER_PRICE,
     UNIT_EUROKWH,
@@ -196,6 +197,13 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         translation_key=SENSOR_TOTAL_PRICE_RANK,
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda c: c.total_price_rank_now(),
+        native_unit_of_measurement=None,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_TOTAL_PRICE_QUARTILE,
+        translation_key=SENSOR_TOTAL_PRICE_QUARTILE,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda c: c.total_price_quartile(),
         native_unit_of_measurement=None,
     ),
     KilowahtiSensorEntityDescription(
