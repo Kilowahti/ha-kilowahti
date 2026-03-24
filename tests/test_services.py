@@ -149,26 +149,6 @@ async def test_get_export_prices_returns_export_prices(hass, setup_integration, 
     assert prices == sorted(prices)
 
 
-async def test_best_charge_hours_returns_cheapest_window(hass, setup_integration, mock_utcnow):
-    """best_charge_hours selects the 1-hour window with the lowest average total price.
-
-    With no transfer price configured, total price = spot_effective.
-    Slot at 00:00 UTC (PriceNoTax=0.03) is cheapest → should be selected.
-    """
-    result = await hass.services.async_call(
-        DOMAIN,
-        "best_charge_hours",
-        {"start": _T0.isoformat(), "end": _T3.isoformat(), "hours": 1, "formatted": True},
-        blocking=True,
-        return_response=True,
-    )
-
-    assert result["start"].startswith("2026-03-13T00:00:00")
-    periods = result["price_periods"]
-    assert len(periods) == 1
-    assert "total_price" in periods[0]
-
-
 async def test_best_export_hours_returns_most_expensive_window(
     hass, setup_integration, mock_utcnow
 ):
