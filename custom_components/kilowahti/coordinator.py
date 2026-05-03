@@ -88,6 +88,10 @@ _LOGGER = logging.getLogger(__name__)
 # Debounce interval for persisting score accumulators
 _SCORE_PERSIST_DEBOUNCE = 60  # seconds
 
+# Placeholder daily score per quartile when no consumption is recorded yet —
+# the literal midpoint of each quartile's score range (Q1: 75–100, Q4: 0–25).
+_QUARTILE_PLACEHOLDER_SCORES = {1: 87.5, 2: 62.5, 3: 37.5, 4: 12.5}
+
 
 class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     """Manages price data lifecycle and all derived values for Kilowahti."""
@@ -1214,7 +1218,10 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         """Return the in-progress daily optimization score (0–100), or None if no data yet."""
         bucket_data = self._score_data.get(profile_id, {})
         if not bucket_data:
-            return None
+            quartile = self.total_price_quartile()
+            if quartile is None:
+                return None
+            return _QUARTILE_PLACEHOLDER_SCORES[quartile]
         profile = next((p for p in self.score_profiles if p.id == profile_id), None)
         formula = profile.formula if profile else "default"
         return calc.compute_score(bucket_data, formula)
@@ -1229,7 +1236,12 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return None
 
     def get_monthly_score(self, profile_id: str) -> float | None:
-        """Return average of completed daily scores for the current calendar month."""
+        """Return average of completed daily scores for the current calendar month.
+
+        Includes today's in-progress score so the value stays live mid-day. Falls back
+        to the previous month's finalised score during the brief window after midnight
+        on day 1 when neither completed days nor today's accumulator have data yet.
+        """
         now_local = self._now_local()
         month_key = f"{now_local.year}-{now_local.month:02d}"
 
@@ -1238,9 +1250,15 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             for entry in self._daily_history
             if entry["date"].startswith(month_key) and profile_id in entry.get("scores", {})
         ]
-        if not scores:
-            return None
-        return sum(scores) / len(scores)
+
+        today_score = self.get_daily_score(profile_id)
+        if today_score is not None:
+            scores.append(today_score)
+
+        if scores:
+            return sum(scores) / len(scores)
+
+        return self.get_previous_monthly_score(profile_id)
 
     def get_previous_monthly_score(self, profile_id: str) -> float | None:
         """Return the finalised score for the previous calendar month, or None."""

@@ -465,21 +465,29 @@ async def test_export_price_now_spot_linked_no_commission(hass, setup_integratio
 
 
 # ---------------------------------------------------------------------------
-# get_daily_score — regression: must return None when no meter data
+# get_daily_score — quartile-midpoint placeholder when no meter data
 # ---------------------------------------------------------------------------
 
 
-async def test_get_daily_score_returns_none_when_no_meter_data(
+async def test_get_daily_score_uses_quartile_midpoint_when_no_meter_data(
     hass, setup_integration, mock_utcnow
 ):
-    """get_daily_score returns None (not 0.0) when no consumption has been recorded.
+    """With no consumption recorded, the score reflects the current quartile midpoint.
 
-    Regression: previously compute_score({}) returned 0.0, which was indistinguishable
-    from a real score of zero. Unknown is the correct state when there is no data.
+    FROZEN_UTC = 2026-03-13T00:30Z → current slot is the cheapest (Q1) → 87.5.
     """
     coord = hass.data[DOMAIN][setup_integration.entry_id]
-    # No meter events fired → _score_data is empty for any profile id.
-    assert coord.get_daily_score("nonexistent_profile") is None
+    assert coord.total_price_quartile() == 1
+    assert coord.get_daily_score("nonexistent_profile") == 87.5
+
+
+async def test_get_daily_score_returns_none_when_no_price_data(
+    hass, setup_integration, mock_utcnow
+):
+    """When neither consumption nor price data exist, score is unknown."""
+    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord._today_slots = []
+    assert coord.get_daily_score("p1") is None
 
 
 # ---------------------------------------------------------------------------
@@ -487,19 +495,22 @@ async def test_get_daily_score_returns_none_when_no_meter_data(
 # ---------------------------------------------------------------------------
 
 
-async def test_get_monthly_score_returns_none_when_no_history(hass, setup_integration, mock_utcnow):
-    """get_monthly_score returns None when no daily history exists for this month."""
+async def test_get_monthly_score_falls_back_when_no_data_anywhere(
+    hass, setup_integration, mock_utcnow
+):
+    """Monthly score returns None when nothing is available — no current-month days,
+    no in-progress today, no previous month."""
     coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord._today_slots = []  # also kills today's quartile-midpoint fallback
     assert coord.get_monthly_score("p1") is None
 
 
-async def test_get_monthly_score_returns_average_of_completed_daily_scores(
-    hass, setup_integration, mock_utcnow
-):
-    """get_monthly_score returns the average of all daily scores for the current month.
+async def test_get_monthly_score_includes_todays_in_progress(hass, setup_integration, mock_utcnow):
+    """Monthly score averages completed days plus today's in-progress score.
 
     FROZEN_DATE = 2026-03-13 → month_key = '2026-03'.
-    Two injected days (scores 80 and 60) → average = 70.
+    Two completed days (80, 60) plus today's quartile-midpoint placeholder (Q1 → 87.5)
+    → average = (80 + 60 + 87.5) / 3 = 75.833…
     """
     coord = hass.data[DOMAIN][setup_integration.entry_id]
     coord._daily_history = [
@@ -507,7 +518,16 @@ async def test_get_monthly_score_returns_average_of_completed_daily_scores(
         {"date": "2026-03-02", "scores": {"p1": 60.0}},
         {"date": "2026-02-28", "scores": {"p1": 50.0}},  # previous month — must be excluded
     ]
-    assert coord.get_monthly_score("p1") == pytest.approx(70.0)
+    assert coord.get_monthly_score("p1") == pytest.approx((80.0 + 60.0 + 87.5) / 3)
+
+
+async def test_get_monthly_score_falls_back_to_previous_month(hass, setup_integration, mock_utcnow):
+    """When neither completed days nor today's score are available for the current
+    month, fall back to the previous month's finalised score."""
+    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord._today_slots = []  # disables today's placeholder
+    coord._month_scores = [{"month": "2026-02", "scores": {"p1": 73.0}}]
+    assert coord.get_monthly_score("p1") == pytest.approx(73.0)
 
 
 # ---------------------------------------------------------------------------
