@@ -28,7 +28,7 @@ jobs:
             pytest-asyncio>=0.23 \
             pytest-homeassistant-custom-component==0.13.317 \
             aioresponses>=0.7 \
-            "kilowahti @ git+https://github.com/Kilowahti/kilowahti-py.git@5adebe5111d5e2f15c484efb41a2896fe3d6cc3e"
+            kilowahti==2026.5.0
 
       - name: Run tests
         run: pytest tests/
