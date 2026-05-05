@@ -1086,31 +1086,17 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
         Uses _energy_price_for_slot (fixed-period aware) plus transfer price.
         Normalized: cheapest tier(s) = 1, most expensive = slots_per_day.
-        Returns None when today's slots are unavailable or the current slot is absent.
         """
         current = self.current_slot()
-        if current is None or not self._today_slots:
+        if current is None:
             return None
 
         def _true_total(s: PriceSlot) -> float:
-            return round(
-                self._energy_price_for_slot(s) + (self.transfer_price_for_slot(s) or 0.0),
-                5,
-            )
+            return self._energy_price_for_slot(s) + (self.transfer_price_for_slot(s) or 0.0)
 
-        totals = {s.dt_utc: _true_total(s) for s in self._today_slots}
-        current_total = totals.get(current.dt_utc)
-        if current_total is None:
-            return None
-
-        unique_prices = sorted(set(totals.values()))
-        k = len(unique_prices)
-        n = self._resolution.slots_per_day
-        tier_index = unique_prices.index(current_total)
-
-        if k == 1:
-            return 1
-        return round(1 + tier_index * (n - 1) / (k - 1))
+        return calc.normalized_total_price_rank(
+            current, self._today_slots, _true_total, self._resolution.slots_per_day
+        )
 
     @callback
     def _on_meter_state_change(self, event: Any) -> None:
