@@ -337,6 +337,9 @@
       "total_price_rank": {
         "name": "Total price rank"
       },
+      "total_price_quartile": {
+        "name": "Total price quartile"
+      },
       "today_spot_avg": {
         "name": "Today spot average"
       },

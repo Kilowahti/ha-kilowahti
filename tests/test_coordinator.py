@@ -245,6 +245,49 @@ async def test_structural_options_change_triggers_reload(hass, setup_integration
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.asyncio
+async def test_total_price_rank_now_uses_fixed_period_price(hass, options, mock_utcnow):
+    """total_price_rank_now uses fixed-period price, matching total_price sensor.
+
+    Current slot (00:00) has highest spot price (normalized rank=24). With a fixed period
+    active all slots share the same energy price → all tied → rank=1 for all.
+    """
+    from datetime import date, timezone as tz
+
+    from kilowahti.models import FixedPeriod
+
+    await hass.config.async_set_time_zone("UTC")
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=options)
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    coord = hass.data[DOMAIN][entry.entry_id]
+
+    coord._today_slots = [
+        PriceSlot(dt_utc=datetime(2026, 3, 13, 0, 0, tzinfo=tz.utc), price_no_tax=10.0, rank=3),
+        PriceSlot(dt_utc=datetime(2026, 3, 13, 1, 0, tzinfo=tz.utc), price_no_tax=5.0, rank=2),
+        PriceSlot(dt_utc=datetime(2026, 3, 13, 2, 0, tzinfo=tz.utc), price_no_tax=3.0, rank=1),
+    ]
+
+    assert coord.total_price_rank_now() == 24
+
+    coord._storage._periods = [
+        FixedPeriod(
+            id="fp1",
+            label="Fixed",
+            start_date=date(2026, 3, 13),
+            end_date=date(2026, 3, 13),
+            price=5.0,
+        )
+    ]
+
+    assert coord.total_price_rank_now() == 1
+
+
 async def test_total_price_rank_now_returns_1_for_cheapest(hass, setup_integration, mock_utcnow):
     """total_price_rank_now returns 1 when the current slot is the cheapest today."""
     coord = hass.data[DOMAIN][setup_integration.entry_id]
@@ -265,12 +308,7 @@ async def test_total_price_rank_now_returns_1_for_cheapest(hass, setup_integrati
 
 
 async def test_score_accumulation_on_meter_change(hass, options, mock_utcnow):
-    """Meter consumption (kWh delta) is accumulated into the correct price bucket.
-
-    FROZEN_UTC = 00:30 UTC → current slot is at 00:00 UTC with rank 1.
-    rank_to_bucket(1, 24) → "q1" (cheapest quartile).
-    Consuming 10 kWh in q1 and then computing score should yield 100 (all cheap).
-    """
+    """10 kWh consumed in the cheapest slot accumulates in q1 and scores 100."""
     from types import SimpleNamespace
 
     await hass.config.async_set_time_zone("UTC")
@@ -329,9 +367,7 @@ async def test_monthly_fixed_cost_today_returns_none_when_zero(
     assert coord.monthly_fixed_cost_today() is None
 
 
-async def test_monthly_fixed_cost_today_returns_daily_share(
-    hass, setup_integration, mock_utcnow
-):
+async def test_monthly_fixed_cost_today_returns_daily_share(hass, setup_integration, mock_utcnow):
     """monthly_fixed_cost_today returns monthly_cost / days_in_month.
 
     FROZEN_DATE is 2026-03-13; March has 31 days.
@@ -416,9 +452,7 @@ async def test_battery_charge_recommendation_charge_from_grid_when_cheapest(
 # ---------------------------------------------------------------------------
 
 
-async def test_export_price_now_spot_linked_no_commission(
-    hass, setup_integration, mock_utcnow
-):
+async def test_export_price_now_spot_linked_no_commission(hass, setup_integration, mock_utcnow):
     """export_price_now returns slot.price_no_tax when spot-linked with zero commission.
 
     PriceSlot.price_no_tax is stored in c/kWh (source converts from €/kWh).
@@ -431,21 +465,29 @@ async def test_export_price_now_spot_linked_no_commission(
 
 
 # ---------------------------------------------------------------------------
-# get_daily_score — regression: must return None when no meter data
+# get_daily_score — quartile-midpoint placeholder when no meter data
 # ---------------------------------------------------------------------------
 
 
-async def test_get_daily_score_returns_none_when_no_meter_data(
+async def test_get_daily_score_uses_quartile_midpoint_when_no_meter_data(
     hass, setup_integration, mock_utcnow
 ):
-    """get_daily_score returns None (not 0.0) when no consumption has been recorded.
+    """With no consumption recorded, the score reflects the current quartile midpoint.
 
-    Regression: previously compute_score({}) returned 0.0, which was indistinguishable
-    from a real score of zero. Unknown is the correct state when there is no data.
+    FROZEN_UTC = 2026-03-13T00:30Z → current slot is the cheapest (Q1) → 87.5.
     """
     coord = hass.data[DOMAIN][setup_integration.entry_id]
-    # No meter events fired → _score_data is empty for any profile id.
-    assert coord.get_daily_score("nonexistent_profile") is None
+    assert coord.total_price_quartile() == 1
+    assert coord.get_daily_score("nonexistent_profile") == 87.5
+
+
+async def test_get_daily_score_returns_none_when_no_price_data(
+    hass, setup_integration, mock_utcnow
+):
+    """When neither consumption nor price data exist, score is unknown."""
+    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord._today_slots = []
+    assert coord.get_daily_score("p1") is None
 
 
 # ---------------------------------------------------------------------------
@@ -453,21 +495,22 @@ async def test_get_daily_score_returns_none_when_no_meter_data(
 # ---------------------------------------------------------------------------
 
 
-async def test_get_monthly_score_returns_none_when_no_history(
+async def test_get_monthly_score_falls_back_when_no_data_anywhere(
     hass, setup_integration, mock_utcnow
 ):
-    """get_monthly_score returns None when no daily history exists for this month."""
+    """Monthly score returns None when nothing is available — no current-month days,
+    no in-progress today, no previous month."""
     coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord._today_slots = []  # also kills today's quartile-midpoint fallback
     assert coord.get_monthly_score("p1") is None
 
 
-async def test_get_monthly_score_returns_average_of_completed_daily_scores(
-    hass, setup_integration, mock_utcnow
-):
-    """get_monthly_score returns the average of all daily scores for the current month.
+async def test_get_monthly_score_includes_todays_in_progress(hass, setup_integration, mock_utcnow):
+    """Monthly score averages completed days plus today's in-progress score.
 
     FROZEN_DATE = 2026-03-13 → month_key = '2026-03'.
-    Two injected days (scores 80 and 60) → average = 70.
+    Two completed days (80, 60) plus today's quartile-midpoint placeholder (Q1 → 87.5)
+    → average = (80 + 60 + 87.5) / 3 = 75.833…
     """
     coord = hass.data[DOMAIN][setup_integration.entry_id]
     coord._daily_history = [
@@ -475,7 +518,16 @@ async def test_get_monthly_score_returns_average_of_completed_daily_scores(
         {"date": "2026-03-02", "scores": {"p1": 60.0}},
         {"date": "2026-02-28", "scores": {"p1": 50.0}},  # previous month — must be excluded
     ]
-    assert coord.get_monthly_score("p1") == pytest.approx(70.0)
+    assert coord.get_monthly_score("p1") == pytest.approx((80.0 + 60.0 + 87.5) / 3)
+
+
+async def test_get_monthly_score_falls_back_to_previous_month(hass, setup_integration, mock_utcnow):
+    """When neither completed days nor today's score are available for the current
+    month, fall back to the previous month's finalised score."""
+    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord._today_slots = []  # disables today's placeholder
+    coord._month_scores = [{"month": "2026-02", "scores": {"p1": 73.0}}]
+    assert coord.get_monthly_score("p1") == pytest.approx(73.0)
 
 
 # ---------------------------------------------------------------------------
@@ -483,9 +535,7 @@ async def test_get_monthly_score_returns_average_of_completed_daily_scores(
 # ---------------------------------------------------------------------------
 
 
-async def test_finalise_daily_scores_skips_profiles_with_no_data(
-    hass, options, mock_utcnow
-):
+async def test_finalise_daily_scores_skips_profiles_with_no_data(hass, options, mock_utcnow):
     """Profiles with empty bucket_data are excluded from the daily history entry.
 
     Two profiles configured: 'p1' has consumed 10 kWh in q1; 'p2' has no data.
@@ -580,14 +630,10 @@ async def test_import_export_spread_now(hass, setup_integration, mock_utcnow):
     assert spread == pytest.approx(0.765, rel=1e-3)
 
 
-async def test_self_consumption_value_now_equals_total_price(
-    hass, setup_integration, mock_utcnow
-):
+async def test_self_consumption_value_now_equals_total_price(hass, setup_integration, mock_utcnow):
     """self_consumption_value_now equals total_price_now (avoided import cost per kWh)."""
     coord = hass.data[DOMAIN][setup_integration.entry_id]
-    assert coord.self_consumption_value_now() == pytest.approx(
-        coord.total_price_now(), rel=1e-6
-    )
+    assert coord.self_consumption_value_now() == pytest.approx(coord.total_price_now(), rel=1e-6)
 
 
 # ---------------------------------------------------------------------------
@@ -595,9 +641,7 @@ async def test_self_consumption_value_now_equals_total_price(
 # ---------------------------------------------------------------------------
 
 
-async def test_optimal_charge_window_none_when_no_battery(
-    hass, setup_integration, mock_utcnow
-):
+async def test_optimal_charge_window_none_when_no_battery(hass, setup_integration, mock_utcnow):
     """optimal_charge_window returns None when battery is not configured."""
     coord = hass.data[DOMAIN][setup_integration.entry_id]
     assert coord.optimal_charge_window() is None

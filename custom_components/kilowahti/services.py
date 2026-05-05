@@ -12,6 +12,7 @@ from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, Supp
 from homeassistant.helpers import config_validation as cv
 from homeassistant.util import dt as dt_util
 from kilowahti import calc
+from kilowahti.models import PriceSlot
 
 from .const import DOMAIN, UNIT_EUROKWH
 from .coordinator import KilowahtiCoordinator
@@ -42,6 +43,7 @@ CHEAPEST_HOURS_SCHEMA = vol.Schema(
         vol.Required("end"): cv.datetime,
         vol.Required("hours"): vol.All(vol.Coerce(float), vol.Range(min=0.25, max=24)),
         _OPT_FORMATTED: cv.boolean,
+        vol.Optional("reverse", default=False): cv.boolean,
     }
 )
 
@@ -96,16 +98,6 @@ GET_EXPORT_PRICES_SCHEMA = vol.Schema(
 )
 
 BEST_EXPORT_HOURS_SCHEMA = vol.Schema(
-    {
-        _OPT_ENTRY_ID: cv.string,
-        vol.Required("start"): cv.datetime,
-        vol.Required("end"): cv.datetime,
-        vol.Required("hours"): vol.All(vol.Coerce(float), vol.Range(min=0.25, max=24)),
-        _OPT_FORMATTED: cv.boolean,
-    }
-)
-
-BEST_CHARGE_HOURS_SCHEMA = vol.Schema(
     {
         _OPT_ENTRY_ID: cv.string,
         vol.Required("start"): cv.datetime,
@@ -208,6 +200,7 @@ async def _handle_cheapest_hours(call: ServiceCall) -> ServiceResponse:
     end: datetime = call.data["end"]
     hours: float = call.data["hours"]
     formatted: bool = call.data["formatted"]
+    reverse: bool = call.data["reverse"]
 
     slots = coordinator.slots_in_range(start, end)
     if not slots:
@@ -216,13 +209,27 @@ async def _handle_cheapest_hours(call: ServiceCall) -> ServiceResponse:
     resolution_minutes = coordinator._resolution.value
     slots_needed = max(1, round(hours * 60 / resolution_minutes))
 
-    result = calc.cheapest_window(
-        slots, slots_needed, coordinator._vat_rate, coordinator._spot_commission
-    )
+    def _total_price(s: PriceSlot) -> float:
+        return coordinator._energy_price_for_slot(s) + (
+            coordinator.transfer_price_for_slot(s) or 0.0
+        )
+
+    result = calc.cheapest_window(slots, slots_needed, _total_price, prefer_last=reverse)
     if result is None:
         return {"error": f"Requested {hours}h but only {len(slots)} slots available in range"}
 
     best_window, avg_price = result
+
+    # Normalized total price rank within the search range.
+    # 1 = cheapest slot in range, len(slots) = most expensive.
+    all_prices = [_total_price(s) for s in slots]
+    unique_prices = sorted({round(p, 5) for p in all_prices})
+    k = len(unique_prices)
+    n = len(slots)
+
+    def _rank(p: float) -> int:
+        tier = unique_prices.index(round(p, 5))
+        return 1 if k == 1 else round(1 + tier * (n - 1) / (k - 1))
 
     return {
         "start": best_window[0].dt_utc.isoformat(),
@@ -232,8 +239,8 @@ async def _handle_cheapest_hours(call: ServiceCall) -> ServiceResponse:
         "price_periods": [
             {
                 "time": s.dt_utc.isoformat(),
-                "price": _fmt(coordinator, coordinator._spot_effective(s), formatted),
-                "rank": s.rank,
+                "price": _fmt(coordinator, _total_price(s), formatted),
+                "rank": _rank(_total_price(s)),
             }
             for s in best_window
         ],
@@ -431,55 +438,6 @@ async def _handle_best_export_hours(call: ServiceCall) -> ServiceResponse:
     }
 
 
-async def _handle_best_charge_hours(call: ServiceCall) -> ServiceResponse:
-    coordinator = _get_coordinator(call.hass, call.data.get("config_entry_id"))
-    start: datetime = call.data["start"]
-    end: datetime = call.data["end"]
-    hours: float = call.data["hours"]
-    formatted: bool = call.data["formatted"]
-
-    slots = coordinator.slots_in_range(start, end)
-    if not slots:
-        return {"error": "No price slots available in the specified range"}
-
-    resolution_minutes = coordinator._resolution.value
-    slots_needed = max(1, round(hours * 60 / resolution_minutes))
-
-    if slots_needed > len(slots):
-        return {"error": f"Requested {hours}h but only {len(slots)} slots available in range"}
-
-    # Find the consecutive window with the lowest average total price
-    best_start = 0
-    best_avg = float("inf")
-    for i in range(len(slots) - slots_needed + 1):
-        window = slots[i : i + slots_needed]
-        prices = coordinator._total_prices_for_slots(window)
-        avg = sum(prices) / len(prices)
-        if avg < best_avg:
-            best_avg = avg
-            best_start = i
-
-    best_window = slots[best_start : best_start + slots_needed]
-    return {
-        "start": best_window[0].dt_utc.isoformat(),
-        "end": best_window[-1].dt_utc.isoformat(),
-        "average_total_price": _fmt(coordinator, best_avg, formatted),
-        "unit": coordinator.native_unit,
-        "price_periods": [
-            {
-                "time": dt_util.as_local(s.dt_utc).isoformat(),
-                "total_price": _fmt(
-                    coordinator,
-                    coordinator._spot_effective(s)
-                    + (coordinator.transfer_price_for_slot(s) or 0.0),
-                    formatted,
-                ),
-            }
-            for s in best_window
-        ],
-    }
-
-
 async def _handle_generation_schedule(call: ServiceCall) -> ServiceResponse:
     coordinator = _get_coordinator(call.hass, call.data.get("config_entry_id"))
     formatted: bool = call.data["formatted"]
@@ -611,13 +569,6 @@ def async_register_services(hass: HomeAssistant) -> None:
     )
     hass.services.async_register(
         DOMAIN,
-        "best_charge_hours",
-        _handle_best_charge_hours,
-        schema=BEST_CHARGE_HOURS_SCHEMA,
-        supports_response=SupportsResponse.ONLY,
-    )
-    hass.services.async_register(
-        DOMAIN,
         "generation_schedule",
         _handle_generation_schedule,
         schema=GENERATION_SCHEDULE_SCHEMA,
@@ -638,7 +589,6 @@ def async_unregister_services(hass: HomeAssistant) -> None:
         "list_fixed_periods",
         "get_export_prices",
         "best_export_hours",
-        "best_charge_hours",
         "generation_schedule",
     ):
         hass.services.async_remove(DOMAIN, service)

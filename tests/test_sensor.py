@@ -5,9 +5,8 @@ from __future__ import annotations
 from datetime import date
 
 import pytest
-from kilowahti.models import FixedPeriod
-
 from aioresponses import aioresponses
+from kilowahti.models import FixedPeriod
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.kilowahti.const import (
@@ -19,9 +18,6 @@ from custom_components.kilowahti.const import (
     SENSOR_TOMORROW_SPOT_AVG,
     SENSOR_TOMORROW_SPOT_MAX,
     SENSOR_TOMORROW_SPOT_MIN,
-    SENSOR_TOMORROW_TOTAL_AVG,
-    SENSOR_TOMORROW_TOTAL_MAX,
-    SENSOR_TOMORROW_TOTAL_MIN,
     SENSOR_TRANSFER_PRICE,
 )
 from homeassistant.const import STATE_UNKNOWN

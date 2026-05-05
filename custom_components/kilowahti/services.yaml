@@ -84,8 +84,9 @@ get_prices:
 cheapest_hours:
   name: Cheapest hours
   description: >
-    Finds the cheapest consecutive window of the given length within a
-    time range, using a sliding-window search over spot prices.
+    Finds the cheapest consecutive window of the given length within a time
+    range, using total price (spot or fixed-period rate plus transfer). Use
+    this to schedule appliances or battery grid charging.
   fields:
     config_entry_id:
       name: Config entry ID
@@ -128,6 +129,15 @@ cheapest_hours:
         at full precision.
       required: false
       default: true
+      selector:
+        boolean:
+    reverse:
+      name: Reverse
+      description: >
+        When true, returns the latest cheapest window instead of the earliest.
+        Useful when you want to delay the start as long as possible.
+      required: false
+      default: false
       selector:
         boolean:
 
@@ -323,55 +333,6 @@ best_export_hours:
       description: Length of the window in hours (minimum 0.25, maximum 24).
       required: true
       example: 2
-      selector:
-        number:
-          min: 0.25
-          max: 24
-          step: 0.25
-          unit_of_measurement: h
-    formatted:
-      name: Formatted
-      description: >
-        When true (default), prices are converted to the configured display unit
-        and rounded. When false, raw c/kWh values are returned.
-      required: false
-      default: true
-      selector:
-        boolean:
-
-best_charge_hours:
-  name: Best charge hours
-  description: >
-    Finds the consecutive window with the lowest average total price (spot +
-    transfer) within a time range. Use this to schedule battery charging from
-    the grid.
-  fields:
-    config_entry_id:
-      name: Config entry ID
-      description: Required when multiple Kilowahti entries are configured.
-      required: false
-      example: "abc123def456"
-      selector:
-        text:
-    start:
-      name: Start
-      description: Start of the search range.
-      required: true
-      example: "2024-01-15 00:00:00"
-      selector:
-        datetime:
-    end:
-      name: End
-      description: End of the search range.
-      required: true
-      example: "2024-01-15 23:59:59"
-      selector:
-        datetime:
-    hours:
-      name: Hours
-      description: Length of the window in hours (minimum 0.25, maximum 24).
-      required: true
-      example: 3
       selector:
         number:
           min: 0.25
