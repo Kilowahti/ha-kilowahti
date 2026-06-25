@@ -376,8 +376,29 @@
       "tomorrow_total_max": {
         "name": "Tomorrow total maximum"
       },
+      "today_avg": {
+        "name": "Today average"
+      },
+      "today_min": {
+        "name": "Today minimum"
+      },
+      "today_max": {
+        "name": "Today maximum"
+      },
+      "tomorrow_avg": {
+        "name": "Tomorrow average"
+      },
+      "tomorrow_min": {
+        "name": "Tomorrow minimum"
+      },
+      "tomorrow_max": {
+        "name": "Tomorrow maximum"
+      },
       "next_hours_avg": {
         "name": "Next hours average"
+      },
+      "spot_next_hours_avg": {
+        "name": "Spot next hours average"
       },
       "control_factor_price": {
         "name": "Control factor price"

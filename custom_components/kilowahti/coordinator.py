@@ -671,6 +671,9 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     def _effective_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
         return calc.effective_prices(slots, self._vat_rate, self._spot_commission)
 
+    def _energy_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
+        return [self._energy_price_for_slot(s) for s in slots]
+
     def _total_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
         return [
             self._energy_price_for_slot(s) + (self.transfer_price_for_slot(s) or 0.0) for s in slots
@@ -750,7 +753,57 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             return None
         return max(self._total_prices_for_slots(slots))
 
+    def today_avg(self) -> float | None:
+        if not self._today_slots:
+            return None
+        prices = self._energy_prices_for_slots(self._today_slots)
+        return sum(prices) / len(prices)
+
+    def today_min(self) -> float | None:
+        if not self._today_slots:
+            return None
+        return min(self._energy_prices_for_slots(self._today_slots))
+
+    def today_max(self) -> float | None:
+        if not self._today_slots:
+            return None
+        return max(self._energy_prices_for_slots(self._today_slots))
+
+    def _tomorrow_energy_slots(self) -> list[PriceSlot] | None:
+        tomorrow = (self._now_local() + timedelta(days=1)).date()
+        if self.fixed_period_for_date(tomorrow) is not None:
+            return self._synthetic_slots_for_date(tomorrow)
+        return self._tomorrow_slots or None
+
+    def tomorrow_avg(self) -> float | None:
+        slots = self._tomorrow_energy_slots()
+        if not slots:
+            return None
+        prices = self._energy_prices_for_slots(slots)
+        return sum(prices) / len(prices)
+
+    def tomorrow_min(self) -> float | None:
+        slots = self._tomorrow_energy_slots()
+        if not slots:
+            return None
+        return min(self._energy_prices_for_slots(slots))
+
+    def tomorrow_max(self) -> float | None:
+        slots = self._tomorrow_energy_slots()
+        if not slots:
+            return None
+        return max(self._energy_prices_for_slots(slots))
+
     def next_hours_avg(self) -> float | None:
+        now = self._now_local()
+        end = now + timedelta(hours=self._forward_avg_hours)
+        slots = self.slots_in_range(now, end)
+        if not slots:
+            return None
+        prices = self._energy_prices_for_slots(slots)
+        return sum(prices) / len(prices)
+
+    def spot_next_hours_avg(self) -> float | None:
         now = self._now_local()
         end = now + timedelta(hours=self._forward_avg_hours)
         slots = self.slots_in_range(now, end)
