@@ -5,7 +5,7 @@
 
 **Kilowahti** (*kilowatti* + *vahti* — "the kilowatt sentinel") is a Home Assistant integration for Nordic/Baltic electricity cost awareness and optimization — whether you are on a spot contract or a fixed rate.
 
-[![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz/)
+[![HACS](https://img.shields.io/badge/HACS-Default-blue.svg)](https://hacs.xyz/)
 [![Documentation](https://img.shields.io/badge/docs-kilowahti.fi-blue)](https://docs.kilowahti.fi/)
 [![Feedback](https://img.shields.io/badge/feedback-share%20yours-brightgreen)](https://tally.so/r/QK05XY)
 
@@ -46,11 +46,7 @@
 
 ## Installation
 
-1. Install via HACS:
-
-   [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Kilowahti&repository=ha-kilowahti&category=Integration)
-
-   Or add `https://github.com/Kilowahti/ha-kilowahti` manually via HACS → Custom Repositories
+1. Install via [HACS](https://hacs.xyz/) — search for **Kilowahti** and click **Download**
 2. Restart Home Assistant
 3. Go to **Settings → Devices & Services → Add Integration → Kilowahti**
 4. Complete the setup wizard
