@@ -544,12 +544,12 @@
       "description": "Laukeaa, kun sähkön nykyinen hinta nousee hintarajan yläpuolelle."
     },
     "rank_became_acceptable": {
-      "name": "Sijoitus muuttui hyväksyttäväksi",
-      "description": "Laukeaa, kun nykyisen hinnan sijoitus laskee hyväksyttävälle tasolle (sijoitusrajaan tai sen alle)."
+      "name": "Sijaluku muuttui hyväksyttäväksi",
+      "description": "Laukeaa, kun nykyisen hinnan sijaluku laskee hyväksyttävälle tasolle (sijalukurajaan tai sen alle)."
     },
     "rank_no_longer_acceptable": {
-      "name": "Sijoitus ei ole enää hyväksyttävä",
-      "description": "Laukeaa, kun nykyisen hinnan sijoitus nousee sijoitusrajan yläpuolelle."
+      "name": "Sijaluku ei ole enää hyväksyttävä",
+      "description": "Laukeaa, kun nykyisen hinnan sijaluku nousee sijalukurajan yläpuolelle."
     },
     "became_cheapest_slot": {
       "name": "Muuttui halvimmaksi jaksoksi",
@@ -574,8 +574,8 @@
       "description": "Täyttyy, kun sähkön nykyinen hinta on hintarajassa tai sen alle."
     },
     "rank_is_acceptable": {
-      "name": "Sijoitus on hyväksyttävä",
-      "description": "Täyttyy, kun nykyisen hinnan sijoitus on sijoitusrajassa tai sen alle."
+      "name": "Sijaluku on hyväksyttävä",
+      "description": "Täyttyy, kun nykyisen hinnan sijaluku on sijalukurajassa tai sen alle."
     },
     "price_is_lowest_today": {
       "name": "Hinta on vuorokauden halvin",
