@@ -138,6 +138,10 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     # ------------------------------------------------------------------
 
     @property
+    def entry_id(self) -> str:
+        return self._entry.entry_id
+
+    @property
     def _opts(self) -> dict:
         return self._entry.options
 

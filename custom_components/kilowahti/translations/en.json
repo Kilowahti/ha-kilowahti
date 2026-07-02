@@ -533,5 +533,61 @@
         "name": "Discharge to grid recommended"
       }
     }
+  },
+  "triggers": {
+    "price_became_acceptable": {
+      "name": "Price became acceptable",
+      "description": "Triggers when the current electricity price drops to an acceptable level (at or below the price threshold)."
+    },
+    "price_no_longer_acceptable": {
+      "name": "Price no longer acceptable",
+      "description": "Triggers when the current electricity price rises above the price threshold."
+    },
+    "rank_became_acceptable": {
+      "name": "Rank became acceptable",
+      "description": "Triggers when the current price rank drops to an acceptable level (at or below the rank threshold)."
+    },
+    "rank_no_longer_acceptable": {
+      "name": "Rank no longer acceptable",
+      "description": "Triggers when the current price rank rises above the rank threshold."
+    },
+    "became_cheapest_slot": {
+      "name": "Became cheapest slot",
+      "description": "Triggers when the current time slot becomes the cheapest of the day."
+    },
+    "fixed_period_started": {
+      "name": "Fixed period started",
+      "description": "Triggers when a fixed-price period becomes active."
+    },
+    "fixed_period_ended": {
+      "name": "Fixed period ended",
+      "description": "Triggers when a fixed-price period stops being active."
+    },
+    "tomorrow_prices_available": {
+      "name": "Tomorrow's prices available",
+      "description": "Triggers when tomorrow's electricity prices become available."
+    }
+  },
+  "conditions": {
+    "price_is_acceptable": {
+      "name": "Price is acceptable",
+      "description": "Passes when the current electricity price is at or below the price threshold."
+    },
+    "rank_is_acceptable": {
+      "name": "Rank is acceptable",
+      "description": "Passes when the current price rank is at or below the rank threshold."
+    },
+    "price_is_lowest_today": {
+      "name": "Price is lowest today",
+      "description": "Passes when the current time slot is the cheapest of the day."
+    },
+    "fixed_period_active": {
+      "name": "Fixed period active",
+      "description": "Passes when a fixed-price period is currently active."
+    },
+    "tomorrow_available": {
+      "name": "Tomorrow's prices available",
+      "description": "Passes when tomorrow's electricity prices are available."
+    }
   }
 }
