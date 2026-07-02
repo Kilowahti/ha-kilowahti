@@ -8,6 +8,7 @@
 [![HACS](https://img.shields.io/badge/HACS-Default-blue.svg)](https://hacs.xyz/)
 [![Documentation](https://img.shields.io/badge/docs-kilowahti.fi-blue)](https://docs.kilowahti.fi/)
 [![Feedback](https://img.shields.io/badge/feedback-share%20yours-brightgreen)](https://tally.so/r/QK05XY)
+[![Translation status](https://hosted.weblate.org/widget/kilowahti/svg-badge.svg)](https://hosted.weblate.org/engage/kilowahti/)
 
 ## What Kilowahti can do for you
 
@@ -52,6 +53,10 @@
 4. Complete the setup wizard
 
 See the [installation guide](https://docs.kilowahti.fi/installation/) and [configuration reference](https://docs.kilowahti.fi/configuration/) for full details.
+
+## Translations
+
+Kilowahti's interface translations are managed with [Weblate](https://hosted.weblate.org/engage/kilowahti/). Want Kilowahti in your language, or noticed a wording that could be better? Contribute translations directly in your browser — no coding or GitHub account required.
 
 ## Feedback
 
