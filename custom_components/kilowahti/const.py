@@ -159,6 +159,23 @@ SENSOR_SETTING_ACTIVE_FIXED_PERIOD = "setting_active_fixed_period"
 NUMBER_PRICE_THRESHOLD = "price_threshold"
 NUMBER_RANK_THRESHOLD = "rank_threshold"
 
+# Automation triggers (HA 2026.7 purpose-specific triggers)
+TRIGGER_PRICE_BECAME_ACCEPTABLE = "price_became_acceptable"
+TRIGGER_PRICE_NO_LONGER_ACCEPTABLE = "price_no_longer_acceptable"
+TRIGGER_RANK_BECAME_ACCEPTABLE = "rank_became_acceptable"
+TRIGGER_RANK_NO_LONGER_ACCEPTABLE = "rank_no_longer_acceptable"
+TRIGGER_BECAME_CHEAPEST_SLOT = "became_cheapest_slot"
+TRIGGER_FIXED_PERIOD_STARTED = "fixed_period_started"
+TRIGGER_FIXED_PERIOD_ENDED = "fixed_period_ended"
+TRIGGER_TOMORROW_PRICES_AVAILABLE = "tomorrow_prices_available"
+
+# Automation conditions (HA 2026.7 purpose-specific conditions)
+CONDITION_PRICE_IS_ACCEPTABLE = "price_is_acceptable"
+CONDITION_RANK_IS_ACCEPTABLE = "rank_is_acceptable"
+CONDITION_PRICE_IS_LOWEST_TODAY = "price_is_lowest_today"
+CONDITION_FIXED_PERIOD_ACTIVE = "fixed_period_active"
+CONDITION_TOMORROW_AVAILABLE = "tomorrow_available"
+
 BINARY_SENSOR_PRICE_ACCEPTABLE = "price_acceptable"
 BINARY_SENSOR_RANK_ACCEPTABLE = "rank_acceptable"
 BINARY_SENSOR_PRICE_OR_RANK_ACCEPTABLE = "price_or_rank_acceptable"

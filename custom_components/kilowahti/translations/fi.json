@@ -533,5 +533,61 @@
         "name": "Verkkoon myyminen suositeltavaa"
       }
     }
+  },
+  "triggers": {
+    "price_became_acceptable": {
+      "name": "Hinta muuttui hyväksyttäväksi",
+      "description": "Laukeaa, kun sähkön nykyinen hinta laskee hyväksyttävälle tasolle (hintarajaan tai sen alle)."
+    },
+    "price_no_longer_acceptable": {
+      "name": "Hinta ei ole enää hyväksyttävä",
+      "description": "Laukeaa, kun sähkön nykyinen hinta nousee hintarajan yläpuolelle."
+    },
+    "rank_became_acceptable": {
+      "name": "Sijoitus muuttui hyväksyttäväksi",
+      "description": "Laukeaa, kun nykyisen hinnan sijoitus laskee hyväksyttävälle tasolle (sijoitusrajaan tai sen alle)."
+    },
+    "rank_no_longer_acceptable": {
+      "name": "Sijoitus ei ole enää hyväksyttävä",
+      "description": "Laukeaa, kun nykyisen hinnan sijoitus nousee sijoitusrajan yläpuolelle."
+    },
+    "became_cheapest_slot": {
+      "name": "Muuttui halvimmaksi jaksoksi",
+      "description": "Laukeaa, kun nykyisestä aikajaksosta tulee vuorokauden halvin."
+    },
+    "fixed_period_started": {
+      "name": "Kiinteä jakso alkoi",
+      "description": "Laukeaa, kun kiinteähintainen jakso tulee voimaan."
+    },
+    "fixed_period_ended": {
+      "name": "Kiinteä jakso päättyi",
+      "description": "Laukeaa, kun kiinteähintainen jakso päättyy."
+    },
+    "tomorrow_prices_available": {
+      "name": "Huomisen hinnat saatavilla",
+      "description": "Laukeaa, kun huomisen sähkön hinnat tulevat saataville."
+    }
+  },
+  "conditions": {
+    "price_is_acceptable": {
+      "name": "Hinta on hyväksyttävä",
+      "description": "Täyttyy, kun sähkön nykyinen hinta on hintarajassa tai sen alle."
+    },
+    "rank_is_acceptable": {
+      "name": "Sijoitus on hyväksyttävä",
+      "description": "Täyttyy, kun nykyisen hinnan sijoitus on sijoitusrajassa tai sen alle."
+    },
+    "price_is_lowest_today": {
+      "name": "Hinta on vuorokauden halvin",
+      "description": "Täyttyy, kun nykyinen aikajakso on vuorokauden halvin."
+    },
+    "fixed_period_active": {
+      "name": "Kiinteä jakso voimassa",
+      "description": "Täyttyy, kun kiinteähintainen jakso on parhaillaan voimassa."
+    },
+    "tomorrow_available": {
+      "name": "Huomisen hinnat saatavilla",
+      "description": "Täyttyy, kun huomisen sähkön hinnat ovat saatavilla."
+    }
   }
 }

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import inspect
 import json
 import re
 import threading
@@ -74,6 +75,40 @@ TOMORROW_PAYLOAD = load_fixture("spot_hinta_tomorrow_fi.json")
 # ---------------------------------------------------------------------------
 # Suppress HA's _run_safe_shutdown_loop daemon thread from phcc cleanup check
 # ---------------------------------------------------------------------------
+
+
+@pytest.fixture(autouse=True, scope="session")
+def _patch_aioresponses_stream_writer():
+    """Supply ClientResponse's stream_writer arg that aioresponses omits.
+
+    aiohttp 3.14 (pulled in by HA 2026.7) made ClientResponse's stream_writer a
+    required keyword-only argument. aioresponses (<=0.7.9) does not pass it, so
+    every mocked response raises TypeError. Default it to None here; real
+    responses always pass it explicitly, so setdefault leaves them untouched.
+    """
+    from aiohttp import ClientResponse
+
+    if "stream_writer" not in inspect.signature(ClientResponse.__init__).parameters:
+        yield
+        return
+
+    class _NoopStreamWriter:
+        """Minimal stand-in; mocked responses are read, never written."""
+
+        output_size = 0
+        length = 0
+
+        def __getattr__(self, name):
+            return lambda *args, **kwargs: None
+
+    _orig_init = ClientResponse.__init__
+
+    def _init(self, *args, **kwargs):
+        kwargs.setdefault("stream_writer", _NoopStreamWriter())
+        _orig_init(self, *args, **kwargs)
+
+    with patch.object(ClientResponse, "__init__", _init):
+        yield
 
 
 @pytest.fixture(autouse=True, scope="session")
