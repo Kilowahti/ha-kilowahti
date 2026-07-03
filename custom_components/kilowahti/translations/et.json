@@ -23,12 +23,12 @@
                     "vat_rate_pct":"Käibemaksumäär (%)",
                     "electricity_tax":"Elektriaktsiis (c/kWh)",
                     "spot_commission":"Marginaal (c/kWh)",
-                    "monthly_fixed_cost":"Elilepingu püsitasu (€/kuus)"
+                    "monthly_fixed_cost":"Elektrilepingu püsitasu (€/kuus)"
                 },
                 "data_description":{
                     "electricity_tax":"Kindel elektriaktsiis kWh kohta, lisatakse spot-/fikseeritud hinnale.",
                     "spot_commission":"Müüja marginaal kWh kohta spot-hinna peale. Sisesta koos käibemaksuga. Jäta 0, kui ei kasutata.",
-                    "monthly_fixed_cost":"Elilepingu püsiv kuutasu (nt põhitasu). Sisesta koos käibemaksuga. Jäta 0, kui ei kasutata."
+                    "monthly_fixed_cost":"Elektrilepingu püsiv kuutasu (nt põhitasu). Sisesta koos käibemaksuga. Jäta 0, kui ei kasutata."
                 }
             },
             "transfer_groups":{
@@ -158,7 +158,7 @@
                     "vat_rate_pct":"Käibemaksumäär (%)",
                     "electricity_tax":"Elektriaktsiis (c/kWh)",
                     "spot_commission":"Marginaal (c/kWh)",
-                    "monthly_fixed_cost":"Elilepingu püsitasu (€/kuus)"
+                    "monthly_fixed_cost":"Elektrilepingu püsitasu (€/kuus)"
                 }
             },
             "transfer_groups":{
