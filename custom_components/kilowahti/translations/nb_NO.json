@@ -12,7 +12,7 @@
                 },
                 "data_description":{
                     "name":"Brukes i enhetsnavn, f.eks. 'Hjem'",
-                    "price_resolution":"15 minutter (96 spilleautomater/dag) eller 1 time (24 sloter/dag). Match kontraktens måleintervall.",
+                    "price_resolution":"15 minutter (96 sloter/dag) eller 1 time (24 sloter/dag). Match kontraktens måleintervall.",
                     "display_unit":"Sensorenhet"
                 }
             },
