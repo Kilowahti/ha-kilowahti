@@ -9,6 +9,8 @@ import pytest
 from aioresponses import aioresponses
 from kilowahti import calc
 from kilowahti.models import PriceSlot
+from kilowahti.sources.kilowahti_cdn import KilowahtiCdnSource
+from kilowahti.sources.spot_hinta import SpotHintaSource
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.kilowahti.const import (
@@ -17,14 +19,20 @@ from custom_components.kilowahti.const import (
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
     CONF_MONTHLY_FIXED_COST,
+    CONF_PRICE_RESOLUTION,
+    CONF_PRICE_SOURCE,
     CONF_REGION,
     CONF_SCORE_PROFILES,
     CONF_VAT_RATE,
     DOMAIN,
+    PRICE_SOURCE_KILOWAHTI_CDN,
+    PRICE_SOURCE_SPOT_HINTA,
 )
 from homeassistant.config_entries import ConfigEntryState
 
 from .conftest import (
+    CDN_PAYLOAD,
+    CDN_URL_RE,
     FROZEN_DATE,
     TODAY_PAYLOAD,
     TODAY_URL_RE,
@@ -678,3 +686,39 @@ async def test_optimal_charge_window_selects_cheapest_2h_window(
     start_dt, end_dt = result
     assert start_dt.hour == 0 and start_dt.minute == 0
     assert end_dt.hour == 2 and end_dt.minute == 0
+
+
+# ---------------------------------------------------------------------------
+# Price source selection
+# ---------------------------------------------------------------------------
+
+
+async def test_coordinator_defaults_to_spot_hinta_source(hass, setup_integration):
+    """Without a price_source option the coordinator uses SpotHintaSource."""
+    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    assert isinstance(coord._source, SpotHintaSource)
+    assert coord.price_source_name == PRICE_SOURCE_SPOT_HINTA
+
+
+async def test_coordinator_uses_cdn_source_when_configured(hass, options, mock_utcnow):
+    """With price_source=kilowahti_cdn the coordinator fetches from cdn.kilowahti.fi."""
+    await hass.config.async_set_time_zone("UTC")
+    options[CONF_PRICE_SOURCE] = PRICE_SOURCE_KILOWAHTI_CDN
+    options[CONF_PRICE_RESOLUTION] = 15
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=options)
+
+    # Serve only today so background eager-fetch/rollover timers cannot promote
+    # tomorrow's slots mid-test (mirrors the 404 tomorrow mocks used elsewhere).
+    payload = {**CDN_PAYLOAD, "days": {"2026-03-13": CDN_PAYLOAD["days"]["2026-03-13"]}}
+    with aioresponses() as m:
+        m.get(CDN_URL_RE, payload=payload, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    coord = hass.data[DOMAIN][entry.entry_id]
+    assert isinstance(coord._source, KilowahtiCdnSource)
+    assert coord.price_source_name == PRICE_SOURCE_KILOWAHTI_CDN
+    assert len(coord.today_slots()) == 96
+    # First slot of the FI local day: 10.0 EUR/MWh → 1.0 c/kWh
+    assert abs(coord.today_slots()[0].price_no_tax - 1.0) < 1e-9

@@ -7,11 +7,13 @@
         "data": {
           "name": "Nimi",
           "region": "Hinta-alue",
+          "price_source": "Hintatietojen lähde",
           "price_resolution": "Hintaresoluutio",
           "display_unit": "Näyttöyksikkö"
         },
         "data_description": {
           "name": "Käytetään entiteettien nimissä, esim. 'Koti'",
+          "price_source": "Kilowahti CDN on Kilowahdin oma ensimmäisen osapuolen hintapalvelu (cdn.kilowahti.fi); spot-hinta.fi on kolmannen osapuolen rajapinta.",
           "price_resolution": "15 minuuttia (96 aikaväliä/vrk) tai 1 tunti (24 aikaväliä/vrk). Valitse liittymäsi mittaustavan mukaan.",
           "display_unit": "Anturien yksikkö"
         }
@@ -154,6 +156,7 @@
         "data": {
           "name": "Nimi",
           "region": "Hinta-alue",
+          "price_source": "Hintatietojen lähde",
           "price_resolution": "Hintaresoluutio",
           "display_unit": "Näyttöyksikkö",
           "vat_rate_pct": "ALV-prosentti (%)",

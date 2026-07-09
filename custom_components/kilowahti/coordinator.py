@@ -18,6 +18,7 @@ from homeassistant.helpers.event import (
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.util import dt as dt_util
 from kilowahti import calc
+from kilowahti.sources.kilowahti_cdn import KilowahtiCdnSource
 from kilowahti.sources.spot_hinta import SpotHintaRateLimitError, SpotHintaSource
 
 from .const import (
@@ -41,6 +42,7 @@ from .const import (
     CONF_MAX_RANK,
     CONF_MONTHLY_FIXED_COST,
     CONF_PRICE_RESOLUTION,
+    CONF_PRICE_SOURCE,
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
     CONF_SCORE_PROFILES,
@@ -69,6 +71,7 @@ from .const import (
     DEFAULT_MAX_RANK,
     DEFAULT_MONTHLY_FIXED_COST,
     DEFAULT_PRICE_RESOLUTION,
+    DEFAULT_PRICE_SOURCE,
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     DEFAULT_SHOW_ROLLING_AVERAGES,
     DEFAULT_SOLAR_WINDOW_END,
@@ -77,6 +80,7 @@ from .const import (
     DEFAULT_VAT_RATE,
     DOMAIN,
     EXPORT_PRICING_FIXED,
+    PRICE_SOURCE_KILOWAHTI_CDN,
     UNIT_EUROKWH,
     UNIT_SNTPERKWH,
 )
@@ -110,7 +114,13 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         )
         self._entry = entry
         self._storage = storage
-        self._source = SpotHintaSource()
+        # Source choice is structural — changing it reloads the entry (see _RELOAD_REQUIRED_KEYS)
+        self._source_name: str = entry.options.get(CONF_PRICE_SOURCE, DEFAULT_PRICE_SOURCE)
+        self._source = (
+            KilowahtiCdnSource(now_fn=dt_util.utcnow)
+            if self._source_name == PRICE_SOURCE_KILOWAHTI_CDN
+            else SpotHintaSource()
+        )
 
         # Threshold instance vars — updated by number entities and synced in the options listener
         self._max_price_value: float = entry.options.get(CONF_MAX_PRICE, DEFAULT_MAX_PRICE)
@@ -667,6 +677,10 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     @property
     def native_unit(self) -> str:
         return self._display_unit
+
+    @property
+    def price_source_name(self) -> str:
+        return self._source_name
 
     # ------------------------------------------------------------------
     # Today / tomorrow statistics
