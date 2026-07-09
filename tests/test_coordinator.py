@@ -3,13 +3,13 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 from aioresponses import aioresponses
 from kilowahti import calc
 from kilowahti.models import PriceSlot
-from kilowahti.sources.kilowahti_cdn import KilowahtiCdnSource
+from kilowahti.sources.kilowahti_cdn import KilowahtiCdnSource, KilowahtiCdnZoneNotFoundError
 from kilowahti.sources.spot_hinta import SpotHintaSource
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
@@ -722,3 +722,23 @@ async def test_coordinator_uses_cdn_source_when_configured(hass, options, mock_u
     assert len(coord.today_slots()) == 96
     # First slot of the FI local day: 10.0 EUR/MWh → 1.0 c/kWh
     assert abs(coord.today_slots()[0].price_no_tax - 1.0) < 1e-9
+
+
+async def test_eager_poll_does_not_retry_on_cdn_zone_not_found(hass, setup_integration):
+    """A permanent CDN zone-not-found error must not schedule a retry (unlike transient failures)."""
+    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord._tomorrow_slots = None
+    # Clear any timer already scheduled by setup (setup's own tomorrow-unavailable retry)
+    # so the post-call assertion reflects only this test's call.
+    if coord._eager_poll_unsub is not None:
+        coord._eager_poll_unsub()
+        coord._eager_poll_unsub = None
+
+    eager_time = datetime(2026, 3, 13, 15, 0, 0, tzinfo=timezone.utc)
+    not_found = KilowahtiCdnZoneNotFoundError(None, (), status=404)
+    with patch("homeassistant.util.dt.utcnow", return_value=eager_time):
+        with patch.object(coord._source, "fetch_tomorrow", AsyncMock(side_effect=not_found)):
+            await coord._async_eager_poll()
+
+    assert coord._tomorrow_slots is None
+    assert coord._eager_poll_unsub is None  # no retry scheduled — permanent error

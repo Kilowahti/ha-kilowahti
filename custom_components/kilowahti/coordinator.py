@@ -18,7 +18,7 @@ from homeassistant.helpers.event import (
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.util import dt as dt_util
 from kilowahti import calc
-from kilowahti.sources.kilowahti_cdn import KilowahtiCdnSource
+from kilowahti.sources.kilowahti_cdn import KilowahtiCdnSource, KilowahtiCdnZoneNotFoundError
 from kilowahti.sources.spot_hinta import SpotHintaRateLimitError, SpotHintaSource
 
 from .const import (
@@ -479,6 +479,12 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         except SpotHintaRateLimitError as err:
             _LOGGER.warning("Eager fetch: rate-limited; retrying in %ds", err.retry_after)
             self._schedule_eager_poll(err.retry_after)
+            return
+        except KilowahtiCdnZoneNotFoundError:
+            _LOGGER.error(
+                "Eager fetch: region %s has no data on the Kilowahti CDN; not retrying",
+                self._region,
+            )
             return
         except Exception as err:
             _LOGGER.warning("Eager fetch: error polling for tomorrow: %s", err)
