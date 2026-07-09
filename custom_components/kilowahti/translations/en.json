@@ -7,11 +7,13 @@
         "data": {
           "name": "Name",
           "region": "Price region",
+          "price_source": "Price data source",
           "price_resolution": "Price resolution",
           "display_unit": "Display unit"
         },
         "data_description": {
           "name": "Used in entity names, e.g. 'Home'",
+          "price_source": "Kilowahti CDN is Kilowahti's own first-party price service (cdn.kilowahti.fi); spot-hinta.fi is a third-party API.",
           "price_resolution": "15 minutes (96 slots/day) or 1 hour (24 slots/day). Match your contract's metering interval.",
           "display_unit": "Sensor unit"
         }
@@ -154,6 +156,7 @@
         "data": {
           "name": "Name",
           "region": "Price region",
+          "price_source": "Price data source",
           "price_resolution": "Price resolution",
           "display_unit": "Display unit",
           "vat_rate_pct": "VAT rate (%)",

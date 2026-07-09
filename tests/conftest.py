@@ -27,6 +27,7 @@ from custom_components.kilowahti.const import (
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
     CONF_PRICE_RESOLUTION,
+    CONF_PRICE_SOURCE,
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
     CONF_SCORE_PROFILES,
@@ -43,6 +44,7 @@ from custom_components.kilowahti.const import (
     DEFAULT_HIGH_PRECISION,
     DEFAULT_MAX_PRICE,
     DEFAULT_MAX_RANK,
+    DEFAULT_PRICE_SOURCE,
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     DEFAULT_SPOT_COMMISSION,
     DEFAULT_VAT_RATE,
@@ -60,16 +62,18 @@ FROZEN_DATE = FROZEN_UTC.date()
 
 TODAY_URL_RE = re.compile(r"https://api\.spot-hinta\.fi/Today")
 TOMORROW_URL_RE = re.compile(r"https://api\.spot-hinta\.fi/DayForward")
+CDN_URL_RE = re.compile(r"https://cdn\.kilowahti\.fi/v1/fi/latest\.json")
 
 _FIXTURE_DIR = Path(__file__).parent / "fixtures"
 
 
-def load_fixture(name: str) -> list[dict]:
+def load_fixture(name: str) -> list[dict] | dict:
     return json.loads((_FIXTURE_DIR / name).read_text())
 
 
 TODAY_PAYLOAD = load_fixture("spot_hinta_today_fi.json")
 TOMORROW_PAYLOAD = load_fixture("spot_hinta_tomorrow_fi.json")
+CDN_PAYLOAD = load_fixture("cdn_latest_fi.json")
 
 
 # ---------------------------------------------------------------------------
@@ -150,6 +154,7 @@ def options():
     return {
         "name": "Test Home",
         CONF_REGION: "FI",
+        CONF_PRICE_SOURCE: DEFAULT_PRICE_SOURCE,
         CONF_PRICE_RESOLUTION: 60,  # HOUR — 24 slots/day
         CONF_DISPLAY_UNIT: UNIT_SNTPERKWH,
         CONF_VAT_RATE: DEFAULT_VAT_RATE,

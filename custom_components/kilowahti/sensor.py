@@ -498,7 +498,7 @@ class KilowahtiSensor(KilowahtiSensorBase):
 class KilowahtiSpotPriceSensor(KilowahtiSensor):
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
-        attrs: dict[str, Any] = {}
+        attrs: dict[str, Any] = {"price_source": self.coordinator.price_source_name}
         today_arr = self.coordinator.today_price_array()
         if today_arr is not None:
             attrs["today_prices"] = today_arr

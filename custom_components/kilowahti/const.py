@@ -20,6 +20,7 @@ from kilowahti.const import (
 DOMAIN = "kilowahti"
 
 # Config / options entry keys
+CONF_PRICE_SOURCE = "price_source"
 CONF_REGION = "region"
 CONF_PRICE_RESOLUTION = "price_resolution"
 CONF_DISPLAY_UNIT = "display_unit"
@@ -57,7 +58,12 @@ CONF_MONTHLY_FIXED_COST = "monthly_fixed_cost"
 EXPORT_PRICING_SPOT_LINKED = "spot_linked"
 EXPORT_PRICING_FIXED = "fixed"
 
+# Price data sources
+PRICE_SOURCE_SPOT_HINTA = "spot_hinta"
+PRICE_SOURCE_KILOWAHTI_CDN = "kilowahti_cdn"
+
 # Defaults
+DEFAULT_PRICE_SOURCE = PRICE_SOURCE_SPOT_HINTA
 DEFAULT_PRICE_RESOLUTION = 15
 DEFAULT_VAT_RATE = 0.255  # FI
 DEFAULT_ELECTRICITY_TAX = 2.253  # FI, c/kWh class I
