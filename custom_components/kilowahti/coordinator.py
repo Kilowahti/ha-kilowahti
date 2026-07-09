@@ -7,6 +7,7 @@ import logging
 from collections.abc import Callable
 from datetime import date, datetime, timedelta
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -92,6 +93,11 @@ _LOGGER = logging.getLogger(__name__)
 # Debounce interval for persisting score accumulators
 _SCORE_PERSIST_DEBOUNCE = 60  # seconds
 
+# Day-ahead exchange publication times are quoted in CET/CEST regardless of the
+# HA instance's or the price region's own timezone — anchor the eager-poll
+# window to it rather than local time.
+_EAGER_POLL_TZ = ZoneInfo("Europe/Berlin")
+
 # Placeholder daily score per quartile when no consumption is recorded yet —
 # the literal midpoint of each quartile's score range (Q1: 75–100, Q4: 0–25).
 _QUARTILE_PLACEHOLDER_SCORES = {1: 87.5, 2: 62.5, 3: 37.5, 4: 12.5}
@@ -142,6 +148,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         # Timer management
         self._unsubscribers: list[Callable] = []
         self._eager_poll_unsub: Callable | None = None
+        self._eager_start_timer_unsub: Callable | None = None
 
     # ------------------------------------------------------------------
     # Config helpers
@@ -360,32 +367,26 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
                 )
             )
 
-        self._unsubscribers.extend(
-            [
-                # Midnight rollover
-                async_track_time_change(
-                    self.hass,
-                    self._on_midnight,
-                    hour=0,
-                    minute=0,
-                    second=0,
-                ),
-                # Start eager polling for tomorrow's prices
-                async_track_time_change(
-                    self.hass,
-                    self._on_eager_fetch_start,
-                    hour=eager_start,
-                    minute=0,
-                    second=0,
-                ),
-            ]
+        self._unsubscribers.append(
+            # Midnight rollover
+            async_track_time_change(
+                self.hass,
+                self._on_midnight,
+                hour=0,
+                minute=0,
+                second=0,
+            ),
         )
+
+        # Start eager polling for tomorrow's prices, anchored to CET/CEST (see
+        # _EAGER_POLL_TZ) rather than HA local time.
+        self._schedule_eager_start_timer(eager_start)
 
         await self._async_setup_score_tracking()
 
         # If we're already past eager_start and missing tomorrow, start polling now
-        now_local = dt_util.as_local(dt_util.utcnow())
-        if self._tomorrow_slots is None and eager_start <= now_local.hour < eager_end:
+        now_cet = self._now_cet()
+        if self._tomorrow_slots is None and eager_start <= now_cet.hour < eager_end:
             self.hass.async_create_task(self._async_eager_poll())
 
     def async_unload(self) -> None:
@@ -397,6 +398,10 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         if self._eager_poll_unsub is not None:
             self._eager_poll_unsub()
             self._eager_poll_unsub = None
+
+        if self._eager_start_timer_unsub is not None:
+            self._eager_start_timer_unsub()
+            self._eager_start_timer_unsub = None
 
         if self._score_persist_unsub is not None:
             self._score_persist_unsub()
@@ -416,12 +421,27 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         """Schedule midnight rollover as an async task."""
         self.hass.async_create_task(self._async_midnight_rollover())
 
+    def _now_cet(self) -> datetime:
+        return dt_util.utcnow().astimezone(_EAGER_POLL_TZ)
+
+    def _schedule_eager_start_timer(self, eager_start: int) -> None:
+        """Schedule the next CET/CEST eager-start trigger; reschedules itself daily."""
+        now_cet = self._now_cet()
+        target = now_cet.replace(hour=eager_start, minute=0, second=0, microsecond=0)
+        if target <= now_cet:
+            target += timedelta(days=1)
+        delay = (target - now_cet).total_seconds()
+        self._eager_start_timer_unsub = async_call_later(
+            self.hass, delay, lambda _now: self._on_eager_start_timer(eager_start)
+        )
+
     @callback
-    def _on_eager_fetch_start(self, _now: datetime) -> None:
-        """Start eager polling for tomorrow's prices."""
-        if self._tomorrow_slots is not None:
-            return
-        self.hass.async_create_task(self._async_eager_poll())
+    def _on_eager_start_timer(self, eager_start: int) -> None:
+        """Fire at eager_start CET/CEST daily to start eager polling for tomorrow's prices."""
+        self._eager_start_timer_unsub = None
+        if self._tomorrow_slots is None:
+            self.hass.async_create_task(self._async_eager_poll())
+        self._schedule_eager_start_timer(eager_start)
 
     # ------------------------------------------------------------------
     # Midnight rollover
@@ -467,9 +487,8 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             return
 
         eager_end = self._opts.get(CONF_EAGER_END_HOUR, DEFAULT_EAGER_END_HOUR)
-        now_local = dt_util.as_local(dt_util.utcnow())
-        if now_local.hour >= eager_end:
-            _LOGGER.debug("Eager fetch: window closed at %d:00", eager_end)
+        if self._now_cet().hour >= eager_end:
+            _LOGGER.debug("Eager fetch: window closed at %d:00 CET/CEST", eager_end)
             return
 
         try:

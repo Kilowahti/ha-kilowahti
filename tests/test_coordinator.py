@@ -147,7 +147,7 @@ async def test_eager_poll_reschedules_when_tomorrow_unavailable(hass, setup_inte
     coord = hass.data[DOMAIN][setup_integration.entry_id]
     coord._tomorrow_slots = None
 
-    # Pretend we're at 15:00 UTC — inside the eager window (14–21).
+    # Pretend we're at 15:00 UTC — inside the eager window (13–21).
     eager_time = datetime(2026, 3, 13, 15, 0, 0, tzinfo=timezone.utc)
     with patch("homeassistant.util.dt.utcnow", return_value=eager_time):
         with aioresponses() as m:
@@ -175,6 +175,26 @@ async def test_eager_poll_stores_tomorrow_on_success(hass, setup_integration):
 
     assert coord._tomorrow_slots is not None
     assert len(coord._tomorrow_slots) == 3
+
+
+async def test_eager_poll_window_close_uses_cet_not_ha_local(hass, setup_integration):
+    """The eager-end cutoff is evaluated in CET/CEST, not HA local time.
+
+    HA is UTC in this fixture. At 20:15 UTC the HA-local hour (20) is still
+    inside the default 13-21 window, but Europe/Berlin is UTC+1 in March
+    (pre-DST), so it's already 21:15 CET — past the cutoff. No request
+    should be attempted; an unmatched request would raise via aioresponses.
+    """
+    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord._tomorrow_slots = None
+
+    past_cutoff_in_cet = datetime(2026, 3, 13, 20, 15, 0, tzinfo=timezone.utc)
+    with patch("homeassistant.util.dt.utcnow", return_value=past_cutoff_in_cet):
+        with aioresponses():
+            await coord._async_eager_poll()
+
+    assert coord._tomorrow_slots is None
+    assert coord._eager_poll_unsub is None  # no retry scheduled — window already closed
 
 
 # ---------------------------------------------------------------------------
