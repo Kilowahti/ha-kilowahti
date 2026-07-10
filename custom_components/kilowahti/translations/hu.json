@@ -1,0 +1,596 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kilowahti — Alapbeállítások",
+        "description": "A zóna határozza meg, melyik északi/balti tőzsdei árzóna kerül használatra.",
+        "data": {
+          "name": "Név",
+          "region": "Árzóna",
+          "price_source": "Áradatok forrása",
+          "price_resolution": "Árfelbontás",
+          "display_unit": "Megjelenítési egység"
+        },
+        "data_description": {
+          "name": "Az entitások nevében használatos, pl. 'Otthon'",
+          "price_source": "A Kilowahti CDN a Kilowahti saját árszolgáltatása (cdn.kilowahti.fi); a spot-hinta.fi külső fél API-ja.",
+          "price_resolution": "15 perc (96 intervallum/nap) vagy 1 óra (24 intervallum/nap). Válaszd a szerződésed mérési intervalluma szerint.",
+          "display_unit": "A szenzor mértékegysége"
+        }
+      },
+      "vat_and_tax": {
+        "title": "Áfa és energiaadó",
+        "description": "A zónád alapján előre kitöltve. Szükség esetén módosítsd. Minden árat (hálózati díjsávok, fix áras időszakok) áfával együtt kell megadni.",
+        "data": {
+          "vat_rate_pct": "Áfakulcs (%)",
+          "electricity_tax": "Energiaadó (c/kWh)",
+          "spot_commission": "Árrés a tőzsdei áron felül (c/kWh)",
+          "monthly_fixed_cost": "Villamosenergia-szerződés fix költsége (€/hó)"
+        },
+        "data_description": {
+          "electricity_tax": "Fix, kWh-nkénti energiaadó, amely a tőzsdei/fix ár tetejére kerül.",
+          "spot_commission": "A kereskedő kWh-nkénti árrése, amely a tőzsdei ár tetejére kerül. Bruttó összeget adj meg (áfával). Hagyd 0-n, ha nem alkalmazandó.",
+          "monthly_fixed_cost": "A villamosenergia-szerződésed fix havi díja (pl. alapdíj). Bruttó összeg (áfával). Hagyd 0-n, ha nem alkalmazandó."
+        }
+      },
+      "transfer_groups": {
+        "title": "Hálózati díjak",
+        "description": "Rendezd a hálózati díjsávokat elnevezett csoportokba (pl. Éjszakai áram, Szezonális, Általános). Egyszerre csak egy csoport aktív. Ezt a lépést kihagyhatod, és a csoportokat később is beállíthatod a beállításokban.",
+        "data": {
+          "action": "Művelet"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Csoport hozzáadása",
+        "data": {
+          "label": "Csoport neve",
+          "monthly_fixed_cost": "Havi fix költség (€/hó)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Hálózati csatlakozás + a szerződés alapdíja. Bruttó összeg (áfával)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Csoportbeállítások szerkesztése",
+        "data": {
+          "label": "Csoport neve",
+          "monthly_fixed_cost": "Havi fix költség (€/hó)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Hálózati csatlakozás + a szerződés alapdíja. Bruttó összeg (áfával)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Csoport szerkesztése",
+        "description": "{group_label} — Adj hozzá vagy távolíts el sávokat, vagy állítsd be ezt a csoportot aktívnak.",
+        "data": {
+          "action": "Művelet"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Hálózati díj hozzáadása",
+        "description": "Kiértékelés prioritási sorrendben; az első találat nyer. Adj hozzá egy alapdíjat a legalacsonyabb prioritással, időbeli korlátozás nélkül.",
+        "data": {
+          "label": "Sáv neve",
+          "price": "Ár (c/kWh)",
+          "months": "Aktív hónapok",
+          "weekdays": "Aktív napok",
+          "hour_start": "Kezdő időpont (beleértve)",
+          "hour_end": "Záró időpont (nem beleértve)",
+          "priority": "Prioritás (kisebb = előbb)"
+        }
+      },
+      "thresholds": {
+        "title": "Küszöbök és vezérlés",
+        "data": {
+          "max_price": "Vezérlési maximumár (c/kWh)",
+          "price_threshold_includes_transfer": "A maximumár tartalmazza a hálózati díjat",
+          "max_rank": "Vezérlési maximum helyezés",
+          "forward_avg_hours": "Előretekintő átlagablak hossza (óra)",
+          "control_factor_function": "Vezérlési tényező görbéje",
+          "control_factor_scaling": "Vezérlési tényező skálázása (1–3)"
+        },
+        "data_description": {
+          "max_price": "Ha az aktuális intervallum ára ezen az értéken vagy alatta van, a price_acceptable szenzor bekapcsol.",
+          "price_threshold_includes_transfer": "BE: a teljes árat hasonlítja össze (tőzsdei + hálózati). KI: csak az energiaárat hasonlítja össze (tőzsdei).",
+          "max_rank": "Ha az aktuális intervallum helyezése ezen az értéken vagy alatta van, a rank_acceptable szenzor bekapcsol.",
+          "forward_avg_hours": "Hány előre következő órából számol átlagot a next_hours_avg szenzor.",
+          "control_factor_function": "A 0–1 közötti vezérlési tényező görbéjének alakja.",
+          "control_factor_scaling": "A vezérlési tényezőre alkalmazott kitevő (felerősíti a szélsőségeket)."
+        }
+      },
+      "score_profiles": {
+        "title": "Optimalizálási pontszámok",
+        "description": "A pontszámok azt mérik, mennyire sikerül a fogyasztásodat az olcsó órákra átcsoportosítani. Az állandó 'Total' profil a teljes fogyasztást lefedi — a beállítás után kapcsolj hozzá egy mérőt (vagy mérőket) a beállításokban.",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Speciális beállítások",
+        "description": "Állítsd be, hogyan jelenjenek meg a szenzorértékek a Home Assistantban.",
+        "data": {
+          "expose_price_arrays": "Ártömbök közzététele szenzorattribútumként (növeli az adatbázis méretét)",
+          "high_precision": "Nagy pontosságú mód",
+          "show_rolling_averages": "A következő 30 perc, 1 óra és 2 óra átlagárainak megjelenítése",
+          "generation_enabled": "Termelési és betáplálási funkciók engedélyezése"
+        },
+        "data_description": {
+          "expose_price_arrays": "A today_prices és tomorrow_prices tömböket a spot_price szenzor attribútumaiba írja, amelyek az adatbázisba kerülnek. Megkönnyíti az irányítópulti grafikonok készítését, de a megjelenítésükhöz nem szükséges, és feleslegesen terheli az adatbázist.",
+          "high_precision": "Bekapcsolva az árszenzorok több tizedesjegyet mutatnak. Az attribútumok és a számítások mindig teljes pontossággal működnek.",
+          "show_rolling_averages": "Szenzorokat ad hozzá a következő 30, 60 és 120 perc átlagárához.",
+          "generation_enabled": "Engedélyezi a betáplálási ár, az akkumulátor és az arbitrázs szenzorait és szolgáltatásait. A termelési beállításokat a Termelés és betáplálás menüben találod."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "A kapcsolódás nem sikerült. Ellenőrizd a hálózatot.",
+      "invalid_region": "A kiválasztott zóna nem adott vissza adatot az API-ból.",
+      "tier_hour_range": "A záró időpontnak későbbinek kell lennie a kezdő időpontnál.",
+      "tier_no_months": "Válassz legalább egy hónapot.",
+      "tier_no_weekdays": "Válassz legalább egy hétköznapot.",
+      "period_invalid_dates": "A záró dátumnak a kezdő dátummal egyeznie kell, vagy későbbinek kell lennie.",
+      "period_overlap": "Ez az időszak átfedésben van egy meglévő fix áras időszakkal.",
+      "period_price_zero": "Az árnak nullánál nagyobbnak kell lennie."
+    },
+    "abort": {
+      "already_configured": "Ez a példány már be van állítva."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Kilowahti beállítások",
+        "description": "Válaszd ki, mely beállításokat szerkeszted.",
+        "menu_options": {
+          "basic": "Alapbeállítások és áfa",
+          "transfer_groups": "Hálózati díjak",
+          "thresholds": "Küszöbök és vezérlés",
+          "score_profiles": "Pontszámprofilok",
+          "advanced_options": "Speciális beállítások",
+          "fixed_periods": "Fix áras időszakok / fix szerződések",
+          "generation_settings": "Termelés és betáplálás"
+        }
+      },
+      "basic": {
+        "title": "Alapbeállítások",
+        "description": "Figyelem: a megjelenítési egység módosítása a szenzorok létrehozása után mértékegység-eltéréseket okoz az előzménygrafikonokban. Előfordulhat, hogy törölnöd kell a szenzorelőzményeket, vagy kézzel kell módosítanod az irányítópult kártyáit.",
+        "data": {
+          "name": "Név",
+          "region": "Árzóna",
+          "price_source": "Áradatok forrása",
+          "price_resolution": "Árfelbontás",
+          "display_unit": "Megjelenítési egység",
+          "vat_rate_pct": "Áfakulcs (%)",
+          "electricity_tax": "Energiaadó (c/kWh)",
+          "spot_commission": "Árrés a tőzsdei áron felül (c/kWh)",
+          "monthly_fixed_cost": "Villamosenergia-szerződés fix költsége (€/hó)"
+        }
+      },
+      "transfer_groups": {
+        "title": "Hálózati díjak",
+        "data": {
+          "action": "Művelet"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Csoport hozzáadása",
+        "data": {
+          "label": "Csoport neve",
+          "monthly_fixed_cost": "Havi fix költség (€/hó)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Hálózati csatlakozás + a szerződés alapdíja. Bruttó összeg (áfával)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Csoportbeállítások szerkesztése",
+        "data": {
+          "label": "Csoport neve",
+          "monthly_fixed_cost": "Havi fix költség (€/hó)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Hálózati csatlakozás + a szerződés alapdíja. Bruttó összeg (áfával)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Csoport szerkesztése",
+        "description": "{group_label} — Adj hozzá vagy távolíts el sávokat, vagy állítsd be ezt a csoportot aktívnak.",
+        "data": {
+          "action": "Művelet"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Hálózati díj hozzáadása",
+        "data": {
+          "label": "Sáv neve (pl. Téli hétköznap)",
+          "price": "Ár (c/kWh)",
+          "months": "Aktív hónapok",
+          "weekdays": "Aktív napok",
+          "hour_start": "Kezdő időpont (beleértve)",
+          "hour_end": "Záró időpont (nem beleértve)",
+          "priority": "Prioritás (kisebb = előbb)"
+        }
+      },
+      "thresholds": {
+        "title": "Küszöbök és vezérlés",
+        "data": {
+          "max_price": "Vezérlési maximumár (c/kWh)",
+          "price_threshold_includes_transfer": "A maximumár tartalmazza a hálózati díjat",
+          "max_rank": "Vezérlési maximum helyezés",
+          "forward_avg_hours": "Előretekintő átlagablak hossza (óra)",
+          "control_factor_function": "Vezérlési tényező görbéje",
+          "control_factor_scaling": "Vezérlési tényező skálázása (1–3)"
+        }
+      },
+      "score_profiles": {
+        "title": "Pontszámprofilok",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Speciális beállítások",
+        "data": {
+          "expose_price_arrays": "Ártömbök közzététele szenzorattribútumként (növeli az adatbázis méretét)",
+          "high_precision": "Nagy pontosságú mód",
+          "show_rolling_averages": "A következő 30 perc, 1 óra és 2 óra átlagárainak megjelenítése",
+          "generation_enabled": "Termelési és betáplálási funkciók engedélyezése"
+        },
+        "data_description": {
+          "show_rolling_averages": "Szenzorokat ad hozzá a következő 30, 60 és 120 perc átlagárához.",
+          "generation_enabled": "Engedélyezi a betáplálási ár, az akkumulátor és az arbitrázs szenzorait és szolgáltatásait. A termelési beállításokat a Termelés és betáplálás menüben találod."
+        }
+      },
+      "add_score_profile": {
+        "title": "Pontszámprofil hozzáadása",
+        "data": {
+          "label": "Profil neve",
+          "meters": "Energiamérő entitások",
+          "formula": "Pontozási képlet"
+        },
+        "data_description": {
+          "formula": "Alapértelmezett képlet: 50 = jó, 37,5 egyenletes eloszlásnál (bünteti az átlagos használatot). Nyers képlet: 50 egyenletes eloszlásnál (semleges alap)."
+        }
+      },
+      "edit_score_profile": {
+        "title": "Pontszámprofil szerkesztése: {profile_label}",
+        "description": "{meter_count} mérő beállítva.",
+        "data": {
+          "action": "Művelet"
+        }
+      },
+      "add_profile_meters": {
+        "title": "Mérő(k) hozzáadása",
+        "data": {
+          "meters": "Energiamérő entitások"
+        }
+      },
+      "edit_profile_formula": {
+        "title": "Pontozási képlet: {profile_label}",
+        "data": {
+          "formula": "Pontozási képlet"
+        },
+        "data_description": {
+          "formula": "Alapértelmezett képlet: 50 = jó, 37,5 egyenletes eloszlásnál (bünteti az átlagos használatot). Nyers képlet: 50 egyenletes eloszlásnál (semleges alap)."
+        }
+      },
+      "fixed_periods": {
+        "title": "Fix áras időszakok / fix szerződések",
+        "description": "Fix áras időszakok és fix szerződések kezelése. Aktív időszak alatt az effective_price a beállított fix árat mutatja a tőzsdei helyett.",
+        "data": {
+          "action": "Művelet"
+        }
+      },
+      "generation_settings": {
+        "title": "Termelési és betáplálási beállítások",
+        "description": "Állítsd be a betáplálási árakat és az akkumulátor paramétereit. Az akkumulátor kapacitását 0-ra állítva kikapcsolod az akkumulátorszenzorokat.",
+        "data": {
+          "export_pricing_mode": "Betáplálási ár módja",
+          "export_commission": "Betáplálási árrés (c/kWh, a tőzsdei árból levonva)",
+          "fixed_export_rate": "Fix betáplálási ár (c/kWh)",
+          "export_price_threshold": "Betáplálási árküszöb (c/kWh)",
+          "solar_window_start": "Napelemes ablak kezdő órája",
+          "solar_window_end": "Napelemes ablak záró órája",
+          "battery_capacity_kwh": "Akkumulátor kapacitása (kWh, 0 = kikapcsolva)",
+          "battery_charge_power_kw": "Akkumulátor töltési teljesítménye (kW)"
+        },
+        "data_description": {
+          "export_commission": "Csak tőzsdei árhoz kötött módban. A vevő árrése, amely az API tőzsdei árából kerül levonásra (áfa nélkül). A kistermelők általában nem számítanak fel áfát a betáplálásra.",
+          "fixed_export_rate": "Csak fix módban. Fix ár, amelyet minden betáplált kWh után kapsz.",
+          "solar_window_start": "A tipikus napelemes termelési ablakod kezdő órája (a next_solar_window_avg szenzor használja).",
+          "solar_window_end": "A tipikus napelemes termelési ablakod záró órája (nem beleértve)."
+        }
+      },
+      "add_fixed_period": {
+        "title": "Fix áras időszak / fix szerződés hozzáadása",
+        "data": {
+          "label": "Időszak neve",
+          "start_date": "Kezdő dátum",
+          "end_date": "Záró dátum (beleértve)",
+          "price": "Ár (c/kWh, áfával)"
+        },
+        "data_description": {
+          "price": "Az árat áfával együtt add meg. Ez az ár változtatás nélkül kerül felhasználásra — áfa nem adódik hozzá."
+        }
+      }
+    },
+    "error": {
+      "tier_hour_range": "A záró időpontnak későbbinek kell lennie a kezdő időpontnál.",
+      "tier_no_months": "Válassz legalább egy hónapot.",
+      "tier_no_weekdays": "Válassz legalább egy hétköznapot.",
+      "period_invalid_dates": "A záró dátumnak a kezdő dátummal egyeznie kell, vagy későbbinek kell lennie.",
+      "period_overlap": "Ez az időszak átfedésben van egy meglévő fix áras időszakkal.",
+      "period_price_zero": "Az árnak nullánál nagyobbnak kell lennie."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "spot_price": {
+        "name": "Tőzsdei ár"
+      },
+      "effective_price": {
+        "name": "Aktív ár"
+      },
+      "transfer_price": {
+        "name": "Hálózati díj"
+      },
+      "total_price": {
+        "name": "Teljes ár"
+      },
+      "price_rank": {
+        "name": "Helyezés"
+      },
+      "total_price_rank": {
+        "name": "Teljes ár helyezése"
+      },
+      "total_price_quartile": {
+        "name": "Teljes ár kvartilise"
+      },
+      "today_spot_avg": {
+        "name": "Mai átlagos tőzsdei ár"
+      },
+      "today_spot_min": {
+        "name": "Mai legalacsonyabb tőzsdei ár"
+      },
+      "today_spot_max": {
+        "name": "Mai legmagasabb tőzsdei ár"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Holnapi átlagos tőzsdei ár"
+      },
+      "tomorrow_spot_min": {
+        "name": "Holnapi legalacsonyabb tőzsdei ár"
+      },
+      "tomorrow_spot_max": {
+        "name": "Holnapi legmagasabb tőzsdei ár"
+      },
+      "today_total_avg": {
+        "name": "Mai átlagos teljes ár"
+      },
+      "today_total_min": {
+        "name": "Mai legalacsonyabb teljes ár"
+      },
+      "today_total_max": {
+        "name": "Mai legmagasabb teljes ár"
+      },
+      "tomorrow_total_avg": {
+        "name": "Holnapi átlagos teljes ár"
+      },
+      "tomorrow_total_min": {
+        "name": "Holnapi legalacsonyabb teljes ár"
+      },
+      "tomorrow_total_max": {
+        "name": "Holnapi legmagasabb teljes ár"
+      },
+      "today_avg": {
+        "name": "Mai átlag"
+      },
+      "today_min": {
+        "name": "Mai minimum"
+      },
+      "today_max": {
+        "name": "Mai maximum"
+      },
+      "tomorrow_avg": {
+        "name": "Holnapi átlag"
+      },
+      "tomorrow_min": {
+        "name": "Holnapi minimum"
+      },
+      "tomorrow_max": {
+        "name": "Holnapi maximum"
+      },
+      "next_hours_avg": {
+        "name": "Következő órák átlaga"
+      },
+      "spot_next_hours_avg": {
+        "name": "Következő órák tőzsdei átlaga"
+      },
+      "control_factor_price": {
+        "name": "Ár vezérlési tényezője"
+      },
+      "control_factor_price_bipolar": {
+        "name": "Ár vezérlési tényezője (bipoláris)"
+      },
+      "control_factor_transfer": {
+        "name": "Hálózati díj vezérlési tényezője"
+      },
+      "price_quartile": {
+        "name": "Árkvartilis"
+      },
+      "setting_max_price": {
+        "name": "Árküszöb"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Az árküszöb tartalmazza a hálózati díjat"
+      },
+      "setting_control_factor_function": {
+        "name": "Vezérlési tényező alakja"
+      },
+      "setting_acceptable_rank": {
+        "name": "Elfogadható helyezés"
+      },
+      "setting_forward_window": {
+        "name": "Előretekintő ablak"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktív hálózati díjcsoport"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktív hálózati díjsáv"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktív fix áras időszak"
+      },
+      "export_price": {
+        "name": "Betáplálási ár"
+      },
+      "export_today_avg": {
+        "name": "Mai átlagos betáplálási ár"
+      },
+      "export_today_min": {
+        "name": "Mai legalacsonyabb betáplálási ár"
+      },
+      "export_today_max": {
+        "name": "Mai legmagasabb betáplálási ár"
+      },
+      "export_tomorrow_avg": {
+        "name": "Holnapi átlagos betáplálási ár"
+      },
+      "export_tomorrow_min": {
+        "name": "Holnapi legalacsonyabb betáplálási ár"
+      },
+      "export_tomorrow_max": {
+        "name": "Holnapi legmagasabb betáplálási ár"
+      },
+      "import_export_spread": {
+        "name": "Vételezés–betáplálás különbözet"
+      },
+      "self_consumption_value": {
+        "name": "Saját fogyasztás értéke"
+      },
+      "avg_price_30min": {
+        "name": "Átlagár 30 perc"
+      },
+      "avg_price_60min": {
+        "name": "Átlagár 60 perc"
+      },
+      "avg_price_120min": {
+        "name": "Átlagár 120 perc"
+      },
+      "next_solar_window_avg": {
+        "name": "Következő napelemes ablak átlaga"
+      },
+      "arbitrage_spread_today": {
+        "name": "Mai arbitrázskülönbözet"
+      },
+      "charge_opportunity_factor": {
+        "name": "Töltési lehetőség tényezője"
+      },
+      "optimal_charge_window_start": {
+        "name": "Optimális töltési ablak kezdete"
+      },
+      "optimal_charge_window_end": {
+        "name": "Optimális töltési ablak vége"
+      },
+      "battery_charge_recommendation": {
+        "name": "Akkumulátortöltési javaslat",
+        "state": {
+          "charge_from_grid": "Töltés a hálózatról",
+          "discharge": "Kisütés",
+          "hold": "Tartás"
+        }
+      },
+      "monthly_fixed_cost_today": {
+        "name": "Havi fix költség ma"
+      }
+    },
+    "number": {
+      "price_threshold": {
+        "name": "Árküszöb"
+      },
+      "rank_threshold": {
+        "name": "Helyezési küszöb"
+      }
+    },
+    "binary_sensor": {
+      "price_acceptable": {
+        "name": "Ár elfogadható"
+      },
+      "rank_acceptable": {
+        "name": "Helyezés elfogadható"
+      },
+      "price_or_rank_acceptable": {
+        "name": "Ár vagy helyezés elfogadható"
+      },
+      "fixed_period_active": {
+        "name": "Fix áras időszak aktív"
+      },
+      "tomorrow_available": {
+        "name": "Holnapi árak elérhetők"
+      },
+      "export_price_acceptable": {
+        "name": "Betáplálási ár elfogadható"
+      },
+      "charge_from_grid_recommended": {
+        "name": "Hálózatról töltés javasolt"
+      },
+      "discharge_to_grid_recommended": {
+        "name": "Hálózatba kisütés javasolt"
+      }
+    }
+  },
+  "triggers": {
+    "price_became_acceptable": {
+      "name": "Az ár elfogadhatóvá vált",
+      "description": "Akkor aktiválódik, amikor az aktuális villamosenergia-ár elfogadható szintre csökken (az árküszöbön vagy alatta)."
+    },
+    "price_no_longer_acceptable": {
+      "name": "Az ár már nem elfogadható",
+      "description": "Akkor aktiválódik, amikor az aktuális villamosenergia-ár az árküszöb fölé emelkedik."
+    },
+    "rank_became_acceptable": {
+      "name": "A helyezés elfogadhatóvá vált",
+      "description": "Akkor aktiválódik, amikor az aktuális ár helyezése elfogadható szintre csökken (a helyezési küszöbön vagy alatta)."
+    },
+    "rank_no_longer_acceptable": {
+      "name": "A helyezés már nem elfogadható",
+      "description": "Akkor aktiválódik, amikor az aktuális ár helyezése a helyezési küszöb fölé emelkedik."
+    },
+    "became_cheapest_slot": {
+      "name": "A legolcsóbb intervallum lett",
+      "description": "Akkor aktiválódik, amikor az aktuális időintervallum a nap legolcsóbbjává válik."
+    },
+    "fixed_period_started": {
+      "name": "Fix áras időszak elkezdődött",
+      "description": "Akkor aktiválódik, amikor egy fix áras időszak aktívvá válik."
+    },
+    "fixed_period_ended": {
+      "name": "Fix áras időszak véget ért",
+      "description": "Akkor aktiválódik, amikor egy fix áras időszak megszűnik aktív lenni."
+    },
+    "tomorrow_prices_available": {
+      "name": "Holnapi árak elérhetők",
+      "description": "Akkor aktiválódik, amikor a holnapi villamosenergia-árak elérhetővé válnak."
+    }
+  },
+  "conditions": {
+    "price_is_acceptable": {
+      "name": "Az ár elfogadható",
+      "description": "Akkor teljesül, ha az aktuális villamosenergia-ár az árküszöbön vagy alatta van."
+    },
+    "rank_is_acceptable": {
+      "name": "A helyezés elfogadható",
+      "description": "Akkor teljesül, ha az aktuális ár helyezése a helyezési küszöbön vagy alatta van."
+    },
+    "price_is_lowest_today": {
+      "name": "Az ár ma a legalacsonyabb",
+      "description": "Akkor teljesül, ha az aktuális időintervallum a nap legolcsóbbja."
+    },
+    "fixed_period_active": {
+      "name": "Fix áras időszak aktív",
+      "description": "Akkor teljesül, ha éppen aktív egy fix áras időszak."
+    },
+    "tomorrow_available": {
+      "name": "Holnapi árak elérhetők",
+      "description": "Akkor teljesül, ha a holnapi villamosenergia-árak elérhetők."
+    }
+  }
+}
