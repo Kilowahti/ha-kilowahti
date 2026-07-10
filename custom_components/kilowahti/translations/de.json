@@ -1,0 +1,596 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kilowahti — Grundeinstellungen",
+        "description": "Die Region bestimmt, welche nordische/baltische Spotpreiszone verwendet wird.",
+        "data": {
+          "name": "Name",
+          "region": "Preiszone",
+          "price_source": "Preisdatenquelle",
+          "price_resolution": "Preisauflösung",
+          "display_unit": "Anzeigeeinheit"
+        },
+        "data_description": {
+          "name": "Wird in Entitätsnamen verwendet, z. B. 'Zuhause'",
+          "price_source": "Kilowahti CDN ist Kilowahtis eigener First-Party-Preisdienst (cdn.kilowahti.fi); spot-hinta.fi ist eine Dritt-API.",
+          "price_resolution": "15 Minuten (96 Intervalle/Tag) oder 1 Stunde (24 Intervalle/Tag). Wähle passend zum Messintervall deines Vertrags.",
+          "display_unit": "Sensoreinheit"
+        }
+      },
+      "vat_and_tax": {
+        "title": "MwSt. & Stromsteuer",
+        "description": "Anhand deiner Region vorausgefüllt. Bei Bedarf anpassen. Alle Preise (Netzentgeltstufen, Festpreiszeiträume) werden inkl. MwSt. eingegeben.",
+        "data": {
+          "vat_rate_pct": "MwSt.-Satz (%)",
+          "electricity_tax": "Stromsteuer (c/kWh)",
+          "spot_commission": "Spotpreis-Aufschlag (c/kWh)",
+          "monthly_fixed_cost": "Fixkosten des Stromvertrags (€/Monat)"
+        },
+        "data_description": {
+          "electricity_tax": "Feste Stromsteuer pro kWh, die auf den Spot-/Festpreis aufgeschlagen wird.",
+          "spot_commission": "Aufschlag des Anbieters pro kWh auf den Spotpreis. Brutto eingeben (inkl. MwSt.). Auf 0 lassen, falls nicht zutreffend.",
+          "monthly_fixed_cost": "Feste monatliche Gebühr aus deinem Stromvertrag (z. B. Grundgebühr). Bruttobetrag (inkl. MwSt.). Auf 0 lassen, falls nicht zutreffend."
+        }
+      },
+      "transfer_groups": {
+        "title": "Netzentgelte",
+        "description": "Organisiere Netzentgeltstufen in benannten Gruppen (z. B. Zeittarif, Saisonal, Allgemein). Es ist immer nur eine Gruppe aktiv. Du kannst diesen Schritt überspringen und Gruppen später in den Optionen konfigurieren.",
+        "data": {
+          "action": "Aktion"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Gruppe hinzufügen",
+        "data": {
+          "label": "Gruppenname",
+          "monthly_fixed_cost": "Monatliche Fixkosten (€/Monat)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Netzanschluss + Grundgebühr des Vertrags. Bruttobetrag (inkl. MwSt.)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Gruppeneinstellungen bearbeiten",
+        "data": {
+          "label": "Gruppenname",
+          "monthly_fixed_cost": "Monatliche Fixkosten (€/Monat)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Netzanschluss + Grundgebühr des Vertrags. Bruttobetrag (inkl. MwSt.)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Gruppe bearbeiten",
+        "description": "{group_label} — Stufen hinzufügen oder entfernen, oder diese Gruppe als aktiv festlegen.",
+        "data": {
+          "action": "Aktion"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Netzentgelt hinzufügen",
+        "description": "Auswertung in Prioritätsreihenfolge; der erste Treffer gilt. Füge einen Basistarif als niedrigste Priorität ohne Zeiteinschränkungen hinzu.",
+        "data": {
+          "label": "Stufenbezeichnung",
+          "price": "Preis (c/kWh)",
+          "months": "Aktive Monate",
+          "weekdays": "Aktive Wochentage",
+          "hour_start": "Startzeit (einschließlich)",
+          "hour_end": "Endzeit (ausschließlich)",
+          "priority": "Priorität (niedriger = zuerst)"
+        }
+      },
+      "thresholds": {
+        "title": "Schwellenwerte & Steuerung",
+        "data": {
+          "max_price": "Maximaler Steuerpreis (c/kWh)",
+          "price_threshold_includes_transfer": "Maximalpreis inklusive Netzentgelt",
+          "max_rank": "Maximaler Steuerrang",
+          "forward_avg_hours": "Länge des Vorausschau-Durchschnittsfensters (Stunden)",
+          "control_factor_function": "Steuerfaktorkurve",
+          "control_factor_scaling": "Steuerfaktor-Skalierung (1–3)"
+        },
+        "data_description": {
+          "max_price": "Liegt der Preis des aktuellen Zeitintervalls auf oder unter diesem Wert, schaltet sich der price_acceptable-Sensor ein.",
+          "price_threshold_includes_transfer": "EIN: Gesamtpreis vergleichen (Spot + Netzentgelt). AUS: nur Energiepreis vergleichen (Spot).",
+          "max_rank": "Liegt der Rang des aktuellen Zeitintervalls auf oder unter diesem Wert, schaltet sich der rank_acceptable-Sensor ein.",
+          "forward_avg_hours": "Anzahl der Stunden im Voraus, über die für den next_hours_avg-Sensor gemittelt wird.",
+          "control_factor_function": "Form der Steuerfaktorkurve (0–1).",
+          "control_factor_scaling": "Auf den Steuerfaktor angewendeter Exponent (verstärkt Extreme)."
+        }
+      },
+      "score_profiles": {
+        "title": "Optimierungspunkte",
+        "description": "Punkte messen, wie gut dein Verbrauch in günstige Stunden verlagert wird. Das permanente Profil 'Total' umfasst den gesamten Verbrauch — verknüpfe nach der Einrichtung in den Optionen einen Zähler (oder mehrere) damit.",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Erweiterte Optionen",
+        "description": "Konfiguriere, wie Sensorwerte in Home Assistant angezeigt werden.",
+        "data": {
+          "expose_price_arrays": "Preis-Arrays als Sensorattribute bereitstellen (vergrößert die Datenbank)",
+          "high_precision": "Hochpräzisionsmodus",
+          "show_rolling_averages": "Durchschnittspreise der nächsten 30 min, 1 h und 2 h anzeigen",
+          "generation_enabled": "Erzeugungs- und Einspeisefunktionen aktivieren"
+        },
+        "data_description": {
+          "expose_price_arrays": "Schreibt die Arrays today_prices und tomorrow_prices in die Attribute des spot_price-Sensors, die dann in der Datenbank gespeichert werden. Erleichtert das Erstellen von Dashboard-Diagrammen, ist für deren Anzeige aber nicht erforderlich und erzeugt unnötige Datenbanklast.",
+          "high_precision": "Wenn aktiviert, zeigen Preissensoren mehr Dezimalstellen. Attribute und Berechnungen verwenden immer die volle Genauigkeit.",
+          "show_rolling_averages": "Fügt Sensoren für den Durchschnittspreis der nächsten 30, 60 und 120 Minuten hinzu.",
+          "generation_enabled": "Aktiviert Sensoren und Dienste für Einspeisepreis, Batterie und Arbitrage. Konfiguriere die Erzeugungseinstellungen im Menü Erzeugung & Einspeisung."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung fehlgeschlagen. Überprüfe dein Netzwerk.",
+      "invalid_region": "Die gewählte Region lieferte keine Daten von der API.",
+      "tier_hour_range": "Die Endzeit muss nach der Startzeit liegen.",
+      "tier_no_months": "Wähle mindestens einen Monat aus.",
+      "tier_no_weekdays": "Wähle mindestens einen Wochentag aus.",
+      "period_invalid_dates": "Das Enddatum muss am oder nach dem Startdatum liegen.",
+      "period_overlap": "Dieser Zeitraum überschneidet sich mit einem bestehenden Festpreiszeitraum.",
+      "period_price_zero": "Der Preis muss größer als null sein."
+    },
+    "abort": {
+      "already_configured": "Diese Instanz ist bereits konfiguriert."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Kilowahti-Optionen",
+        "description": "Wähle aus, welche Einstellungen du bearbeiten möchtest.",
+        "menu_options": {
+          "basic": "Grundeinstellungen & MwSt.",
+          "transfer_groups": "Netzentgelte",
+          "thresholds": "Schwellenwerte & Steuerung",
+          "score_profiles": "Punkteprofile",
+          "advanced_options": "Erweiterte Optionen",
+          "fixed_periods": "Festpreiszeiträume / Festpreisverträge",
+          "generation_settings": "Erzeugung & Einspeisung"
+        }
+      },
+      "basic": {
+        "title": "Grundeinstellungen",
+        "description": "Warnung: Das Ändern der Anzeigeeinheit nach dem Anlegen der Sensoren führt zu Einheiten-Inkonsistenzen in Verlaufsdiagrammen. Möglicherweise musst du den Sensorverlauf löschen oder Dashboard-Karten manuell anpassen.",
+        "data": {
+          "name": "Name",
+          "region": "Preiszone",
+          "price_source": "Preisdatenquelle",
+          "price_resolution": "Preisauflösung",
+          "display_unit": "Anzeigeeinheit",
+          "vat_rate_pct": "MwSt.-Satz (%)",
+          "electricity_tax": "Stromsteuer (c/kWh)",
+          "spot_commission": "Spotpreis-Aufschlag (c/kWh)",
+          "monthly_fixed_cost": "Fixkosten des Stromvertrags (€/Monat)"
+        }
+      },
+      "transfer_groups": {
+        "title": "Netzentgelte",
+        "data": {
+          "action": "Aktion"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Gruppe hinzufügen",
+        "data": {
+          "label": "Gruppenname",
+          "monthly_fixed_cost": "Monatliche Fixkosten (€/Monat)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Netzanschluss + Grundgebühr des Vertrags. Bruttobetrag (inkl. MwSt.)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Gruppeneinstellungen bearbeiten",
+        "data": {
+          "label": "Gruppenname",
+          "monthly_fixed_cost": "Monatliche Fixkosten (€/Monat)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Netzanschluss + Grundgebühr des Vertrags. Bruttobetrag (inkl. MwSt.)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Gruppe bearbeiten",
+        "description": "{group_label} — Stufen hinzufügen oder entfernen, oder diese Gruppe als aktiv festlegen.",
+        "data": {
+          "action": "Aktion"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Netzentgelt hinzufügen",
+        "data": {
+          "label": "Stufenname (z. B. Winter-Werktag)",
+          "price": "Preis (c/kWh)",
+          "months": "Aktive Monate",
+          "weekdays": "Aktive Wochentage",
+          "hour_start": "Startzeit (einschließlich)",
+          "hour_end": "Endzeit (ausschließlich)",
+          "priority": "Priorität (niedriger = zuerst)"
+        }
+      },
+      "thresholds": {
+        "title": "Schwellenwerte & Steuerung",
+        "data": {
+          "max_price": "Maximaler Steuerpreis (c/kWh)",
+          "price_threshold_includes_transfer": "Maximalpreis inklusive Netzentgelt",
+          "max_rank": "Maximaler Steuerrang",
+          "forward_avg_hours": "Länge des Vorausschau-Durchschnittsfensters (Stunden)",
+          "control_factor_function": "Steuerfaktorkurve",
+          "control_factor_scaling": "Steuerfaktor-Skalierung (1–3)"
+        }
+      },
+      "score_profiles": {
+        "title": "Punkteprofile",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Erweiterte Optionen",
+        "data": {
+          "expose_price_arrays": "Preis-Arrays als Sensorattribute bereitstellen (vergrößert die Datenbank)",
+          "high_precision": "Hochpräzisionsmodus",
+          "show_rolling_averages": "Durchschnittspreise der nächsten 30 min, 1 h und 2 h anzeigen",
+          "generation_enabled": "Erzeugungs- und Einspeisefunktionen aktivieren"
+        },
+        "data_description": {
+          "show_rolling_averages": "Fügt Sensoren für den Durchschnittspreis der nächsten 30, 60 und 120 Minuten hinzu.",
+          "generation_enabled": "Aktiviert Sensoren und Dienste für Einspeisepreis, Batterie und Arbitrage. Konfiguriere die Erzeugungseinstellungen im Menü Erzeugung & Einspeisung."
+        }
+      },
+      "add_score_profile": {
+        "title": "Punkteprofil hinzufügen",
+        "data": {
+          "label": "Profilbezeichnung",
+          "meters": "Energiezähler-Entitäten",
+          "formula": "Punkteformel"
+        },
+        "data_description": {
+          "formula": "Standardformel: 50 = gut, 37,5 bei gleichmäßiger Verteilung (bestraft durchschnittliche Nutzung). Rohformel: 50 bei gleichmäßiger Verteilung (neutrale Basis)."
+        }
+      },
+      "edit_score_profile": {
+        "title": "Punkteprofil bearbeiten: {profile_label}",
+        "description": "{meter_count} Zähler konfiguriert.",
+        "data": {
+          "action": "Aktion"
+        }
+      },
+      "add_profile_meters": {
+        "title": "Zähler hinzufügen",
+        "data": {
+          "meters": "Energiezähler-Entitäten"
+        }
+      },
+      "edit_profile_formula": {
+        "title": "Punkteformel: {profile_label}",
+        "data": {
+          "formula": "Punkteformel"
+        },
+        "data_description": {
+          "formula": "Standardformel: 50 = gut, 37,5 bei gleichmäßiger Verteilung (bestraft durchschnittliche Nutzung). Rohformel: 50 bei gleichmäßiger Verteilung (neutrale Basis)."
+        }
+      },
+      "fixed_periods": {
+        "title": "Festpreiszeiträume / Festpreisverträge",
+        "description": "Verwalte Festpreiszeiträume oder Festpreisverträge. Ist ein Zeitraum aktiv, zeigt effective_price den festgelegten Festpreis statt des Spotpreises.",
+        "data": {
+          "action": "Aktion"
+        }
+      },
+      "generation_settings": {
+        "title": "Einstellungen für Erzeugung & Einspeisung",
+        "description": "Konfiguriere Einspeisepreise und Batterieeinstellungen. Setze die Batteriekapazität auf 0, um Batteriesensoren zu deaktivieren.",
+        "data": {
+          "export_pricing_mode": "Einspeisepreismodus",
+          "export_commission": "Einspeisemarge (c/kWh, vom Spotpreis abgezogen)",
+          "fixed_export_rate": "Fester Einspeisetarif (c/kWh)",
+          "export_price_threshold": "Einspeisepreis-Schwelle (c/kWh)",
+          "solar_window_start": "Startstunde des Solarfensters",
+          "solar_window_end": "Endstunde des Solarfensters",
+          "battery_capacity_kwh": "Batteriekapazität (kWh, 0 = deaktiviert)",
+          "battery_charge_power_kw": "Batterieladeleistung (kW)"
+        },
+        "data_description": {
+          "export_commission": "Nur im spotgebundenen Modus. Vom Spot-API-Preis abgezogene Händlermarge (exkl. MwSt.). Kleinerzeuger berechnen auf Einspeisung in der Regel keine MwSt.",
+          "fixed_export_rate": "Nur im Festmodus. Fester Tarif, den du pro eingespeister kWh erhältst.",
+          "solar_window_start": "Startstunde deines typischen Solarproduktionsfensters (vom next_solar_window_avg-Sensor verwendet).",
+          "solar_window_end": "Endstunde (ausschließlich) deines typischen Solarproduktionsfensters."
+        }
+      },
+      "add_fixed_period": {
+        "title": "Festpreiszeitraum / Festpreisvertrag hinzufügen",
+        "data": {
+          "label": "Zeitraumbezeichnung",
+          "start_date": "Startdatum",
+          "end_date": "Enddatum (einschließlich)",
+          "price": "Preis (c/kWh, inkl. MwSt.)"
+        },
+        "data_description": {
+          "price": "Preis inkl. MwSt. eingeben. Dieser Preis wird unverändert verwendet — es wird keine MwSt. aufgeschlagen."
+        }
+      }
+    },
+    "error": {
+      "tier_hour_range": "Die Endzeit muss nach der Startzeit liegen.",
+      "tier_no_months": "Wähle mindestens einen Monat aus.",
+      "tier_no_weekdays": "Wähle mindestens einen Wochentag aus.",
+      "period_invalid_dates": "Das Enddatum muss am oder nach dem Startdatum liegen.",
+      "period_overlap": "Dieser Zeitraum überschneidet sich mit einem bestehenden Festpreiszeitraum.",
+      "period_price_zero": "Der Preis muss größer als null sein."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "spot_price": {
+        "name": "Spotpreis"
+      },
+      "effective_price": {
+        "name": "Aktiver Preis"
+      },
+      "transfer_price": {
+        "name": "Netzentgelt"
+      },
+      "total_price": {
+        "name": "Gesamtpreis"
+      },
+      "price_rank": {
+        "name": "Rang"
+      },
+      "total_price_rank": {
+        "name": "Gesamtpreisrang"
+      },
+      "total_price_quartile": {
+        "name": "Gesamtpreisquartil"
+      },
+      "today_spot_avg": {
+        "name": "Durchschnittlicher Spotpreis heute"
+      },
+      "today_spot_min": {
+        "name": "Niedrigster Spotpreis heute"
+      },
+      "today_spot_max": {
+        "name": "Höchster Spotpreis heute"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Durchschnittlicher Spotpreis morgen"
+      },
+      "tomorrow_spot_min": {
+        "name": "Niedrigster Spotpreis morgen"
+      },
+      "tomorrow_spot_max": {
+        "name": "Höchster Spotpreis morgen"
+      },
+      "today_total_avg": {
+        "name": "Durchschnittlicher Gesamtpreis heute"
+      },
+      "today_total_min": {
+        "name": "Niedrigster Gesamtpreis heute"
+      },
+      "today_total_max": {
+        "name": "Höchster Gesamtpreis heute"
+      },
+      "tomorrow_total_avg": {
+        "name": "Durchschnittlicher Gesamtpreis morgen"
+      },
+      "tomorrow_total_min": {
+        "name": "Niedrigster Gesamtpreis morgen"
+      },
+      "tomorrow_total_max": {
+        "name": "Höchster Gesamtpreis morgen"
+      },
+      "today_avg": {
+        "name": "Durchschnitt heute"
+      },
+      "today_min": {
+        "name": "Minimum heute"
+      },
+      "today_max": {
+        "name": "Maximum heute"
+      },
+      "tomorrow_avg": {
+        "name": "Durchschnitt morgen"
+      },
+      "tomorrow_min": {
+        "name": "Minimum morgen"
+      },
+      "tomorrow_max": {
+        "name": "Maximum morgen"
+      },
+      "next_hours_avg": {
+        "name": "Durchschnitt der nächsten Stunden"
+      },
+      "spot_next_hours_avg": {
+        "name": "Spot-Durchschnitt der nächsten Stunden"
+      },
+      "control_factor_price": {
+        "name": "Steuerfaktor Preis"
+      },
+      "control_factor_price_bipolar": {
+        "name": "Steuerfaktor Preis (bipolar)"
+      },
+      "control_factor_transfer": {
+        "name": "Steuerfaktor Netzentgelt"
+      },
+      "price_quartile": {
+        "name": "Preisquartil"
+      },
+      "setting_max_price": {
+        "name": "Preisschwelle"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Preisschwelle inklusive Netzentgelt"
+      },
+      "setting_control_factor_function": {
+        "name": "Steuerfaktorform"
+      },
+      "setting_acceptable_rank": {
+        "name": "Akzeptabler Rang"
+      },
+      "setting_forward_window": {
+        "name": "Vorausschaufenster"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktive Netzentgeltgruppe"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktive Netzentgeltstufe"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktiver Festpreiszeitraum"
+      },
+      "export_price": {
+        "name": "Einspeisepreis"
+      },
+      "export_today_avg": {
+        "name": "Durchschnittlicher Einspeisepreis heute"
+      },
+      "export_today_min": {
+        "name": "Niedrigster Einspeisepreis heute"
+      },
+      "export_today_max": {
+        "name": "Höchster Einspeisepreis heute"
+      },
+      "export_tomorrow_avg": {
+        "name": "Durchschnittlicher Einspeisepreis morgen"
+      },
+      "export_tomorrow_min": {
+        "name": "Niedrigster Einspeisepreis morgen"
+      },
+      "export_tomorrow_max": {
+        "name": "Höchster Einspeisepreis morgen"
+      },
+      "import_export_spread": {
+        "name": "Bezugs-Einspeise-Spanne"
+      },
+      "self_consumption_value": {
+        "name": "Eigenverbrauchswert"
+      },
+      "avg_price_30min": {
+        "name": "Durchschnittspreis 30 min"
+      },
+      "avg_price_60min": {
+        "name": "Durchschnittspreis 60 min"
+      },
+      "avg_price_120min": {
+        "name": "Durchschnittspreis 120 min"
+      },
+      "next_solar_window_avg": {
+        "name": "Durchschnitt des nächsten Solarfensters"
+      },
+      "arbitrage_spread_today": {
+        "name": "Arbitragespanne heute"
+      },
+      "charge_opportunity_factor": {
+        "name": "Ladechancenfaktor"
+      },
+      "optimal_charge_window_start": {
+        "name": "Beginn des optimalen Ladefensters"
+      },
+      "optimal_charge_window_end": {
+        "name": "Ende des optimalen Ladefensters"
+      },
+      "battery_charge_recommendation": {
+        "name": "Batterielade-Empfehlung",
+        "state": {
+          "charge_from_grid": "Aus dem Netz laden",
+          "discharge": "Entladen",
+          "hold": "Halten"
+        }
+      },
+      "monthly_fixed_cost_today": {
+        "name": "Monatliche Fixkosten heute"
+      }
+    },
+    "number": {
+      "price_threshold": {
+        "name": "Preisschwelle"
+      },
+      "rank_threshold": {
+        "name": "Rangschwelle"
+      }
+    },
+    "binary_sensor": {
+      "price_acceptable": {
+        "name": "Preis akzeptabel"
+      },
+      "rank_acceptable": {
+        "name": "Rang akzeptabel"
+      },
+      "price_or_rank_acceptable": {
+        "name": "Preis oder Rang akzeptabel"
+      },
+      "fixed_period_active": {
+        "name": "Festpreiszeitraum aktiv"
+      },
+      "tomorrow_available": {
+        "name": "Morgige Preise verfügbar"
+      },
+      "export_price_acceptable": {
+        "name": "Einspeisepreis akzeptabel"
+      },
+      "charge_from_grid_recommended": {
+        "name": "Laden aus dem Netz empfohlen"
+      },
+      "discharge_to_grid_recommended": {
+        "name": "Entladen ins Netz empfohlen"
+      }
+    }
+  },
+  "triggers": {
+    "price_became_acceptable": {
+      "name": "Preis wurde akzeptabel",
+      "description": "Wird ausgelöst, wenn der aktuelle Strompreis auf ein akzeptables Niveau fällt (auf oder unter die Preisschwelle)."
+    },
+    "price_no_longer_acceptable": {
+      "name": "Preis nicht mehr akzeptabel",
+      "description": "Wird ausgelöst, wenn der aktuelle Strompreis über die Preisschwelle steigt."
+    },
+    "rank_became_acceptable": {
+      "name": "Rang wurde akzeptabel",
+      "description": "Wird ausgelöst, wenn der aktuelle Preisrang auf ein akzeptables Niveau fällt (auf oder unter die Rangschwelle)."
+    },
+    "rank_no_longer_acceptable": {
+      "name": "Rang nicht mehr akzeptabel",
+      "description": "Wird ausgelöst, wenn der aktuelle Preisrang über die Rangschwelle steigt."
+    },
+    "became_cheapest_slot": {
+      "name": "Wurde günstigstes Zeitintervall",
+      "description": "Wird ausgelöst, wenn das aktuelle Zeitintervall zum günstigsten des Tages wird."
+    },
+    "fixed_period_started": {
+      "name": "Festpreiszeitraum begonnen",
+      "description": "Wird ausgelöst, wenn ein Festpreiszeitraum aktiv wird."
+    },
+    "fixed_period_ended": {
+      "name": "Festpreiszeitraum beendet",
+      "description": "Wird ausgelöst, wenn ein Festpreiszeitraum nicht mehr aktiv ist."
+    },
+    "tomorrow_prices_available": {
+      "name": "Morgige Preise verfügbar",
+      "description": "Wird ausgelöst, wenn die morgigen Strompreise verfügbar werden."
+    }
+  },
+  "conditions": {
+    "price_is_acceptable": {
+      "name": "Preis ist akzeptabel",
+      "description": "Erfüllt, wenn der aktuelle Strompreis auf oder unter der Preisschwelle liegt."
+    },
+    "rank_is_acceptable": {
+      "name": "Rang ist akzeptabel",
+      "description": "Erfüllt, wenn der aktuelle Preisrang auf oder unter der Rangschwelle liegt."
+    },
+    "price_is_lowest_today": {
+      "name": "Preis ist heute am niedrigsten",
+      "description": "Erfüllt, wenn das aktuelle Zeitintervall das günstigste des Tages ist."
+    },
+    "fixed_period_active": {
+      "name": "Festpreiszeitraum aktiv",
+      "description": "Erfüllt, wenn gerade ein Festpreiszeitraum aktiv ist."
+    },
+    "tomorrow_available": {
+      "name": "Morgige Preise verfügbar",
+      "description": "Erfüllt, wenn die morgigen Strompreise verfügbar sind."
+    }
+  }
+}
