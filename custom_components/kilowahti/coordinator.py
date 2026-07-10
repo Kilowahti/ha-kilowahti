@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import calendar
+import functools
 import logging
 from collections.abc import Callable
 from datetime import date, datetime, timedelta
@@ -432,11 +433,11 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             target += timedelta(days=1)
         delay = (target - now_cet).total_seconds()
         self._eager_start_timer_unsub = async_call_later(
-            self.hass, delay, lambda _now: self._on_eager_start_timer(eager_start)
+            self.hass, delay, functools.partial(self._on_eager_start_timer, eager_start)
         )
 
     @callback
-    def _on_eager_start_timer(self, eager_start: int) -> None:
+    def _on_eager_start_timer(self, eager_start: int, _now: datetime) -> None:
         """Fire at eager_start CET/CEST daily to start eager polling for tomorrow's prices."""
         self._eager_start_timer_unsub = None
         if self._tomorrow_slots is None:
