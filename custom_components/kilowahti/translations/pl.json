@@ -99,8 +99,7 @@
       },
       "score_profiles": {
         "title": "Punkty optymalizacji",
-        "description": "Punkty mierzą, jak dobrze zużycie jest przesuwane na tanie godziny. Stały profil 'Total' obejmuje całe zużycie — po konfiguracji powiąż z nim licznik (lub liczniki) w opcjach.",
-        "data": {}
+        "description": "Punkty mierzą, jak dobrze zużycie jest przesuwane na tanie godziny. Stały profil 'Total' obejmuje całe zużycie — po konfiguracji powiąż z nim licznik (lub liczniki) w opcjach."
       },
       "advanced_options": {
         "title": "Opcje zaawansowane",
@@ -219,8 +218,7 @@
         }
       },
       "score_profiles": {
-        "title": "Profile punktowe",
-        "data": {}
+        "title": "Profile punktowe"
       },
       "advanced_options": {
         "title": "Opcje zaawansowane",
