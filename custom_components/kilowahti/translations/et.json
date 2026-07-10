@@ -1,0 +1,514 @@
+{
+    "config":{
+        "step":{
+            "user":{
+                "title":"Kilowahti — Põhiseadistused",
+                "description":"Piirkond määratleb konkreetse Põhjala/Balti turupiirkonna, mille hetkehindu kasutatakse.",
+                "data":{
+                    "name":"Nimi",
+                    "region":"Hinnapiirkond",
+                    "price_resolution":"Hinna resolutsioon",
+                    "display_unit":"Kuvamisühik"
+                },
+                "data_description":{
+                    "name":"Kasutatakse olemite nimedes, nt 'Kodu'",
+                    "price_resolution":"15 minutit (96 perioodi/ööpäevas) või 1 tund (24 perioodi/ööpäevas). Vali vastavalt lepingu mõõtmisintervallile.",
+                    "display_unit":"Andurite ühik"
+                }
+            },
+            "vat_and_tax":{
+                "title":"Käibemaks ja elektriaktsiis",
+                "description":"Eeltäidetud piirkonna järgi. Muuda vajadusel. Kõik hinnad (võrgutasu tasemed, fikseeritud perioodid) sisestatakse koos käibemaksuga.",
+                "data":{
+                    "vat_rate_pct":"Käibemaksumäär (%)",
+                    "electricity_tax":"Elektriaktsiis (c/kWh)",
+                    "spot_commission":"Marginaal (c/kWh)",
+                    "monthly_fixed_cost":"Elektrilepingu püsitasu (€/kuus)"
+                },
+                "data_description":{
+                    "electricity_tax":"Kindel elektriaktsiis kWh kohta, lisatakse spot-/fikseeritud hinnale.",
+                    "spot_commission":"Müüja marginaal kWh kohta spot-hinna peale. Sisesta koos käibemaksuga. Jäta 0, kui ei kasutata.",
+                    "monthly_fixed_cost":"Elektrilepingu püsiv kuutasu (nt põhitasu). Sisesta koos käibemaksuga. Jäta 0, kui ei kasutata."
+                }
+            },
+            "transfer_groups":{
+                "title":"Võrgutasud",
+                "description":"Korralda võrgutasu tasemed nimelistesse gruppidesse (nt Ajatariif, Hooajaline, Ühtne). Korraga on aktiivne ainult üks grupp. Võid selle vahele jätta ja grupid hiljem seadetes määrata.",
+                "data":{
+                    "action":"Toiming"
+                }
+            },
+            "add_transfer_group":{
+                "title":"Lisa grupp",
+                "data":{
+                    "label":"Grupi nimi",
+                    "monthly_fixed_cost":"Püsiv kuutasu (€/kuus)"
+                },
+                "data_description":{
+                    "monthly_fixed_cost":"Võrguühendus + lepingu põhitasu. Koos käibemaksuga."
+                }
+            },
+            "edit_group_settings":{
+                "title":"Muuda grupi seadeid",
+                "data":{
+                    "label":"Grupi nimi",
+                    "monthly_fixed_cost":"Püsiv kuutasu (€/kuus)"
+                },
+                "data_description":{
+                    "monthly_fixed_cost":"Võrguühendus + lepingu põhitasu. Koos käibemaksuga."
+                }
+            },
+            "transfer_group_detail":{
+                "title":"Muuda gruppi",
+                "description":"{group_label} — Lisa või eemalda tasemeid või määra grupp aktiivseks.",
+                "data":{
+                    "action":"Toiming"
+                }
+            },
+            "add_transfer_tier":{
+                "title":"Lisa võrgutasu",
+                "description":"Hinnatakse prioriteedi järjekorras; esimene sobivus võidab. Lisa põhitariif madalaima prioriteediga ilma ajapiiranguteta.",
+                "data":{
+                    "label":"Taseme nimi",
+                    "price":"Hind (c/kWh)",
+                    "months":"Aktiivsed kuud",
+                    "weekdays":"Aktiivsed nädalapäevad",
+                    "hour_start":"Algusaeg (kaasa arvatud)",
+                    "hour_end":"Lõppaeg (välja arvatud)",
+                    "priority":"Prioriteet (madalam = esimene)"
+                }
+            },
+            "thresholds":{
+                "title":"Läved ja juhtimine",
+                "data":{
+                    "max_price":"Juhtimise maksimumhind (c/kWh)",
+                    "price_threshold_includes_transfer":"Maksimumhind sisaldab võrgutasu",
+                    "max_rank":"Juhtimise maksimumjärjekoht",
+                    "forward_avg_hours":"Etteulatuva keskmise akna pikkus (tundi)",
+                    "control_factor_function":"Juhtimisteguri kõver",
+                    "control_factor_scaling":"Juhtimisteguri skaleerimine (1–3)"
+                },
+                "data_description":{
+                    "max_price":"Kui praeguse perioodi hind on sellel tasemel või madalam, lülitub andur price_acceptable sisse.",
+                    "price_threshold_includes_transfer":"Sees: võrdle koguhinda (spot + võrgutasu). Väljas: võrdle ainult energiahinda (spot).",
+                    "max_rank":"Kui praeguse perioodi järjekoht on sellel tasemel või madalam, lülitub andur rank_acceptable sisse.",
+                    "forward_avg_hours":"Tundide arv ette, mille kohta arvutatakse anduri next_hours_avg keskmine.",
+                    "control_factor_function":"Juhtimisteguri kõvera kuju (0–1).",
+                    "control_factor_scaling":"Juhtimistegurile rakendatav aste (võimendab äärmusi)."
+                }
+            },
+            "score_profiles":{
+                "title":"Optimeerimispunktid",
+                "description":"Punktid näitavad, kui hästi tarbimine on nihutatud odavatele tundidele. Püsiv profiil 'Total' katab kogu tarbimise — seo sellega üks või mitu arvestit seadetes pärast paigaldust."
+            },
+            "advanced_options":{
+                "title":"Täpsemad seaded",
+                "description":"Määra, kuidas andurite väärtusi Home Assistantis kuvatakse.",
+                "data":{
+                    "expose_price_arrays":"Kuva hinnamassiivid anduri atribuutidena (suurendab andmebaasi mahtu)",
+                    "high_precision":"Kõrge täpsus",
+                    "show_rolling_averages":"Kuva järgmise 30 min, 1 h ja 2 h keskmised hinnad",
+                    "generation_enabled":"Luba tootmise ja müügi funktsioonid"
+                },
+                "data_description":{
+                    "expose_price_arrays":"Kirjutab massiivid today_prices ja tomorrow_prices anduri spot_price atribuutidesse, mis seejärel salvestatakse andmebaasi. Lihtsustab graafikute tegemist töölaudadel, kuid pole nende kuvamiseks vajalik ja koormab andmebaasi asjatult.",
+                    "high_precision":"Sisselülitatuna kuvavad hinnaandurid rohkem kümnendkohti. Atribuudid ja arvutused kasutavad alati täistäpsust.",
+                    "show_rolling_averages":"Lisab andurid järgmise 30, 60 ja 120 minuti keskmise hinna jaoks.",
+                    "generation_enabled":"Lubab müügihinna, aku ja arbitraaži andurid ning teenused. Määra tootmisseaded menüüs Tootmine ja müük."
+                }
+            }
+        },
+        "error":{
+            "cannot_connect":"Ühendus ebaõnnestus. Kontrolli võrku.",
+            "invalid_region":"Valitud piirkond ei tagastanud API-st andmeid.",
+            "tier_hour_range":"Lõppaeg peab olema suurem kui algusaeg.",
+            "tier_no_months":"Vali vähemalt üks kuu.",
+            "tier_no_weekdays":"Vali vähemalt üks nädalapäev.",
+            "period_invalid_dates":"Lõppkuupäev peab olema sama või hilisem kui alguskuupäev.",
+            "period_overlap":"See periood kattub olemasoleva fikseeritud hinnaga perioodiga.",
+            "period_price_zero":"Hind peab olema suurem kui null."
+        },
+        "abort":{
+            "already_configured":"See eksemplar on juba seadistatud."
+        }
+    },
+    "options":{
+        "step":{
+            "init":{
+                "title":"Kilowahti seaded",
+                "description":"Vali, milliseid seadeid muuta.",
+                "menu_options":{
+                    "basic":"Põhiseaded ja käibemaks",
+                    "transfer_groups":"Võrgutasud",
+                    "thresholds":"Läved ja juhtimine",
+                    "score_profiles":"Punktiprofiilid",
+                    "advanced_options":"Täpsemad seaded",
+                    "fixed_periods":"Fikseeritud hinnaga perioodid / püsilepingud",
+                    "generation_settings":"Tootmine ja müük"
+                }
+            },
+            "basic":{
+                "title":"Põhiseaded",
+                "description":"Hoiatus: kuvamisühiku muutmine pärast andurite loomist põhjustab ühikute vasturääkivusi ajaloograafikutes. Võib olla vajalik andurite ajaloo kustutamine või töölauakaartide käsitsi kohandamine.",
+                "data":{
+                    "name":"Nimi",
+                    "region":"Hinnapiirkond",
+                    "price_resolution":"Hinna resolutsioon",
+                    "display_unit":"Kuvamisühik",
+                    "vat_rate_pct":"Käibemaksumäär (%)",
+                    "electricity_tax":"Elektriaktsiis (c/kWh)",
+                    "spot_commission":"Marginaal (c/kWh)",
+                    "monthly_fixed_cost":"Elektrilepingu püsitasu (€/kuus)"
+                }
+            },
+            "transfer_groups":{
+                "title":"Võrgutasud",
+                "data":{
+                    "action":"Toiming"
+                }
+            },
+            "add_transfer_group":{
+                "title":"Lisa grupp",
+                "data":{
+                    "label":"Grupi nimi",
+                    "monthly_fixed_cost":"Püsiv kuutasu (€/kuus)"
+                },
+                "data_description":{
+                    "monthly_fixed_cost":"Võrguühendus + lepingu põhitasu. Koos käibemaksuga."
+                }
+            },
+            "edit_group_settings":{
+                "title":"Muuda grupi seadeid",
+                "data":{
+                    "label":"Grupi nimi",
+                    "monthly_fixed_cost":"Püsiv kuutasu (€/kuus)"
+                },
+                "data_description":{
+                    "monthly_fixed_cost":"Võrguühendus + lepingu põhitasu. Koos käibemaksuga."
+                }
+            },
+            "transfer_group_detail":{
+                "title":"Muuda gruppi",
+                "description":"{group_label} — Lisa või eemalda tasemeid või määra grupp aktiivseks.",
+                "data":{
+                    "action":"Toiming"
+                }
+            },
+            "add_transfer_tier":{
+                "title":"Lisa võrgutasu",
+                "data":{
+                    "label":"Taseme nimi (nt Talvine tööpäev)",
+                    "price":"Hind (c/kWh)",
+                    "months":"Aktiivsed kuud",
+                    "weekdays":"Aktiivsed nädalapäevad",
+                    "hour_start":"Algusaeg (kaasa arvatud)",
+                    "hour_end":"Lõppaeg (välja arvatud)",
+                    "priority":"Prioriteet (madalam = esimene)"
+                }
+            },
+            "thresholds":{
+                "title":"Läved ja juhtimine",
+                "data":{
+                    "max_price":"Juhtimise maksimumhind (c/kWh)",
+                    "price_threshold_includes_transfer":"Maksimumhind sisaldab võrgutasu",
+                    "max_rank":"Juhtimise maksimumjärjekoht",
+                    "forward_avg_hours":"Etteulatuva keskmise akna pikkus (tundi)",
+                    "control_factor_function":"Juhtimisteguri kõver",
+                    "control_factor_scaling":"Juhtimisteguri skaleerimine (1–3)"
+                }
+            },
+            "score_profiles":{
+                "title":"Punktiprofiilid"
+            },
+            "advanced_options":{
+                "title":"Täpsemad seaded",
+                "data":{
+                    "expose_price_arrays":"Kuva hinnamassiivid anduri atribuutidena (suurendab andmebaasi mahtu)",
+                    "high_precision":"Kõrge täpsus",
+                    "show_rolling_averages":"Kuva järgmise 30 min, 1 h ja 2 h keskmised hinnad",
+                    "generation_enabled":"Luba tootmise ja müügi funktsioonid"
+                },
+                "data_description":{
+                    "show_rolling_averages":"Lisab andurid järgmise 30, 60 ja 120 minuti keskmise hinna jaoks.",
+                    "generation_enabled":"Lubab müügihinna, aku ja arbitraaži andurid ning teenused. Määra tootmisseaded menüüs Tootmine ja müük."
+                }
+            },
+            "add_score_profile":{
+                "title":"Lisa punktiprofiil",
+                "data":{
+                    "label":"Profiili nimi",
+                    "meters":"Energiaarvestid",
+                    "formula":"Punktivalem"
+                },
+                "data_description":{
+                    "formula":"Vaikevalem: 50 = hea, 37,5 ühtlasel jaotusel (karistab keskmist tarbimist). Toorvalem: 50 ühtlasel jaotusel (neutraalne lähtetase)."
+                }
+            },
+            "edit_score_profile":{
+                "title":"Muuda punktiprofiili: {profile_label}",
+                "description":"{meter_count} arvestit seadistatud.",
+                "data":{
+                    "action":"Toiming"
+                }
+            },
+            "add_profile_meters":{
+                "title":"Lisa arvesti(d)",
+                "data":{
+                    "meters":"Energiaarvestid"
+                }
+            },
+            "edit_profile_formula":{
+                "title":"Punktivalem: {profile_label}",
+                "data":{
+                    "formula":"Punktivalem"
+                },
+                "data_description":{
+                    "formula":"Vaikevalem: 50 = hea, 37,5 ühtlasel jaotusel (karistab keskmist tarbimist). Toorvalem: 50 ühtlasel jaotusel (neutraalne lähtetase)."
+                }
+            },
+            "fixed_periods":{
+                "title":"Fikseeritud hinnaga perioodid / püsilepingud",
+                "description":"Halda fikseeritud hinnaga perioode või püsilepinguid. Aktiivsena näitab effective_price määratud fikseeritud hinda spot-hinna asemel.",
+                "data":{
+                    "action":"Toiming"
+                }
+            },
+            "generation_settings":{
+                "title":"Tootmise ja müügi seaded",
+                "description":"Määra müügihind ja aku seaded. Sea aku mahtuvus 0-le, et keelata akuandurid.",
+                "data":{
+                    "export_pricing_mode":"Müügihinna arvutusviis",
+                    "export_commission":"Müügimarginaal (c/kWh lahutatakse spot-hinnast)",
+                    "fixed_export_rate":"Fikseeritud müügihind (c/kWh)",
+                    "export_price_threshold":"Müügihinna lävi (c/kWh)",
+                    "solar_window_start":"Päikeseakna algustund",
+                    "solar_window_end":"Päikeseakna lõputund",
+                    "battery_capacity_kwh":"Aku mahtuvus (kWh, 0 = keelatud)",
+                    "battery_charge_power_kw":"Aku laadimisvõimsus (kW)"
+                },
+                "data_description":{
+                    "export_commission":"Ainult spot-seotud režiim. Müüja marginaal lahutatakse spot-API hinnast (ilma käibemaksuta). Väiketootjad tavaliselt ei lisa müüdud elektrile käibemaksu.",
+                    "fixed_export_rate":"Ainult fikseeritud režiim. Kindel tasu, mille saad iga müüdud kWh eest.",
+                    "solar_window_start":"Tüüpilise päikesetootmise akna algustund (kasutab andur next_solar_window_avg).",
+                    "solar_window_end":"Tüüpilise päikesetootmise akna lõputund (välja arvatud)."
+                }
+            },
+            "add_fixed_period":{
+                "title":"Lisa fikseeritud hinnaga periood / püsileping",
+                "data":{
+                    "label":"Perioodi nimi",
+                    "start_date":"Alguskuupäev",
+                    "end_date":"Lõppkuupäev (kaasa arvatud)",
+                    "price":"Hind (c/kWh, koos käibemaksuga)"
+                },
+                "data_description":{
+                    "price":"Sisesta hind koos käibemaksuga. Seda hinda kasutatakse muutmata — käibemaksu ei lisata."
+                }
+            }
+        },
+        "error":{
+            "tier_hour_range":"Lõppaeg peab olema suurem kui algusaeg.",
+            "tier_no_months":"Vali vähemalt üks kuu.",
+            "tier_no_weekdays":"Vali vähemalt üks nädalapäev.",
+            "period_invalid_dates":"Lõppkuupäev peab olema sama või hilisem kui alguskuupäev.",
+            "period_overlap":"See periood kattub olemasoleva fikseeritud hinnaga perioodiga.",
+            "period_price_zero":"Hind peab olema suurem kui null."
+        }
+    },
+    "entity":{
+        "sensor":{
+            "spot_price":{
+                "name":"Spot-hind"
+            },
+            "effective_price":{
+                "name":"Aktiivne hind"
+            },
+            "transfer_price":{
+                "name":"Võrgutasu"
+            },
+            "total_price":{
+                "name":"Koguhind"
+            },
+            "price_rank":{
+                "name":"Järjekoht"
+            },
+            "total_price_rank":{
+                "name":"Koguhinna järjekoht"
+            },
+            "total_price_quartile":{
+                "name":"Koguhinna kvartiil"
+            },
+            "today_spot_avg":{
+                "name":"Keskmine spot-hind täna"
+            },
+            "today_spot_min":{
+                "name":"Madalaim spot-hind täna"
+            },
+            "today_spot_max":{
+                "name":"Kõrgeim spot-hind täna"
+            },
+            "tomorrow_spot_avg":{
+                "name":"Keskmine spot-hind homme"
+            },
+            "tomorrow_spot_min":{
+                "name":"Madalaim spot-hind homme"
+            },
+            "tomorrow_spot_max":{
+                "name":"Kõrgeim spot-hind homme"
+            },
+            "today_total_avg":{
+                "name":"Keskmine koguhind täna"
+            },
+            "today_total_min":{
+                "name":"Madalaim koguhind täna"
+            },
+            "today_total_max":{
+                "name":"Kõrgeim koguhind täna"
+            },
+            "tomorrow_total_avg":{
+                "name":"Keskmine koguhind homme"
+            },
+            "tomorrow_total_min":{
+                "name":"Madalaim koguhind homme"
+            },
+            "tomorrow_total_max":{
+                "name":"Kõrgeim koguhind homme"
+            },
+            "next_hours_avg":{
+                "name":"Järgmiste tundide keskmine"
+            },
+            "control_factor_price":{
+                "name":"Hinna juhtimistegur"
+            },
+            "control_factor_price_bipolar":{
+                "name":"Hinna juhtimistegur (bipolaarne)"
+            },
+            "control_factor_transfer":{
+                "name":"Võrgutasu juhtimistegur"
+            },
+            "price_quartile":{
+                "name":"Hinnakvartiil"
+            },
+            "setting_max_price":{
+                "name":"Hinnalävi"
+            },
+            "setting_price_threshold_includes_transfer":{
+                "name":"Hinnalävi sisaldab võrgutasu"
+            },
+            "setting_control_factor_function":{
+                "name":"Juhtimisteguri kuju"
+            },
+            "setting_acceptable_rank":{
+                "name":"Aktsepteeritav järjekoht"
+            },
+            "setting_forward_window":{
+                "name":"Etteulatuv aken"
+            },
+            "setting_active_transfer_group":{
+                "name":"Aktiivne võrgutasu grupp"
+            },
+            "setting_active_transfer_tier":{
+                "name":"Aktiivne võrgutasu tase"
+            },
+            "setting_active_fixed_period":{
+                "name":"Aktiivne fikseeritud periood"
+            },
+            "export_price":{
+                "name":"Müügihind"
+            },
+            "export_today_avg":{
+                "name":"Keskmine müügihind täna"
+            },
+            "export_today_min":{
+                "name":"Madalaim müügihind täna"
+            },
+            "export_today_max":{
+                "name":"Kõrgeim müügihind täna"
+            },
+            "export_tomorrow_avg":{
+                "name":"Keskmine müügihind homme"
+            },
+            "export_tomorrow_min":{
+                "name":"Madalaim müügihind homme"
+            },
+            "export_tomorrow_max":{
+                "name":"Kõrgeim müügihind homme"
+            },
+            "import_export_spread":{
+                "name":"Ostu-müügi vahe"
+            },
+            "self_consumption_value":{
+                "name":"Omatarbimise väärtus"
+            },
+            "avg_price_30min":{
+                "name":"Keskmine hind 30 min"
+            },
+            "avg_price_60min":{
+                "name":"Keskmine hind 60 min"
+            },
+            "avg_price_120min":{
+                "name":"Keskmine hind 120 min"
+            },
+            "next_solar_window_avg":{
+                "name":"Järgmise päikeseakna keskmine"
+            },
+            "arbitrage_spread_today":{
+                "name":"Arbitraaži vahe täna"
+            },
+            "charge_opportunity_factor":{
+                "name":"Laadimisvõimaluse tegur"
+            },
+            "optimal_charge_window_start":{
+                "name":"Optimaalse laadimisakna algus"
+            },
+            "optimal_charge_window_end":{
+                "name":"Optimaalse laadimisakna lõpp"
+            },
+            "battery_charge_recommendation":{
+                "name":"Aku laadimissoovitus",
+                "state":{
+                    "charge_from_grid":"Laadi võrgust",
+                    "discharge":"Laadi tühjaks",
+                    "hold":"Hoia"
+                }
+            },
+            "monthly_fixed_cost_today":{
+                "name":"Püsiv kuutasu täna"
+            }
+        },
+        "number":{
+            "price_threshold":{
+                "name":"Hinnalävi"
+            },
+            "rank_threshold":{
+                "name":"Järjekohalävi"
+            }
+        },
+        "binary_sensor":{
+            "price_acceptable":{
+                "name":"Hind aktsepteeritav"
+            },
+            "rank_acceptable":{
+                "name":"Järjekoht aktsepteeritav"
+            },
+            "price_or_rank_acceptable":{
+                "name":"Hind või järjekoht aktsepteeritav"
+            },
+            "fixed_period_active":{
+                "name":"Fikseeritud periood aktiivne"
+            },
+            "tomorrow_available":{
+                "name":"Homsed hinnad saadaval"
+            },
+            "export_price_acceptable":{
+                "name":"Müügihind aktsepteeritav"
+            },
+            "charge_from_grid_recommended":{
+                "name":"Võrgust laadimine soovitatav"
+            },
+            "discharge_to_grid_recommended":{
+                "name":"Võrku tühjendamine soovitatav"
+            }
+        }
+    }
+}
