@@ -67,7 +67,7 @@
             },
             "add_transfer_tier":{
                 "title":"Legg til overføringspris",
-                "description":"Evaluert i prioritert rekkefølge; første kamp vinner. Legg til en basissats som laveste prioritet uten tidsbegrensninger.",
+                "description":"Evaluert i prioritert rekkefølge; første treff gjelder. Legg til en basissats som laveste prioritet uten tidsbegrensninger.",
                 "data":{
                     "label":"Nivåetikett",
                     "price":"Pris (c/kWh)",
@@ -89,7 +89,7 @@
                     "control_factor_scaling":"Kontrollfaktorskalering (1—3)"
                 },
                 "data_description":{
-                    "max_price":"Når prisen på gjeldende spor er på eller under dette, slås prise_acceptable-sensoren på.",
+                    "max_price":"Når prisen på gjeldende spor er på eller under dette, slås price_acceptable-sensoren på.",
                     "price_threshold_includes_transfer":"PÅ: sammenlign totalpris (spot + overføring). AV: sammenlign kun energipris (spot).",
                     "max_rank":"Når rangeringen av gjeldende spor er på eller under dette, slås rank_acceptable-sensoren på.",
                     "forward_avg_hours":"Antall timer foran gjennomsnittet for next_hours_avg-sensoren.",
@@ -111,7 +111,7 @@
                     "generation_enabled":"Aktiver generasjons- og eksportfunksjoner"
                 },
                 "data_description":{
-                    "expose_price_arrays":"Skriver today_prices og Tomorrow_prices-arrays til spot_price sensorattributtene, som deretter lagres i databasen. Gjør dashbordgrafer enklere å bygge, men er ikke nødvendig for å vise dem og legger til unødvendig DB-belastning.",
+                    "expose_price_arrays":"Skriver today_prices og tomorrow_prices-arrays til spot_price sensorattributtene, som deretter lagres i databasen. Gjør dashbordgrafer enklere å bygge, men er ikke nødvendig for å vise dem og legger til unødvendig DB-belastning.",
                     "high_precision":"Når den er på, viser prissensorer flere desimaler. Attributter og beregninger bruker alltid full presisjon.",
                     "show_rolling_averages":"Legger til sensorer for gjennomsnittspris i løpet av de neste 30, 60 og 120 minuttene.",
                     "generation_enabled":"Aktiverer eksportpris-, batteri- og arbitrasjesensorer og -tjenester. Konfigurer generasjonsinnstillinger i menyen Generering og eksport innstillinger."
@@ -339,22 +339,22 @@
                 "name":"Total priskvartil"
             },
             "today_spot_avg":{
-                "name":"Dagens spotgjennomsnitt"
+                "name":"Gjennomsnittlig spotpris i dag"
             },
             "today_spot_min":{
-                "name":"Spotminimum i dag"
+                "name":"Laveste spotpris i dag"
             },
             "today_spot_max":{
-                "name":"I dag spotmaksimum"
+                "name":"Høyeste spotpris i dag"
             },
             "tomorrow_spot_avg":{
-                "name":"Snittsnitt i morgen"
+                "name":"Gjennomsnittlig spotpris i morgen"
             },
             "tomorrow_spot_min":{
-                "name":"Minimumsplassering i morgen"
+                "name":"Laveste spotpris i morgen"
             },
             "tomorrow_spot_max":{
-                "name":"Maksimalt i morgen"
+                "name":"Høyeste spotpris i morgen"
             },
             "today_total_avg":{
                 "name":"I dag totalt gjennomsnitt"
@@ -420,19 +420,19 @@
                 "name":"Gjennomsnitt for eksport i dag"
             },
             "export_today_min":{
-                "name":"Eksporter i dag minimum"
+                "name":"Laveste eksportpris i dag"
             },
             "export_today_max":{
-                "name":"Eksporter i dag maksimalt"
+                "name":"Høyeste eksportpris i dag"
             },
             "export_tomorrow_avg":{
                 "name":"Gjennomsnitt for eksport i morgen"
             },
             "export_tomorrow_min":{
-                "name":"Eksporter i morgen minimum"
+                "name":"Laveste eksportpris i morgen"
             },
             "export_tomorrow_max":{
-                "name":"Eksporter i morgen maksimalt"
+                "name":"Høyeste eksportpris i morgen"
             },
             "import_export_spread":{
                 "name":"Import-eksportspredning"
@@ -453,7 +453,7 @@
                 "name":"Neste solvindusgjennomsnitt"
             },
             "arbitrage_spread_today":{
-                "name":"Arbitrage spredte seg i dag"
+                "name":"Arbitrasjedifferanse i dag"
             },
             "charge_opportunity_factor":{
                 "name":"Lademulighetsfaktor"
@@ -467,8 +467,8 @@
             "battery_charge_recommendation":{
                 "name":"Anbefaling om batterilading",
                 "state":{
-                    "charge_from_grid":"Lade fra rutenettet",
-                    "discharge":"Utslipp",
+                    "charge_from_grid":"Lade fra strømnettet",
+                    "discharge":"Utladning",
                     "hold":"Hold"
                 }
             },
