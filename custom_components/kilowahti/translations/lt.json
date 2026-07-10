@@ -1,0 +1,596 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kilowahti — pagrindiniai nustatymai",
+        "description": "Regionas nustato, kuri Šiaurės šalių/Baltijos biržos kainų zona naudojama.",
+        "data": {
+          "name": "Pavadinimas",
+          "region": "Kainų zona",
+          "price_source": "Kainų duomenų šaltinis",
+          "price_resolution": "Kainų raiška",
+          "display_unit": "Rodymo vienetas"
+        },
+        "data_description": {
+          "name": "Naudojamas esybių pavadinimuose, pvz., 'Namai'",
+          "price_source": "Kilowahti CDN yra paties Kilowahti pirmosios šalies kainų paslauga (cdn.kilowahti.fi); spot-hinta.fi yra trečiosios šalies API.",
+          "price_resolution": "15 minučių (96 intervalai per dieną) arba 1 valanda (24 intervalai per dieną). Pasirinkite pagal savo sutarties apskaitos intervalą.",
+          "display_unit": "Jutiklio vienetas"
+        }
+      },
+      "vat_and_tax": {
+        "title": "PVM ir elektros akcizas",
+        "description": "Užpildyta iš anksto pagal jūsų regioną. Jei reikia, pakoreguokite. Visos kainos (persiuntimo pakopos, fiksuotos kainos laikotarpiai) įvedamos su PVM.",
+        "data": {
+          "vat_rate_pct": "PVM tarifas (%)",
+          "electricity_tax": "Elektros akcizas (c/kWh)",
+          "spot_commission": "Biržos kainos antkainis (c/kWh)",
+          "monthly_fixed_cost": "Elektros sutarties fiksuotas mokestis (€/mėn.)"
+        },
+        "data_description": {
+          "electricity_tax": "Fiksuotas elektros akcizas už kWh, pridedamas prie biržos/fiksuotos kainos.",
+          "spot_commission": "Tiekėjo antkainis už kWh, pridedamas prie biržos kainos. Įveskite bruto (su PVM). Palikite 0, jei netaikoma.",
+          "monthly_fixed_cost": "Fiksuotas mėnesinis mokestis pagal jūsų elektros sutartį (pvz., abonentinis mokestis). Bruto suma (su PVM). Palikite 0, jei netaikoma."
+        }
+      },
+      "transfer_groups": {
+        "title": "Persiuntimo kainos",
+        "description": "Suskirstykite persiuntimo kainų pakopas į pavadintas grupes (pvz., Laiko zonų, Sezoninė, Bendra). Vienu metu aktyvi tik viena grupė. Šį žingsnį galite praleisti ir grupes sukonfigūruoti vėliau skiltyje Parinktys.",
+        "data": {
+          "action": "Veiksmas"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Pridėti grupę",
+        "data": {
+          "label": "Grupės pavadinimas",
+          "monthly_fixed_cost": "Mėnesinis fiksuotas mokestis (€/mėn.)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Prijungimo mokestis + sutarties bazinis mokestis. Bruto suma (su PVM)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Redaguoti grupės nustatymus",
+        "data": {
+          "label": "Grupės pavadinimas",
+          "monthly_fixed_cost": "Mėnesinis fiksuotas mokestis (€/mėn.)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Prijungimo mokestis + sutarties bazinis mokestis. Bruto suma (su PVM)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Redaguoti grupę",
+        "description": "{group_label} — pridėkite arba pašalinkite pakopas, arba nustatykite šią grupę kaip aktyvią.",
+        "data": {
+          "action": "Veiksmas"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Pridėti persiuntimo kainą",
+        "description": "Vertinama prioriteto tvarka; galioja pirmasis atitikmuo. Pridėkite bazinį tarifą kaip žemiausią prioritetą be laiko apribojimų.",
+        "data": {
+          "label": "Pakopos pavadinimas",
+          "price": "Kaina (c/kWh)",
+          "months": "Aktyvūs mėnesiai",
+          "weekdays": "Aktyvios savaitės dienos",
+          "hour_start": "Pradžios laikas (imtinai)",
+          "hour_end": "Pabaigos laikas (neimtinai)",
+          "priority": "Prioritetas (mažesnis = pirmas)"
+        }
+      },
+      "thresholds": {
+        "title": "Slenksčiai ir valdymas",
+        "data": {
+          "max_price": "Valdymo maksimali kaina (c/kWh)",
+          "price_threshold_includes_transfer": "Maksimali kaina apima persiuntimą",
+          "max_rank": "Valdymo maksimalus rangas",
+          "forward_avg_hours": "Ateities vidurkio lango trukmė (valandos)",
+          "control_factor_function": "Valdymo koeficiento kreivė",
+          "control_factor_scaling": "Valdymo koeficiento mastelis (1–3)"
+        },
+        "data_description": {
+          "max_price": "Kai dabartinio intervalo kaina yra lygi šiai reikšmei arba mažesnė, įsijungia price_acceptable jutiklis.",
+          "price_threshold_includes_transfer": "ĮJUNGTA: lyginama bendra kaina (birža + persiuntimas). IŠJUNGTA: lyginama tik energijos kaina (birža).",
+          "max_rank": "Kai dabartinio intervalo rangas yra lygus šiai reikšmei arba mažesnis, įsijungia rank_acceptable jutiklis.",
+          "forward_avg_hours": "Valandų skaičius į priekį, kurių vidurkis skaičiuojamas next_hours_avg jutikliui.",
+          "control_factor_function": "Valdymo koeficiento kreivės forma (0–1).",
+          "control_factor_scaling": "Valdymo koeficientui taikomas laipsnio rodiklis (sustiprina kraštutinumus)."
+        }
+      },
+      "score_profiles": {
+        "title": "Optimizavimo taškai",
+        "description": "Taškai matuoja, kaip gerai jūsų suvartojimas perkeliamas į pigias valandas. Nuolatinis profilis 'Total' apima visą suvartojimą — po sąrankos susiekite su juo skaitiklį (ar kelis) skiltyje Parinktys.",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Išplėstinės parinktys",
+        "description": "Sukonfigūruokite, kaip jutiklių reikšmės rodomos Home Assistant.",
+        "data": {
+          "expose_price_arrays": "Rodyti kainų masyvus kaip jutiklio atributus (didina DB dydį)",
+          "high_precision": "Didelio tikslumo režimas",
+          "show_rolling_averages": "Rodyti ateinančių 30 min, 1 val. ir 2 val. vidutines kainas",
+          "generation_enabled": "Įjungti gamybos ir eksporto funkcijas"
+        },
+        "data_description": {
+          "expose_price_arrays": "Įrašo today_prices ir tomorrow_prices masyvus į spot_price jutiklio atributus, kurie vėliau saugomi duomenų bazėje. Palengvina skydelio grafikų kūrimą, tačiau jiems rodyti nebūtinas ir sukuria nereikalingą DB apkrovą.",
+          "high_precision": "Kai įjungta, kainų jutikliai rodo daugiau skaitmenų po kablelio. Atributai ir skaičiavimai visada naudoja visą tikslumą.",
+          "show_rolling_averages": "Prideda jutiklius vidutinei kainai per ateinančias 30, 60 ir 120 minučių.",
+          "generation_enabled": "Įjungia eksporto kainos, akumuliatoriaus ir arbitražo jutiklius bei paslaugas. Gamybos nustatymus konfigūruokite meniu Gamyba ir eksportas."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nepavyko prisijungti. Patikrinkite tinklą.",
+      "invalid_region": "Pasirinktas regionas negrąžino duomenų iš API.",
+      "tier_hour_range": "Pabaigos laikas turi būti vėlesnis už pradžios laiką.",
+      "tier_no_months": "Pasirinkite bent vieną mėnesį.",
+      "tier_no_weekdays": "Pasirinkite bent vieną savaitės dieną.",
+      "period_invalid_dates": "Pabaigos data turi sutapti su pradžios data arba būti vėlesnė.",
+      "period_overlap": "Šis laikotarpis persidengia su esamu fiksuotos kainos laikotarpiu.",
+      "period_price_zero": "Kaina turi būti didesnė už nulį."
+    },
+    "abort": {
+      "already_configured": "Šis egzempliorius jau sukonfigūruotas."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Kilowahti parinktys",
+        "description": "Pasirinkite, kuriuos nustatymus redaguoti.",
+        "menu_options": {
+          "basic": "Pagrindiniai nustatymai ir PVM",
+          "transfer_groups": "Persiuntimo kainos",
+          "thresholds": "Slenksčiai ir valdymas",
+          "score_profiles": "Taškų profiliai",
+          "advanced_options": "Išplėstinės parinktys",
+          "fixed_periods": "Fiksuotos kainos laikotarpiai / fiksuotos sutartys",
+          "generation_settings": "Gamyba ir eksportas"
+        }
+      },
+      "basic": {
+        "title": "Pagrindiniai nustatymai",
+        "description": "Įspėjimas: pakeitus rodymo vienetą po jutiklių sukūrimo, istorijos grafikuose atsiras vienetų neatitikimų. Gali tekti rankiniu būdu išvalyti jutiklių istoriją arba pakoreguoti skydelio korteles.",
+        "data": {
+          "name": "Pavadinimas",
+          "region": "Kainų zona",
+          "price_source": "Kainų duomenų šaltinis",
+          "price_resolution": "Kainų raiška",
+          "display_unit": "Rodymo vienetas",
+          "vat_rate_pct": "PVM tarifas (%)",
+          "electricity_tax": "Elektros akcizas (c/kWh)",
+          "spot_commission": "Biržos kainos antkainis (c/kWh)",
+          "monthly_fixed_cost": "Elektros sutarties fiksuotas mokestis (€/mėn.)"
+        }
+      },
+      "transfer_groups": {
+        "title": "Persiuntimo kainos",
+        "data": {
+          "action": "Veiksmas"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Pridėti grupę",
+        "data": {
+          "label": "Grupės pavadinimas",
+          "monthly_fixed_cost": "Mėnesinis fiksuotas mokestis (€/mėn.)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Prijungimo mokestis + sutarties bazinis mokestis. Bruto suma (su PVM)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Redaguoti grupės nustatymus",
+        "data": {
+          "label": "Grupės pavadinimas",
+          "monthly_fixed_cost": "Mėnesinis fiksuotas mokestis (€/mėn.)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Prijungimo mokestis + sutarties bazinis mokestis. Bruto suma (su PVM)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Redaguoti grupę",
+        "description": "{group_label} — pridėkite arba pašalinkite pakopas, arba nustatykite šią grupę kaip aktyvią.",
+        "data": {
+          "action": "Veiksmas"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Pridėti persiuntimo kainą",
+        "data": {
+          "label": "Pakopos pavadinimas (pvz., Žiemos darbo diena)",
+          "price": "Kaina (c/kWh)",
+          "months": "Aktyvūs mėnesiai",
+          "weekdays": "Aktyvios savaitės dienos",
+          "hour_start": "Pradžios laikas (imtinai)",
+          "hour_end": "Pabaigos laikas (neimtinai)",
+          "priority": "Prioritetas (mažesnis = pirmas)"
+        }
+      },
+      "thresholds": {
+        "title": "Slenksčiai ir valdymas",
+        "data": {
+          "max_price": "Valdymo maksimali kaina (c/kWh)",
+          "price_threshold_includes_transfer": "Maksimali kaina apima persiuntimą",
+          "max_rank": "Valdymo maksimalus rangas",
+          "forward_avg_hours": "Ateities vidurkio lango trukmė (valandos)",
+          "control_factor_function": "Valdymo koeficiento kreivė",
+          "control_factor_scaling": "Valdymo koeficiento mastelis (1–3)"
+        }
+      },
+      "score_profiles": {
+        "title": "Taškų profiliai",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Išplėstinės parinktys",
+        "data": {
+          "expose_price_arrays": "Rodyti kainų masyvus kaip jutiklio atributus (didina DB dydį)",
+          "high_precision": "Didelio tikslumo režimas",
+          "show_rolling_averages": "Rodyti ateinančių 30 min, 1 val. ir 2 val. vidutines kainas",
+          "generation_enabled": "Įjungti gamybos ir eksporto funkcijas"
+        },
+        "data_description": {
+          "show_rolling_averages": "Prideda jutiklius vidutinei kainai per ateinančias 30, 60 ir 120 minučių.",
+          "generation_enabled": "Įjungia eksporto kainos, akumuliatoriaus ir arbitražo jutiklius bei paslaugas. Gamybos nustatymus konfigūruokite meniu Gamyba ir eksportas."
+        }
+      },
+      "add_score_profile": {
+        "title": "Pridėti taškų profilį",
+        "data": {
+          "label": "Profilio pavadinimas",
+          "meters": "Energijos skaitiklių esybės",
+          "formula": "Taškų formulė"
+        },
+        "data_description": {
+          "formula": "Numatytoji formulė: 50 = gerai, 37,5 esant tolygiam pasiskirstymui (baudžia už vidutinį vartojimą). Neapdorota formulė: 50 esant tolygiam pasiskirstymui (neutralus atskaitos taškas)."
+        }
+      },
+      "edit_score_profile": {
+        "title": "Redaguoti taškų profilį: {profile_label}",
+        "description": "Sukonfigūruota skaitiklių: {meter_count}.",
+        "data": {
+          "action": "Veiksmas"
+        }
+      },
+      "add_profile_meters": {
+        "title": "Pridėti skaitiklį(-ius)",
+        "data": {
+          "meters": "Energijos skaitiklių esybės"
+        }
+      },
+      "edit_profile_formula": {
+        "title": "Taškų formulė: {profile_label}",
+        "data": {
+          "formula": "Taškų formulė"
+        },
+        "data_description": {
+          "formula": "Numatytoji formulė: 50 = gerai, 37,5 esant tolygiam pasiskirstymui (baudžia už vidutinį vartojimą). Neapdorota formulė: 50 esant tolygiam pasiskirstymui (neutralus atskaitos taškas)."
+        }
+      },
+      "fixed_periods": {
+        "title": "Fiksuotos kainos laikotarpiai / fiksuotos sutartys",
+        "description": "Tvarkykite fiksuotos kainos laikotarpius arba fiksuotas sutartis. Kai laikotarpis aktyvus, effective_price rodo nustatytą fiksuotą kainą vietoj biržos kainos.",
+        "data": {
+          "action": "Veiksmas"
+        }
+      },
+      "generation_settings": {
+        "title": "Gamybos ir eksporto nustatymai",
+        "description": "Sukonfigūruokite eksporto kainas ir akumuliatoriaus nustatymus. Nustatykite akumuliatoriaus talpą į 0, kad išjungtumėte akumuliatoriaus jutiklius.",
+        "data": {
+          "export_pricing_mode": "Eksporto kainodaros režimas",
+          "export_commission": "Eksporto marža (c/kWh, atimama iš biržos kainos)",
+          "fixed_export_rate": "Fiksuota eksporto kaina (c/kWh)",
+          "export_price_threshold": "Eksporto kainos slenkstis (c/kWh)",
+          "solar_window_start": "Saulės lango pradžios valanda",
+          "solar_window_end": "Saulės lango pabaigos valanda",
+          "battery_capacity_kwh": "Akumuliatoriaus talpa (kWh, 0 = išjungta)",
+          "battery_charge_power_kw": "Akumuliatoriaus įkrovimo galia (kW)"
+        },
+        "data_description": {
+          "export_commission": "Tik su birža susietame režime. Pardavėjo marža, atimama iš biržos API kainos (be PVM). Smulkieji gamintojai už eksportą PVM paprastai neima.",
+          "fixed_export_rate": "Tik fiksuotame režime. Fiksuota kaina, kurią gaunate už kiekvieną eksportuotą kWh.",
+          "solar_window_start": "Jūsų tipinio saulės gamybos lango pradžios valanda (naudoja next_solar_window_avg jutiklis).",
+          "solar_window_end": "Jūsų tipinio saulės gamybos lango pabaigos valanda (neimtinai)."
+        }
+      },
+      "add_fixed_period": {
+        "title": "Pridėti fiksuotos kainos laikotarpį / fiksuotą sutartį",
+        "data": {
+          "label": "Laikotarpio pavadinimas",
+          "start_date": "Pradžios data",
+          "end_date": "Pabaigos data (imtinai)",
+          "price": "Kaina (c/kWh, su PVM)"
+        },
+        "data_description": {
+          "price": "Įveskite kainą su PVM. Ši kaina naudojama be pakeitimų — PVM nepridedamas."
+        }
+      }
+    },
+    "error": {
+      "tier_hour_range": "Pabaigos laikas turi būti vėlesnis už pradžios laiką.",
+      "tier_no_months": "Pasirinkite bent vieną mėnesį.",
+      "tier_no_weekdays": "Pasirinkite bent vieną savaitės dieną.",
+      "period_invalid_dates": "Pabaigos data turi sutapti su pradžios data arba būti vėlesnė.",
+      "period_overlap": "Šis laikotarpis persidengia su esamu fiksuotos kainos laikotarpiu.",
+      "period_price_zero": "Kaina turi būti didesnė už nulį."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "spot_price": {
+        "name": "Biržos kaina"
+      },
+      "effective_price": {
+        "name": "Aktyvi kaina"
+      },
+      "transfer_price": {
+        "name": "Persiuntimo kaina"
+      },
+      "total_price": {
+        "name": "Bendra kaina"
+      },
+      "price_rank": {
+        "name": "Rangas"
+      },
+      "total_price_rank": {
+        "name": "Bendros kainos rangas"
+      },
+      "total_price_quartile": {
+        "name": "Bendros kainos kvartilis"
+      },
+      "today_spot_avg": {
+        "name": "Vidutinė biržos kaina šiandien"
+      },
+      "today_spot_min": {
+        "name": "Mažiausia biržos kaina šiandien"
+      },
+      "today_spot_max": {
+        "name": "Didžiausia biržos kaina šiandien"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Vidutinė biržos kaina rytoj"
+      },
+      "tomorrow_spot_min": {
+        "name": "Mažiausia biržos kaina rytoj"
+      },
+      "tomorrow_spot_max": {
+        "name": "Didžiausia biržos kaina rytoj"
+      },
+      "today_total_avg": {
+        "name": "Vidutinė bendra kaina šiandien"
+      },
+      "today_total_min": {
+        "name": "Mažiausia bendra kaina šiandien"
+      },
+      "today_total_max": {
+        "name": "Didžiausia bendra kaina šiandien"
+      },
+      "tomorrow_total_avg": {
+        "name": "Vidutinė bendra kaina rytoj"
+      },
+      "tomorrow_total_min": {
+        "name": "Mažiausia bendra kaina rytoj"
+      },
+      "tomorrow_total_max": {
+        "name": "Didžiausia bendra kaina rytoj"
+      },
+      "today_avg": {
+        "name": "Vidurkis šiandien"
+      },
+      "today_min": {
+        "name": "Minimumas šiandien"
+      },
+      "today_max": {
+        "name": "Maksimumas šiandien"
+      },
+      "tomorrow_avg": {
+        "name": "Vidurkis rytoj"
+      },
+      "tomorrow_min": {
+        "name": "Minimumas rytoj"
+      },
+      "tomorrow_max": {
+        "name": "Maksimumas rytoj"
+      },
+      "next_hours_avg": {
+        "name": "Ateinančių valandų vidurkis"
+      },
+      "spot_next_hours_avg": {
+        "name": "Ateinančių valandų biržos vidurkis"
+      },
+      "control_factor_price": {
+        "name": "Kainos valdymo koeficientas"
+      },
+      "control_factor_price_bipolar": {
+        "name": "Kainos valdymo koeficientas (bipolinis)"
+      },
+      "control_factor_transfer": {
+        "name": "Persiuntimo valdymo koeficientas"
+      },
+      "price_quartile": {
+        "name": "Kainos kvartilis"
+      },
+      "setting_max_price": {
+        "name": "Kainos slenkstis"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Kainos slenkstis apima persiuntimą"
+      },
+      "setting_control_factor_function": {
+        "name": "Valdymo koeficiento forma"
+      },
+      "setting_acceptable_rank": {
+        "name": "Priimtinas rangas"
+      },
+      "setting_forward_window": {
+        "name": "Ateities langas"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktyvi persiuntimo kainų grupė"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktyvi persiuntimo kainos pakopa"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktyvus fiksuotos kainos laikotarpis"
+      },
+      "export_price": {
+        "name": "Eksporto kaina"
+      },
+      "export_today_avg": {
+        "name": "Vidutinė eksporto kaina šiandien"
+      },
+      "export_today_min": {
+        "name": "Mažiausia eksporto kaina šiandien"
+      },
+      "export_today_max": {
+        "name": "Didžiausia eksporto kaina šiandien"
+      },
+      "export_tomorrow_avg": {
+        "name": "Vidutinė eksporto kaina rytoj"
+      },
+      "export_tomorrow_min": {
+        "name": "Mažiausia eksporto kaina rytoj"
+      },
+      "export_tomorrow_max": {
+        "name": "Didžiausia eksporto kaina rytoj"
+      },
+      "import_export_spread": {
+        "name": "Importo ir eksporto skirtumas"
+      },
+      "self_consumption_value": {
+        "name": "Suvartojimo savo reikmėms vertė"
+      },
+      "avg_price_30min": {
+        "name": "Vidutinė kaina 30 min"
+      },
+      "avg_price_60min": {
+        "name": "Vidutinė kaina 60 min"
+      },
+      "avg_price_120min": {
+        "name": "Vidutinė kaina 120 min"
+      },
+      "next_solar_window_avg": {
+        "name": "Kito saulės lango vidurkis"
+      },
+      "arbitrage_spread_today": {
+        "name": "Arbitražo skirtumas šiandien"
+      },
+      "charge_opportunity_factor": {
+        "name": "Įkrovimo galimybės koeficientas"
+      },
+      "optimal_charge_window_start": {
+        "name": "Optimalaus įkrovimo lango pradžia"
+      },
+      "optimal_charge_window_end": {
+        "name": "Optimalaus įkrovimo lango pabaiga"
+      },
+      "battery_charge_recommendation": {
+        "name": "Akumuliatoriaus įkrovimo rekomendacija",
+        "state": {
+          "charge_from_grid": "Įkrauti iš tinklo",
+          "discharge": "Iškrauti",
+          "hold": "Laikyti"
+        }
+      },
+      "monthly_fixed_cost_today": {
+        "name": "Mėnesinis fiksuotas mokestis šiandien"
+      }
+    },
+    "number": {
+      "price_threshold": {
+        "name": "Kainos slenkstis"
+      },
+      "rank_threshold": {
+        "name": "Rango slenkstis"
+      }
+    },
+    "binary_sensor": {
+      "price_acceptable": {
+        "name": "Kaina priimtina"
+      },
+      "rank_acceptable": {
+        "name": "Rangas priimtinas"
+      },
+      "price_or_rank_acceptable": {
+        "name": "Kaina arba rangas priimtinas"
+      },
+      "fixed_period_active": {
+        "name": "Fiksuotos kainos laikotarpis aktyvus"
+      },
+      "tomorrow_available": {
+        "name": "Rytojaus kainos prieinamos"
+      },
+      "export_price_acceptable": {
+        "name": "Eksporto kaina priimtina"
+      },
+      "charge_from_grid_recommended": {
+        "name": "Rekomenduojama įkrauti iš tinklo"
+      },
+      "discharge_to_grid_recommended": {
+        "name": "Rekomenduojama iškrauti į tinklą"
+      }
+    }
+  },
+  "triggers": {
+    "price_became_acceptable": {
+      "name": "Kaina tapo priimtina",
+      "description": "Suveikia, kai dabartinė elektros kaina nukrenta iki priimtino lygio (lygi kainos slenksčiui arba mažesnė)."
+    },
+    "price_no_longer_acceptable": {
+      "name": "Kaina nebepriimtina",
+      "description": "Suveikia, kai dabartinė elektros kaina pakyla virš kainos slenksčio."
+    },
+    "rank_became_acceptable": {
+      "name": "Rangas tapo priimtinas",
+      "description": "Suveikia, kai dabartinis kainos rangas nukrenta iki priimtino lygio (lygus rango slenksčiui arba mažesnis)."
+    },
+    "rank_no_longer_acceptable": {
+      "name": "Rangas nebepriimtinas",
+      "description": "Suveikia, kai dabartinis kainos rangas pakyla virš rango slenksčio."
+    },
+    "became_cheapest_slot": {
+      "name": "Tapo pigiausiu intervalu",
+      "description": "Suveikia, kai dabartinis laiko intervalas tampa pigiausiu dienos intervalu."
+    },
+    "fixed_period_started": {
+      "name": "Fiksuotos kainos laikotarpis prasidėjo",
+      "description": "Suveikia, kai fiksuotos kainos laikotarpis tampa aktyvus."
+    },
+    "fixed_period_ended": {
+      "name": "Fiksuotos kainos laikotarpis baigėsi",
+      "description": "Suveikia, kai fiksuotos kainos laikotarpis nustoja būti aktyvus."
+    },
+    "tomorrow_prices_available": {
+      "name": "Rytojaus kainos prieinamos",
+      "description": "Suveikia, kai tampa prieinamos rytojaus elektros kainos."
+    }
+  },
+  "conditions": {
+    "price_is_acceptable": {
+      "name": "Kaina yra priimtina",
+      "description": "Tenkinama, kai dabartinė elektros kaina yra lygi kainos slenksčiui arba mažesnė."
+    },
+    "rank_is_acceptable": {
+      "name": "Rangas yra priimtinas",
+      "description": "Tenkinama, kai dabartinis kainos rangas yra lygus rango slenksčiui arba mažesnis."
+    },
+    "price_is_lowest_today": {
+      "name": "Kaina yra mažiausia šiandien",
+      "description": "Tenkinama, kai dabartinis laiko intervalas yra pigiausias dienos intervalas."
+    },
+    "fixed_period_active": {
+      "name": "Fiksuotos kainos laikotarpis aktyvus",
+      "description": "Tenkinama, kai šiuo metu aktyvus fiksuotos kainos laikotarpis."
+    },
+    "tomorrow_available": {
+      "name": "Rytojaus kainos prieinamos",
+      "description": "Tenkinama, kai rytojaus elektros kainos yra prieinamos."
+    }
+  }
+}
