@@ -99,8 +99,7 @@
       },
       "score_profiles": {
         "title": "Optimizavimo taškai",
-        "description": "Taškai matuoja, kaip gerai jūsų suvartojimas perkeliamas į pigias valandas. Nuolatinis profilis 'Total' apima visą suvartojimą — po sąrankos susiekite su juo skaitiklį (ar kelis) skiltyje Parinktys.",
-        "data": {}
+        "description": "Taškai matuoja, kaip gerai jūsų suvartojimas perkeliamas į pigias valandas. Nuolatinis profilis 'Total' apima visą suvartojimą — po sąrankos susiekite su juo skaitiklį (ar kelis) skiltyje Parinktys."
       },
       "advanced_options": {
         "title": "Išplėstinės parinktys",
@@ -219,8 +218,7 @@
         }
       },
       "score_profiles": {
-        "title": "Taškų profiliai",
-        "data": {}
+        "title": "Taškų profiliai"
       },
       "advanced_options": {
         "title": "Išplėstinės parinktys",
