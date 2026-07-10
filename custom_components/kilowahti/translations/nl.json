@@ -1,0 +1,596 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kilowahti — Basisinstellingen",
+        "description": "De regio bepaalt welke Noordse/Baltische spotprijszone wordt gebruikt.",
+        "data": {
+          "name": "Naam",
+          "region": "Prijszone",
+          "price_source": "Prijsgegevensbron",
+          "price_resolution": "Prijsresolutie",
+          "display_unit": "Weergave-eenheid"
+        },
+        "data_description": {
+          "name": "Wordt gebruikt in entiteitsnamen, bijv. 'Thuis'",
+          "price_source": "Kilowahti CDN is Kilowahti's eigen first-party prijsdienst (cdn.kilowahti.fi); spot-hinta.fi is een externe API.",
+          "price_resolution": "15 minuten (96 blokken/dag) of 1 uur (24 blokken/dag). Kies passend bij het meetinterval van je contract.",
+          "display_unit": "Sensoreenheid"
+        }
+      },
+      "vat_and_tax": {
+        "title": "Btw & energiebelasting",
+        "description": "Vooraf ingevuld op basis van je regio. Pas aan indien nodig. Alle prijzen (nettariefniveaus, vasteprijsperiodes) worden incl. btw ingevoerd.",
+        "data": {
+          "vat_rate_pct": "Btw-tarief (%)",
+          "electricity_tax": "Energiebelasting (c/kWh)",
+          "spot_commission": "Opslag op spotprijs (c/kWh)",
+          "monthly_fixed_cost": "Vaste kosten energiecontract (€/maand)"
+        },
+        "data_description": {
+          "electricity_tax": "Vaste energiebelasting per kWh, bovenop de spot-/vaste prijs.",
+          "spot_commission": "Opslag van de leverancier per kWh bovenop de spotprijs. Voer bruto in (incl. btw). Laat op 0 staan indien niet van toepassing.",
+          "monthly_fixed_cost": "Vaste maandelijkse vergoeding uit je energiecontract (bijv. vastrecht). Brutobedrag (incl. btw). Laat op 0 staan indien niet van toepassing."
+        }
+      },
+      "transfer_groups": {
+        "title": "Nettarieven",
+        "description": "Organiseer nettariefniveaus in benoemde groepen (bijv. Dagnachttarief, Seizoensgebonden, Algemeen). Er is altijd maar één groep actief. Je kunt deze stap overslaan en groepen later configureren via Opties.",
+        "data": {
+          "action": "Actie"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Groep toevoegen",
+        "data": {
+          "label": "Groepsnaam",
+          "monthly_fixed_cost": "Maandelijkse vaste kosten (€/maand)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Netaansluiting + vastrecht van het contract. Brutobedrag (incl. btw)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Groepsinstellingen bewerken",
+        "data": {
+          "label": "Groepsnaam",
+          "monthly_fixed_cost": "Maandelijkse vaste kosten (€/maand)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Netaansluiting + vastrecht van het contract. Brutobedrag (incl. btw)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Groep bewerken",
+        "description": "{group_label} — Voeg niveaus toe of verwijder ze, of stel deze groep in als actief.",
+        "data": {
+          "action": "Actie"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Nettarief toevoegen",
+        "description": "Wordt geëvalueerd op prioriteitsvolgorde; de eerste match geldt. Voeg een basistarief toe als laagste prioriteit zonder tijdsbeperkingen.",
+        "data": {
+          "label": "Niveaunaam",
+          "price": "Prijs (c/kWh)",
+          "months": "Actieve maanden",
+          "weekdays": "Actieve weekdagen",
+          "hour_start": "Starttijd (inclusief)",
+          "hour_end": "Eindtijd (exclusief)",
+          "priority": "Prioriteit (lager = eerst)"
+        }
+      },
+      "thresholds": {
+        "title": "Drempels & sturing",
+        "data": {
+          "max_price": "Maximale stuurprijs (c/kWh)",
+          "price_threshold_includes_transfer": "Maximumprijs inclusief nettarief",
+          "max_rank": "Maximale stuurrang",
+          "forward_avg_hours": "Lengte vooruitblik-gemiddeldevenster (uren)",
+          "control_factor_function": "Stuurfactorcurve",
+          "control_factor_scaling": "Stuurfactorschaling (1–3)"
+        },
+        "data_description": {
+          "max_price": "Als de prijs van het huidige tijdsblok op of onder deze waarde ligt, gaat de price_acceptable-sensor aan.",
+          "price_threshold_includes_transfer": "AAN: vergelijk totaalprijs (spot + nettarief). UIT: vergelijk alleen energieprijs (spot).",
+          "max_rank": "Als de rang van het huidige tijdsblok op of onder deze waarde ligt, gaat de rank_acceptable-sensor aan.",
+          "forward_avg_hours": "Aantal uren vooruit waarover het gemiddelde wordt berekend voor de next_hours_avg-sensor.",
+          "control_factor_function": "Vorm van de stuurfactorcurve (0–1).",
+          "control_factor_scaling": "Exponent toegepast op de stuurfactor (versterkt uitersten)."
+        }
+      },
+      "score_profiles": {
+        "title": "Optimalisatiepunten",
+        "description": "Punten meten hoe goed je verbruik naar goedkope uren wordt verschoven. Het permanente profiel 'Total' dekt al het verbruik — koppel er na de installatie een meter (of meerdere) aan via Opties.",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Geavanceerde opties",
+        "description": "Configureer hoe sensorwaarden in Home Assistant worden weergegeven.",
+        "data": {
+          "expose_price_arrays": "Prijsarrays als sensorattributen tonen (vergroot de database)",
+          "high_precision": "Hogeprecisiemodus",
+          "show_rolling_averages": "Gemiddelde prijzen van komende 30 min, 1 u en 2 u tonen",
+          "generation_enabled": "Opwekkings- en terugleverfuncties inschakelen"
+        },
+        "data_description": {
+          "expose_price_arrays": "Schrijft de arrays today_prices en tomorrow_prices naar de attributen van de spot_price-sensor, die vervolgens in de database worden opgeslagen. Maakt het bouwen van dashboardgrafieken makkelijker, maar is voor de weergave niet nodig en zorgt voor onnodige databasebelasting.",
+          "high_precision": "Indien ingeschakeld tonen prijssensoren meer decimalen. Attributen en berekeningen gebruiken altijd de volledige precisie.",
+          "show_rolling_averages": "Voegt sensoren toe voor de gemiddelde prijs over de komende 30, 60 en 120 minuten.",
+          "generation_enabled": "Schakelt sensoren en diensten in voor terugleverprijs, batterij en arbitrage. Configureer de opwekkingsinstellingen in het menu Opwekking & teruglevering."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbinding mislukt. Controleer je netwerk.",
+      "invalid_region": "De geselecteerde regio leverde geen gegevens op via de API.",
+      "tier_hour_range": "De eindtijd moet later zijn dan de starttijd.",
+      "tier_no_months": "Selecteer ten minste één maand.",
+      "tier_no_weekdays": "Selecteer ten minste één weekdag.",
+      "period_invalid_dates": "De einddatum moet op of na de startdatum liggen.",
+      "period_overlap": "Deze periode overlapt met een bestaande vasteprijsperiode.",
+      "period_price_zero": "De prijs moet groter zijn dan nul."
+    },
+    "abort": {
+      "already_configured": "Deze instantie is al geconfigureerd."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Kilowahti-opties",
+        "description": "Kies welke instellingen je wilt bewerken.",
+        "menu_options": {
+          "basic": "Basisinstellingen & btw",
+          "transfer_groups": "Nettarieven",
+          "thresholds": "Drempels & sturing",
+          "score_profiles": "Puntenprofielen",
+          "advanced_options": "Geavanceerde opties",
+          "fixed_periods": "Vasteprijsperiodes / vaste contracten",
+          "generation_settings": "Opwekking & teruglevering"
+        }
+      },
+      "basic": {
+        "title": "Basisinstellingen",
+        "description": "Waarschuwing: het wijzigen van de weergave-eenheid nadat de sensoren zijn aangemaakt, veroorzaakt eenheidsverschillen in historische grafieken. Mogelijk moet je de sensorgeschiedenis wissen of dashboardkaarten handmatig aanpassen.",
+        "data": {
+          "name": "Naam",
+          "region": "Prijszone",
+          "price_source": "Prijsgegevensbron",
+          "price_resolution": "Prijsresolutie",
+          "display_unit": "Weergave-eenheid",
+          "vat_rate_pct": "Btw-tarief (%)",
+          "electricity_tax": "Energiebelasting (c/kWh)",
+          "spot_commission": "Opslag op spotprijs (c/kWh)",
+          "monthly_fixed_cost": "Vaste kosten energiecontract (€/maand)"
+        }
+      },
+      "transfer_groups": {
+        "title": "Nettarieven",
+        "data": {
+          "action": "Actie"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Groep toevoegen",
+        "data": {
+          "label": "Groepsnaam",
+          "monthly_fixed_cost": "Maandelijkse vaste kosten (€/maand)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Netaansluiting + vastrecht van het contract. Brutobedrag (incl. btw)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Groepsinstellingen bewerken",
+        "data": {
+          "label": "Groepsnaam",
+          "monthly_fixed_cost": "Maandelijkse vaste kosten (€/maand)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Netaansluiting + vastrecht van het contract. Brutobedrag (incl. btw)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Groep bewerken",
+        "description": "{group_label} — Voeg niveaus toe of verwijder ze, of stel deze groep in als actief.",
+        "data": {
+          "action": "Actie"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Nettarief toevoegen",
+        "data": {
+          "label": "Niveaunaam (bijv. Winterwerkdag)",
+          "price": "Prijs (c/kWh)",
+          "months": "Actieve maanden",
+          "weekdays": "Actieve weekdagen",
+          "hour_start": "Starttijd (inclusief)",
+          "hour_end": "Eindtijd (exclusief)",
+          "priority": "Prioriteit (lager = eerst)"
+        }
+      },
+      "thresholds": {
+        "title": "Drempels & sturing",
+        "data": {
+          "max_price": "Maximale stuurprijs (c/kWh)",
+          "price_threshold_includes_transfer": "Maximumprijs inclusief nettarief",
+          "max_rank": "Maximale stuurrang",
+          "forward_avg_hours": "Lengte vooruitblik-gemiddeldevenster (uren)",
+          "control_factor_function": "Stuurfactorcurve",
+          "control_factor_scaling": "Stuurfactorschaling (1–3)"
+        }
+      },
+      "score_profiles": {
+        "title": "Puntenprofielen",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Geavanceerde opties",
+        "data": {
+          "expose_price_arrays": "Prijsarrays als sensorattributen tonen (vergroot de database)",
+          "high_precision": "Hogeprecisiemodus",
+          "show_rolling_averages": "Gemiddelde prijzen van komende 30 min, 1 u en 2 u tonen",
+          "generation_enabled": "Opwekkings- en terugleverfuncties inschakelen"
+        },
+        "data_description": {
+          "show_rolling_averages": "Voegt sensoren toe voor de gemiddelde prijs over de komende 30, 60 en 120 minuten.",
+          "generation_enabled": "Schakelt sensoren en diensten in voor terugleverprijs, batterij en arbitrage. Configureer de opwekkingsinstellingen in het menu Opwekking & teruglevering."
+        }
+      },
+      "add_score_profile": {
+        "title": "Puntenprofiel toevoegen",
+        "data": {
+          "label": "Profielnaam",
+          "meters": "Energiemeter-entiteiten",
+          "formula": "Puntenformule"
+        },
+        "data_description": {
+          "formula": "Standaardformule: 50 = goed, 37,5 bij gelijkmatige verdeling (bestraft gemiddeld gebruik). Ruwe formule: 50 bij gelijkmatige verdeling (neutrale basislijn)."
+        }
+      },
+      "edit_score_profile": {
+        "title": "Puntenprofiel bewerken: {profile_label}",
+        "description": "{meter_count} meter(s) geconfigureerd.",
+        "data": {
+          "action": "Actie"
+        }
+      },
+      "add_profile_meters": {
+        "title": "Meter(s) toevoegen",
+        "data": {
+          "meters": "Energiemeter-entiteiten"
+        }
+      },
+      "edit_profile_formula": {
+        "title": "Puntenformule: {profile_label}",
+        "data": {
+          "formula": "Puntenformule"
+        },
+        "data_description": {
+          "formula": "Standaardformule: 50 = goed, 37,5 bij gelijkmatige verdeling (bestraft gemiddeld gebruik). Ruwe formule: 50 bij gelijkmatige verdeling (neutrale basislijn)."
+        }
+      },
+      "fixed_periods": {
+        "title": "Vasteprijsperiodes / vaste contracten",
+        "description": "Beheer vasteprijsperiodes of vaste contracten. Als een periode actief is, toont effective_price de ingestelde vaste prijs in plaats van de spotprijs.",
+        "data": {
+          "action": "Actie"
+        }
+      },
+      "generation_settings": {
+        "title": "Instellingen voor opwekking & teruglevering",
+        "description": "Configureer terugleverprijzen en batterij-instellingen. Zet de batterijcapaciteit op 0 om batterijsensoren uit te schakelen.",
+        "data": {
+          "export_pricing_mode": "Terugleverprijsmodus",
+          "export_commission": "Terugleveringsmarge (c/kWh, afgetrokken van spot)",
+          "fixed_export_rate": "Vast terugleveringstarief (c/kWh)",
+          "export_price_threshold": "Terugleverprijsdrempel (c/kWh)",
+          "solar_window_start": "Startuur zonnevenster",
+          "solar_window_end": "Einduur zonnevenster",
+          "battery_capacity_kwh": "Batterijcapaciteit (kWh, 0 = uitgeschakeld)",
+          "battery_charge_power_kw": "Laadvermogen batterij (kW)"
+        },
+        "data_description": {
+          "export_commission": "Alleen in spotgekoppelde modus. Marge van de afnemer die van de spot-API-prijs wordt afgetrokken (excl. btw). Kleine producenten rekenen doorgaans geen btw over teruglevering.",
+          "fixed_export_rate": "Alleen in vaste modus. Vast tarief dat je per teruggeleverde kWh ontvangt.",
+          "solar_window_start": "Startuur van je typische zonneproductievenster (gebruikt door de next_solar_window_avg-sensor).",
+          "solar_window_end": "Einduur (exclusief) van je typische zonneproductievenster."
+        }
+      },
+      "add_fixed_period": {
+        "title": "Vasteprijsperiode / vast contract toevoegen",
+        "data": {
+          "label": "Periodenaam",
+          "start_date": "Startdatum",
+          "end_date": "Einddatum (inclusief)",
+          "price": "Prijs (c/kWh, incl. btw)"
+        },
+        "data_description": {
+          "price": "Voer de prijs incl. btw in. Deze prijs wordt ongewijzigd gebruikt — er wordt geen btw toegevoegd."
+        }
+      }
+    },
+    "error": {
+      "tier_hour_range": "De eindtijd moet later zijn dan de starttijd.",
+      "tier_no_months": "Selecteer ten minste één maand.",
+      "tier_no_weekdays": "Selecteer ten minste één weekdag.",
+      "period_invalid_dates": "De einddatum moet op of na de startdatum liggen.",
+      "period_overlap": "Deze periode overlapt met een bestaande vasteprijsperiode.",
+      "period_price_zero": "De prijs moet groter zijn dan nul."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "spot_price": {
+        "name": "Spotprijs"
+      },
+      "effective_price": {
+        "name": "Actieve prijs"
+      },
+      "transfer_price": {
+        "name": "Nettarief"
+      },
+      "total_price": {
+        "name": "Totaalprijs"
+      },
+      "price_rank": {
+        "name": "Rang"
+      },
+      "total_price_rank": {
+        "name": "Totaalprijsrang"
+      },
+      "total_price_quartile": {
+        "name": "Totaalprijskwartiel"
+      },
+      "today_spot_avg": {
+        "name": "Gemiddelde spotprijs vandaag"
+      },
+      "today_spot_min": {
+        "name": "Laagste spotprijs vandaag"
+      },
+      "today_spot_max": {
+        "name": "Hoogste spotprijs vandaag"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Gemiddelde spotprijs morgen"
+      },
+      "tomorrow_spot_min": {
+        "name": "Laagste spotprijs morgen"
+      },
+      "tomorrow_spot_max": {
+        "name": "Hoogste spotprijs morgen"
+      },
+      "today_total_avg": {
+        "name": "Gemiddelde totaalprijs vandaag"
+      },
+      "today_total_min": {
+        "name": "Laagste totaalprijs vandaag"
+      },
+      "today_total_max": {
+        "name": "Hoogste totaalprijs vandaag"
+      },
+      "tomorrow_total_avg": {
+        "name": "Gemiddelde totaalprijs morgen"
+      },
+      "tomorrow_total_min": {
+        "name": "Laagste totaalprijs morgen"
+      },
+      "tomorrow_total_max": {
+        "name": "Hoogste totaalprijs morgen"
+      },
+      "today_avg": {
+        "name": "Gemiddelde vandaag"
+      },
+      "today_min": {
+        "name": "Minimum vandaag"
+      },
+      "today_max": {
+        "name": "Maximum vandaag"
+      },
+      "tomorrow_avg": {
+        "name": "Gemiddelde morgen"
+      },
+      "tomorrow_min": {
+        "name": "Minimum morgen"
+      },
+      "tomorrow_max": {
+        "name": "Maximum morgen"
+      },
+      "next_hours_avg": {
+        "name": "Gemiddelde komende uren"
+      },
+      "spot_next_hours_avg": {
+        "name": "Spotgemiddelde komende uren"
+      },
+      "control_factor_price": {
+        "name": "Stuurfactor prijs"
+      },
+      "control_factor_price_bipolar": {
+        "name": "Stuurfactor prijs (bipolair)"
+      },
+      "control_factor_transfer": {
+        "name": "Stuurfactor nettarief"
+      },
+      "price_quartile": {
+        "name": "Prijskwartiel"
+      },
+      "setting_max_price": {
+        "name": "Prijsdrempel"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Prijsdrempel inclusief nettarief"
+      },
+      "setting_control_factor_function": {
+        "name": "Stuurfactorvorm"
+      },
+      "setting_acceptable_rank": {
+        "name": "Acceptabele rang"
+      },
+      "setting_forward_window": {
+        "name": "Vooruitblikvenster"
+      },
+      "setting_active_transfer_group": {
+        "name": "Actieve nettariefgroep"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Actief nettariefniveau"
+      },
+      "setting_active_fixed_period": {
+        "name": "Actieve vasteprijsperiode"
+      },
+      "export_price": {
+        "name": "Terugleverprijs"
+      },
+      "export_today_avg": {
+        "name": "Gemiddelde terugleverprijs vandaag"
+      },
+      "export_today_min": {
+        "name": "Laagste terugleverprijs vandaag"
+      },
+      "export_today_max": {
+        "name": "Hoogste terugleverprijs vandaag"
+      },
+      "export_tomorrow_avg": {
+        "name": "Gemiddelde terugleverprijs morgen"
+      },
+      "export_tomorrow_min": {
+        "name": "Laagste terugleverprijs morgen"
+      },
+      "export_tomorrow_max": {
+        "name": "Hoogste terugleverprijs morgen"
+      },
+      "import_export_spread": {
+        "name": "Afname-teruglevering-spreiding"
+      },
+      "self_consumption_value": {
+        "name": "Eigenverbruikswaarde"
+      },
+      "avg_price_30min": {
+        "name": "Gemiddelde prijs 30 min"
+      },
+      "avg_price_60min": {
+        "name": "Gemiddelde prijs 60 min"
+      },
+      "avg_price_120min": {
+        "name": "Gemiddelde prijs 120 min"
+      },
+      "next_solar_window_avg": {
+        "name": "Gemiddelde volgend zonnevenster"
+      },
+      "arbitrage_spread_today": {
+        "name": "Arbitragespreiding vandaag"
+      },
+      "charge_opportunity_factor": {
+        "name": "Laadkansfactor"
+      },
+      "optimal_charge_window_start": {
+        "name": "Start optimaal laadvenster"
+      },
+      "optimal_charge_window_end": {
+        "name": "Einde optimaal laadvenster"
+      },
+      "battery_charge_recommendation": {
+        "name": "Batterijlaadadvies",
+        "state": {
+          "charge_from_grid": "Laden van het net",
+          "discharge": "Ontladen",
+          "hold": "Vasthouden"
+        }
+      },
+      "monthly_fixed_cost_today": {
+        "name": "Maandelijkse vaste kosten vandaag"
+      }
+    },
+    "number": {
+      "price_threshold": {
+        "name": "Prijsdrempel"
+      },
+      "rank_threshold": {
+        "name": "Rangdrempel"
+      }
+    },
+    "binary_sensor": {
+      "price_acceptable": {
+        "name": "Prijs acceptabel"
+      },
+      "rank_acceptable": {
+        "name": "Rang acceptabel"
+      },
+      "price_or_rank_acceptable": {
+        "name": "Prijs of rang acceptabel"
+      },
+      "fixed_period_active": {
+        "name": "Vasteprijsperiode actief"
+      },
+      "tomorrow_available": {
+        "name": "Prijzen van morgen beschikbaar"
+      },
+      "export_price_acceptable": {
+        "name": "Terugleverprijs acceptabel"
+      },
+      "charge_from_grid_recommended": {
+        "name": "Laden van het net aanbevolen"
+      },
+      "discharge_to_grid_recommended": {
+        "name": "Ontladen naar het net aanbevolen"
+      }
+    }
+  },
+  "triggers": {
+    "price_became_acceptable": {
+      "name": "Prijs werd acceptabel",
+      "description": "Wordt geactiveerd wanneer de huidige stroomprijs daalt tot een acceptabel niveau (op of onder de prijsdrempel)."
+    },
+    "price_no_longer_acceptable": {
+      "name": "Prijs niet langer acceptabel",
+      "description": "Wordt geactiveerd wanneer de huidige stroomprijs boven de prijsdrempel stijgt."
+    },
+    "rank_became_acceptable": {
+      "name": "Rang werd acceptabel",
+      "description": "Wordt geactiveerd wanneer de huidige prijsrang daalt tot een acceptabel niveau (op of onder de rangdrempel)."
+    },
+    "rank_no_longer_acceptable": {
+      "name": "Rang niet langer acceptabel",
+      "description": "Wordt geactiveerd wanneer de huidige prijsrang boven de rangdrempel stijgt."
+    },
+    "became_cheapest_slot": {
+      "name": "Werd goedkoopste tijdsblok",
+      "description": "Wordt geactiveerd wanneer het huidige tijdsblok het goedkoopste van de dag wordt."
+    },
+    "fixed_period_started": {
+      "name": "Vasteprijsperiode gestart",
+      "description": "Wordt geactiveerd wanneer een vasteprijsperiode actief wordt."
+    },
+    "fixed_period_ended": {
+      "name": "Vasteprijsperiode beëindigd",
+      "description": "Wordt geactiveerd wanneer een vasteprijsperiode niet langer actief is."
+    },
+    "tomorrow_prices_available": {
+      "name": "Prijzen van morgen beschikbaar",
+      "description": "Wordt geactiveerd wanneer de stroomprijzen van morgen beschikbaar komen."
+    }
+  },
+  "conditions": {
+    "price_is_acceptable": {
+      "name": "Prijs is acceptabel",
+      "description": "Voldoet wanneer de huidige stroomprijs op of onder de prijsdrempel ligt."
+    },
+    "rank_is_acceptable": {
+      "name": "Rang is acceptabel",
+      "description": "Voldoet wanneer de huidige prijsrang op of onder de rangdrempel ligt."
+    },
+    "price_is_lowest_today": {
+      "name": "Prijs is de laagste van vandaag",
+      "description": "Voldoet wanneer het huidige tijdsblok het goedkoopste van de dag is."
+    },
+    "fixed_period_active": {
+      "name": "Vasteprijsperiode actief",
+      "description": "Voldoet wanneer er momenteel een vasteprijsperiode actief is."
+    },
+    "tomorrow_available": {
+      "name": "Prijzen van morgen beschikbaar",
+      "description": "Voldoet wanneer de stroomprijzen van morgen beschikbaar zijn."
+    }
+  }
+}
