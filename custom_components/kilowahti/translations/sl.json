@@ -1,0 +1,596 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kilowahti — Osnovne nastavitve",
+        "description": "Območje določa, katero nordijsko/baltsko območje borznih cen se uporablja.",
+        "data": {
+          "name": "Ime",
+          "region": "Cenovno območje",
+          "price_source": "Vir podatkov o cenah",
+          "price_resolution": "Ločljivost cen",
+          "display_unit": "Enota prikaza"
+        },
+        "data_description": {
+          "name": "Uporablja se v imenih entitet, npr. 'Dom'",
+          "price_source": "Kilowahti CDN je lastna cenovna storitev Kilowahtija (cdn.kilowahti.fi); spot-hinta.fi je API tretje osebe.",
+          "price_resolution": "15 minut (96 intervalov/dan) ali 1 ura (24 intervalov/dan). Izberite glede na merilni interval svoje pogodbe.",
+          "display_unit": "Enota senzorja"
+        }
+      },
+      "vat_and_tax": {
+        "title": "DDV in trošarina",
+        "description": "Vnaprej izpolnjeno glede na vaše območje. Po potrebi prilagodite. Vse cene (stopnje omrežnine, obdobja fiksne cene) se vnašajo z vključenim DDV.",
+        "data": {
+          "vat_rate_pct": "Stopnja DDV (%)",
+          "electricity_tax": "Trošarina (c/kWh)",
+          "spot_commission": "Marža na borzno ceno (c/kWh)",
+          "monthly_fixed_cost": "Fiksni strošek pogodbe o dobavi (€/mesec)"
+        },
+        "data_description": {
+          "electricity_tax": "Fiksna trošarina na kWh, ki se prišteje borzni/fiksni ceni.",
+          "spot_commission": "Marža dobavitelja na kWh, ki se prišteje borzni ceni. Vnesite bruto znesek (z DDV). Pustite 0, če se ne uporablja.",
+          "monthly_fixed_cost": "Fiksna mesečna dajatev vaše pogodbe o dobavi (npr. strošek obračuna). Bruto znesek (z DDV). Pustite 0, če se ne uporablja."
+        }
+      },
+      "transfer_groups": {
+        "title": "Omrežnina",
+        "description": "Organizirajte stopnje omrežnine v poimenovane skupine (npr. VT/MT, Sezonska, Splošna). Naenkrat je aktivna samo ena skupina. Ta korak lahko preskočite in skupine nastavite pozneje v možnostih.",
+        "data": {
+          "action": "Dejanje"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Dodaj skupino",
+        "data": {
+          "label": "Ime skupine",
+          "monthly_fixed_cost": "Mesečni fiksni strošek (€/mesec)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Omrežni priključek + fiksna dajatev pogodbe. Bruto znesek (z DDV)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Uredi nastavitve skupine",
+        "data": {
+          "label": "Ime skupine",
+          "monthly_fixed_cost": "Mesečni fiksni strošek (€/mesec)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Omrežni priključek + fiksna dajatev pogodbe. Bruto znesek (z DDV)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Uredi skupino",
+        "description": "{group_label} — Dodajte ali odstranite stopnje ali nastavite to skupino kot aktivno.",
+        "data": {
+          "action": "Dejanje"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Dodaj ceno omrežnine",
+        "description": "Vrednotijo se po vrstnem redu prednosti; zmaga prvo ujemanje. Dodajte osnovno tarifo z najnižjo prednostjo in brez časovnih omejitev.",
+        "data": {
+          "label": "Ime stopnje",
+          "price": "Cena (c/kWh)",
+          "months": "Aktivni meseci",
+          "weekdays": "Aktivni dnevi",
+          "hour_start": "Čas začetka (vključno)",
+          "hour_end": "Čas konca (izključno)",
+          "priority": "Prednost (manjša = prva)"
+        }
+      },
+      "thresholds": {
+        "title": "Pragovi in krmiljenje",
+        "data": {
+          "max_price": "Najvišja cena za krmiljenje (c/kWh)",
+          "price_threshold_includes_transfer": "Najvišja cena vključuje omrežnino",
+          "max_rank": "Najvišji rang za krmiljenje",
+          "forward_avg_hours": "Dolžina okna prihodnjega povprečja (ure)",
+          "control_factor_function": "Krivulja krmilnega faktorja",
+          "control_factor_scaling": "Skaliranje krmilnega faktorja (1–3)"
+        },
+        "data_description": {
+          "max_price": "Ko je cena trenutnega intervala na tej vrednosti ali pod njo, se senzor price_acceptable vklopi.",
+          "price_threshold_includes_transfer": "VKLOPLJENO: primerja skupno ceno (borzna + omrežnina). IZKLOPLJENO: primerja samo ceno energije (borzno).",
+          "max_rank": "Ko je rang trenutnega intervala na tej vrednosti ali pod njo, se senzor rank_acceptable vklopi.",
+          "forward_avg_hours": "Število prihodnjih ur za povprečje senzorja next_hours_avg.",
+          "control_factor_function": "Oblika krivulje krmilnega faktorja (0–1).",
+          "control_factor_scaling": "Eksponent, ki se uporabi na krmilnem faktorju (ojača skrajnosti)."
+        }
+      },
+      "score_profiles": {
+        "title": "Točke optimizacije",
+        "description": "Točke merijo, kako dobro premikate porabo v poceni ure. Stalni profil 'Total' pokriva vso porabo — po nastavitvi mu v možnostih povežite števec (ali števce).",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Napredne možnosti",
+        "description": "Nastavite, kako se vrednosti senzorjev prikazujejo v Home Assistantu.",
+        "data": {
+          "expose_price_arrays": "Izpostavi cenovne nize kot atribute senzorja (poveča velikost podatkovne baze)",
+          "high_precision": "Način visoke natančnosti",
+          "show_rolling_averages": "Prikaži povprečne cene za naslednjih 30 min, 1 h in 2 h",
+          "generation_enabled": "Omogoči funkcije proizvodnje in oddaje"
+        },
+        "data_description": {
+          "expose_price_arrays": "Zapisuje niza today_prices in tomorrow_prices v atribute senzorja spot_price, ki se nato shranjujejo v podatkovno bazo. Olajša izdelavo grafov na nadzorni plošči, vendar za njihov prikaz ni potrebno in po nepotrebnem obremenjuje podatkovno bazo.",
+          "high_precision": "Ko je vklopljeno, cenovni senzorji prikazujejo več decimalk. Atributi in izračuni vedno uporabljajo polno natančnost.",
+          "show_rolling_averages": "Doda senzorje povprečne cene za naslednjih 30, 60 in 120 minut.",
+          "generation_enabled": "Omogoči senzorje in storitve cene oddaje, baterije in arbitraže. Nastavitve proizvodnje najdete v meniju Proizvodnja in oddaja."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Povezava ni uspela. Preverite omrežje.",
+      "invalid_region": "Izbrano območje ni vrnilo podatkov iz API-ja.",
+      "tier_hour_range": "Čas konca mora biti po času začetka.",
+      "tier_no_months": "Izberite vsaj en mesec.",
+      "tier_no_weekdays": "Izberite vsaj en dan v tednu.",
+      "period_invalid_dates": "Datum konca mora biti enak ali poznejši od datuma začetka.",
+      "period_overlap": "To obdobje se prekriva z obstoječim obdobjem fiksne cene.",
+      "period_price_zero": "Cena mora biti večja od nič."
+    },
+    "abort": {
+      "already_configured": "Ta instanca je že nastavljena."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Možnosti Kilowahti",
+        "description": "Izberite, katere nastavitve želite urediti.",
+        "menu_options": {
+          "basic": "Osnovne nastavitve in DDV",
+          "transfer_groups": "Omrežnina",
+          "thresholds": "Pragovi in krmiljenje",
+          "score_profiles": "Profili točk",
+          "advanced_options": "Napredne možnosti",
+          "fixed_periods": "Obdobja fiksne cene / fiksne pogodbe",
+          "generation_settings": "Proizvodnja in oddaja"
+        }
+      },
+      "basic": {
+        "title": "Osnovne nastavitve",
+        "description": "Opozorilo: sprememba enote prikaza po ustvarjanju senzorjev bo povzročila neskladja enot v grafih zgodovine. Morda boste morali izbrisati zgodovino senzorjev ali ročno prilagoditi kartice nadzorne plošče.",
+        "data": {
+          "name": "Ime",
+          "region": "Cenovno območje",
+          "price_source": "Vir podatkov o cenah",
+          "price_resolution": "Ločljivost cen",
+          "display_unit": "Enota prikaza",
+          "vat_rate_pct": "Stopnja DDV (%)",
+          "electricity_tax": "Trošarina (c/kWh)",
+          "spot_commission": "Marža na borzno ceno (c/kWh)",
+          "monthly_fixed_cost": "Fiksni strošek pogodbe o dobavi (€/mesec)"
+        }
+      },
+      "transfer_groups": {
+        "title": "Omrežnina",
+        "data": {
+          "action": "Dejanje"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Dodaj skupino",
+        "data": {
+          "label": "Ime skupine",
+          "monthly_fixed_cost": "Mesečni fiksni strošek (€/mesec)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Omrežni priključek + fiksna dajatev pogodbe. Bruto znesek (z DDV)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Uredi nastavitve skupine",
+        "data": {
+          "label": "Ime skupine",
+          "monthly_fixed_cost": "Mesečni fiksni strošek (€/mesec)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Omrežni priključek + fiksna dajatev pogodbe. Bruto znesek (z DDV)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Uredi skupino",
+        "description": "{group_label} — Dodajte ali odstranite stopnje ali nastavite to skupino kot aktivno.",
+        "data": {
+          "action": "Dejanje"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Dodaj ceno omrežnine",
+        "data": {
+          "label": "Ime stopnje (npr. Zimski delovni dan)",
+          "price": "Cena (c/kWh)",
+          "months": "Aktivni meseci",
+          "weekdays": "Aktivni dnevi",
+          "hour_start": "Čas začetka (vključno)",
+          "hour_end": "Čas konca (izključno)",
+          "priority": "Prednost (manjša = prva)"
+        }
+      },
+      "thresholds": {
+        "title": "Pragovi in krmiljenje",
+        "data": {
+          "max_price": "Najvišja cena za krmiljenje (c/kWh)",
+          "price_threshold_includes_transfer": "Najvišja cena vključuje omrežnino",
+          "max_rank": "Najvišji rang za krmiljenje",
+          "forward_avg_hours": "Dolžina okna prihodnjega povprečja (ure)",
+          "control_factor_function": "Krivulja krmilnega faktorja",
+          "control_factor_scaling": "Skaliranje krmilnega faktorja (1–3)"
+        }
+      },
+      "score_profiles": {
+        "title": "Profili točk",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Napredne možnosti",
+        "data": {
+          "expose_price_arrays": "Izpostavi cenovne nize kot atribute senzorja (poveča velikost podatkovne baze)",
+          "high_precision": "Način visoke natančnosti",
+          "show_rolling_averages": "Prikaži povprečne cene za naslednjih 30 min, 1 h in 2 h",
+          "generation_enabled": "Omogoči funkcije proizvodnje in oddaje"
+        },
+        "data_description": {
+          "show_rolling_averages": "Doda senzorje povprečne cene za naslednjih 30, 60 in 120 minut.",
+          "generation_enabled": "Omogoči senzorje in storitve cene oddaje, baterije in arbitraže. Nastavitve proizvodnje najdete v meniju Proizvodnja in oddaja."
+        }
+      },
+      "add_score_profile": {
+        "title": "Dodaj profil točk",
+        "data": {
+          "label": "Ime profila",
+          "meters": "Entitete števcev energije",
+          "formula": "Formula točkovanja"
+        },
+        "data_description": {
+          "formula": "Privzeta formula: 50 = dobro, 37,5 pri enakomerni porazdelitvi (kaznuje povprečno rabo). Surova formula: 50 pri enakomerni porazdelitvi (nevtralna osnova)."
+        }
+      },
+      "edit_score_profile": {
+        "title": "Uredi profil točk: {profile_label}",
+        "description": "Nastavljenih števcev: {meter_count}.",
+        "data": {
+          "action": "Dejanje"
+        }
+      },
+      "add_profile_meters": {
+        "title": "Dodaj števec/števce",
+        "data": {
+          "meters": "Entitete števcev energije"
+        }
+      },
+      "edit_profile_formula": {
+        "title": "Formula točkovanja: {profile_label}",
+        "data": {
+          "formula": "Formula točkovanja"
+        },
+        "data_description": {
+          "formula": "Privzeta formula: 50 = dobro, 37,5 pri enakomerni porazdelitvi (kaznuje povprečno rabo). Surova formula: 50 pri enakomerni porazdelitvi (nevtralna osnova)."
+        }
+      },
+      "fixed_periods": {
+        "title": "Obdobja fiksne cene / fiksne pogodbe",
+        "description": "Upravljajte obdobja fiksne cene ali fiksne pogodbe. Ko je obdobje aktivno, effective_price prikazuje nastavljeno fiksno ceno namesto borzne.",
+        "data": {
+          "action": "Dejanje"
+        }
+      },
+      "generation_settings": {
+        "title": "Nastavitve proizvodnje in oddaje",
+        "description": "Nastavite cene oddaje in parametre baterije. Nastavite kapaciteto baterije na 0, da izklopite senzorje baterije.",
+        "data": {
+          "export_pricing_mode": "Način cene oddaje",
+          "export_commission": "Marža oddaje (c/kWh, odšteta od borzne)",
+          "fixed_export_rate": "Fiksna cena oddaje (c/kWh)",
+          "export_price_threshold": "Prag cene oddaje (c/kWh)",
+          "solar_window_start": "Začetna ura sončnega okna",
+          "solar_window_end": "Končna ura sončnega okna",
+          "battery_capacity_kwh": "Kapaciteta baterije (kWh, 0 = izklopljeno)",
+          "battery_charge_power_kw": "Moč polnjenja baterije (kW)"
+        },
+        "data_description": {
+          "export_commission": "Samo v načinu, vezanem na borzno ceno. Marža odkupovalca, ki se odšteje od borzne cene iz API-ja (brez DDV). Mali proizvajalci na oddano energijo običajno ne obračunavajo DDV.",
+          "fixed_export_rate": "Samo v fiksnem načinu. Fiksna cena, ki jo prejmete za vsako oddano kWh.",
+          "solar_window_start": "Začetna ura vašega tipičnega okna sončne proizvodnje (uporablja senzor next_solar_window_avg).",
+          "solar_window_end": "Končna ura (izključno) vašega tipičnega okna sončne proizvodnje."
+        }
+      },
+      "add_fixed_period": {
+        "title": "Dodaj obdobje fiksne cene / fiksno pogodbo",
+        "data": {
+          "label": "Ime obdobja",
+          "start_date": "Datum začetka",
+          "end_date": "Datum konca (vključno)",
+          "price": "Cena (c/kWh, z DDV)"
+        },
+        "data_description": {
+          "price": "Vnesite ceno z vključenim DDV. Ta cena se uporablja takšna, kot je — DDV se ne prišteje."
+        }
+      }
+    },
+    "error": {
+      "tier_hour_range": "Čas konca mora biti po času začetka.",
+      "tier_no_months": "Izberite vsaj en mesec.",
+      "tier_no_weekdays": "Izberite vsaj en dan v tednu.",
+      "period_invalid_dates": "Datum konca mora biti enak ali poznejši od datuma začetka.",
+      "period_overlap": "To obdobje se prekriva z obstoječim obdobjem fiksne cene.",
+      "period_price_zero": "Cena mora biti večja od nič."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "spot_price": {
+        "name": "Borzna cena"
+      },
+      "effective_price": {
+        "name": "Aktivna cena"
+      },
+      "transfer_price": {
+        "name": "Omrežnina"
+      },
+      "total_price": {
+        "name": "Skupna cena"
+      },
+      "price_rank": {
+        "name": "Rang"
+      },
+      "total_price_rank": {
+        "name": "Rang skupne cene"
+      },
+      "total_price_quartile": {
+        "name": "Kvartil skupne cene"
+      },
+      "today_spot_avg": {
+        "name": "Povprečna borzna cena danes"
+      },
+      "today_spot_min": {
+        "name": "Najnižja borzna cena danes"
+      },
+      "today_spot_max": {
+        "name": "Najvišja borzna cena danes"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Povprečna borzna cena jutri"
+      },
+      "tomorrow_spot_min": {
+        "name": "Najnižja borzna cena jutri"
+      },
+      "tomorrow_spot_max": {
+        "name": "Najvišja borzna cena jutri"
+      },
+      "today_total_avg": {
+        "name": "Povprečna skupna cena danes"
+      },
+      "today_total_min": {
+        "name": "Najnižja skupna cena danes"
+      },
+      "today_total_max": {
+        "name": "Najvišja skupna cena danes"
+      },
+      "tomorrow_total_avg": {
+        "name": "Povprečna skupna cena jutri"
+      },
+      "tomorrow_total_min": {
+        "name": "Najnižja skupna cena jutri"
+      },
+      "tomorrow_total_max": {
+        "name": "Najvišja skupna cena jutri"
+      },
+      "today_avg": {
+        "name": "Povprečje danes"
+      },
+      "today_min": {
+        "name": "Minimum danes"
+      },
+      "today_max": {
+        "name": "Maksimum danes"
+      },
+      "tomorrow_avg": {
+        "name": "Povprečje jutri"
+      },
+      "tomorrow_min": {
+        "name": "Minimum jutri"
+      },
+      "tomorrow_max": {
+        "name": "Maksimum jutri"
+      },
+      "next_hours_avg": {
+        "name": "Povprečje naslednjih ur"
+      },
+      "spot_next_hours_avg": {
+        "name": "Borzno povprečje naslednjih ur"
+      },
+      "control_factor_price": {
+        "name": "Krmilni faktor cene"
+      },
+      "control_factor_price_bipolar": {
+        "name": "Krmilni faktor cene (bipolarni)"
+      },
+      "control_factor_transfer": {
+        "name": "Krmilni faktor omrežnine"
+      },
+      "price_quartile": {
+        "name": "Kvartil cene"
+      },
+      "setting_max_price": {
+        "name": "Prag cene"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Prag cene vključuje omrežnino"
+      },
+      "setting_control_factor_function": {
+        "name": "Oblika krmilnega faktorja"
+      },
+      "setting_acceptable_rank": {
+        "name": "Sprejemljiv rang"
+      },
+      "setting_forward_window": {
+        "name": "Prihodnje okno"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktivna skupina omrežnine"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktivna stopnja omrežnine"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktivno obdobje fiksne cene"
+      },
+      "export_price": {
+        "name": "Cena oddaje"
+      },
+      "export_today_avg": {
+        "name": "Povprečna cena oddaje danes"
+      },
+      "export_today_min": {
+        "name": "Najnižja cena oddaje danes"
+      },
+      "export_today_max": {
+        "name": "Najvišja cena oddaje danes"
+      },
+      "export_tomorrow_avg": {
+        "name": "Povprečna cena oddaje jutri"
+      },
+      "export_tomorrow_min": {
+        "name": "Najnižja cena oddaje jutri"
+      },
+      "export_tomorrow_max": {
+        "name": "Najvišja cena oddaje jutri"
+      },
+      "import_export_spread": {
+        "name": "Razpon odjem–oddaja"
+      },
+      "self_consumption_value": {
+        "name": "Vrednost samooskrbe"
+      },
+      "avg_price_30min": {
+        "name": "Povprečna cena 30 min"
+      },
+      "avg_price_60min": {
+        "name": "Povprečna cena 60 min"
+      },
+      "avg_price_120min": {
+        "name": "Povprečna cena 120 min"
+      },
+      "next_solar_window_avg": {
+        "name": "Povprečje naslednjega sončnega okna"
+      },
+      "arbitrage_spread_today": {
+        "name": "Arbitražni razpon danes"
+      },
+      "charge_opportunity_factor": {
+        "name": "Faktor priložnosti za polnjenje"
+      },
+      "optimal_charge_window_start": {
+        "name": "Začetek optimalnega okna polnjenja"
+      },
+      "optimal_charge_window_end": {
+        "name": "Konec optimalnega okna polnjenja"
+      },
+      "battery_charge_recommendation": {
+        "name": "Priporočilo polnjenja baterije",
+        "state": {
+          "charge_from_grid": "Polni iz omrežja",
+          "discharge": "Prazni",
+          "hold": "Zadrži"
+        }
+      },
+      "monthly_fixed_cost_today": {
+        "name": "Mesečni fiksni strošek danes"
+      }
+    },
+    "number": {
+      "price_threshold": {
+        "name": "Prag cene"
+      },
+      "rank_threshold": {
+        "name": "Prag ranga"
+      }
+    },
+    "binary_sensor": {
+      "price_acceptable": {
+        "name": "Cena sprejemljiva"
+      },
+      "rank_acceptable": {
+        "name": "Rang sprejemljiv"
+      },
+      "price_or_rank_acceptable": {
+        "name": "Cena ali rang sprejemljiva"
+      },
+      "fixed_period_active": {
+        "name": "Obdobje fiksne cene aktivno"
+      },
+      "tomorrow_available": {
+        "name": "Jutrišnje cene na voljo"
+      },
+      "export_price_acceptable": {
+        "name": "Cena oddaje sprejemljiva"
+      },
+      "charge_from_grid_recommended": {
+        "name": "Priporočeno polnjenje iz omrežja"
+      },
+      "discharge_to_grid_recommended": {
+        "name": "Priporočeno praznjenje v omrežje"
+      }
+    }
+  },
+  "triggers": {
+    "price_became_acceptable": {
+      "name": "Cena je postala sprejemljiva",
+      "description": "Sproži se, ko trenutna cena elektrike pade na sprejemljivo raven (na prag cene ali pod njega)."
+    },
+    "price_no_longer_acceptable": {
+      "name": "Cena ni več sprejemljiva",
+      "description": "Sproži se, ko trenutna cena elektrike naraste nad prag cene."
+    },
+    "rank_became_acceptable": {
+      "name": "Rang je postal sprejemljiv",
+      "description": "Sproži se, ko rang trenutne cene pade na sprejemljivo raven (na prag ranga ali pod njega)."
+    },
+    "rank_no_longer_acceptable": {
+      "name": "Rang ni več sprejemljiv",
+      "description": "Sproži se, ko rang trenutne cene naraste nad prag ranga."
+    },
+    "became_cheapest_slot": {
+      "name": "Postal najcenejši interval",
+      "description": "Sproži se, ko trenutni časovni interval postane najcenejši v dnevu."
+    },
+    "fixed_period_started": {
+      "name": "Obdobje fiksne cene se je začelo",
+      "description": "Sproži se, ko obdobje fiksne cene postane aktivno."
+    },
+    "fixed_period_ended": {
+      "name": "Obdobje fiksne cene se je končalo",
+      "description": "Sproži se, ko obdobje fiksne cene preneha biti aktivno."
+    },
+    "tomorrow_prices_available": {
+      "name": "Jutrišnje cene na voljo",
+      "description": "Sproži se, ko jutrišnje cene elektrike postanejo na voljo."
+    }
+  },
+  "conditions": {
+    "price_is_acceptable": {
+      "name": "Cena je sprejemljiva",
+      "description": "Izpolnjen, ko je trenutna cena elektrike na pragu cene ali pod njim."
+    },
+    "rank_is_acceptable": {
+      "name": "Rang je sprejemljiv",
+      "description": "Izpolnjen, ko je rang trenutne cene na pragu ranga ali pod njim."
+    },
+    "price_is_lowest_today": {
+      "name": "Cena je danes najnižja",
+      "description": "Izpolnjen, ko je trenutni časovni interval najcenejši v dnevu."
+    },
+    "fixed_period_active": {
+      "name": "Obdobje fiksne cene aktivno",
+      "description": "Izpolnjen, ko je obdobje fiksne cene trenutno aktivno."
+    },
+    "tomorrow_available": {
+      "name": "Jutrišnje cene na voljo",
+      "description": "Izpolnjen, ko so jutrišnje cene elektrike na voljo."
+    }
+  }
+}
