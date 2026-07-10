@@ -101,8 +101,7 @@
       },
       "score_profiles": {
         "title": "Optimointipisteet",
-        "description": "Optimointipisteet mittaavat, kuinka hyvin kulutus on siirretty halvimpiin tunteihin. Kokonaiskulutusta mittaava 'Total'-profiili on pysyvä, saat sen käyttöön helposti vain liittämällä koko kulutusta kuvaavan mittarin (tai mittarit) siihen Kilowahdin asetuksissa asennuksen jälkeen.",
-        "data": {}
+        "description": "Optimointipisteet mittaavat, kuinka hyvin kulutus on siirretty halvimpiin tunteihin. Kokonaiskulutusta mittaava 'Total'-profiili on pysyvä, saat sen käyttöön helposti vain liittämällä koko kulutusta kuvaavan mittarin (tai mittarit) siihen Kilowahdin asetuksissa asennuksen jälkeen."
       },
       "advanced_options": {
         "title": "Lisäasetukset",
@@ -222,8 +221,7 @@
         }
       },
       "score_profiles": {
-        "title": "Pisteprofiilit",
-        "data": {}
+        "title": "Pisteprofiilit"
       },
       "advanced_options": {
         "title": "Lisäasetukset",

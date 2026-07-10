@@ -2,8 +2,8 @@
   "config": {
     "step": {
       "user": {
-        "title": "Kilowahti — Põhiseaded",
-        "description": "Piirkond määrab, millist Põhjamaade/Balti spot-hinna ala kasutatakse.",
+        "title": "Kilowahti — Põhiseadistused",
+        "description": "Piirkond määratleb konkreetse Põhjala/Balti turupiirkonna, mille hetkehindu kasutatakse.",
         "data": {
           "name": "Nimi",
           "region": "Hinnapiirkond",
@@ -101,8 +101,7 @@
       },
       "score_profiles": {
         "title": "Optimeerimispunktid",
-        "description": "Punktid näitavad, kui hästi tarbimine on nihutatud odavatele tundidele. Püsiv profiil 'Total' katab kogu tarbimise — seo sellega üks või mitu arvestit seadetes pärast paigaldust.",
-        "data": {}
+        "description": "Punktid näitavad, kui hästi tarbimine on nihutatud odavatele tundidele. Püsiv profiil 'Total' katab kogu tarbimise — seo sellega üks või mitu arvestit seadetes pärast paigaldust."
       },
       "advanced_options": {
         "title": "Täpsemad seaded",
@@ -222,8 +221,7 @@
         }
       },
       "score_profiles": {
-        "title": "Punktiprofiilid",
-        "data": {}
+        "title": "Punktiprofiilid"
       },
       "advanced_options": {
         "title": "Täpsemad seaded",

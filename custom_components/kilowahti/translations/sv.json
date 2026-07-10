@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Grundinställningar",
-        "description": "Området avgör vilket nordiskt/baltiskt spotprisområde som används.",
+        "description": "Regionen bestämmer vilket nordiskt/baltiskt spotprisområde som används.",
         "data": {
           "name": "Namn",
           "region": "Prisområde",
@@ -101,8 +101,7 @@
       },
       "score_profiles": {
         "title": "Optimeringspoäng",
-        "description": "Poängen mäter hur väl din förbrukning flyttas till billiga timmar. Den permanenta profilen 'Total' täcker all förbrukning – koppla en eller flera mätare till den i Inställningar efter installationen.",
-        "data": {}
+        "description": "Poängen mäter hur väl din förbrukning flyttas till billiga timmar. Den permanenta profilen 'Total' täcker all förbrukning – koppla en eller flera mätare till den i Inställningar efter installationen."
       },
       "advanced_options": {
         "title": "Avancerade inställningar",
@@ -222,8 +221,7 @@
         }
       },
       "score_profiles": {
-        "title": "Poängprofiler",
-        "data": {}
+        "title": "Poängprofiler"
       },
       "advanced_options": {
         "title": "Avancerade inställningar",
