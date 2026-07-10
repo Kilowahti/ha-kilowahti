@@ -99,8 +99,7 @@
       },
       "score_profiles": {
         "title": "Optimierungspunkte",
-        "description": "Punkte messen, wie gut dein Verbrauch in günstige Stunden verlagert wird. Das permanente Profil 'Total' umfasst den gesamten Verbrauch — verknüpfe nach der Einrichtung in den Optionen einen Zähler (oder mehrere) damit.",
-        "data": {}
+        "description": "Punkte messen, wie gut dein Verbrauch in günstige Stunden verlagert wird. Das permanente Profil 'Total' umfasst den gesamten Verbrauch — verknüpfe nach der Einrichtung in den Optionen einen Zähler (oder mehrere) damit."
       },
       "advanced_options": {
         "title": "Erweiterte Optionen",
@@ -219,8 +218,7 @@
         }
       },
       "score_profiles": {
-        "title": "Punkteprofile",
-        "data": {}
+        "title": "Punkteprofile"
       },
       "advanced_options": {
         "title": "Erweiterte Optionen",
