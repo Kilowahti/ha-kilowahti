@@ -99,8 +99,7 @@
       },
       "score_profiles": {
         "title": "Optimizācijas punkti",
-        "description": "Punkti mēra, cik labi jūsu patēriņš tiek pārcelts uz lētajām stundām. Pastāvīgais profils 'Total' aptver visu patēriņu — pēc iestatīšanas sasaistiet ar to skaitītāju (vai vairākus) sadaļā Opcijas.",
-        "data": {}
+        "description": "Punkti mēra, cik labi jūsu patēriņš tiek pārcelts uz lētajām stundām. Pastāvīgais profils 'Total' aptver visu patēriņu — pēc iestatīšanas sasaistiet ar to skaitītāju (vai vairākus) sadaļā Opcijas."
       },
       "advanced_options": {
         "title": "Papildu iestatījumi",
@@ -219,8 +218,7 @@
         }
       },
       "score_profiles": {
-        "title": "Punktu profili",
-        "data": {}
+        "title": "Punktu profili"
       },
       "advanced_options": {
         "title": "Papildu iestatījumi",
