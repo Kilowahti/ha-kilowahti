@@ -528,10 +528,10 @@
         "name": "Eksportpris akseptabel"
       },
       "charge_from_grid_recommended": {
-        "name": "Ladning fra rutenettet anbefales"
+        "name": "Lading fra strømnettet anbefales"
       },
       "discharge_to_grid_recommended": {
-        "name": "Utslipp til rutenett anbefales"
+        "name": "Utlading til strømnettet anbefales"
       }
     }
   },
