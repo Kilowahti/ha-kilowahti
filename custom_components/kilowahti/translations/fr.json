@@ -99,8 +99,7 @@
       },
       "score_profiles": {
         "title": "Points d'optimisation",
-        "description": "Les points mesurent dans quelle mesure votre consommation est déplacée vers les heures les moins chères. Le profil permanent 'Total' couvre toute la consommation — associez-lui un compteur (ou plusieurs) dans les options après l'installation.",
-        "data": {}
+        "description": "Les points mesurent dans quelle mesure votre consommation est déplacée vers les heures les moins chères. Le profil permanent 'Total' couvre toute la consommation — associez-lui un compteur (ou plusieurs) dans les options après l'installation."
       },
       "advanced_options": {
         "title": "Options avancées",
@@ -219,8 +218,7 @@
         }
       },
       "score_profiles": {
-        "title": "Profils de points",
-        "data": {}
+        "title": "Profils de points"
       },
       "advanced_options": {
         "title": "Options avancées",
