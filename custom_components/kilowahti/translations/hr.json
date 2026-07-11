@@ -99,8 +99,7 @@
       },
       "score_profiles": {
         "title": "Bodovi optimizacije",
-        "description": "Bodovi mjere koliko dobro premještate potrošnju u jeftine sate. Stalni profil 'Total' pokriva svu potrošnju — povežite mu brojilo (ili brojila) u opcijama nakon postavljanja.",
-        "data": {}
+        "description": "Bodovi mjere koliko dobro premještate potrošnju u jeftine sate. Stalni profil 'Total' pokriva svu potrošnju — povežite mu brojilo (ili brojila) u opcijama nakon postavljanja."
       },
       "advanced_options": {
         "title": "Napredne opcije",
@@ -219,8 +218,7 @@
         }
       },
       "score_profiles": {
-        "title": "Profili bodova",
-        "data": {}
+        "title": "Profili bodova"
       },
       "advanced_options": {
         "title": "Napredne opcije",
