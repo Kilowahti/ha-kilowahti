@@ -99,8 +99,7 @@
       },
       "score_profiles": {
         "title": "Optimalizačné skóre",
-        "description": "Skóre meria, ako dobre presúvate spotrebu do lacných hodín. Trvalý profil 'Total' pokrýva celú spotrebu — po nastavení k nemu v možnostiach pripojte merač (alebo merače).",
-        "data": {}
+        "description": "Skóre meria, ako dobre presúvate spotrebu do lacných hodín. Trvalý profil 'Total' pokrýva celú spotrebu — po nastavení k nemu v možnostiach pripojte merač (alebo merače)."
       },
       "advanced_options": {
         "title": "Rozšírené možnosti",
@@ -219,8 +218,7 @@
         }
       },
       "score_profiles": {
-        "title": "Profily skóre",
-        "data": {}
+        "title": "Profily skóre"
       },
       "advanced_options": {
         "title": "Rozšírené možnosti",
