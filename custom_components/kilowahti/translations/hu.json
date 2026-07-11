@@ -99,8 +99,7 @@
       },
       "score_profiles": {
         "title": "Optimalizálási pontszámok",
-        "description": "A pontszámok azt mérik, mennyire sikerül a fogyasztásodat az olcsó órákra átcsoportosítani. Az állandó 'Total' profil a teljes fogyasztást lefedi — a beállítás után kapcsolj hozzá egy mérőt (vagy mérőket) a beállításokban.",
-        "data": {}
+        "description": "A pontszámok azt mérik, mennyire sikerül a fogyasztásodat az olcsó órákra átcsoportosítani. Az állandó 'Total' profil a teljes fogyasztást lefedi — a beállítás után kapcsolj hozzá egy mérőt (vagy mérőket) a beállításokban."
       },
       "advanced_options": {
         "title": "Speciális beállítások",
@@ -219,8 +218,7 @@
         }
       },
       "score_profiles": {
-        "title": "Pontszámprofilok",
-        "data": {}
+        "title": "Pontszámprofilok"
       },
       "advanced_options": {
         "title": "Speciális beállítások",
