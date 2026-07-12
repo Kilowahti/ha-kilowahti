@@ -21,7 +21,6 @@ from kilowahti.zones import CDN_ZONES, ZONES
 DOMAIN = "kilowahti"
 
 # Config / options entry keys
-CONF_PRICE_SOURCE = "price_source"
 CONF_REGION = "region"
 CONF_PRICE_RESOLUTION = "price_resolution"
 CONF_DISPLAY_UNIT = "display_unit"
@@ -59,12 +58,12 @@ CONF_MONTHLY_FIXED_COST = "monthly_fixed_cost"
 EXPORT_PRICING_SPOT_LINKED = "spot_linked"
 EXPORT_PRICING_FIXED = "fixed"
 
-# Price data sources
+# Price data source ids (chain order is built in the coordinator; these
+# remain as the price_data_source diagnostic sensor states)
 PRICE_SOURCE_SPOT_HINTA = "spot_hinta"
 PRICE_SOURCE_KILOWAHTI_CDN = "kilowahti_cdn"
 
 # Defaults
-DEFAULT_PRICE_SOURCE = PRICE_SOURCE_SPOT_HINTA
 DEFAULT_PRICE_RESOLUTION = 15
 DEFAULT_VAT_RATE = 0.255  # FI
 DEFAULT_ELECTRICITY_TAX = 2.253  # FI, c/kWh class I
@@ -162,6 +161,7 @@ SENSOR_SETTING_FORWARD_WINDOW = "setting_forward_window"
 SENSOR_SETTING_ACTIVE_TRANSFER_GROUP = "setting_active_transfer_group"
 SENSOR_SETTING_ACTIVE_TRANSFER_TIER = "setting_active_transfer_tier"
 SENSOR_SETTING_ACTIVE_FIXED_PERIOD = "setting_active_fixed_period"
+SENSOR_PRICE_DATA_SOURCE = "price_data_source"
 
 NUMBER_PRICE_THRESHOLD = "price_threshold"
 NUMBER_RANK_THRESHOLD = "rank_threshold"

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from datetime import datetime, timezone
 from unittest.mock import AsyncMock, patch
 
@@ -20,7 +21,6 @@ from custom_components.kilowahti.const import (
     CONF_MAX_RANK,
     CONF_MONTHLY_FIXED_COST,
     CONF_PRICE_RESOLUTION,
-    CONF_PRICE_SOURCE,
     CONF_REGION,
     CONF_SCORE_PROFILES,
     CONF_VAT_RATE,
@@ -709,26 +709,41 @@ async def test_optimal_charge_window_selects_cheapest_2h_window(
 
 
 # ---------------------------------------------------------------------------
-# Price source selection
+# Price source chain
 # ---------------------------------------------------------------------------
 
 
-async def test_coordinator_defaults_to_spot_hinta_source(hass, setup_integration):
-    """Without a price_source option the coordinator uses SpotHintaSource."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
-    assert isinstance(coord._source, SpotHintaSource)
-    assert coord.price_source_name == PRICE_SOURCE_SPOT_HINTA
-
-
-async def test_coordinator_uses_cdn_source_when_configured(hass, options, mock_utcnow):
-    """With price_source=kilowahti_cdn the coordinator fetches from cdn.kilowahti.fi."""
+async def test_chain_composition_nordic_vs_cdn_only(hass, options, mock_utcnow):
+    """FI gets CDN + spot-hinta; a zone outside spot-hinta coverage gets CDN only."""
     await hass.config.async_set_time_zone("UTC")
-    options[CONF_PRICE_SOURCE] = PRICE_SOURCE_KILOWAHTI_CDN
+    options[CONF_PRICE_RESOLUTION] = 15
+    options[CONF_REGION] = "PT"
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=options)
+
+    pt_payload = {**CDN_PAYLOAD, "days": {"2026-03-13": CDN_PAYLOAD["days"]["2026-03-13"]}}
+    with aioresponses() as m:
+        m.get(
+            re.compile(r"https://cdn\.kilowahti\.fi/v1/pt/latest\.json"),
+            payload=pt_payload,
+            repeat=True,
+        )
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    coord = hass.data[DOMAIN][entry.entry_id]
+    assert [name for name, _ in coord._sources] == [PRICE_SOURCE_KILOWAHTI_CDN]
+    assert coord.price_source_name == PRICE_SOURCE_KILOWAHTI_CDN
+    assert coord.last_failover_utc is None
+    assert len(coord.today_slots()) == 96
+
+
+async def test_chain_cdn_primary_serves_nordic_region(hass, options, mock_utcnow):
+    """With the CDN healthy, FI is served by the CDN and spot-hinta is never called."""
+    await hass.config.async_set_time_zone("UTC")
     options[CONF_PRICE_RESOLUTION] = 15
     entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=options)
 
-    # Serve only today so background eager-fetch/rollover timers cannot promote
-    # tomorrow's slots mid-test (mirrors the 404 tomorrow mocks used elsewhere).
     payload = {**CDN_PAYLOAD, "days": {"2026-03-13": CDN_PAYLOAD["days"]["2026-03-13"]}}
     with aioresponses() as m:
         m.get(CDN_URL_RE, payload=payload, repeat=True)
@@ -737,19 +752,101 @@ async def test_coordinator_uses_cdn_source_when_configured(hass, options, mock_u
         await hass.async_block_till_done()
 
     coord = hass.data[DOMAIN][entry.entry_id]
-    assert isinstance(coord._source, KilowahtiCdnSource)
+    assert [name for name, _ in coord._sources] == [
+        PRICE_SOURCE_KILOWAHTI_CDN,
+        PRICE_SOURCE_SPOT_HINTA,
+    ]
+    assert isinstance(coord._sources[0][1], KilowahtiCdnSource)
+    assert isinstance(coord._sources[1][1], SpotHintaSource)
     assert coord.price_source_name == PRICE_SOURCE_KILOWAHTI_CDN
-    assert len(coord.today_slots()) == 96
+    assert coord.last_failover_utc is None
     # First slot of the FI local day: 10.0 EUR/MWh → 1.0 c/kWh
     assert abs(coord.today_slots()[0].price_no_tax - 1.0) < 1e-9
 
 
-async def test_eager_poll_does_not_retry_on_cdn_zone_not_found(hass, setup_integration):
-    """A permanent CDN zone-not-found error must not schedule a retry (unlike transient failures)."""
+async def test_chain_falls_back_to_spot_hinta_on_cdn_failure(hass, setup_integration):
+    """setup_integration mocks only spot-hinta, so the CDN fetch fails and the
+    chain serves today's prices from spot-hinta, recording the failover."""
+    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    assert coord.price_source_name == PRICE_SOURCE_SPOT_HINTA
+    assert coord.last_failover_utc is not None
+    assert len(coord.today_slots()) == len(TODAY_PAYLOAD)
+
+
+async def test_eager_poll_no_fallback_before_deadline(hass, setup_integration):
+    """Primary returning None before the CET deadline only reschedules; fallback untouched."""
     coord = hass.data[DOMAIN][setup_integration.entry_id]
     coord._tomorrow_slots = None
-    # Clear any timer already scheduled by setup (setup's own tomorrow-unavailable retry)
-    # so the post-call assertion reflects only this test's call.
+    if coord._eager_poll_unsub is not None:
+        coord._eager_poll_unsub()
+        coord._eager_poll_unsub = None
+
+    # 13:30 CET (12:30 UTC) — inside the eager window, before the 15:00 deadline
+    poll_time = datetime(2026, 3, 13, 12, 30, 0, tzinfo=timezone.utc)
+    cdn_mock = AsyncMock(return_value=None)
+    fallback_mock = AsyncMock()
+    with patch("homeassistant.util.dt.utcnow", return_value=poll_time):
+        with (
+            patch.object(coord._sources[0][1], "fetch_tomorrow", cdn_mock),
+            patch.object(coord._sources[1][1], "fetch_tomorrow", fallback_mock),
+        ):
+            await coord._async_eager_poll()
+
+    assert coord._tomorrow_slots is None
+    assert coord._eager_poll_unsub is not None  # retry scheduled
+    fallback_mock.assert_not_called()
+    coord._eager_poll_unsub()
+    coord._eager_poll_unsub = None
+
+
+async def test_eager_poll_falls_back_after_deadline(hass, setup_integration):
+    """Primary silent past 15:00 CET → next source is tried and its tomorrow accepted."""
+    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord._tomorrow_slots = None
+    coord._last_failover_utc = None
+    coord._active_source_name = PRICE_SOURCE_KILOWAHTI_CDN
+    if coord._eager_poll_unsub is not None:
+        coord._eager_poll_unsub()
+        coord._eager_poll_unsub = None
+
+    fallback_slots = list(coord.today_slots())
+    # 15:30 CET (14:30 UTC) — past the fallback deadline
+    poll_time = datetime(2026, 3, 13, 14, 30, 0, tzinfo=timezone.utc)
+    with patch("homeassistant.util.dt.utcnow", return_value=poll_time):
+        with (
+            patch.object(coord._sources[0][1], "fetch_tomorrow", AsyncMock(return_value=None)),
+            patch.object(
+                coord._sources[1][1], "fetch_tomorrow", AsyncMock(return_value=fallback_slots)
+            ),
+        ):
+            await coord._async_eager_poll()
+
+    assert coord._tomorrow_slots == fallback_slots
+    assert coord.price_source_name == PRICE_SOURCE_SPOT_HINTA
+    assert coord.last_failover_utc is not None
+    assert coord._eager_poll_unsub is None  # tomorrow stored — no further polling
+
+
+async def test_eager_poll_does_not_retry_on_cdn_zone_not_found(hass, options, mock_utcnow):
+    """All sources failing permanently (zone-not-found) must not schedule a retry."""
+    await hass.config.async_set_time_zone("UTC")
+    options[CONF_PRICE_RESOLUTION] = 15
+    options[CONF_REGION] = "PT"  # CDN-only chain
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=options)
+
+    pt_payload = {**CDN_PAYLOAD, "days": {"2026-03-13": CDN_PAYLOAD["days"]["2026-03-13"]}}
+    with aioresponses() as m:
+        m.get(
+            re.compile(r"https://cdn\.kilowahti\.fi/v1/pt/latest\.json"),
+            payload=pt_payload,
+            repeat=True,
+        )
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    coord = hass.data[DOMAIN][entry.entry_id]
+    coord._tomorrow_slots = None
     if coord._eager_poll_unsub is not None:
         coord._eager_poll_unsub()
         coord._eager_poll_unsub = None
@@ -757,7 +854,7 @@ async def test_eager_poll_does_not_retry_on_cdn_zone_not_found(hass, setup_integ
     eager_time = datetime(2026, 3, 13, 15, 0, 0, tzinfo=timezone.utc)
     not_found = KilowahtiCdnZoneNotFoundError(None, (), status=404)
     with patch("homeassistant.util.dt.utcnow", return_value=eager_time):
-        with patch.object(coord._source, "fetch_tomorrow", AsyncMock(side_effect=not_found)):
+        with patch.object(coord._sources[0][1], "fetch_tomorrow", AsyncMock(side_effect=not_found)):
             await coord._async_eager_poll()
 
     assert coord._tomorrow_slots is None

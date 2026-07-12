@@ -7,13 +7,11 @@
         "data": {
           "name": "Naziv",
           "region": "Cjenovna zona",
-          "price_source": "Izvor podataka o cijenama",
           "price_resolution": "Rezolucija cijena",
           "display_unit": "Jedinica prikaza"
         },
         "data_description": {
           "name": "Koristi se u nazivima entiteta, npr. 'Dom'",
-          "price_source": "Kilowahti CDN vlastiti je servis cijena Kilowahtija (cdn.kilowahti.fi); spot-hinta.fi API je treće strane.",
           "price_resolution": "15 minuta (96 intervala/dan) ili 1 sat (24 intervala/dan). Odaberite prema mjernom intervalu svog ugovora.",
           "display_unit": "Jedinica senzora"
         }
@@ -156,7 +154,6 @@
         "data": {
           "name": "Naziv",
           "region": "Cjenovna zona",
-          "price_source": "Izvor podataka o cijenama",
           "price_resolution": "Rezolucija cijena",
           "display_unit": "Jedinica prikaza",
           "vat_rate_pct": "Stopa PDV-a (%)",

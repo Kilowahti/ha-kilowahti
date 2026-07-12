@@ -14,7 +14,6 @@ from homeassistant.core import callback
 from homeassistant.helpers import selector
 
 from .const import (
-    API_REGIONS,
     CDN_ZONES,
     CONF_BATTERY_CAPACITY_KWH,
     CONF_BATTERY_CHARGE_POWER_KW,
@@ -36,7 +35,6 @@ from .const import (
     CONF_MAX_RANK,
     CONF_MONTHLY_FIXED_COST,
     CONF_PRICE_RESOLUTION,
-    CONF_PRICE_SOURCE,
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
     CONF_SCORE_PROFILES,
@@ -68,7 +66,6 @@ from .const import (
     DEFAULT_MAX_RANK,
     DEFAULT_MONTHLY_FIXED_COST,
     DEFAULT_PRICE_RESOLUTION,
-    DEFAULT_PRICE_SOURCE,
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     DEFAULT_SCORE_FORMULA,
     DEFAULT_SCORE_PROFILE_ID,
@@ -81,8 +78,6 @@ from .const import (
     DOMAIN,
     EXPORT_PRICING_FIXED,
     EXPORT_PRICING_SPOT_LINKED,
-    PRICE_SOURCE_KILOWAHTI_CDN,
-    PRICE_SOURCE_SPOT_HINTA,
     SCORE_FORMULA_DEFAULT,
     SCORE_FORMULA_RAW,
     UNIT_EUROKWH,
@@ -136,18 +131,6 @@ def _preset_for_region(region: str) -> tuple[float, float]:
     return COUNTRY_PRESETS.get(country, COUNTRY_PRESETS["Custom"])
 
 
-def _basic_step_errors(user_input: dict) -> dict[str, str]:
-    """Validate the basic step. spot-hinta.fi covers only the Nordic/Baltic
-    regions; interim guard until the automatic source chain replaces the
-    source selector entirely."""
-    if (
-        user_input[CONF_PRICE_SOURCE] == PRICE_SOURCE_SPOT_HINTA
-        and user_input[CONF_REGION] not in API_REGIONS
-    ):
-        return {CONF_PRICE_SOURCE: "source_region_unsupported"}
-    return {}
-
-
 # ---------------------------------------------------------------------------
 # Shared schema builders
 # ---------------------------------------------------------------------------
@@ -162,17 +145,6 @@ def _user_schema(defaults: dict) -> vol.Schema:
             ): selector.SelectSelector(
                 selector.SelectSelectorConfig(
                     options=_REGION_OPTIONS,
-                )
-            ),
-            vol.Required(
-                CONF_PRICE_SOURCE,
-                default=defaults.get(CONF_PRICE_SOURCE, DEFAULT_PRICE_SOURCE),
-            ): selector.SelectSelector(
-                selector.SelectSelectorConfig(
-                    options=[
-                        {"value": PRICE_SOURCE_SPOT_HINTA, "label": "spot-hinta.fi"},
-                        {"value": PRICE_SOURCE_KILOWAHTI_CDN, "label": "Kilowahti CDN"},
-                    ],
                 )
             ),
             vol.Required(
@@ -460,21 +432,16 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
     # ------ Step 1: basic --------------------------------------------------
 
     async def async_step_user(self, user_input: dict | None = None):
-        errors: dict[str, str] = {}
         if user_input is not None:
-            errors = _basic_step_errors(user_input)
-            if not errors:
-                self._data["name"] = user_input["name"]
-                self._data[CONF_REGION] = user_input[CONF_REGION]
-                self._data[CONF_PRICE_SOURCE] = user_input[CONF_PRICE_SOURCE]
-                self._data[CONF_PRICE_RESOLUTION] = int(user_input[CONF_PRICE_RESOLUTION])
-                self._data[CONF_DISPLAY_UNIT] = user_input[CONF_DISPLAY_UNIT]
-                return await self.async_step_vat_and_tax()
+            self._data["name"] = user_input["name"]
+            self._data[CONF_REGION] = user_input[CONF_REGION]
+            self._data[CONF_PRICE_RESOLUTION] = int(user_input[CONF_PRICE_RESOLUTION])
+            self._data[CONF_DISPLAY_UNIT] = user_input[CONF_DISPLAY_UNIT]
+            return await self.async_step_vat_and_tax()
 
         return self.async_show_form(
             step_id="user",
-            data_schema=_user_schema({**self._data, **(user_input or {})}),
-            errors=errors,
+            data_schema=_user_schema(self._data),
         )
 
     # ------ Step 2: VAT & tax ---------------------------------------------
@@ -734,13 +701,9 @@ class KilowahtiOptionsFlow(OptionsFlow):
     # ------ Basic settings ------------------------------------------------
 
     async def async_step_basic(self, user_input: dict | None = None):
-        errors: dict[str, str] = {}
         if user_input is not None:
-            errors = _basic_step_errors(user_input)
-        if user_input is not None and not errors:
             self._options["name"] = user_input["name"]
             self._options[CONF_REGION] = user_input[CONF_REGION]
-            self._options[CONF_PRICE_SOURCE] = user_input[CONF_PRICE_SOURCE]
             self._options[CONF_PRICE_RESOLUTION] = int(user_input[CONF_PRICE_RESOLUTION])
             self._options[CONF_DISPLAY_UNIT] = user_input[CONF_DISPLAY_UNIT]
             self._options[CONF_VAT_RATE] = _to_float(user_input["vat_rate_pct"]) / 100.0
@@ -757,7 +720,6 @@ class KilowahtiOptionsFlow(OptionsFlow):
         basic_defaults = {
             "name": cur.get("name", "Home"),
             CONF_REGION: cur.get(CONF_REGION, "FI"),
-            CONF_PRICE_SOURCE: cur.get(CONF_PRICE_SOURCE, DEFAULT_PRICE_SOURCE),
             CONF_PRICE_RESOLUTION: str(cur.get(CONF_PRICE_RESOLUTION, DEFAULT_PRICE_RESOLUTION)),
             CONF_DISPLAY_UNIT: cur.get(CONF_DISPLAY_UNIT, UNIT_SNTPERKWH),
         }
@@ -771,7 +733,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
             {**_user_schema(basic_defaults).schema, **_vat_schema(vat_defaults).schema}
         )
 
-        return self.async_show_form(step_id="basic", data_schema=schema, errors=errors)
+        return self.async_show_form(step_id="basic", data_schema=schema)
 
     # ------ Transfer groups (mirrors config flow) -------------------------
 

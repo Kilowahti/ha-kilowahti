@@ -7,13 +7,11 @@
         "data": {
           "name": "Naam",
           "region": "Prijszone",
-          "price_source": "Prijsgegevensbron",
           "price_resolution": "Prijsresolutie",
           "display_unit": "Weergave-eenheid"
         },
         "data_description": {
           "name": "Wordt gebruikt in entiteitsnamen, bijv. 'Thuis'",
-          "price_source": "Kilowahti CDN is Kilowahti's eigen first-party prijsdienst (cdn.kilowahti.fi); spot-hinta.fi is een externe API.",
           "price_resolution": "15 minuten (96 blokken/dag) of 1 uur (24 blokken/dag). Kies passend bij het meetinterval van je contract.",
           "display_unit": "Sensoreenheid"
         }
@@ -156,7 +154,6 @@
         "data": {
           "name": "Naam",
           "region": "Prijszone",
-          "price_source": "Prijsgegevensbron",
           "price_resolution": "Prijsresolutie",
           "display_unit": "Weergave-eenheid",
           "vat_rate_pct": "Btw-tarief (%)",

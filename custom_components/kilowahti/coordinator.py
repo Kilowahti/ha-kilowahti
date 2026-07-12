@@ -24,6 +24,7 @@ from kilowahti.sources.kilowahti_cdn import KilowahtiCdnSource, KilowahtiCdnZone
 from kilowahti.sources.spot_hinta import SpotHintaRateLimitError, SpotHintaSource
 
 from .const import (
+    API_REGIONS,
     CONF_BATTERY_CAPACITY_KWH,
     CONF_BATTERY_CHARGE_POWER_KW,
     CONF_CONTROL_FACTOR_FUNCTION,
@@ -44,7 +45,6 @@ from .const import (
     CONF_MAX_RANK,
     CONF_MONTHLY_FIXED_COST,
     CONF_PRICE_RESOLUTION,
-    CONF_PRICE_SOURCE,
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
     CONF_SCORE_PROFILES,
@@ -73,7 +73,6 @@ from .const import (
     DEFAULT_MAX_RANK,
     DEFAULT_MONTHLY_FIXED_COST,
     DEFAULT_PRICE_RESOLUTION,
-    DEFAULT_PRICE_SOURCE,
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     DEFAULT_SHOW_ROLLING_AVERAGES,
     DEFAULT_SOLAR_WINDOW_END,
@@ -83,6 +82,7 @@ from .const import (
     DOMAIN,
     EXPORT_PRICING_FIXED,
     PRICE_SOURCE_KILOWAHTI_CDN,
+    PRICE_SOURCE_SPOT_HINTA,
     UNIT_EUROKWH,
     UNIT_SNTPERKWH,
 )
@@ -98,6 +98,11 @@ _SCORE_PERSIST_DEBOUNCE = 60  # seconds
 # HA instance's or the price region's own timezone — anchor the eager-poll
 # window to it rather than local time.
 _EAGER_POLL_TZ = ZoneInfo("Europe/Berlin")
+
+# Nord Pool publishes ~12:45 CET. If the primary source still returns no
+# tomorrow data (without erroring) past this CET hour, the eager poll starts
+# trying fallback sources; before it, a silent None is normal pre-publication.
+_FALLBACK_DEADLINE_HOUR = 15
 
 # Placeholder daily score per quartile when no consumption is recorded yet —
 # the literal midpoint of each quartile's score range (Q1: 75–100, Q4: 0–25).
@@ -121,13 +126,16 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         )
         self._entry = entry
         self._storage = storage
-        # Source choice is structural — changing it reloads the entry (see _RELOAD_REQUIRED_KEYS)
-        self._source_name: str = entry.options.get(CONF_PRICE_SOURCE, DEFAULT_PRICE_SOURCE)
-        self._source = (
-            KilowahtiCdnSource(now_fn=dt_util.utcnow)
-            if self._source_name == PRICE_SOURCE_KILOWAHTI_CDN
-            else SpotHintaSource()
-        )
+        # Automatic source chain: CDN primary, spot-hinta.fi fallback only
+        # where it has coverage. The euenergy layer slots in between once
+        # token distribution is decided (price-source-chain-plan.md).
+        self._sources: list[tuple[str, KilowahtiCdnSource | SpotHintaSource]] = [
+            (PRICE_SOURCE_KILOWAHTI_CDN, KilowahtiCdnSource(now_fn=dt_util.utcnow))
+        ]
+        if self._region in API_REGIONS:
+            self._sources.append((PRICE_SOURCE_SPOT_HINTA, SpotHintaSource()))
+        self._active_source_name: str = self._sources[0][0]
+        self._last_failover_utc: datetime | None = None
 
         # Threshold instance vars — updated by number entities and synced in the options listener
         self._max_price_value: float = entry.options.get(CONF_MAX_PRICE, DEFAULT_MAX_PRICE)
@@ -325,14 +333,8 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             self._today_date = today
             _LOGGER.debug("Restored %d today-slots from cache", len(self._today_slots))
         else:
-            # Cache stale or missing — fetch from API
-            try:
-                self._today_slots = await self._source.fetch_today(
-                    async_get_clientsession(self.hass), self._region, self._resolution
-                )
-            except Exception as err:
-                raise UpdateFailed(f"Failed to fetch today's prices: {err}") from err
-
+            # Cache stale or missing — fetch from the source chain
+            self._today_slots = await self._chain_fetch_today()
             self._today_date = today
             self._tomorrow_slots = None
             await self._storage.async_save_cache(self._today_slots, None, today)
@@ -461,9 +463,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         else:
             # No tomorrow cache — fetch today fresh
             try:
-                self._today_slots = await self._source.fetch_today(
-                    async_get_clientsession(self.hass), self._region, self._resolution
-                )
+                self._today_slots = await self._chain_fetch_today()
                 self._today_date = today
                 _LOGGER.info(
                     "Midnight rollover: fetched today from API (%d slots)", len(self._today_slots)
@@ -479,11 +479,51 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         self.async_update_listeners()
 
     # ------------------------------------------------------------------
+    # Source chain
+    # ------------------------------------------------------------------
+
+    def _mark_active_source(self, name: str) -> None:
+        if name != self._active_source_name:
+            self._last_failover_utc = dt_util.utcnow()
+            _LOGGER.warning("Price data now served by %s (was %s)", name, self._active_source_name)
+            self._active_source_name = name
+
+    async def _chain_fetch_today(self) -> list[PriceSlot]:
+        """Fetch today's prices from the first source in the chain that delivers."""
+        session = async_get_clientsession(self.hass)
+        last_err: Exception | None = None
+        for name, source in self._sources:
+            try:
+                slots = await source.fetch_today(session, self._region, self._resolution)
+            except KilowahtiCdnZoneNotFoundError as err:
+                _LOGGER.warning(
+                    "Price source %s: region %s not available; trying next source",
+                    name,
+                    self._region,
+                )
+                last_err = err
+                continue
+            except Exception as err:
+                _LOGGER.warning("Price source %s failed for today's prices: %s", name, err)
+                last_err = err
+                continue
+            self._mark_active_source(name)
+            return slots
+        raise UpdateFailed(f"All price sources failed for today's prices: {last_err}")
+
+    # ------------------------------------------------------------------
     # Eager fetch for tomorrow's prices
     # ------------------------------------------------------------------
 
     async def _async_eager_poll(self) -> None:
-        """Single poll attempt for tomorrow's prices; reschedules if not yet available."""
+        """Single poll attempt for tomorrow's prices; reschedules if not yet available.
+
+        The primary source returning None (not yet published) is normal
+        before _FALLBACK_DEADLINE_HOUR CET and only reschedules; past the
+        deadline the remaining sources are tried in chain order. Source
+        errors always advance the chain. A tomorrow fetched from a fallback
+        source is final for the day — polling stops once slots are stored.
+        """
         if self._tomorrow_slots is not None:
             return
 
@@ -492,34 +532,62 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             _LOGGER.debug("Eager fetch: window closed at %d:00 CET/CEST", eager_end)
             return
 
-        try:
-            slots = await self._source.fetch_tomorrow(
-                async_get_clientsession(self.hass), self._region, self._resolution
-            )
-        except SpotHintaRateLimitError as err:
-            _LOGGER.warning("Eager fetch: rate-limited; retrying in %ds", err.retry_after)
-            self._schedule_eager_poll(err.retry_after)
-            return
-        except KilowahtiCdnZoneNotFoundError:
-            _LOGGER.error(
-                "Eager fetch: region %s has no data on the Kilowahti CDN; not retrying",
-                self._region,
-            )
-            return
-        except Exception as err:
-            _LOGGER.warning("Eager fetch: error polling for tomorrow: %s", err)
-            self._schedule_eager_poll(60)
+        session = async_get_clientsession(self.hass)
+        past_deadline = self._now_cet().hour >= _FALLBACK_DEADLINE_HOUR
+        retry_delay: float = 60
+        permanent_failures = 0
+        slots: list[PriceSlot] | None = None
+        served_by: str | None = None
+
+        for index, (name, source) in enumerate(self._sources):
+            is_primary = index == 0
+            try:
+                result = await source.fetch_tomorrow(session, self._region, self._resolution)
+            except SpotHintaRateLimitError as err:
+                _LOGGER.warning(
+                    "Eager fetch: %s rate-limited; retrying in %ds", name, err.retry_after
+                )
+                retry_delay = max(retry_delay, err.retry_after)
+                continue
+            except KilowahtiCdnZoneNotFoundError:
+                _LOGGER.warning(
+                    "Eager fetch: region %s not available on %s; trying next source",
+                    self._region,
+                    name,
+                )
+                permanent_failures += 1
+                continue
+            except Exception as err:
+                _LOGGER.warning("Eager fetch: %s error polling for tomorrow: %s", name, err)
+                continue
+
+            if result is None:
+                if is_primary and not past_deadline:
+                    _LOGGER.debug("Eager fetch: tomorrow not yet published; retrying in 60s")
+                    self._schedule_eager_poll(60)
+                    return
+                _LOGGER.debug("Eager fetch: %s has no tomorrow data", name)
+                continue
+
+            slots = result
+            served_by = name
+            break
+
+        if slots is None or served_by is None:
+            if permanent_failures == len(self._sources):
+                _LOGGER.error(
+                    "Eager fetch: region %s has no data on any configured source; not retrying",
+                    self._region,
+                )
+                return
+            self._schedule_eager_poll(retry_delay)
             return
 
-        if slots is None:
-            _LOGGER.debug("Eager fetch: tomorrow not yet published; retrying in 60s")
-            self._schedule_eager_poll(60)
-            return
-
+        self._mark_active_source(served_by)
         self._tomorrow_slots = slots
         today = self._today_date or dt_util.as_local(dt_util.utcnow()).date()
         await self._storage.async_save_cache(self._today_slots, self._tomorrow_slots, today)
-        _LOGGER.info("Eager fetch: got %d tomorrow-slots", len(slots))
+        _LOGGER.info("Eager fetch: got %d tomorrow-slots from %s", len(slots), served_by)
         self.async_update_listeners()
 
     def _schedule_eager_poll(self, delay_seconds: float) -> None:
@@ -706,7 +774,13 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
     @property
     def price_source_name(self) -> str:
-        return self._source_name
+        """Source currently serving the price data."""
+        return self._active_source_name
+
+    @property
+    def last_failover_utc(self) -> datetime | None:
+        """UTC time of the most recent change of serving source, if any."""
+        return self._last_failover_utc
 
     # ------------------------------------------------------------------
     # Today / tomorrow statistics

@@ -45,6 +45,22 @@ async def test_spot_price_state_is_numeric(hass, setup_integration, mock_utcnow)
     assert float(state.state) == pytest.approx(3.765, rel=1e-3)
 
 
+async def test_price_data_source_sensor(hass, setup_integration, mock_utcnow):
+    """Diagnostic sensor reports the serving source and the failover timestamp.
+
+    setup_integration mocks only spot-hinta, so the CDN primary fails and the
+    chain records a failover to spot_hinta.
+    """
+    entry = setup_integration
+    entity_id = _entity_id(hass, "sensor", entry.entry_id, "price_data_source")
+    assert entity_id is not None
+
+    state = hass.states.get(entity_id)
+    assert state is not None
+    assert state.state == "spot_hinta"
+    assert state.attributes["last_failover"] is not None
+
+
 async def test_tomorrow_stats_unknown_when_no_tomorrow(hass, setup_integration, mock_utcnow):
     """tomorrow_spot_avg/min/max sensors are unknown when tomorrow prices are not available."""
     entry = setup_integration

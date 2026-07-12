@@ -7,13 +7,11 @@
         "data": {
           "name": "Name",
           "region": "Preiszone",
-          "price_source": "Preisdatenquelle",
           "price_resolution": "Preisauflösung",
           "display_unit": "Anzeigeeinheit"
         },
         "data_description": {
           "name": "Wird in Entitätsnamen verwendet, z. B. 'Zuhause'",
-          "price_source": "Kilowahti CDN ist Kilowahtis eigener First-Party-Preisdienst (cdn.kilowahti.fi); spot-hinta.fi ist eine Dritt-API.",
           "price_resolution": "15 Minuten (96 Intervalle/Tag) oder 1 Stunde (24 Intervalle/Tag). Wähle passend zum Messintervall deines Vertrags.",
           "display_unit": "Sensoreinheit"
         }
@@ -156,7 +154,6 @@
         "data": {
           "name": "Name",
           "region": "Preiszone",
-          "price_source": "Preisdatenquelle",
           "price_resolution": "Preisauflösung",
           "display_unit": "Anzeigeeinheit",
           "vat_rate_pct": "MwSt.-Satz (%)",

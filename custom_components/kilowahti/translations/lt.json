@@ -7,13 +7,11 @@
         "data": {
           "name": "Pavadinimas",
           "region": "Kainų zona",
-          "price_source": "Kainų duomenų šaltinis",
           "price_resolution": "Kainų raiška",
           "display_unit": "Rodymo vienetas"
         },
         "data_description": {
           "name": "Naudojamas esybių pavadinimuose, pvz., 'Namai'",
-          "price_source": "Kilowahti CDN yra paties Kilowahti pirmosios šalies kainų paslauga (cdn.kilowahti.fi); spot-hinta.fi yra trečiosios šalies API.",
           "price_resolution": "15 minučių (96 intervalai per dieną) arba 1 valanda (24 intervalai per dieną). Pasirinkite pagal savo sutarties apskaitos intervalą.",
           "display_unit": "Jutiklio vienetas"
         }
@@ -156,7 +154,6 @@
         "data": {
           "name": "Pavadinimas",
           "region": "Kainų zona",
-          "price_source": "Kainų duomenų šaltinis",
           "price_resolution": "Kainų raiška",
           "display_unit": "Rodymo vienetas",
           "vat_rate_pct": "PVM tarifas (%)",

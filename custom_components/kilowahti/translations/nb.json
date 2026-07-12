@@ -8,14 +8,12 @@
           "name": "Navn",
           "region": "Prisområde",
           "price_resolution": "Prisoppløsning",
-          "display_unit": "Displayenhet",
-          "price_source": "Prisdatakilde"
+          "display_unit": "Displayenhet"
         },
         "data_description": {
           "name": "Brukes i enhetsnavn, f.eks. 'Hjem'",
           "price_resolution": "15 minutter (96 sloter/dag) eller 1 time (24 sloter/dag). Match kontraktens måleintervall.",
-          "display_unit": "Sensorenhet",
-          "price_source": "Kilowahti CDN er Kilowahtis egen førstepartspristjeneste (cdn.kilowahti.fi); spot-hinta.fi er en tredjeparts API."
+          "display_unit": "Sensorenhet"
         }
       },
       "vat_and_tax": {
@@ -160,8 +158,7 @@
           "vat_rate_pct": "Momssats (%)",
           "electricity_tax": "Strømskatt (c/kWh)",
           "spot_commission": "Spotprisprovisjon (c/kWh)",
-          "monthly_fixed_cost": "Strømkontrakt fast kostnad (€/måned)",
-          "price_source": "Prisdatakilde"
+          "monthly_fixed_cost": "Strømkontrakt fast kostnad (€/måned)"
         }
       },
       "transfer_groups": {

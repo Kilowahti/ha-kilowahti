@@ -7,13 +7,11 @@
         "data": {
           "name": "Názov",
           "region": "Cenová zóna",
-          "price_source": "Zdroj cenových údajov",
           "price_resolution": "Rozlíšenie cien",
           "display_unit": "Jednotka zobrazenia"
         },
         "data_description": {
           "name": "Používa sa v názvoch entít, napr. 'Domov'",
-          "price_source": "Kilowahti CDN je vlastná cenová služba Kilowahti (cdn.kilowahti.fi); spot-hinta.fi je API tretej strany.",
           "price_resolution": "15 minút (96 intervalov/deň) alebo 1 hodina (24 intervalov/deň). Zvoľte podľa meracieho intervalu vašej zmluvy.",
           "display_unit": "Jednotka senzora"
         }
@@ -156,7 +154,6 @@
         "data": {
           "name": "Názov",
           "region": "Cenová zóna",
-          "price_source": "Zdroj cenových údajov",
           "price_resolution": "Rozlíšenie cien",
           "display_unit": "Jednotka zobrazenia",
           "vat_rate_pct": "Sadzba DPH (%)",

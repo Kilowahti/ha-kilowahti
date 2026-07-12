@@ -7,13 +7,11 @@
         "data": {
           "name": "Nom",
           "region": "Zone de prix",
-          "price_source": "Source des données de prix",
           "price_resolution": "Résolution des prix",
           "display_unit": "Unité d'affichage"
         },
         "data_description": {
           "name": "Utilisé dans les noms d'entités, p. ex. 'Maison'",
-          "price_source": "Kilowahti CDN est le service de prix propre à Kilowahti (cdn.kilowahti.fi) ; spot-hinta.fi est une API tierce.",
           "price_resolution": "15 minutes (96 créneaux/jour) ou 1 heure (24 créneaux/jour). Choisissez selon l'intervalle de comptage de votre contrat.",
           "display_unit": "Unité du capteur"
         }
@@ -156,7 +154,6 @@
         "data": {
           "name": "Nom",
           "region": "Zone de prix",
-          "price_source": "Source des données de prix",
           "price_resolution": "Résolution des prix",
           "display_unit": "Unité d'affichage",
           "vat_rate_pct": "Taux de TVA (%)",

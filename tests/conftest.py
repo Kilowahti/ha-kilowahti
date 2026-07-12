@@ -27,7 +27,6 @@ from custom_components.kilowahti.const import (
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
     CONF_PRICE_RESOLUTION,
-    CONF_PRICE_SOURCE,
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
     CONF_SCORE_PROFILES,
@@ -44,7 +43,6 @@ from custom_components.kilowahti.const import (
     DEFAULT_HIGH_PRECISION,
     DEFAULT_MAX_PRICE,
     DEFAULT_MAX_RANK,
-    DEFAULT_PRICE_SOURCE,
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     DEFAULT_SPOT_COMMISSION,
     DEFAULT_VAT_RATE,
@@ -154,7 +152,6 @@ def options():
     return {
         "name": "Test Home",
         CONF_REGION: "FI",
-        CONF_PRICE_SOURCE: DEFAULT_PRICE_SOURCE,
         CONF_PRICE_RESOLUTION: 60,  # HOUR — 24 slots/day
         CONF_DISPLAY_UNIT: UNIT_SNTPERKWH,
         CONF_VAT_RATE: DEFAULT_VAT_RATE,

@@ -46,6 +46,7 @@ from .const import (
     SENSOR_NEXT_SOLAR_WINDOW_AVG,
     SENSOR_OPTIMAL_CHARGE_WINDOW_END,
     SENSOR_OPTIMAL_CHARGE_WINDOW_START,
+    SENSOR_PRICE_DATA_SOURCE,
     SENSOR_PRICE_QUARTILE,
     SENSOR_PRICE_RANK,
     SENSOR_SELF_CONSUMPTION_VALUE,
@@ -256,6 +257,12 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         native_unit_of_measurement=None,
     ),
     KilowahtiSensorEntityDescription(
+        key=SENSOR_PRICE_DATA_SOURCE,
+        translation_key=SENSOR_PRICE_DATA_SOURCE,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda c: c.price_source_name,
+    ),
+    KilowahtiSensorEntityDescription(
         key=SENSOR_SETTING_MAX_PRICE,
         translation_key=SENSOR_SETTING_MAX_PRICE,
         entity_category=EntityCategory.DIAGNOSTIC,
@@ -398,6 +405,8 @@ async def async_setup_entry(
             continue
         if key == SENSOR_SPOT_PRICE:
             entities.append(KilowahtiSpotPriceSensor(coordinator, entry, description))
+        elif key == SENSOR_PRICE_DATA_SOURCE:
+            entities.append(KilowahtiPriceDataSourceSensor(coordinator, entry, description))
         elif key == SENSOR_CONTROL_FACTOR_TRANSFER:
             entities.append(KilowahtiTransferRankSensor(coordinator, entry, description))
         elif key in (SENSOR_OPTIMAL_CHARGE_WINDOW_START, SENSOR_OPTIMAL_CHARGE_WINDOW_END):
@@ -506,6 +515,18 @@ class KilowahtiSpotPriceSensor(KilowahtiSensor):
         if tomorrow_arr is not None:
             attrs["tomorrow_prices"] = tomorrow_arr
         return attrs
+
+
+# ---------------------------------------------------------------------------
+# Price data source diagnostic sensor
+# ---------------------------------------------------------------------------
+
+
+class KilowahtiPriceDataSourceSensor(KilowahtiSensor):
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        failover = self.coordinator.last_failover_utc
+        return {"last_failover": failover.isoformat() if failover is not None else None}
 
 
 # ---------------------------------------------------------------------------

@@ -17,7 +17,6 @@ from custom_components.kilowahti.const import (
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
     CONF_PRICE_RESOLUTION,
-    CONF_PRICE_SOURCE,
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
     CONF_SHOW_ROLLING_AVERAGES,
@@ -33,13 +32,11 @@ from custom_components.kilowahti.const import (
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     DEFAULT_SHOW_ROLLING_AVERAGES,
     DOMAIN,
-    PRICE_SOURCE_KILOWAHTI_CDN,
-    PRICE_SOURCE_SPOT_HINTA,
     UNIT_SNTPERKWH,
 )
 from homeassistant.data_entry_flow import FlowResultType
 
-from .conftest import CDN_PAYLOAD, CDN_URL_RE, TODAY_PAYLOAD, TODAY_URL_RE, TOMORROW_URL_RE
+from .conftest import CDN_PAYLOAD, TODAY_PAYLOAD, TODAY_URL_RE, TOMORROW_URL_RE
 
 # ---------------------------------------------------------------------------
 # Helpers to walk the multi-step config flow
@@ -57,7 +54,6 @@ async def _complete_config_flow(hass) -> dict:
         user_input={
             "name": "Test Home",
             CONF_REGION: "FI",
-            CONF_PRICE_SOURCE: PRICE_SOURCE_SPOT_HINTA,
             CONF_PRICE_RESOLUTION: "60",
             CONF_DISPLAY_UNIT: UNIT_SNTPERKWH,
         },
@@ -124,7 +120,6 @@ async def test_config_flow_creates_entry_with_correct_options(hass, mock_utcnow)
     assert result["type"] == FlowResultType.CREATE_ENTRY
     opts = result["options"]
     assert opts[CONF_REGION] == "FI"
-    assert opts[CONF_PRICE_SOURCE] == PRICE_SOURCE_SPOT_HINTA
     assert opts[CONF_PRICE_RESOLUTION] == 60
     assert opts[CONF_DISPLAY_UNIT] == UNIT_SNTPERKWH
     assert opts[CONF_VAT_RATE] == 0.255
@@ -153,26 +148,8 @@ async def test_config_flow_offers_all_43_zones(hass):
     assert by_value["IE-SEM"] == "IE-SEM — Ireland (SEM)"
 
 
-async def test_config_flow_spot_hinta_rejected_for_non_nordic_zone(hass):
-    result = await hass.config_entries.flow.async_init(DOMAIN, context={"source": "user"})
-    result = await hass.config_entries.flow.async_configure(
-        result["flow_id"],
-        user_input={
-            "name": "Test Home",
-            CONF_REGION: "ES",
-            CONF_PRICE_SOURCE: PRICE_SOURCE_SPOT_HINTA,
-            CONF_PRICE_RESOLUTION: "60",
-            CONF_DISPLAY_UNIT: UNIT_SNTPERKWH,
-        },
-    )
-
-    assert result["type"] == FlowResultType.FORM
-    assert result["step_id"] == "user"
-    assert result["errors"] == {CONF_PRICE_SOURCE: "source_region_unsupported"}
-
-
 async def test_config_flow_cdn_only_zone_completes(hass, mock_utcnow):
-    """A zone outside spot-hinta coverage completes the flow with the CDN source."""
+    """A zone outside spot-hinta coverage completes the flow (CDN serves it)."""
     await hass.config.async_set_time_zone("UTC")
 
     pt_url = re.compile(r"https://cdn\.kilowahti\.fi/v1/pt/latest\.json")
@@ -185,7 +162,6 @@ async def test_config_flow_cdn_only_zone_completes(hass, mock_utcnow):
             user_input={
                 "name": "Test Home",
                 CONF_REGION: "PT",
-                CONF_PRICE_SOURCE: PRICE_SOURCE_KILOWAHTI_CDN,
                 CONF_PRICE_RESOLUTION: "60",
                 CONF_DISPLAY_UNIT: UNIT_SNTPERKWH,
             },
@@ -224,35 +200,6 @@ async def test_config_flow_cdn_only_zone_completes(hass, mock_utcnow):
 
     assert result["type"] == FlowResultType.CREATE_ENTRY
     assert result["options"][CONF_REGION] == "PT"
-    assert result["options"][CONF_PRICE_SOURCE] == PRICE_SOURCE_KILOWAHTI_CDN
-
-
-async def test_options_flow_spot_hinta_rejected_for_non_nordic_zone(
-    hass, setup_integration, mock_utcnow
-):
-    entry = setup_integration
-    result = await hass.config_entries.options.async_init(entry.entry_id)
-    result = await hass.config_entries.options.async_configure(
-        result["flow_id"], user_input={"next_step_id": "basic"}
-    )
-
-    result = await hass.config_entries.options.async_configure(
-        result["flow_id"],
-        user_input={
-            "name": "Test Home",
-            CONF_REGION: "DE-LU",
-            CONF_PRICE_SOURCE: PRICE_SOURCE_SPOT_HINTA,
-            CONF_PRICE_RESOLUTION: "60",
-            CONF_DISPLAY_UNIT: UNIT_SNTPERKWH,
-            "vat_rate_pct": 19.0,
-            "electricity_tax": 2.05,
-            "spot_commission": 0.0,
-        },
-    )
-
-    assert result["type"] == FlowResultType.FORM
-    assert result["step_id"] == "basic"
-    assert result["errors"] == {CONF_PRICE_SOURCE: "source_region_unsupported"}
 
 
 # ---------------------------------------------------------------------------
@@ -276,7 +223,6 @@ async def test_options_flow_vat_change_no_reload(hass, setup_integration, mock_u
     new_input = {
         "name": "Test Home",
         CONF_REGION: "FI",
-        CONF_PRICE_SOURCE: PRICE_SOURCE_SPOT_HINTA,
         CONF_PRICE_RESOLUTION: "60",
         CONF_DISPLAY_UNIT: UNIT_SNTPERKWH,
         "vat_rate_pct": 10.0,  # Changed from 25.5%
@@ -330,37 +276,3 @@ async def test_options_flow_region_change_triggers_reload(hass, setup_integratio
     coord_after = hass.data[DOMAIN].get(entry.entry_id)
     assert coord_after is not None
     assert coord_after is not coord_before
-
-
-async def test_options_flow_source_change_triggers_reload(hass, setup_integration, mock_utcnow):
-    """Changing the price data source via options flow triggers a full reload."""
-    entry = setup_integration
-    coord_before = hass.data[DOMAIN][entry.entry_id]
-
-    result = await hass.config_entries.options.async_init(entry.entry_id)
-    result = await hass.config_entries.options.async_configure(
-        result["flow_id"], user_input={"next_step_id": "basic"}
-    )
-
-    new_input = {
-        "name": "Test Home",
-        CONF_REGION: "FI",
-        CONF_PRICE_SOURCE: PRICE_SOURCE_KILOWAHTI_CDN,  # Changed from spot_hinta
-        CONF_PRICE_RESOLUTION: "60",
-        CONF_DISPLAY_UNIT: UNIT_SNTPERKWH,
-        "vat_rate_pct": 25.5,
-        "electricity_tax": 2.253,
-        "spot_commission": 0.0,
-    }
-    with aioresponses() as m:
-        m.get(CDN_URL_RE, payload=CDN_PAYLOAD, repeat=True)
-        result = await hass.config_entries.options.async_configure(
-            result["flow_id"], user_input=new_input
-        )
-        await hass.async_block_till_done()
-
-    assert result["type"] == FlowResultType.CREATE_ENTRY
-    coord_after = hass.data[DOMAIN].get(entry.entry_id)
-    assert coord_after is not None
-    assert coord_after is not coord_before
-    assert coord_after.price_source_name == PRICE_SOURCE_KILOWAHTI_CDN

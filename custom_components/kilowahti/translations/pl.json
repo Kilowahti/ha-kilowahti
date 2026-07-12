@@ -7,13 +7,11 @@
         "data": {
           "name": "Nazwa",
           "region": "Strefa cenowa",
-          "price_source": "Źródło danych cenowych",
           "price_resolution": "Rozdzielczość cen",
           "display_unit": "Jednostka wyświetlania"
         },
         "data_description": {
           "name": "Używana w nazwach encji, np. 'Dom'",
-          "price_source": "Kilowahti CDN to własna usługa cenowa Kilowahti (cdn.kilowahti.fi); spot-hinta.fi to zewnętrzne API.",
           "price_resolution": "15 minut (96 przedziałów/dobę) lub 1 godzina (24 przedziały/dobę). Dopasuj do interwału pomiarowego swojej umowy.",
           "display_unit": "Jednostka sensora"
         }
@@ -156,7 +154,6 @@
         "data": {
           "name": "Nazwa",
           "region": "Strefa cenowa",
-          "price_source": "Źródło danych cenowych",
           "price_resolution": "Rozdzielczość cen",
           "display_unit": "Jednostka wyświetlania",
           "vat_rate_pct": "Stawka VAT (%)",
