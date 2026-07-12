@@ -5,13 +5,17 @@ from __future__ import annotations
 import re
 
 from aioresponses import aioresponses
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.kilowahti.const import (
     CONF_CONTROL_FACTOR_FUNCTION,
     CONF_CONTROL_FACTOR_SCALING,
+    CONF_CURRENCY_MODE,
     CONF_DISPLAY_UNIT,
     CONF_EXPOSE_PRICE_ARRAYS,
     CONF_FORWARD_AVG_HOURS,
+    CONF_FX_MODE,
+    CONF_FX_RATE,
     CONF_GENERATION_ENABLED,
     CONF_HIGH_PRECISION,
     CONF_MAX_PRICE,
@@ -21,6 +25,7 @@ from custom_components.kilowahti.const import (
     CONF_REGION,
     CONF_SHOW_ROLLING_AVERAGES,
     CONF_VAT_RATE,
+    CURRENCY_MODE_LOCAL,
     DEFAULT_CONTROL_FACTOR_FUNCTION,
     DEFAULT_CONTROL_FACTOR_SCALING,
     DEFAULT_EXPOSE_PRICE_ARRAYS,
@@ -32,6 +37,7 @@ from custom_components.kilowahti.const import (
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     DEFAULT_SHOW_ROLLING_AVERAGES,
     DOMAIN,
+    FX_MODE_MANUAL,
     UNIT_SNTPERKWH,
 )
 from homeassistant.data_entry_flow import FlowResultType
@@ -276,3 +282,140 @@ async def test_options_flow_region_change_triggers_reload(hass, setup_integratio
     coord_after = hass.data[DOMAIN].get(entry.entry_id)
     assert coord_after is not None
     assert coord_after is not coord_before
+
+
+# ---------------------------------------------------------------------------
+# Currency step (CUR2)
+# ---------------------------------------------------------------------------
+
+SE1_CDN_URL = re.compile(r"https://cdn\.kilowahti\.fi/v1/se1/latest\.json")
+
+
+async def test_config_flow_currency_step_for_non_eur_zone(hass, mock_utcnow):
+    """SE1 shows the currency step; EUR zones skip it (covered by the FI flow test)."""
+    await hass.config.async_set_time_zone("UTC")
+
+    with aioresponses() as m:
+        m.get(SE1_CDN_URL, payload=CDN_PAYLOAD, repeat=True)
+
+        result = await hass.config_entries.flow.async_init(DOMAIN, context={"source": "user"})
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"],
+            user_input={
+                "name": "Test Home",
+                CONF_REGION: "SE1",
+                CONF_PRICE_RESOLUTION: "60",
+                CONF_DISPLAY_UNIT: UNIT_SNTPERKWH,
+            },
+        )
+        assert result["step_id"] == "currency"
+
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"],
+            user_input={
+                CONF_CURRENCY_MODE: CURRENCY_MODE_LOCAL,
+                CONF_FX_MODE: FX_MODE_MANUAL,
+                CONF_FX_RATE: 11.0,
+            },
+        )
+        assert result["step_id"] == "vat_and_tax"
+
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"],
+            user_input={"vat_rate_pct": 25.0, "electricity_tax": 0.439, "spot_commission": 0.0},
+        )
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], user_input={"action": "continue"}
+        )
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"],
+            user_input={
+                CONF_MAX_PRICE: DEFAULT_MAX_PRICE,
+                CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER: DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
+                CONF_MAX_RANK: DEFAULT_MAX_RANK,
+                CONF_FORWARD_AVG_HOURS: DEFAULT_FORWARD_AVG_HOURS,
+                CONF_CONTROL_FACTOR_FUNCTION: DEFAULT_CONTROL_FACTOR_FUNCTION,
+                CONF_CONTROL_FACTOR_SCALING: DEFAULT_CONTROL_FACTOR_SCALING,
+            },
+        )
+        result = await hass.config_entries.flow.async_configure(result["flow_id"], user_input={})
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"],
+            user_input={
+                CONF_EXPOSE_PRICE_ARRAYS: DEFAULT_EXPOSE_PRICE_ARRAYS,
+                CONF_GENERATION_ENABLED: DEFAULT_GENERATION_ENABLED,
+                CONF_HIGH_PRECISION: DEFAULT_HIGH_PRECISION,
+                CONF_SHOW_ROLLING_AVERAGES: DEFAULT_SHOW_ROLLING_AVERAGES,
+            },
+        )
+        await hass.async_block_till_done()
+
+    assert result["type"] == FlowResultType.CREATE_ENTRY
+    opts = result["options"]
+    assert opts[CONF_CURRENCY_MODE] == CURRENCY_MODE_LOCAL
+    assert opts[CONF_FX_MODE] == FX_MODE_MANUAL
+    assert opts[CONF_FX_RATE] == 11.0
+
+
+async def test_options_flow_currency_flip_converts_values(hass, options, mock_utcnow):
+    """Flipping EUR → local multiplies stored currency-typed values by the rate."""
+    await hass.config.async_set_time_zone("UTC")
+    options = {
+        **options,
+        CONF_REGION: "SE1",
+        CONF_MAX_PRICE: 5.0,
+        "spot_commission": 0.5,
+        "transfer_groups": [
+            {
+                "id": "g1",
+                "label": "General",
+                "active": True,
+                "monthly_fixed_cost": 4.0,
+                "tiers": [
+                    {
+                        "label": "Base",
+                        "price": 3.0,
+                        "months": list(range(1, 13)),
+                        "weekdays": list(range(7)),
+                        "hour_start": 0,
+                        "hour_end": 24,
+                        "priority": 100,
+                    }
+                ],
+            }
+        ],
+    }
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=options)
+    with aioresponses() as m:
+        m.get(SE1_CDN_URL, payload=CDN_PAYLOAD, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+        result = await hass.config_entries.options.async_init(entry.entry_id)
+        result = await hass.config_entries.options.async_configure(
+            result["flow_id"], user_input={"next_step_id": "basic"}
+        )
+        result = await hass.config_entries.options.async_configure(
+            result["flow_id"],
+            user_input={
+                "name": "Test Home",
+                CONF_REGION: "SE1",
+                CONF_PRICE_RESOLUTION: "60",
+                CONF_DISPLAY_UNIT: UNIT_SNTPERKWH,
+                "vat_rate_pct": 25.0,
+                "electricity_tax": 0.439,
+                "spot_commission": 0.5,
+                CONF_CURRENCY_MODE: CURRENCY_MODE_LOCAL,
+                CONF_FX_MODE: FX_MODE_MANUAL,
+                CONF_FX_RATE: 10.0,
+            },
+        )
+        await hass.async_block_till_done()
+
+    assert result["type"] == FlowResultType.CREATE_ENTRY
+    assert entry.options[CONF_MAX_PRICE] == 50.0
+    assert entry.options["spot_commission"] == 5.0
+    group = entry.options["transfer_groups"][0]
+    assert group["monthly_fixed_cost"] == 40.0
+    assert group["tiers"][0]["price"] == 30.0

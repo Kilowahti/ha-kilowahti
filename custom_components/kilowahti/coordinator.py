@@ -20,6 +20,7 @@ from homeassistant.helpers.event import (
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.util import dt as dt_util
 from kilowahti import calc
+from kilowahti.sources.ecb import fetch_ecb_rate
 from kilowahti.sources.kilowahti_cdn import KilowahtiCdnSource, KilowahtiCdnZoneNotFoundError
 from kilowahti.sources.spot_hinta import SpotHintaRateLimitError, SpotHintaSource
 
@@ -29,6 +30,7 @@ from .const import (
     CONF_BATTERY_CHARGE_POWER_KW,
     CONF_CONTROL_FACTOR_FUNCTION,
     CONF_CONTROL_FACTOR_SCALING,
+    CONF_CURRENCY_MODE,
     CONF_DISPLAY_UNIT,
     CONF_EAGER_END_HOUR,
     CONF_EAGER_START_HOUR,
@@ -39,6 +41,8 @@ from .const import (
     CONF_EXPOSE_PRICE_ARRAYS,
     CONF_FIXED_EXPORT_RATE,
     CONF_FORWARD_AVG_HOURS,
+    CONF_FX_MODE,
+    CONF_FX_RATE,
     CONF_GENERATION_ENABLED,
     CONF_HIGH_PRECISION,
     CONF_MAX_PRICE,
@@ -54,6 +58,10 @@ from .const import (
     CONF_SPOT_COMMISSION,
     CONF_TRANSFER_GROUPS,
     CONF_VAT_RATE,
+    CURRENCY_FOR_REGION,
+    CURRENCY_MODE_EUR,
+    CURRENCY_MODE_LOCAL,
+    CURRENCY_UNITS,
     DEFAULT_BATTERY_CAPACITY_KWH,
     DEFAULT_BATTERY_CHARGE_POWER_KW,
     DEFAULT_CONTROL_FACTOR_FUNCTION,
@@ -80,7 +88,10 @@ from .const import (
     DEFAULT_SPOT_COMMISSION,
     DEFAULT_VAT_RATE,
     DOMAIN,
+    ECB_CURRENCIES,
     EXPORT_PRICING_FIXED,
+    FX_MODE_AUTO,
+    FX_MODE_MANUAL,
     PRICE_SOURCE_KILOWAHTI_CDN,
     PRICE_SOURCE_SPOT_HINTA,
     UNIT_EUROKWH,
@@ -136,6 +147,14 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             self._sources.append((PRICE_SOURCE_SPOT_HINTA, SpotHintaSource()))
         self._active_source_name: str = self._sources[0][0]
         self._last_failover_utc: datetime | None = None
+
+        # FX state for local-currency display. The active rate is frozen per
+        # local day; the daily ECB fetch stages the next day's rate, which is
+        # promoted at midnight rollover.
+        self._fx_active_rate: float | None = None
+        self._fx_active_date: str | None = None
+        self._fx_staged_rate: float | None = None
+        self._fx_staged_date: str | None = None
 
         # Threshold instance vars — updated by number entities and synced in the options listener
         self._max_price_value: float = entry.options.get(CONF_MAX_PRICE, DEFAULT_MAX_PRICE)
@@ -346,6 +365,8 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         self._month_scores = self._storage.get_month_scores()
         self._last_meter_values = self._storage.get_last_meter_values()
 
+        await self._async_init_fx()
+
         return None
 
     # ------------------------------------------------------------------
@@ -384,6 +405,16 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         # Start eager polling for tomorrow's prices, anchored to CET/CEST (see
         # _EAGER_POLL_TZ) rather than HA local time.
         self._schedule_eager_start_timer(eager_start)
+
+        # Daily FX refresh after ECB publish (~16:00 CET); callback no-ops
+        # unless local currency + auto mode are active, so fx_mode changes
+        # need no reload.
+        if self.currency in ECB_CURRENCIES:
+            self._unsubscribers.append(
+                async_track_time_change(
+                    self.hass, self._on_fx_refresh, hour=17, minute=15, second=0
+                )
+            )
 
         await self._async_setup_score_tracking()
 
@@ -473,6 +504,9 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
         await self._storage.async_save_cache(self._today_slots, None, today)
 
+        # New local day — the staged FX rate becomes active
+        await self._async_promote_staged_fx()
+
         # Finalise yesterday's score and reset
         await self._async_finalise_daily_scores()
 
@@ -510,6 +544,77 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             self._mark_active_source(name)
             return slots
         raise UpdateFailed(f"All price sources failed for today's prices: {last_err}")
+
+    # ------------------------------------------------------------------
+    # FX rate lifecycle (auto mode)
+    # ------------------------------------------------------------------
+
+    async def _async_init_fx(self) -> None:
+        """Restore persisted FX state; fetch immediately only on first start."""
+        if self.currency == "EUR":
+            return
+        data = self._storage.get_fx()
+        if data.get("currency") == self.currency:
+            self._fx_active_rate = data.get("active_rate")
+            self._fx_active_date = data.get("active_date")
+            self._fx_staged_rate = data.get("staged_rate")
+            self._fx_staged_date = data.get("staged_date")
+        if (
+            self._currency_mode == CURRENCY_MODE_LOCAL
+            and self.fx_mode == FX_MODE_AUTO
+            and self._fx_active_rate is None
+            and self.currency in ECB_CURRENCIES
+        ):
+            await self._async_fetch_fx(stage_only=False)
+
+    async def _async_fetch_fx(self, stage_only: bool = True) -> None:
+        """Fetch the ECB reference rate. Staged rates apply at rollover so the
+        active rate never changes mid-day; stage_only=False applies at once
+        (first start without a persisted rate)."""
+        try:
+            result = await fetch_ecb_rate(async_get_clientsession(self.hass), self.currency)
+        except Exception as err:
+            _LOGGER.warning("ECB rate fetch failed for %s: %s", self.currency, err)
+            return
+        self._fx_staged_rate = result.rate
+        self._fx_staged_date = str(result.rate_date)
+        if not stage_only or self._fx_active_rate is None:
+            self._fx_active_rate = result.rate
+            self._fx_active_date = str(dt_util.as_local(dt_util.utcnow()).date())
+            self.async_update_listeners()
+        await self._async_save_fx()
+
+    async def _async_save_fx(self) -> None:
+        await self._storage.async_save_fx(
+            {
+                "currency": self.currency,
+                "active_rate": self._fx_active_rate,
+                "active_date": self._fx_active_date,
+                "staged_rate": self._fx_staged_rate,
+                "staged_date": self._fx_staged_date,
+            }
+        )
+
+    async def _async_promote_staged_fx(self) -> None:
+        """Apply the staged rate as the new day's active rate (midnight rollover)."""
+        if self.currency == "EUR" or self._fx_staged_rate is None:
+            return
+        if self._fx_staged_rate != self._fx_active_rate:
+            _LOGGER.info(
+                "FX rate for %s updated at rollover: %s → %s per EUR",
+                self.currency,
+                self._fx_active_rate,
+                self._fx_staged_rate,
+            )
+        self._fx_active_rate = self._fx_staged_rate
+        self._fx_active_date = str(dt_util.as_local(dt_util.utcnow()).date())
+        await self._async_save_fx()
+
+    @callback
+    def _on_fx_refresh(self, _now: datetime) -> None:
+        """Daily post-ECB-publish fetch; stages the rate for the next day."""
+        if self._currency_mode == CURRENCY_MODE_LOCAL and self.fx_mode == FX_MODE_AUTO:
+            self.hass.async_create_task(self._async_fetch_fx())
 
     # ------------------------------------------------------------------
     # Eager fetch for tomorrow's prices
@@ -666,8 +771,12 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     # ------------------------------------------------------------------
 
     def _spot_effective(self, slot: PriceSlot) -> float:
-        """Apply VAT to raw spot price, then add commission (gross). API always returns prices excl. VAT."""
-        return calc.spot_effective(slot, self._vat_rate, self._spot_commission)
+        """Apply FX and VAT to raw spot price, then add commission (gross).
+
+        API always returns prices excl. VAT in EUR; user-entered values
+        (commission, transfer, thresholds) are already in the local currency.
+        """
+        return calc.spot_effective(slot, self._vat_rate, self._spot_commission, rate=self.fx_rate)
 
     def _energy_price_for_slot(self, slot: PriceSlot) -> float:
         """Return effective energy price for a slot, respecting fixed-price periods."""
@@ -760,17 +869,88 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             return effective + transfer
         return effective
 
+    # ------------------------------------------------------------------
+    # Currency / FX
+    # ------------------------------------------------------------------
+
+    @property
+    def currency(self) -> str:
+        """Local currency of the configured region (EUR for euro zones)."""
+        return CURRENCY_FOR_REGION.get(self._region, "EUR")
+
+    @property
+    def _currency_mode(self) -> str:
+        if self.currency == "EUR":
+            return CURRENCY_MODE_EUR
+        return self._opts.get(CONF_CURRENCY_MODE, CURRENCY_MODE_EUR)
+
+    @property
+    def fx_mode(self) -> str:
+        default = FX_MODE_AUTO if self.currency in ECB_CURRENCIES else FX_MODE_MANUAL
+        return self._opts.get(CONF_FX_MODE, default)
+
+    @property
+    def fx_rate(self) -> float:
+        """FX multiplier applied to EUR spot prices. 1.0 = EUR display.
+
+        Fallback chain in auto mode: active (persisted) rate → manual rate
+        option → 1.0, which falls the display back to EUR entirely.
+        """
+        if self._currency_mode != CURRENCY_MODE_LOCAL:
+            return 1.0
+        manual = float(self._opts.get(CONF_FX_RATE) or 0.0)
+        if self.fx_mode == FX_MODE_MANUAL:
+            return manual if manual > 0 else 1.0
+        if self._fx_active_rate:
+            return self._fx_active_rate
+        return manual if manual > 0 else 1.0
+
+    @property
+    def local_display_active(self) -> bool:
+        """True when prices are shown in the local currency (an FX rate applies)."""
+        return self._currency_mode == CURRENCY_MODE_LOCAL and self.fx_rate != 1.0
+
+    @property
+    def currency_mode_is_local(self) -> bool:
+        """True when the entry is configured for local-currency display."""
+        return self._currency_mode == CURRENCY_MODE_LOCAL
+
+    @property
+    def fx_rate_date(self) -> str | None:
+        """ECB rate date of the active rate (auto mode), None in manual mode."""
+        if self.fx_mode == FX_MODE_MANUAL:
+            return None
+        return (
+            self._fx_staged_date
+            if self._fx_active_rate == self._fx_staged_rate
+            else self._fx_active_date
+        )
+
+    @property
+    def _unit_pair(self) -> tuple[str | None, str]:
+        """(minor, major) unit labels for the active display currency."""
+        if self.local_display_active:
+            return CURRENCY_UNITS[self.currency]
+        return (UNIT_SNTPERKWH, UNIT_EUROKWH)
+
+    @property
+    def display_in_major(self) -> bool:
+        """True when values are displayed in the major unit (€/kr/zł/…)."""
+        minor, _major = self._unit_pair
+        return self._display_unit == UNIT_EUROKWH or minor is None
+
     def format_price(self, price_snt: float | None) -> float | None:
-        """Convert c/kWh to display unit (€/kWh if configured)."""
+        """Convert internal minor-unit price to the display unit."""
         if price_snt is None:
             return None
-        if self._display_unit == UNIT_EUROKWH:
+        if self.display_in_major:
             return price_snt / 100.0
         return price_snt
 
     @property
     def native_unit(self) -> str:
-        return self._display_unit
+        minor, major = self._unit_pair
+        return major if self.display_in_major else minor
 
     @property
     def price_source_name(self) -> str:
@@ -787,7 +967,9 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     # ------------------------------------------------------------------
 
     def _effective_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
-        return calc.effective_prices(slots, self._vat_rate, self._spot_commission)
+        return calc.effective_prices(
+            slots, self._vat_rate, self._spot_commission, rate=self.fx_rate
+        )
 
     def _energy_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
         return [self._energy_price_for_slot(s) for s in slots]
@@ -938,7 +1120,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         """Feed-in price for a given slot. No VAT (small producers don't collect VAT in FI)."""
         if self._export_pricing_mode == EXPORT_PRICING_FIXED:
             return self._fixed_export_rate
-        return max(0.0, slot.price_no_tax - self._export_commission)
+        return max(0.0, slot.price_no_tax * self.fx_rate - self._export_commission)
 
     def _export_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
         return [self.export_price_for_slot(s) for s in slots]

@@ -11,17 +11,22 @@ from kilowahti.const import (
     CONTROL_FACTOR_LINEAR,
     CONTROL_FACTOR_SINUSOIDAL,
     COUNTRY_PRESETS,
+    CURRENCY_UNITS,
+    ECB_CURRENCIES,
     SCORE_FORMULA_DEFAULT,
     SCORE_FORMULA_RAW,
     UNIT_EUROKWH,
     UNIT_SNTPERKWH,
 )
-from kilowahti.zones import CDN_ZONES, ZONES
+from kilowahti.zones import CDN_ZONES, CURRENCY_FOR_REGION, ZONES
 
 DOMAIN = "kilowahti"
 
 # Config / options entry keys
 CONF_REGION = "region"
+CONF_CURRENCY_MODE = "currency_mode"
+CONF_FX_MODE = "fx_mode"
+CONF_FX_RATE = "fx_rate"
 CONF_PRICE_RESOLUTION = "price_resolution"
 CONF_DISPLAY_UNIT = "display_unit"
 CONF_VAT_RATE = "vat_rate"
@@ -62,6 +67,13 @@ EXPORT_PRICING_FIXED = "fixed"
 # remain as the price_data_source diagnostic sensor states)
 PRICE_SOURCE_SPOT_HINTA = "spot_hinta"
 PRICE_SOURCE_KILOWAHTI_CDN = "kilowahti_cdn"
+
+# Currency display modes; absent option = EUR so existing entries keep their
+# behavior without a config-entry version bump
+CURRENCY_MODE_EUR = "eur"
+CURRENCY_MODE_LOCAL = "local"
+FX_MODE_AUTO = "auto"
+FX_MODE_MANUAL = "manual"
 
 # Defaults
 DEFAULT_PRICE_RESOLUTION = 15
@@ -162,6 +174,7 @@ SENSOR_SETTING_ACTIVE_TRANSFER_GROUP = "setting_active_transfer_group"
 SENSOR_SETTING_ACTIVE_TRANSFER_TIER = "setting_active_transfer_tier"
 SENSOR_SETTING_ACTIVE_FIXED_PERIOD = "setting_active_fixed_period"
 SENSOR_PRICE_DATA_SOURCE = "price_data_source"
+SENSOR_EXCHANGE_RATE = "exchange_rate"
 
 NUMBER_PRICE_THRESHOLD = "price_threshold"
 NUMBER_RANK_THRESHOLD = "rank_threshold"
@@ -211,7 +224,10 @@ __all__ = [
     "SCORE_FORMULA_RAW",
     "UNIT_EUROKWH",
     "UNIT_SNTPERKWH",
+    "CURRENCY_UNITS",
+    "ECB_CURRENCIES",
     # re-exported from kilowahti.zones
     "CDN_ZONES",
+    "CURRENCY_FOR_REGION",
     "ZONES",
 ]

@@ -33,6 +33,7 @@ from .const import (
     SENSOR_CURRENT_60MIN_AVG,
     SENSOR_CURRENT_120MIN_AVG,
     SENSOR_EFFECTIVE_PRICE,
+    SENSOR_EXCHANGE_RATE,
     SENSOR_EXPORT_PRICE,
     SENSOR_EXPORT_TODAY_AVG,
     SENSOR_EXPORT_TODAY_MAX,
@@ -82,7 +83,6 @@ from .const import (
     SENSOR_TOTAL_PRICE_QUARTILE,
     SENSOR_TOTAL_PRICE_RANK,
     SENSOR_TRANSFER_PRICE,
-    UNIT_EUROKWH,
 )
 from .coordinator import KilowahtiCoordinator
 from .models import ScoreProfile
@@ -414,6 +414,20 @@ async def async_setup_entry(
         else:
             entities.append(KilowahtiSensor(coordinator, entry, description))
 
+    # Exchange rate diagnostic sensor — only in local currency mode
+    if coordinator.currency_mode_is_local:
+        entities.append(
+            KilowahtiExchangeRateSensor(
+                coordinator,
+                entry,
+                KilowahtiSensorEntityDescription(
+                    key=SENSOR_EXCHANGE_RATE,
+                    translation_key=SENSOR_EXCHANGE_RATE,
+                    entity_category=EntityCategory.DIAGNOSTIC,
+                ),
+            )
+        )
+
     # Effective price sensor (has extra attributes)
     entities.append(
         KilowahtiEffectivePriceSensor(
@@ -476,7 +490,7 @@ class KilowahtiSensorBase(CoordinatorEntity[KilowahtiCoordinator], SensorEntity)
             return 3
         if key in _PRICE_SENSOR_KEYS:
             base = 5 if self.coordinator._high_precision else 2
-            euro_extra = 2 if self.coordinator.native_unit == UNIT_EUROKWH else 0
+            euro_extra = 2 if self.coordinator.display_in_major else 0
             return base + euro_extra
         return None
 
@@ -527,6 +541,33 @@ class KilowahtiPriceDataSourceSensor(KilowahtiSensor):
     def extra_state_attributes(self) -> dict[str, Any]:
         failover = self.coordinator.last_failover_utc
         return {"last_failover": failover.isoformat() if failover is not None else None}
+
+
+# ---------------------------------------------------------------------------
+# Exchange rate diagnostic sensor (local currency mode only)
+# ---------------------------------------------------------------------------
+
+
+class KilowahtiExchangeRateSensor(KilowahtiSensorBase):
+    @property
+    def native_value(self) -> float | None:
+        rate = self.coordinator.fx_rate
+        return rate if rate != 1.0 else None
+
+    @property
+    def native_unit_of_measurement(self) -> str:
+        return f"{self.coordinator.currency}/EUR"
+
+    @property
+    def suggested_display_precision(self) -> int:
+        return 4
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        return {
+            "rate_date": self.coordinator.fx_rate_date,
+            "fx_mode": self.coordinator.fx_mode,
+        }
 
 
 # ---------------------------------------------------------------------------

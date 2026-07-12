@@ -14,7 +14,7 @@ from homeassistant.util import dt as dt_util
 from kilowahti import calc
 from kilowahti.models import PriceSlot
 
-from .const import DOMAIN, UNIT_EUROKWH
+from .const import DOMAIN
 from .coordinator import KilowahtiCoordinator
 from .models import FixedPeriod
 
@@ -162,7 +162,7 @@ def _fmt(coordinator: KilowahtiCoordinator, price: float | None, formatted: bool
     if converted is None:
         return None
     base = 5 if coordinator._high_precision else 2
-    extra = 2 if coordinator.native_unit == UNIT_EUROKWH else 0
+    extra = 2 if coordinator.display_in_major else 0
     return round(converted, base + extra)
 
 
@@ -184,7 +184,7 @@ async def _handle_get_prices(call: ServiceCall) -> ServiceResponse:
         "price_periods": [
             {
                 "time": slot.dt_utc.isoformat(),
-                "price_no_tax": slot.price_no_tax,
+                "price_no_tax": slot.price_no_tax * coordinator.fx_rate,
                 "price": _fmt(coordinator, coordinator._spot_effective(slot), formatted),
                 "rank": slot.rank,
             }

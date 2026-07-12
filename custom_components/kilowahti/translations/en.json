@@ -16,6 +16,18 @@
           "display_unit": "Sensor unit"
         }
       },
+      "currency": {
+        "title": "Kilowahti — Currency",
+        "description": "This region bills in {currency}. Spot prices are converted from EUR with a daily exchange rate; all prices you enter (commission, transfer tiers, thresholds) are in the selected display currency.",
+        "data": {
+          "currency_mode": "Display currency",
+          "fx_mode": "Exchange rate source",
+          "fx_rate": "Manual exchange rate (local currency per EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Used when the exchange rate source is manual, and as a fallback when the automatic rate is unavailable. Leave at 0 if unused."
+        }
+      },
       "vat_and_tax": {
         "title": "VAT & electricity tax",
         "description": "Pre-filled from your region. Adjust if needed. All prices (transfer tiers, fixed periods) are entered incl. VAT.",
@@ -159,7 +171,13 @@
           "vat_rate_pct": "VAT rate (%)",
           "electricity_tax": "Electricity tax (c/kWh)",
           "spot_commission": "Spot price commission (c/kWh)",
-          "monthly_fixed_cost": "Electricity contract fixed cost (€/month)"
+          "monthly_fixed_cost": "Electricity contract fixed cost (€/month)",
+          "currency_mode": "Display currency",
+          "fx_mode": "Exchange rate source",
+          "fx_rate": "Manual exchange rate (local currency per EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Switching converts your entered prices (thresholds, commissions, transfer tiers, fixed periods) with the current exchange rate. Review values after switching."
         }
       },
       "transfer_groups": {
@@ -353,6 +371,9 @@
       },
       "effective_price": {
         "name": "Active price"
+      },
+      "exchange_rate": {
+        "name": "Exchange rate"
       },
       "export_price": {
         "name": "Export price"

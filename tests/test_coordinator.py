@@ -17,6 +17,9 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from custom_components.kilowahti.const import (
     CONF_BATTERY_CAPACITY_KWH,
     CONF_BATTERY_CHARGE_POWER_KW,
+    CONF_CURRENCY_MODE,
+    CONF_FX_MODE,
+    CONF_FX_RATE,
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
     CONF_MONTHLY_FIXED_COST,
@@ -859,3 +862,128 @@ async def test_eager_poll_does_not_retry_on_cdn_zone_not_found(hass, options, mo
 
     assert coord._tomorrow_slots is None
     assert coord._eager_poll_unsub is None  # no retry scheduled — permanent error
+
+
+# ---------------------------------------------------------------------------
+# Currency / FX
+# ---------------------------------------------------------------------------
+
+SE1_CDN_URL = re.compile(r"https://cdn\.kilowahti\.fi/v1/se1/latest\.json")
+ECB_URL = re.compile(r"https://www\.ecb\.europa\.eu/stats/eurofxref/eurofxref-daily\.xml")
+
+ECB_XML = """<?xml version="1.0" encoding="UTF-8"?>
+<gesmes:Envelope xmlns:gesmes="http://www.gesmes.org/xml/2002-08-01"
+    xmlns="http://www.ecb.int/vocabulary/2002-08-01/eurofxref">
+  <Cube><Cube time="2026-03-12">
+    <Cube currency="SEK" rate="11.5000"/>
+  </Cube></Cube>
+</gesmes:Envelope>
+"""
+
+
+async def _setup_se1(hass, options, currency_opts: dict, mock_ecb: bool = False):
+    await hass.config.async_set_time_zone("UTC")
+    options = {
+        **options,
+        CONF_REGION: "SE1",
+        CONF_PRICE_RESOLUTION: 15,
+        **currency_opts,
+    }
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=options)
+    payload = {**CDN_PAYLOAD, "days": {"2026-03-13": CDN_PAYLOAD["days"]["2026-03-13"]}}
+    with aioresponses() as m:
+        m.get(SE1_CDN_URL, payload=payload, repeat=True)
+        if mock_ecb:
+            m.get(ECB_URL, body=ECB_XML, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+    return hass.data[DOMAIN][entry.entry_id]
+
+
+async def test_fx_manual_rate_applied_to_prices(hass, options, mock_utcnow):
+    """Local mode with a manual rate converts spot prices and unit labels."""
+    coord = await _setup_se1(
+        hass,
+        options,
+        {CONF_CURRENCY_MODE: "local", CONF_FX_MODE: "manual", CONF_FX_RATE: 11.0},
+    )
+
+    assert coord.fx_rate == 11.0
+    assert coord.local_display_active is True
+    assert coord.native_unit == "öre/kWh"
+    # First FI-fixture slot: 10.0 EUR/MWh → 1.0 c/kWh → × 11 × (1 + VAT)
+    slot = coord.today_slots()[0]
+    expected = 1.0 * 11.0 * (1 + coord._vat_rate) + coord._spot_commission
+    assert coord._spot_effective(slot) == pytest.approx(expected)
+
+
+async def test_fx_absent_currency_mode_defaults_to_eur(hass, options, mock_utcnow):
+    """Entries without the currency_mode option keep EUR display unchanged."""
+    coord = await _setup_se1(hass, options, {})
+
+    assert coord.fx_rate == 1.0
+    assert coord.local_display_active is False
+    assert coord.native_unit == "c/kWh"
+
+
+async def test_fx_auto_first_start_fetches_ecb_rate(hass, options, mock_utcnow):
+    """Auto mode without a persisted rate fetches ECB at startup and applies it."""
+    coord = await _setup_se1(
+        hass,
+        options,
+        {CONF_CURRENCY_MODE: "local", CONF_FX_MODE: "auto"},
+        mock_ecb=True,
+    )
+
+    assert coord.fx_rate == 11.5
+    assert coord._fx_active_rate == 11.5
+    assert coord.fx_rate_date == "2026-03-12"
+
+
+async def test_fx_staged_rate_promoted_at_rollover(hass, options, mock_utcnow):
+    """The staged rate only becomes active via rollover promotion."""
+    coord = await _setup_se1(
+        hass,
+        options,
+        {CONF_CURRENCY_MODE: "local", CONF_FX_MODE: "auto"},
+        mock_ecb=True,
+    )
+    assert coord.fx_rate == 11.5
+
+    coord._fx_staged_rate = 12.0
+    coord._fx_staged_date = "2026-03-13"
+    assert coord.fx_rate == 11.5  # staged rate does not apply mid-day
+
+    await coord._async_promote_staged_fx()
+    assert coord.fx_rate == 12.0
+
+
+async def test_fx_major_only_currency_forces_major_unit(hass, options, mock_utcnow):
+    """CZK has no minor unit in use — display collapses to Kč/kWh."""
+    await hass.config.async_set_time_zone("UTC")
+    options = {
+        **options,
+        CONF_REGION: "CZ",
+        CONF_PRICE_RESOLUTION: 15,
+        CONF_CURRENCY_MODE: "local",
+        CONF_FX_MODE: "manual",
+        CONF_FX_RATE: 24.7,
+    }
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=options)
+    payload = {**CDN_PAYLOAD, "days": {"2026-03-13": CDN_PAYLOAD["days"]["2026-03-13"]}}
+    with aioresponses() as m:
+        m.get(
+            re.compile(r"https://cdn\.kilowahti\.fi/v1/cz/latest\.json"),
+            payload=payload,
+            repeat=True,
+        )
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    coord = hass.data[DOMAIN][entry.entry_id]
+    assert coord.native_unit == "Kč/kWh"
+    assert coord.display_in_major is True
+    # format_price converts internal minor scale to major
+    assert coord.format_price(100.0) == 1.0

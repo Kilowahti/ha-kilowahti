@@ -10,6 +10,7 @@ from homeassistant.core import HomeAssistant
 
 from .const import (
     CONF_BATTERY_CAPACITY_KWH,
+    CONF_CURRENCY_MODE,
     CONF_EAGER_END_HOUR,
     CONF_EAGER_START_HOUR,
     CONF_GENERATION_ENABLED,
@@ -36,6 +37,7 @@ PLATFORMS: list[Platform] = [Platform.BINARY_SENSOR, Platform.NUMBER, Platform.S
 _RELOAD_REQUIRED_KEYS = frozenset(
     {
         CONF_BATTERY_CAPACITY_KWH,  # gates battery sensors (zero vs non-zero)
+        CONF_CURRENCY_MODE,  # unit strings change on every entity; gates exchange_rate sensor
         CONF_EAGER_END_HOUR,
         CONF_EAGER_START_HOUR,
         CONF_GENERATION_ENABLED,  # gates E1-E4 sensors

@@ -9,7 +9,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, NUMBER_PRICE_THRESHOLD, NUMBER_RANK_THRESHOLD, UNIT_EUROKWH
+from .const import DOMAIN, NUMBER_PRICE_THRESHOLD, NUMBER_RANK_THRESHOLD
 from .coordinator import KilowahtiCoordinator
 from .sensor import _device_info
 
@@ -50,18 +50,18 @@ class KilowahtiPriceThresholdNumber(CoordinatorEntity[KilowahtiCoordinator], Num
 
     @property
     def native_max_value(self) -> float:
-        return 5.0 if self.coordinator.native_unit == UNIT_EUROKWH else 500.0
+        return 5.0 if self.coordinator.display_in_major else 500.0
 
     @property
     def native_step(self) -> float:
-        return 0.001 if self.coordinator.native_unit == UNIT_EUROKWH else 0.1
+        return 0.001 if self.coordinator.display_in_major else 0.1
 
     @property
     def native_value(self) -> float:
         return self.coordinator.format_price(self.coordinator._max_price)
 
     async def async_set_native_value(self, value: float) -> None:
-        value_snt = value * 100.0 if self.coordinator.native_unit == UNIT_EUROKWH else value
+        value_snt = value * 100.0 if self.coordinator.display_in_major else value
         self.coordinator.set_price_threshold(value_snt)
 
 
