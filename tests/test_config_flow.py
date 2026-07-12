@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import re
+
 from aioresponses import aioresponses
 
 from custom_components.kilowahti.const import (
@@ -126,6 +128,131 @@ async def test_config_flow_creates_entry_with_correct_options(hass, mock_utcnow)
     assert opts[CONF_PRICE_RESOLUTION] == 60
     assert opts[CONF_DISPLAY_UNIT] == UNIT_SNTPERKWH
     assert opts[CONF_VAT_RATE] == 0.255
+
+
+# ---------------------------------------------------------------------------
+# Region expansion (43 CDN zones)
+# ---------------------------------------------------------------------------
+
+
+def _region_selector_options(result) -> list[dict]:
+    for key, sel in result["data_schema"].schema.items():
+        if getattr(key, "schema", None) == CONF_REGION:
+            return sel.config["options"]
+    raise AssertionError("region selector not found in schema")
+
+
+async def test_config_flow_offers_all_43_zones(hass):
+    result = await hass.config_entries.flow.async_init(DOMAIN, context={"source": "user"})
+    options = _region_selector_options(result)
+
+    assert len(options) == 43
+    by_value = {o["value"]: o["label"] for o in options}
+    assert by_value["FI"] == "FI — Finland"
+    assert by_value["IT-NORD"] == "IT-NORD — Italy (North)"
+    assert by_value["IE-SEM"] == "IE-SEM — Ireland (SEM)"
+
+
+async def test_config_flow_spot_hinta_rejected_for_non_nordic_zone(hass):
+    result = await hass.config_entries.flow.async_init(DOMAIN, context={"source": "user"})
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"],
+        user_input={
+            "name": "Test Home",
+            CONF_REGION: "ES",
+            CONF_PRICE_SOURCE: PRICE_SOURCE_SPOT_HINTA,
+            CONF_PRICE_RESOLUTION: "60",
+            CONF_DISPLAY_UNIT: UNIT_SNTPERKWH,
+        },
+    )
+
+    assert result["type"] == FlowResultType.FORM
+    assert result["step_id"] == "user"
+    assert result["errors"] == {CONF_PRICE_SOURCE: "source_region_unsupported"}
+
+
+async def test_config_flow_cdn_only_zone_completes(hass, mock_utcnow):
+    """A zone outside spot-hinta coverage completes the flow with the CDN source."""
+    await hass.config.async_set_time_zone("UTC")
+
+    pt_url = re.compile(r"https://cdn\.kilowahti\.fi/v1/pt/latest\.json")
+    with aioresponses() as m:
+        m.get(pt_url, payload=CDN_PAYLOAD, repeat=True)
+
+        result = await hass.config_entries.flow.async_init(DOMAIN, context={"source": "user"})
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"],
+            user_input={
+                "name": "Test Home",
+                CONF_REGION: "PT",
+                CONF_PRICE_SOURCE: PRICE_SOURCE_KILOWAHTI_CDN,
+                CONF_PRICE_RESOLUTION: "60",
+                CONF_DISPLAY_UNIT: UNIT_SNTPERKWH,
+            },
+        )
+        assert result["step_id"] == "vat_and_tax"
+
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"],
+            user_input={"vat_rate_pct": 23.0, "electricity_tax": 0.001, "spot_commission": 0.0},
+        )
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], user_input={"action": "continue"}
+        )
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"],
+            user_input={
+                CONF_MAX_PRICE: DEFAULT_MAX_PRICE,
+                CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER: DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
+                CONF_MAX_RANK: DEFAULT_MAX_RANK,
+                CONF_FORWARD_AVG_HOURS: DEFAULT_FORWARD_AVG_HOURS,
+                CONF_CONTROL_FACTOR_FUNCTION: DEFAULT_CONTROL_FACTOR_FUNCTION,
+                CONF_CONTROL_FACTOR_SCALING: DEFAULT_CONTROL_FACTOR_SCALING,
+            },
+        )
+        result = await hass.config_entries.flow.async_configure(result["flow_id"], user_input={})
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"],
+            user_input={
+                CONF_EXPOSE_PRICE_ARRAYS: DEFAULT_EXPOSE_PRICE_ARRAYS,
+                CONF_GENERATION_ENABLED: DEFAULT_GENERATION_ENABLED,
+                CONF_HIGH_PRECISION: DEFAULT_HIGH_PRECISION,
+                CONF_SHOW_ROLLING_AVERAGES: DEFAULT_SHOW_ROLLING_AVERAGES,
+            },
+        )
+        await hass.async_block_till_done()
+
+    assert result["type"] == FlowResultType.CREATE_ENTRY
+    assert result["options"][CONF_REGION] == "PT"
+    assert result["options"][CONF_PRICE_SOURCE] == PRICE_SOURCE_KILOWAHTI_CDN
+
+
+async def test_options_flow_spot_hinta_rejected_for_non_nordic_zone(
+    hass, setup_integration, mock_utcnow
+):
+    entry = setup_integration
+    result = await hass.config_entries.options.async_init(entry.entry_id)
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], user_input={"next_step_id": "basic"}
+    )
+
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"],
+        user_input={
+            "name": "Test Home",
+            CONF_REGION: "DE-LU",
+            CONF_PRICE_SOURCE: PRICE_SOURCE_SPOT_HINTA,
+            CONF_PRICE_RESOLUTION: "60",
+            CONF_DISPLAY_UNIT: UNIT_SNTPERKWH,
+            "vat_rate_pct": 19.0,
+            "electricity_tax": 2.05,
+            "spot_commission": 0.0,
+        },
+    )
+
+    assert result["type"] == FlowResultType.FORM
+    assert result["step_id"] == "basic"
+    assert result["errors"] == {CONF_PRICE_SOURCE: "source_region_unsupported"}
 
 
 # ---------------------------------------------------------------------------

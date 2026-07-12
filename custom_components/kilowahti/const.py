@@ -16,6 +16,7 @@ from kilowahti.const import (
     UNIT_EUROKWH,
     UNIT_SNTPERKWH,
 )
+from kilowahti.zones import CDN_ZONES, ZONES
 
 DOMAIN = "kilowahti"
 
@@ -210,4 +211,7 @@ __all__ = [
     "SCORE_FORMULA_RAW",
     "UNIT_EUROKWH",
     "UNIT_SNTPERKWH",
+    # re-exported from kilowahti.zones
+    "CDN_ZONES",
+    "ZONES",
 ]

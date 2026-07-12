@@ -124,6 +124,7 @@
     "error": {
       "cannot_connect": "Failed to connect. Check your network.",
       "invalid_region": "The selected region returned no data from the API.",
+      "source_region_unsupported": "spot-hinta.fi does not cover this region. Select Kilowahti CDN as the price source.",
       "tier_hour_range": "End time must be greater than start time.",
       "tier_no_months": "Select at least one month.",
       "tier_no_weekdays": "Select at least one weekday.",
@@ -312,6 +313,7 @@
       }
     },
     "error": {
+      "source_region_unsupported": "spot-hinta.fi does not cover this region. Select Kilowahti CDN as the price source.",
       "tier_hour_range": "End time must be greater than start time.",
       "tier_no_months": "Select at least one month.",
       "tier_no_weekdays": "Select at least one weekday.",

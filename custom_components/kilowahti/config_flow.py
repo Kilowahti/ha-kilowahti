@@ -15,6 +15,7 @@ from homeassistant.helpers import selector
 
 from .const import (
     API_REGIONS,
+    CDN_ZONES,
     CONF_BATTERY_CAPACITY_KWH,
     CONF_BATTERY_CHARGE_POWER_KW,
     CONF_CONTROL_FACTOR_FUNCTION,
@@ -86,6 +87,7 @@ from .const import (
     SCORE_FORMULA_RAW,
     UNIT_EUROKWH,
     UNIT_SNTPERKWH,
+    ZONES,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -98,24 +100,9 @@ def _to_float(value) -> float:
     return float(value)
 
 
-# Region → country preset lookup
-_REGION_TO_COUNTRY: dict[str, str] = {
-    "FI": "FI",
-    "EE": "EE",
-    "LT": "LT",
-    "LV": "LV",
-    "DK1": "DK",
-    "DK2": "DK",
-    "NO1": "NO",
-    "NO2": "NO",
-    "NO3": "NO",
-    "NO4": "NO",
-    "NO5": "NO",
-    "SE1": "SE",
-    "SE2": "SE",
-    "SE3": "SE",
-    "SE4": "SE",
-}
+# Region selector options: all CDN zones, labels not translated (zone names
+# are mostly proper nouns; 43 keys x 25 languages not worth it).
+_REGION_OPTIONS = [{"value": z.code, "label": f"{z.code} — {z.name}"} for z in CDN_ZONES]
 
 _MONTH_OPTIONS = [
     {"value": "1", "label": "January"},
@@ -144,8 +131,21 @@ _WEEKDAY_OPTIONS = [
 
 
 def _preset_for_region(region: str) -> tuple[float, float]:
-    country = _REGION_TO_COUNTRY.get(region, "Custom")
+    zone = ZONES.get(region)
+    country = zone.country if zone is not None else "Custom"
     return COUNTRY_PRESETS.get(country, COUNTRY_PRESETS["Custom"])
+
+
+def _basic_step_errors(user_input: dict) -> dict[str, str]:
+    """Validate the basic step. spot-hinta.fi covers only the Nordic/Baltic
+    regions; interim guard until the automatic source chain replaces the
+    source selector entirely."""
+    if (
+        user_input[CONF_PRICE_SOURCE] == PRICE_SOURCE_SPOT_HINTA
+        and user_input[CONF_REGION] not in API_REGIONS
+    ):
+        return {CONF_PRICE_SOURCE: "source_region_unsupported"}
+    return {}
 
 
 # ---------------------------------------------------------------------------
@@ -161,7 +161,7 @@ def _user_schema(defaults: dict) -> vol.Schema:
                 CONF_REGION, default=defaults.get(CONF_REGION, "FI")
             ): selector.SelectSelector(
                 selector.SelectSelectorConfig(
-                    options=[{"value": r, "label": r} for r in API_REGIONS],
+                    options=_REGION_OPTIONS,
                 )
             ),
             vol.Required(
@@ -460,17 +460,21 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
     # ------ Step 1: basic --------------------------------------------------
 
     async def async_step_user(self, user_input: dict | None = None):
+        errors: dict[str, str] = {}
         if user_input is not None:
-            self._data["name"] = user_input["name"]
-            self._data[CONF_REGION] = user_input[CONF_REGION]
-            self._data[CONF_PRICE_SOURCE] = user_input[CONF_PRICE_SOURCE]
-            self._data[CONF_PRICE_RESOLUTION] = int(user_input[CONF_PRICE_RESOLUTION])
-            self._data[CONF_DISPLAY_UNIT] = user_input[CONF_DISPLAY_UNIT]
-            return await self.async_step_vat_and_tax()
+            errors = _basic_step_errors(user_input)
+            if not errors:
+                self._data["name"] = user_input["name"]
+                self._data[CONF_REGION] = user_input[CONF_REGION]
+                self._data[CONF_PRICE_SOURCE] = user_input[CONF_PRICE_SOURCE]
+                self._data[CONF_PRICE_RESOLUTION] = int(user_input[CONF_PRICE_RESOLUTION])
+                self._data[CONF_DISPLAY_UNIT] = user_input[CONF_DISPLAY_UNIT]
+                return await self.async_step_vat_and_tax()
 
         return self.async_show_form(
             step_id="user",
-            data_schema=_user_schema(self._data),
+            data_schema=_user_schema({**self._data, **(user_input or {})}),
+            errors=errors,
         )
 
     # ------ Step 2: VAT & tax ---------------------------------------------
@@ -730,7 +734,10 @@ class KilowahtiOptionsFlow(OptionsFlow):
     # ------ Basic settings ------------------------------------------------
 
     async def async_step_basic(self, user_input: dict | None = None):
+        errors: dict[str, str] = {}
         if user_input is not None:
+            errors = _basic_step_errors(user_input)
+        if user_input is not None and not errors:
             self._options["name"] = user_input["name"]
             self._options[CONF_REGION] = user_input[CONF_REGION]
             self._options[CONF_PRICE_SOURCE] = user_input[CONF_PRICE_SOURCE]
@@ -764,7 +771,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
             {**_user_schema(basic_defaults).schema, **_vat_schema(vat_defaults).schema}
         )
 
-        return self.async_show_form(step_id="basic", data_schema=schema)
+        return self.async_show_form(step_id="basic", data_schema=schema, errors=errors)
 
     # ------ Transfer groups (mirrors config flow) -------------------------
 
