@@ -45,6 +45,22 @@ async def test_spot_price_state_is_numeric(hass, setup_integration, mock_utcnow)
     assert float(state.state) == pytest.approx(3.765, rel=1e-3)
 
 
+async def test_price_data_source_sensor(hass, setup_integration, mock_utcnow):
+    """Diagnostic sensor reports the serving source and the failover timestamp.
+
+    setup_integration mocks only spot-hinta, so the CDN primary fails and the
+    chain records a failover to spot_hinta.
+    """
+    entry = setup_integration
+    entity_id = _entity_id(hass, "sensor", entry.entry_id, "price_data_source")
+    assert entity_id is not None
+
+    state = hass.states.get(entity_id)
+    assert state is not None
+    assert state.state == "spot_hinta"
+    assert state.attributes["last_failover"] is not None
+
+
 async def test_tomorrow_stats_unknown_when_no_tomorrow(hass, setup_integration, mock_utcnow):
     """tomorrow_spot_avg/min/max sensors are unknown when tomorrow prices are not available."""
     entry = setup_integration
@@ -155,3 +171,46 @@ async def test_export_price_sensor_state_is_numeric(hass, options, mock_utcnow):
     assert state is not None
     assert state.state not in (STATE_UNKNOWN, "unavailable")
     assert float(state.state) == pytest.approx(3.0, rel=1e-3)
+
+
+async def test_exchange_rate_sensor_only_in_local_mode(hass, options, mock_utcnow):
+    """exchange_rate diagnostic sensor exists only for local-currency entries."""
+    import re as _re
+
+    from aioresponses import aioresponses
+    from pytest_homeassistant_custom_component.common import MockConfigEntry
+
+    from custom_components.kilowahti.const import (
+        CONF_CURRENCY_MODE,
+        CONF_FX_MODE,
+        CONF_FX_RATE,
+        CONF_REGION,
+    )
+
+    from .conftest import CDN_PAYLOAD
+
+    await hass.config.async_set_time_zone("UTC")
+    opts = {
+        **options,
+        CONF_REGION: "SE1",
+        CONF_CURRENCY_MODE: "local",
+        CONF_FX_MODE: "manual",
+        CONF_FX_RATE: 11.0,
+    }
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=opts)
+    with aioresponses() as m:
+        m.get(
+            _re.compile(r"https://cdn\.kilowahti\.fi/v1/se1/latest\.json"),
+            payload=CDN_PAYLOAD,
+            repeat=True,
+        )
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    entity_id = _entity_id(hass, "sensor", entry.entry_id, "exchange_rate")
+    assert entity_id is not None
+    state = hass.states.get(entity_id)
+    assert float(state.state) == 11.0
+    assert state.attributes["fx_mode"] == "manual"
+    assert state.attributes["unit_of_measurement"] == "SEK/EUR"

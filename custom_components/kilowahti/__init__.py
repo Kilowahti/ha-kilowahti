@@ -10,13 +10,13 @@ from homeassistant.core import HomeAssistant
 
 from .const import (
     CONF_BATTERY_CAPACITY_KWH,
+    CONF_CURRENCY_MODE,
     CONF_EAGER_END_HOUR,
     CONF_EAGER_START_HOUR,
     CONF_GENERATION_ENABLED,
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
     CONF_PRICE_RESOLUTION,
-    CONF_PRICE_SOURCE,
     CONF_REGION,
     CONF_SCORE_PROFILES,
     CONF_SHOW_ROLLING_AVERAGES,
@@ -37,11 +37,11 @@ PLATFORMS: list[Platform] = [Platform.BINARY_SENSOR, Platform.NUMBER, Platform.S
 _RELOAD_REQUIRED_KEYS = frozenset(
     {
         CONF_BATTERY_CAPACITY_KWH,  # gates battery sensors (zero vs non-zero)
+        CONF_CURRENCY_MODE,  # unit strings change on every entity; gates exchange_rate sensor
         CONF_EAGER_END_HOUR,
         CONF_EAGER_START_HOUR,
         CONF_GENERATION_ENABLED,  # gates E1-E4 sensors
         CONF_PRICE_RESOLUTION,
-        CONF_PRICE_SOURCE,  # coordinator instantiates the source at init
         CONF_REGION,
         CONF_SCORE_PROFILES,  # each profile adds entities
         CONF_SHOW_ROLLING_AVERAGES,  # gates rolling avg sensors

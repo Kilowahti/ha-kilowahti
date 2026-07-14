@@ -7,13 +7,11 @@
         "data": {
           "name": "Nosaukums",
           "region": "Cenu zona",
-          "price_source": "Cenu datu avots",
           "price_resolution": "Cenu izšķirtspēja",
           "display_unit": "Attēlošanas mērvienība"
         },
         "data_description": {
           "name": "Tiek izmantots entītiju nosaukumos, piem., 'Mājas'",
-          "price_source": "Kilowahti CDN ir Kilowahti paša pirmās puses cenu serviss (cdn.kilowahti.fi); spot-hinta.fi ir trešās puses API.",
           "price_resolution": "15 minūtes (96 intervāli dienā) vai 1 stunda (24 intervāli dienā). Izvēlieties atbilstoši sava līguma uzskaites intervālam.",
           "display_unit": "Sensora mērvienība"
         }
@@ -156,7 +154,6 @@
         "data": {
           "name": "Nosaukums",
           "region": "Cenu zona",
-          "price_source": "Cenu datu avots",
           "price_resolution": "Cenu izšķirtspēja",
           "display_unit": "Attēlošanas mērvienība",
           "vat_rate_pct": "PVN likme (%)",

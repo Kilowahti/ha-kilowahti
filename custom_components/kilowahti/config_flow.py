@@ -12,13 +12,16 @@ import voluptuous as vol
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
 from homeassistant.core import callback
 from homeassistant.helpers import selector
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from kilowahti.sources.ecb import fetch_ecb_rate
 
 from .const import (
-    API_REGIONS,
+    CDN_ZONES,
     CONF_BATTERY_CAPACITY_KWH,
     CONF_BATTERY_CHARGE_POWER_KW,
     CONF_CONTROL_FACTOR_FUNCTION,
     CONF_CONTROL_FACTOR_SCALING,
+    CONF_CURRENCY_MODE,
     CONF_DISPLAY_UNIT,
     CONF_EAGER_END_HOUR,
     CONF_EAGER_START_HOUR,
@@ -29,13 +32,14 @@ from .const import (
     CONF_EXPOSE_PRICE_ARRAYS,
     CONF_FIXED_EXPORT_RATE,
     CONF_FORWARD_AVG_HOURS,
+    CONF_FX_MODE,
+    CONF_FX_RATE,
     CONF_GENERATION_ENABLED,
     CONF_HIGH_PRECISION,
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
     CONF_MONTHLY_FIXED_COST,
     CONF_PRICE_RESOLUTION,
-    CONF_PRICE_SOURCE,
     CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     CONF_REGION,
     CONF_SCORE_PROFILES,
@@ -48,6 +52,9 @@ from .const import (
     CONTROL_FACTOR_LINEAR,
     CONTROL_FACTOR_SINUSOIDAL,
     COUNTRY_PRESETS,
+    CURRENCY_FOR_REGION,
+    CURRENCY_MODE_EUR,
+    CURRENCY_MODE_LOCAL,
     DEFAULT_BATTERY_CAPACITY_KWH,
     DEFAULT_BATTERY_CHARGE_POWER_KW,
     DEFAULT_CONTROL_FACTOR_FUNCTION,
@@ -67,7 +74,6 @@ from .const import (
     DEFAULT_MAX_RANK,
     DEFAULT_MONTHLY_FIXED_COST,
     DEFAULT_PRICE_RESOLUTION,
-    DEFAULT_PRICE_SOURCE,
     DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER,
     DEFAULT_SCORE_FORMULA,
     DEFAULT_SCORE_PROFILE_ID,
@@ -78,14 +84,16 @@ from .const import (
     DEFAULT_SPOT_COMMISSION,
     DEFAULT_VAT_RATE,
     DOMAIN,
+    ECB_CURRENCIES,
     EXPORT_PRICING_FIXED,
     EXPORT_PRICING_SPOT_LINKED,
-    PRICE_SOURCE_KILOWAHTI_CDN,
-    PRICE_SOURCE_SPOT_HINTA,
+    FX_MODE_AUTO,
+    FX_MODE_MANUAL,
     SCORE_FORMULA_DEFAULT,
     SCORE_FORMULA_RAW,
     UNIT_EUROKWH,
     UNIT_SNTPERKWH,
+    ZONES,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -98,24 +106,9 @@ def _to_float(value) -> float:
     return float(value)
 
 
-# Region → country preset lookup
-_REGION_TO_COUNTRY: dict[str, str] = {
-    "FI": "FI",
-    "EE": "EE",
-    "LT": "LT",
-    "LV": "LV",
-    "DK1": "DK",
-    "DK2": "DK",
-    "NO1": "NO",
-    "NO2": "NO",
-    "NO3": "NO",
-    "NO4": "NO",
-    "NO5": "NO",
-    "SE1": "SE",
-    "SE2": "SE",
-    "SE3": "SE",
-    "SE4": "SE",
-}
+# Region selector options: all CDN zones, labels not translated (zone names
+# are mostly proper nouns; 43 keys x 25 languages not worth it).
+_REGION_OPTIONS = [{"value": z.code, "label": f"{z.code} — {z.name}"} for z in CDN_ZONES]
 
 _MONTH_OPTIONS = [
     {"value": "1", "label": "January"},
@@ -144,8 +137,57 @@ _WEEKDAY_OPTIONS = [
 
 
 def _preset_for_region(region: str) -> tuple[float, float]:
-    country = _REGION_TO_COUNTRY.get(region, "Custom")
+    zone = ZONES.get(region)
+    country = zone.country if zone is not None else "Custom"
     return COUNTRY_PRESETS.get(country, COUNTRY_PRESETS["Custom"])
+
+
+def _region_currency(region: str) -> str:
+    return CURRENCY_FOR_REGION.get(region, "EUR")
+
+
+def _currency_schema(region: str, defaults: dict) -> vol.Schema:
+    """Currency settings for a non-EUR region. RSD/MKD have no ECB reference
+    rate, so the auto FX mode is not offered for them."""
+    currency = _region_currency(region)
+    fields: dict = {
+        vol.Required(
+            CONF_CURRENCY_MODE,
+            default=defaults.get(CONF_CURRENCY_MODE, CURRENCY_MODE_LOCAL),
+        ): selector.SelectSelector(
+            selector.SelectSelectorConfig(
+                options=[
+                    {"value": CURRENCY_MODE_LOCAL, "label": f"Local currency ({currency})"},
+                    {"value": CURRENCY_MODE_EUR, "label": "Euro (EUR)"},
+                ],
+            )
+        ),
+    }
+    if currency in ECB_CURRENCIES:
+        fields[vol.Required(CONF_FX_MODE, default=defaults.get(CONF_FX_MODE, FX_MODE_AUTO))] = (
+            selector.SelectSelector(
+                selector.SelectSelectorConfig(
+                    options=[
+                        {"value": FX_MODE_AUTO, "label": "Automatic (ECB daily reference rate)"},
+                        {"value": FX_MODE_MANUAL, "label": "Manual fixed rate"},
+                    ],
+                )
+            )
+        )
+    fields[vol.Required(CONF_FX_RATE, default=defaults.get(CONF_FX_RATE, 0.0))] = (
+        selector.NumberSelector(
+            selector.NumberSelectorConfig(min=0, max=100000, step=0.001, mode="box")
+        )
+    )
+    return vol.Schema(fields)
+
+
+def _store_currency_input(target: dict, region: str, user_input: dict) -> None:
+    currency = _region_currency(region)
+    target[CONF_CURRENCY_MODE] = user_input[CONF_CURRENCY_MODE]
+    default_fx = FX_MODE_AUTO if currency in ECB_CURRENCIES else FX_MODE_MANUAL
+    target[CONF_FX_MODE] = user_input.get(CONF_FX_MODE, default_fx)
+    target[CONF_FX_RATE] = _to_float(user_input.get(CONF_FX_RATE, 0.0) or 0.0)
 
 
 # ---------------------------------------------------------------------------
@@ -161,18 +203,7 @@ def _user_schema(defaults: dict) -> vol.Schema:
                 CONF_REGION, default=defaults.get(CONF_REGION, "FI")
             ): selector.SelectSelector(
                 selector.SelectSelectorConfig(
-                    options=[{"value": r, "label": r} for r in API_REGIONS],
-                )
-            ),
-            vol.Required(
-                CONF_PRICE_SOURCE,
-                default=defaults.get(CONF_PRICE_SOURCE, DEFAULT_PRICE_SOURCE),
-            ): selector.SelectSelector(
-                selector.SelectSelectorConfig(
-                    options=[
-                        {"value": PRICE_SOURCE_SPOT_HINTA, "label": "spot-hinta.fi"},
-                        {"value": PRICE_SOURCE_KILOWAHTI_CDN, "label": "Kilowahti CDN"},
-                    ],
+                    options=_REGION_OPTIONS,
                 )
             ),
             vol.Required(
@@ -463,14 +494,29 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             self._data["name"] = user_input["name"]
             self._data[CONF_REGION] = user_input[CONF_REGION]
-            self._data[CONF_PRICE_SOURCE] = user_input[CONF_PRICE_SOURCE]
             self._data[CONF_PRICE_RESOLUTION] = int(user_input[CONF_PRICE_RESOLUTION])
             self._data[CONF_DISPLAY_UNIT] = user_input[CONF_DISPLAY_UNIT]
+            if _region_currency(self._data[CONF_REGION]) != "EUR":
+                return await self.async_step_currency()
             return await self.async_step_vat_and_tax()
 
         return self.async_show_form(
             step_id="user",
             data_schema=_user_schema(self._data),
+        )
+
+    # ------ Step 1b: currency (non-EUR regions only) -----------------------
+
+    async def async_step_currency(self, user_input: dict | None = None):
+        region = self._data[CONF_REGION]
+        if user_input is not None:
+            _store_currency_input(self._data, region, user_input)
+            return await self.async_step_vat_and_tax()
+
+        return self.async_show_form(
+            step_id="currency",
+            data_schema=_currency_schema(region, self._data),
+            description_placeholders={"currency": _region_currency(region)},
         )
 
     # ------ Step 2: VAT & tax ---------------------------------------------
@@ -730,10 +776,11 @@ class KilowahtiOptionsFlow(OptionsFlow):
     # ------ Basic settings ------------------------------------------------
 
     async def async_step_basic(self, user_input: dict | None = None):
+        old_region = self._options.get(CONF_REGION, "FI")
         if user_input is not None:
+            old_mode = self._options.get(CONF_CURRENCY_MODE, CURRENCY_MODE_EUR)
             self._options["name"] = user_input["name"]
             self._options[CONF_REGION] = user_input[CONF_REGION]
-            self._options[CONF_PRICE_SOURCE] = user_input[CONF_PRICE_SOURCE]
             self._options[CONF_PRICE_RESOLUTION] = int(user_input[CONF_PRICE_RESOLUTION])
             self._options[CONF_DISPLAY_UNIT] = user_input[CONF_DISPLAY_UNIT]
             self._options[CONF_VAT_RATE] = _to_float(user_input["vat_rate_pct"]) / 100.0
@@ -744,13 +791,17 @@ class KilowahtiOptionsFlow(OptionsFlow):
             self._options[CONF_MONTHLY_FIXED_COST] = _to_float(
                 user_input.get(CONF_MONTHLY_FIXED_COST, 0.0)
             )
+            if CONF_CURRENCY_MODE in user_input:
+                _store_currency_input(self._options, old_region, user_input)
+                new_mode = self._options[CONF_CURRENCY_MODE]
+                if new_mode != old_mode:
+                    await self._async_convert_currency_values(old_region, new_mode)
             return self.async_create_entry(data=self._options)
 
         cur = self._options
         basic_defaults = {
             "name": cur.get("name", "Home"),
             CONF_REGION: cur.get(CONF_REGION, "FI"),
-            CONF_PRICE_SOURCE: cur.get(CONF_PRICE_SOURCE, DEFAULT_PRICE_SOURCE),
             CONF_PRICE_RESOLUTION: str(cur.get(CONF_PRICE_RESOLUTION, DEFAULT_PRICE_RESOLUTION)),
             CONF_DISPLAY_UNIT: cur.get(CONF_DISPLAY_UNIT, UNIT_SNTPERKWH),
         }
@@ -760,11 +811,86 @@ class KilowahtiOptionsFlow(OptionsFlow):
             CONF_SPOT_COMMISSION: cur.get(CONF_SPOT_COMMISSION, DEFAULT_SPOT_COMMISSION),
             CONF_MONTHLY_FIXED_COST: cur.get(CONF_MONTHLY_FIXED_COST, DEFAULT_MONTHLY_FIXED_COST),
         }
-        schema = vol.Schema(
-            {**_user_schema(basic_defaults).schema, **_vat_schema(vat_defaults).schema}
-        )
+        schema_fields = {**_user_schema(basic_defaults).schema, **_vat_schema(vat_defaults).schema}
+        if _region_currency(old_region) != "EUR":
+            # Currency defaults: existing entries without the option keep EUR display
+            currency_defaults = {
+                CONF_CURRENCY_MODE: cur.get(CONF_CURRENCY_MODE, CURRENCY_MODE_EUR),
+                CONF_FX_MODE: cur.get(CONF_FX_MODE, FX_MODE_AUTO),
+                CONF_FX_RATE: cur.get(CONF_FX_RATE, 0.0),
+            }
+            schema_fields.update(_currency_schema(old_region, currency_defaults).schema)
+        schema = vol.Schema(schema_fields)
 
         return self.async_show_form(step_id="basic", data_schema=schema)
+
+    async def _async_convert_currency_values(self, region: str, new_mode: str) -> None:
+        """One-shot conversion of stored currency-typed values on a mode flip.
+
+        EUR→local multiplies by the day's rate, local→EUR divides. Skipped
+        with a warning when no usable rate is available.
+        """
+        rate = await self._async_flip_rate(region)
+        if rate is None or rate <= 0:
+            _LOGGER.warning(
+                "Currency mode changed but no FX rate available; stored prices NOT converted"
+            )
+            return
+        factor = rate if new_mode == CURRENCY_MODE_LOCAL else 1.0 / rate
+
+        for key in (
+            CONF_MAX_PRICE,
+            CONF_SPOT_COMMISSION,
+            CONF_EXPORT_COMMISSION,
+            CONF_FIXED_EXPORT_RATE,
+            CONF_EXPORT_PRICE_THRESHOLD,
+            CONF_MONTHLY_FIXED_COST,
+        ):
+            value = self._options.get(key)
+            if isinstance(value, (int, float)) and value:
+                self._options[key] = round(value * factor, 5)
+                _LOGGER.info("Currency flip: %s %s → %s", key, value, self._options[key])
+
+        groups = self._options.get(CONF_TRANSFER_GROUPS) or []
+        for group in groups:
+            if group.get("monthly_fixed_cost"):
+                group["monthly_fixed_cost"] = round(group["monthly_fixed_cost"] * factor, 5)
+            for tier in group.get("tiers", []):
+                if tier.get("price"):
+                    old = tier["price"]
+                    tier["price"] = round(old * factor, 5)
+                    _LOGGER.info(
+                        "Currency flip: transfer tier %s %s → %s",
+                        tier.get("label", "?"),
+                        old,
+                        tier["price"],
+                    )
+        self._options[CONF_TRANSFER_GROUPS] = groups
+
+        coordinator = self.hass.data.get(DOMAIN, {}).get(self._entry.entry_id)
+        if coordinator is not None:
+            await coordinator._storage.async_scale_period_prices(factor)
+            _LOGGER.info("Currency flip: fixed-period prices scaled by %.6f", factor)
+
+    async def _async_flip_rate(self, region: str) -> float | None:
+        """Rate for the flip conversion: manual rate → coordinator's active
+        auto rate → fresh ECB fetch."""
+        if self._options.get(CONF_FX_MODE) == FX_MODE_MANUAL:
+            manual = float(self._options.get(CONF_FX_RATE) or 0.0)
+            return manual if manual > 0 else None
+        coordinator = self.hass.data.get(DOMAIN, {}).get(self._entry.entry_id)
+        if coordinator is not None and coordinator._fx_active_rate:
+            return coordinator._fx_active_rate
+        currency = _region_currency(region)
+        if currency in ECB_CURRENCIES:
+            try:
+                result = await fetch_ecb_rate(async_get_clientsession(self.hass), currency)
+            except Exception as err:
+                _LOGGER.warning("ECB rate fetch for currency flip failed: %s", err)
+                return None
+            return result.rate
+        manual = float(self._options.get(CONF_FX_RATE) or 0.0)
+        return manual if manual > 0 else None
 
     # ------ Transfer groups (mirrors config flow) -------------------------
 

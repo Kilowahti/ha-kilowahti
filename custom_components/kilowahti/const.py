@@ -11,17 +11,22 @@ from kilowahti.const import (
     CONTROL_FACTOR_LINEAR,
     CONTROL_FACTOR_SINUSOIDAL,
     COUNTRY_PRESETS,
+    CURRENCY_UNITS,
+    ECB_CURRENCIES,
     SCORE_FORMULA_DEFAULT,
     SCORE_FORMULA_RAW,
     UNIT_EUROKWH,
     UNIT_SNTPERKWH,
 )
+from kilowahti.zones import CDN_ZONES, CURRENCY_FOR_REGION, ZONES
 
 DOMAIN = "kilowahti"
 
 # Config / options entry keys
-CONF_PRICE_SOURCE = "price_source"
 CONF_REGION = "region"
+CONF_CURRENCY_MODE = "currency_mode"
+CONF_FX_MODE = "fx_mode"
+CONF_FX_RATE = "fx_rate"
 CONF_PRICE_RESOLUTION = "price_resolution"
 CONF_DISPLAY_UNIT = "display_unit"
 CONF_VAT_RATE = "vat_rate"
@@ -58,12 +63,19 @@ CONF_MONTHLY_FIXED_COST = "monthly_fixed_cost"
 EXPORT_PRICING_SPOT_LINKED = "spot_linked"
 EXPORT_PRICING_FIXED = "fixed"
 
-# Price data sources
+# Price data source ids (chain order is built in the coordinator; these
+# remain as the price_data_source diagnostic sensor states)
 PRICE_SOURCE_SPOT_HINTA = "spot_hinta"
 PRICE_SOURCE_KILOWAHTI_CDN = "kilowahti_cdn"
 
+# Currency display modes; absent option = EUR so existing entries keep their
+# behavior without a config-entry version bump
+CURRENCY_MODE_EUR = "eur"
+CURRENCY_MODE_LOCAL = "local"
+FX_MODE_AUTO = "auto"
+FX_MODE_MANUAL = "manual"
+
 # Defaults
-DEFAULT_PRICE_SOURCE = PRICE_SOURCE_SPOT_HINTA
 DEFAULT_PRICE_RESOLUTION = 15
 DEFAULT_VAT_RATE = 0.255  # FI
 DEFAULT_ELECTRICITY_TAX = 2.253  # FI, c/kWh class I
@@ -161,6 +173,8 @@ SENSOR_SETTING_FORWARD_WINDOW = "setting_forward_window"
 SENSOR_SETTING_ACTIVE_TRANSFER_GROUP = "setting_active_transfer_group"
 SENSOR_SETTING_ACTIVE_TRANSFER_TIER = "setting_active_transfer_tier"
 SENSOR_SETTING_ACTIVE_FIXED_PERIOD = "setting_active_fixed_period"
+SENSOR_PRICE_DATA_SOURCE = "price_data_source"
+SENSOR_EXCHANGE_RATE = "exchange_rate"
 
 NUMBER_PRICE_THRESHOLD = "price_threshold"
 NUMBER_RANK_THRESHOLD = "rank_threshold"
@@ -210,4 +224,10 @@ __all__ = [
     "SCORE_FORMULA_RAW",
     "UNIT_EUROKWH",
     "UNIT_SNTPERKWH",
+    "CURRENCY_UNITS",
+    "ECB_CURRENCIES",
+    # re-exported from kilowahti.zones
+    "CDN_ZONES",
+    "CURRENCY_FOR_REGION",
+    "ZONES",
 ]

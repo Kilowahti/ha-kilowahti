@@ -7,13 +7,11 @@
         "data": {
           "name": "Nimi",
           "region": "Hinnapiirkond",
-          "price_source": "Hinnaandmete allikas",
           "price_resolution": "Hinna resolutsioon",
           "display_unit": "Kuvamisühik"
         },
         "data_description": {
           "name": "Kasutatakse olemite nimedes, nt 'Kodu'",
-          "price_source": "Kilowahti CDN on Kilowahti enda esimese osapoole hinnateenus (cdn.kilowahti.fi); spot-hinta.fi on kolmanda osapoole API.",
           "price_resolution": "15 minutit (96 perioodi/ööpäevas) või 1 tund (24 perioodi/ööpäevas). Vali vastavalt lepingu mõõtmisintervallile.",
           "display_unit": "Andurite ühik"
         }
@@ -155,7 +153,6 @@
         "data": {
           "name": "Nimi",
           "region": "Hinnapiirkond",
-          "price_source": "Hinnaandmete allikas",
           "price_resolution": "Hinna resolutsioon",
           "display_unit": "Kuvamisühik",
           "vat_rate_pct": "Käibemaksumäär (%)",

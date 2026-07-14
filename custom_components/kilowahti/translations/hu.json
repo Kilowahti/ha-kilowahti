@@ -7,13 +7,11 @@
         "data": {
           "name": "Név",
           "region": "Árzóna",
-          "price_source": "Áradatok forrása",
           "price_resolution": "Árfelbontás",
           "display_unit": "Megjelenítési egység"
         },
         "data_description": {
           "name": "Az entitások nevében használatos, pl. 'Otthon'",
-          "price_source": "A Kilowahti CDN a Kilowahti saját árszolgáltatása (cdn.kilowahti.fi); a spot-hinta.fi külső fél API-ja.",
           "price_resolution": "15 perc (96 intervallum/nap) vagy 1 óra (24 intervallum/nap). Válaszd a szerződésed mérési intervalluma szerint.",
           "display_unit": "A szenzor mértékegysége"
         }
@@ -156,7 +154,6 @@
         "data": {
           "name": "Név",
           "region": "Árzóna",
-          "price_source": "Áradatok forrása",
           "price_resolution": "Árfelbontás",
           "display_unit": "Megjelenítési egység",
           "vat_rate_pct": "Áfakulcs (%)",

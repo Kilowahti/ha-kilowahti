@@ -7,13 +7,11 @@
         "data": {
           "name": "Nume",
           "region": "Zonă de preț",
-          "price_source": "Sursa datelor de preț",
           "price_resolution": "Rezoluția prețurilor",
           "display_unit": "Unitate de afișare"
         },
         "data_description": {
           "name": "Folosit în numele entităților, de ex. 'Acasă'",
-          "price_source": "Kilowahti CDN este serviciul de prețuri propriu al Kilowahti (cdn.kilowahti.fi); spot-hinta.fi este un API terț.",
           "price_resolution": "15 minute (96 intervale/zi) sau 1 oră (24 intervale/zi). Alege în funcție de intervalul de măsurare al contractului tău.",
           "display_unit": "Unitatea senzorului"
         }
@@ -156,7 +154,6 @@
         "data": {
           "name": "Nume",
           "region": "Zonă de preț",
-          "price_source": "Sursa datelor de preț",
           "price_resolution": "Rezoluția prețurilor",
           "display_unit": "Unitate de afișare",
           "vat_rate_pct": "Cota TVA (%)",

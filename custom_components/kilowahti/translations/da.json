@@ -7,13 +7,11 @@
         "data": {
           "name": "Navn",
           "region": "Prisområde",
-          "price_source": "Prisdatakilde",
           "price_resolution": "Prisopløsning",
           "display_unit": "Visningsenhed"
         },
         "data_description": {
           "name": "Bruges i entitetsnavne, f.eks. 'Hjem'",
-          "price_source": "Kilowahti CDN er Kilowahtis egen førsteparts-pristjeneste (cdn.kilowahti.fi); spot-hinta.fi er et tredjeparts-API.",
           "price_resolution": "15 minutter (96 tidsintervaller/dag) eller 1 time (24 tidsintervaller/dag). Vælg det, der matcher din aftales måleinterval.",
           "display_unit": "Sensorenhed"
         }
@@ -156,7 +154,6 @@
         "data": {
           "name": "Navn",
           "region": "Prisområde",
-          "price_source": "Prisdatakilde",
           "price_resolution": "Prisopløsning",
           "display_unit": "Visningsenhed",
           "vat_rate_pct": "Momssats (%)",
