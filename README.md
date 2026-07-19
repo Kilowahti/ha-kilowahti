@@ -3,7 +3,7 @@
   <img alt="Kilowahti" src="custom_components/kilowahti/brand/logo.png" width="400">
 </picture>
 
-**Kilowahti** (*kilowatti* + *vahti* — "the kilowatt sentinel") is a Home Assistant integration for Nordic/Baltic electricity cost awareness and optimization — whether you are on a spot contract or a fixed rate.
+**Kilowahti** (*kilowatti* + *vahti* — "the kilowatt sentinel") is a Home Assistant integration for European electricity cost awareness and optimization — whether you are on a spot contract or a fixed rate.
 
 [![HACS](https://img.shields.io/badge/HACS-Default-blue.svg)](https://hacs.xyz/)
 [![Documentation](https://img.shields.io/badge/docs-kilowahti.fi-blue)](https://docs.kilowahti.fi/)
@@ -25,6 +25,7 @@
 - Transfer tariff tier groups — model your exact contract and switch between tiers without re-entering data
 - Monthly fixed cost tracking — spread your base fee across days for an accurate daily cost figure
 - Optimization scores (daily & monthly) that show how well your household shifts consumption to cheap hours
+- Native automation triggers and conditions — react to price drops, cheapest slots, or tomorrow's prices arriving, no template sensors needed
 
 **For solar panel and battery owners:**
 - Live export price and today's export statistics — see what you'd earn by selling to the grid right now
@@ -41,9 +42,11 @@
 
 ## Supported regions
 
-`FI`, `EE`, `LT`, `LV`, `DK1`, `DK2`, `NO1`–`NO5`, `SE1`–`SE4`
+All **43 European day-ahead bidding zones across 30 countries** — the Nordics and Baltics where Kilowahti started, and now Central, Western, and Southeast Europe, and Ireland. Pick your zone in the setup wizard; VAT and unit presets are applied automatically.
 
-> **Currency notice:** Kilowahti currently displays prices in EUR for all regions. Conversion to local currencies (DKK, NOK, SEK) is planned for a future release.
+Prices come from the first-party **Kilowahti CDN** (ENTSO-E day-ahead data) with automatic fallback to spot-hinta.fi — no API keys, nothing to configure.
+
+> **Currency:** regions outside the eurozone (SEK, NOK, DKK, CHF, PLN, CZK, HUF, RON, RSD, MKD) can show all prices in local currency, converted with a daily ECB exchange rate or a manual rate you control.
 
 ## Installation
 
@@ -56,7 +59,7 @@ See the [installation guide](https://docs.kilowahti.fi/installation/) and [confi
 
 ## Translations
 
-Kilowahti's interface translations are managed with [Weblate](https://hosted.weblate.org/engage/kilowahti/). Want Kilowahti in your language, or noticed a wording that could be better? Contribute translations directly in your browser — no coding or GitHub account required.
+Kilowahti ships in 25 languages, covering every supported region. Interface translations are managed with [Weblate](https://hosted.weblate.org/engage/kilowahti/). Want Kilowahti in your language, or noticed a wording that could be better? Contribute translations directly in your browser — no coding or GitHub account required.
 
 ## Feedback
 
