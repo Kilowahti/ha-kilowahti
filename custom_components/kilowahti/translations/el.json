@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Βασικές ρυθμίσεις",
-        "description": "Η ζώνη καθορίζει ποια σκανδιναβική/βαλτική ζώνη τιμών spot χρησιμοποιείται.",
+        "description": "Η ζώνη καθορίζει ποια ευρωπαϊκή ζώνη προσφορών χρησιμοποιείται.",
         "data": {
           "name": "Όνομα",
           "region": "Ζώνη τιμών",
@@ -14,6 +14,18 @@
           "name": "Χρησιμοποιείται στα ονόματα των οντοτήτων, π.χ. 'Σπίτι'",
           "price_resolution": "15 λεπτά (96 διαστήματα/ημέρα) ή 1 ώρα (24 διαστήματα/ημέρα). Επιλέξτε σύμφωνα με το διάστημα μέτρησης του συμβολαίου σας.",
           "display_unit": "Μονάδα του αισθητήρα"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Νόμισμα",
+        "description": "Αυτή η ζώνη τιμολογεί σε {currency}. Οι τιμές spot μετατρέπονται από EUR με ημερήσια ισοτιμία· όλες οι τιμές που εισάγετε (περιθώριο, κλιμάκια χρέωσης δικτύου, όρια) είναι στο επιλεγμένο νόμισμα εμφάνισης.",
+        "data": {
+          "currency_mode": "Νόμισμα εμφάνισης",
+          "fx_mode": "Πηγή ισοτιμίας",
+          "fx_rate": "Χειροκίνητη ισοτιμία (τοπικό νόμισμα ανά EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Χρησιμοποιείται όταν η πηγή ισοτιμίας είναι χειροκίνητη, και ως εφεδρική όταν η αυτόματη ισοτιμία δεν είναι διαθέσιμη. Αφήστε το 0 αν δεν χρησιμοποιείται."
         }
       },
       "vat_and_tax": {
@@ -159,7 +171,13 @@
           "vat_rate_pct": "Συντελεστής ΦΠΑ (%)",
           "electricity_tax": "Φόρος ηλεκτρικής ενέργειας (c/kWh)",
           "spot_commission": "Περιθώριο στην τιμή spot (c/kWh)",
-          "monthly_fixed_cost": "Πάγιο κόστος συμβολαίου ρεύματος (€/μήνα)"
+          "monthly_fixed_cost": "Πάγιο κόστος συμβολαίου ρεύματος (€/μήνα)",
+          "currency_mode": "Νόμισμα εμφάνισης",
+          "fx_mode": "Πηγή ισοτιμίας",
+          "fx_rate": "Χειροκίνητη ισοτιμία (τοπικό νόμισμα ανά EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Η αλλαγή μετατρέπει τις τιμές που έχετε εισαγάγει (όρια, περιθώρια, κλιμάκια χρέωσης δικτύου, σταθερές περίοδοι) με την τρέχουσα ισοτιμία. Ελέγξτε τις τιμές μετά την αλλαγή."
         }
       },
       "transfer_groups": {
@@ -319,86 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Τιμή spot"
+      "arbitrage_spread_today": {
+        "name": "Περιθώριο αρμπιτράζ σήμερα"
       },
-      "effective_price": {
-        "name": "Ενεργή τιμή"
+      "avg_price_120min": {
+        "name": "Μέση τιμή 120 λεπτών"
       },
-      "transfer_price": {
-        "name": "Χρέωση δικτύου"
+      "avg_price_30min": {
+        "name": "Μέση τιμή 30 λεπτών"
       },
-      "total_price": {
-        "name": "Συνολική τιμή"
+      "avg_price_60min": {
+        "name": "Μέση τιμή 60 λεπτών"
       },
-      "price_rank": {
-        "name": "Κατάταξη"
+      "battery_charge_recommendation": {
+        "name": "Σύσταση φόρτισης μπαταρίας",
+        "state": {
+          "charge_from_grid": "Φόρτιση από το δίκτυο",
+          "discharge": "Εκφόρτιση",
+          "hold": "Διατήρηση"
+        }
       },
-      "total_price_rank": {
-        "name": "Κατάταξη συνολικής τιμής"
-      },
-      "total_price_quartile": {
-        "name": "Τεταρτημόριο συνολικής τιμής"
-      },
-      "today_spot_avg": {
-        "name": "Μέση τιμή spot σήμερα"
-      },
-      "today_spot_min": {
-        "name": "Ελάχιστη τιμή spot σήμερα"
-      },
-      "today_spot_max": {
-        "name": "Μέγιστη τιμή spot σήμερα"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Μέση τιμή spot αύριο"
-      },
-      "tomorrow_spot_min": {
-        "name": "Ελάχιστη τιμή spot αύριο"
-      },
-      "tomorrow_spot_max": {
-        "name": "Μέγιστη τιμή spot αύριο"
-      },
-      "today_total_avg": {
-        "name": "Μέση συνολική τιμή σήμερα"
-      },
-      "today_total_min": {
-        "name": "Ελάχιστη συνολική τιμή σήμερα"
-      },
-      "today_total_max": {
-        "name": "Μέγιστη συνολική τιμή σήμερα"
-      },
-      "tomorrow_total_avg": {
-        "name": "Μέση συνολική τιμή αύριο"
-      },
-      "tomorrow_total_min": {
-        "name": "Ελάχιστη συνολική τιμή αύριο"
-      },
-      "tomorrow_total_max": {
-        "name": "Μέγιστη συνολική τιμή αύριο"
-      },
-      "today_avg": {
-        "name": "Μέσος όρος σήμερα"
-      },
-      "today_min": {
-        "name": "Ελάχιστο σήμερα"
-      },
-      "today_max": {
-        "name": "Μέγιστο σήμερα"
-      },
-      "tomorrow_avg": {
-        "name": "Μέσος όρος αύριο"
-      },
-      "tomorrow_min": {
-        "name": "Ελάχιστο αύριο"
-      },
-      "tomorrow_max": {
-        "name": "Μέγιστο αύριο"
-      },
-      "next_hours_avg": {
-        "name": "Μέσος όρος επόμενων ωρών"
-      },
-      "spot_next_hours_avg": {
-        "name": "Μέσος όρος spot επόμενων ωρών"
+      "charge_opportunity_factor": {
+        "name": "Συντελεστής ευκαιρίας φόρτισης"
       },
       "control_factor_price": {
         "name": "Συντελεστής ελέγχου τιμής"
@@ -409,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Συντελεστής ελέγχου δικτύου"
       },
-      "price_quartile": {
-        "name": "Τεταρτημόριο τιμής"
+      "effective_price": {
+        "name": "Ενεργή τιμή"
       },
-      "setting_max_price": {
-        "name": "Όριο τιμής"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Το όριο τιμής περιλαμβάνει το δίκτυο"
-      },
-      "setting_control_factor_function": {
-        "name": "Σχήμα συντελεστή ελέγχου"
-      },
-      "setting_acceptable_rank": {
-        "name": "Αποδεκτή κατάταξη"
-      },
-      "setting_forward_window": {
-        "name": "Μελλοντικό παράθυρο"
-      },
-      "setting_active_transfer_group": {
-        "name": "Ενεργή ομάδα δικτύου"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Ενεργό κλιμάκιο δικτύου"
-      },
-      "setting_active_fixed_period": {
-        "name": "Ενεργή περίοδος σταθερής τιμής"
+      "exchange_rate": {
+        "name": "Συναλλαγματική ισοτιμία"
       },
       "export_price": {
         "name": "Τιμή έγχυσης"
@@ -442,61 +381,146 @@
       "export_today_avg": {
         "name": "Μέση τιμή έγχυσης σήμερα"
       },
-      "export_today_min": {
-        "name": "Ελάχιστη τιμή έγχυσης σήμερα"
-      },
       "export_today_max": {
         "name": "Μέγιστη τιμή έγχυσης σήμερα"
+      },
+      "export_today_min": {
+        "name": "Ελάχιστη τιμή έγχυσης σήμερα"
       },
       "export_tomorrow_avg": {
         "name": "Μέση τιμή έγχυσης αύριο"
       },
-      "export_tomorrow_min": {
-        "name": "Ελάχιστη τιμή έγχυσης αύριο"
-      },
       "export_tomorrow_max": {
         "name": "Μέγιστη τιμή έγχυσης αύριο"
+      },
+      "export_tomorrow_min": {
+        "name": "Ελάχιστη τιμή έγχυσης αύριο"
       },
       "import_export_spread": {
         "name": "Διαφορά αγοράς–έγχυσης"
       },
-      "self_consumption_value": {
-        "name": "Αξία αυτοκατανάλωσης"
+      "monthly_fixed_cost_today": {
+        "name": "Μηνιαίο πάγιο κόστος σήμερα"
       },
-      "avg_price_30min": {
-        "name": "Μέση τιμή 30 λεπτών"
-      },
-      "avg_price_60min": {
-        "name": "Μέση τιμή 60 λεπτών"
-      },
-      "avg_price_120min": {
-        "name": "Μέση τιμή 120 λεπτών"
+      "next_hours_avg": {
+        "name": "Μέσος όρος επόμενων ωρών"
       },
       "next_solar_window_avg": {
         "name": "Μέσος όρος επόμενου ηλιακού παραθύρου"
       },
-      "arbitrage_spread_today": {
-        "name": "Περιθώριο αρμπιτράζ σήμερα"
-      },
-      "charge_opportunity_factor": {
-        "name": "Συντελεστής ευκαιρίας φόρτισης"
+      "optimal_charge_window_end": {
+        "name": "Λήξη βέλτιστου παραθύρου φόρτισης"
       },
       "optimal_charge_window_start": {
         "name": "Έναρξη βέλτιστου παραθύρου φόρτισης"
       },
-      "optimal_charge_window_end": {
-        "name": "Λήξη βέλτιστου παραθύρου φόρτισης"
+      "price_data_source": {
+        "name": "Πηγή δεδομένων τιμών"
       },
-      "battery_charge_recommendation": {
-        "name": "Σύσταση φόρτισης μπαταρίας",
-        "state": {
-          "charge_from_grid": "Φόρτιση από το δίκτυο",
-          "discharge": "Εκφόρτιση",
-          "hold": "Διατήρηση"
-        }
+      "price_quartile": {
+        "name": "Τεταρτημόριο τιμής"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Μηνιαίο πάγιο κόστος σήμερα"
+      "price_rank": {
+        "name": "Κατάταξη"
+      },
+      "self_consumption_value": {
+        "name": "Αξία αυτοκατανάλωσης"
+      },
+      "setting_acceptable_rank": {
+        "name": "Αποδεκτή κατάταξη"
+      },
+      "setting_active_fixed_period": {
+        "name": "Ενεργή περίοδος σταθερής τιμής"
+      },
+      "setting_active_transfer_group": {
+        "name": "Ενεργή ομάδα δικτύου"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Ενεργό κλιμάκιο δικτύου"
+      },
+      "setting_control_factor_function": {
+        "name": "Σχήμα συντελεστή ελέγχου"
+      },
+      "setting_forward_window": {
+        "name": "Μελλοντικό παράθυρο"
+      },
+      "setting_max_price": {
+        "name": "Όριο τιμής"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Το όριο τιμής περιλαμβάνει το δίκτυο"
+      },
+      "spot_next_hours_avg": {
+        "name": "Μέσος όρος spot επόμενων ωρών"
+      },
+      "spot_price": {
+        "name": "Τιμή spot"
+      },
+      "today_avg": {
+        "name": "Μέσος όρος σήμερα"
+      },
+      "today_max": {
+        "name": "Μέγιστο σήμερα"
+      },
+      "today_min": {
+        "name": "Ελάχιστο σήμερα"
+      },
+      "today_spot_avg": {
+        "name": "Μέση τιμή spot σήμερα"
+      },
+      "today_spot_max": {
+        "name": "Μέγιστη τιμή spot σήμερα"
+      },
+      "today_spot_min": {
+        "name": "Ελάχιστη τιμή spot σήμερα"
+      },
+      "today_total_avg": {
+        "name": "Μέση συνολική τιμή σήμερα"
+      },
+      "today_total_max": {
+        "name": "Μέγιστη συνολική τιμή σήμερα"
+      },
+      "today_total_min": {
+        "name": "Ελάχιστη συνολική τιμή σήμερα"
+      },
+      "tomorrow_avg": {
+        "name": "Μέσος όρος αύριο"
+      },
+      "tomorrow_max": {
+        "name": "Μέγιστο αύριο"
+      },
+      "tomorrow_min": {
+        "name": "Ελάχιστο αύριο"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Μέση τιμή spot αύριο"
+      },
+      "tomorrow_spot_max": {
+        "name": "Μέγιστη τιμή spot αύριο"
+      },
+      "tomorrow_spot_min": {
+        "name": "Ελάχιστη τιμή spot αύριο"
+      },
+      "tomorrow_total_avg": {
+        "name": "Μέση συνολική τιμή αύριο"
+      },
+      "tomorrow_total_max": {
+        "name": "Μέγιστη συνολική τιμή αύριο"
+      },
+      "tomorrow_total_min": {
+        "name": "Ελάχιστη συνολική τιμή αύριο"
+      },
+      "total_price": {
+        "name": "Συνολική τιμή"
+      },
+      "total_price_quartile": {
+        "name": "Τεταρτημόριο συνολικής τιμής"
+      },
+      "total_price_rank": {
+        "name": "Κατάταξη συνολικής τιμής"
+      },
+      "transfer_price": {
+        "name": "Χρέωση δικτύου"
       }
     },
     "number": {

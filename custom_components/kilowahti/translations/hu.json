@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Alapbeállítások",
-        "description": "A zóna határozza meg, melyik északi/balti tőzsdei árzóna kerül használatra.",
+        "description": "A zóna határozza meg, melyik európai árzóna kerül használatra.",
         "data": {
           "name": "Név",
           "region": "Árzóna",
@@ -14,6 +14,18 @@
           "name": "Az entitások nevében használatos, pl. 'Otthon'",
           "price_resolution": "15 perc (96 intervallum/nap) vagy 1 óra (24 intervallum/nap). Válaszd a szerződésed mérési intervalluma szerint.",
           "display_unit": "A szenzor mértékegysége"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Pénznem",
+        "description": "Ez a zóna {currency} pénznemben számláz. A tőzsdei árak EUR-ból kerülnek átváltásra napi árfolyammal; minden megadott ár (árrés, hálózati díjsávok, küszöbök) a kiválasztott megjelenítési pénznemben értendő.",
+        "data": {
+          "currency_mode": "Megjelenítési pénznem",
+          "fx_mode": "Árfolyam forrása",
+          "fx_rate": "Kézi árfolyam (helyi pénznem / EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Akkor használatos, ha az árfolyam forrása kézi, illetve tartalékként, ha az automatikus árfolyam nem érhető el. Hagyd 0-n, ha nincs használatban."
         }
       },
       "vat_and_tax": {
@@ -159,7 +171,13 @@
           "vat_rate_pct": "Áfakulcs (%)",
           "electricity_tax": "Energiaadó (c/kWh)",
           "spot_commission": "Árrés a tőzsdei áron felül (c/kWh)",
-          "monthly_fixed_cost": "Villamosenergia-szerződés fix költsége (€/hó)"
+          "monthly_fixed_cost": "Villamosenergia-szerződés fix költsége (€/hó)",
+          "currency_mode": "Megjelenítési pénznem",
+          "fx_mode": "Árfolyam forrása",
+          "fx_rate": "Kézi árfolyam (helyi pénznem / EUR)"
+        },
+        "data_description": {
+          "currency_mode": "A váltás a megadott árakat (küszöbök, árrések, hálózati díjsávok, fix időszakok) az aktuális árfolyammal váltja át. Váltás után ellenőrizd az értékeket."
         }
       },
       "transfer_groups": {
@@ -319,86 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Tőzsdei ár"
+      "arbitrage_spread_today": {
+        "name": "Mai arbitrázskülönbözet"
       },
-      "effective_price": {
-        "name": "Aktív ár"
+      "avg_price_120min": {
+        "name": "Átlagár 120 perc"
       },
-      "transfer_price": {
-        "name": "Hálózati díj"
+      "avg_price_30min": {
+        "name": "Átlagár 30 perc"
       },
-      "total_price": {
-        "name": "Teljes ár"
+      "avg_price_60min": {
+        "name": "Átlagár 60 perc"
       },
-      "price_rank": {
-        "name": "Helyezés"
+      "battery_charge_recommendation": {
+        "name": "Akkumulátortöltési javaslat",
+        "state": {
+          "charge_from_grid": "Töltés a hálózatról",
+          "discharge": "Kisütés",
+          "hold": "Tartás"
+        }
       },
-      "total_price_rank": {
-        "name": "Teljes ár helyezése"
-      },
-      "total_price_quartile": {
-        "name": "Teljes ár kvartilise"
-      },
-      "today_spot_avg": {
-        "name": "Mai átlagos tőzsdei ár"
-      },
-      "today_spot_min": {
-        "name": "Mai legalacsonyabb tőzsdei ár"
-      },
-      "today_spot_max": {
-        "name": "Mai legmagasabb tőzsdei ár"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Holnapi átlagos tőzsdei ár"
-      },
-      "tomorrow_spot_min": {
-        "name": "Holnapi legalacsonyabb tőzsdei ár"
-      },
-      "tomorrow_spot_max": {
-        "name": "Holnapi legmagasabb tőzsdei ár"
-      },
-      "today_total_avg": {
-        "name": "Mai átlagos teljes ár"
-      },
-      "today_total_min": {
-        "name": "Mai legalacsonyabb teljes ár"
-      },
-      "today_total_max": {
-        "name": "Mai legmagasabb teljes ár"
-      },
-      "tomorrow_total_avg": {
-        "name": "Holnapi átlagos teljes ár"
-      },
-      "tomorrow_total_min": {
-        "name": "Holnapi legalacsonyabb teljes ár"
-      },
-      "tomorrow_total_max": {
-        "name": "Holnapi legmagasabb teljes ár"
-      },
-      "today_avg": {
-        "name": "Mai átlag"
-      },
-      "today_min": {
-        "name": "Mai minimum"
-      },
-      "today_max": {
-        "name": "Mai maximum"
-      },
-      "tomorrow_avg": {
-        "name": "Holnapi átlag"
-      },
-      "tomorrow_min": {
-        "name": "Holnapi minimum"
-      },
-      "tomorrow_max": {
-        "name": "Holnapi maximum"
-      },
-      "next_hours_avg": {
-        "name": "Következő órák átlaga"
-      },
-      "spot_next_hours_avg": {
-        "name": "Következő órák tőzsdei átlaga"
+      "charge_opportunity_factor": {
+        "name": "Töltési lehetőség tényezője"
       },
       "control_factor_price": {
         "name": "Ár vezérlési tényezője"
@@ -409,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Hálózati díj vezérlési tényezője"
       },
-      "price_quartile": {
-        "name": "Árkvartilis"
+      "effective_price": {
+        "name": "Aktív ár"
       },
-      "setting_max_price": {
-        "name": "Árküszöb"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Az árküszöb tartalmazza a hálózati díjat"
-      },
-      "setting_control_factor_function": {
-        "name": "Vezérlési tényező alakja"
-      },
-      "setting_acceptable_rank": {
-        "name": "Elfogadható helyezés"
-      },
-      "setting_forward_window": {
-        "name": "Előretekintő ablak"
-      },
-      "setting_active_transfer_group": {
-        "name": "Aktív hálózati díjcsoport"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Aktív hálózati díjsáv"
-      },
-      "setting_active_fixed_period": {
-        "name": "Aktív fix áras időszak"
+      "exchange_rate": {
+        "name": "Árfolyam"
       },
       "export_price": {
         "name": "Betáplálási ár"
@@ -442,61 +381,146 @@
       "export_today_avg": {
         "name": "Mai átlagos betáplálási ár"
       },
-      "export_today_min": {
-        "name": "Mai legalacsonyabb betáplálási ár"
-      },
       "export_today_max": {
         "name": "Mai legmagasabb betáplálási ár"
+      },
+      "export_today_min": {
+        "name": "Mai legalacsonyabb betáplálási ár"
       },
       "export_tomorrow_avg": {
         "name": "Holnapi átlagos betáplálási ár"
       },
-      "export_tomorrow_min": {
-        "name": "Holnapi legalacsonyabb betáplálási ár"
-      },
       "export_tomorrow_max": {
         "name": "Holnapi legmagasabb betáplálási ár"
+      },
+      "export_tomorrow_min": {
+        "name": "Holnapi legalacsonyabb betáplálási ár"
       },
       "import_export_spread": {
         "name": "Vételezés–betáplálás különbözet"
       },
-      "self_consumption_value": {
-        "name": "Saját fogyasztás értéke"
+      "monthly_fixed_cost_today": {
+        "name": "Havi fix költség ma"
       },
-      "avg_price_30min": {
-        "name": "Átlagár 30 perc"
-      },
-      "avg_price_60min": {
-        "name": "Átlagár 60 perc"
-      },
-      "avg_price_120min": {
-        "name": "Átlagár 120 perc"
+      "next_hours_avg": {
+        "name": "Következő órák átlaga"
       },
       "next_solar_window_avg": {
         "name": "Következő napelemes ablak átlaga"
       },
-      "arbitrage_spread_today": {
-        "name": "Mai arbitrázskülönbözet"
-      },
-      "charge_opportunity_factor": {
-        "name": "Töltési lehetőség tényezője"
+      "optimal_charge_window_end": {
+        "name": "Optimális töltési ablak vége"
       },
       "optimal_charge_window_start": {
         "name": "Optimális töltési ablak kezdete"
       },
-      "optimal_charge_window_end": {
-        "name": "Optimális töltési ablak vége"
+      "price_data_source": {
+        "name": "Áradatok forrása"
       },
-      "battery_charge_recommendation": {
-        "name": "Akkumulátortöltési javaslat",
-        "state": {
-          "charge_from_grid": "Töltés a hálózatról",
-          "discharge": "Kisütés",
-          "hold": "Tartás"
-        }
+      "price_quartile": {
+        "name": "Árkvartilis"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Havi fix költség ma"
+      "price_rank": {
+        "name": "Helyezés"
+      },
+      "self_consumption_value": {
+        "name": "Saját fogyasztás értéke"
+      },
+      "setting_acceptable_rank": {
+        "name": "Elfogadható helyezés"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktív fix áras időszak"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktív hálózati díjcsoport"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktív hálózati díjsáv"
+      },
+      "setting_control_factor_function": {
+        "name": "Vezérlési tényező alakja"
+      },
+      "setting_forward_window": {
+        "name": "Előretekintő ablak"
+      },
+      "setting_max_price": {
+        "name": "Árküszöb"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Az árküszöb tartalmazza a hálózati díjat"
+      },
+      "spot_next_hours_avg": {
+        "name": "Következő órák tőzsdei átlaga"
+      },
+      "spot_price": {
+        "name": "Tőzsdei ár"
+      },
+      "today_avg": {
+        "name": "Mai átlag"
+      },
+      "today_max": {
+        "name": "Mai maximum"
+      },
+      "today_min": {
+        "name": "Mai minimum"
+      },
+      "today_spot_avg": {
+        "name": "Mai átlagos tőzsdei ár"
+      },
+      "today_spot_max": {
+        "name": "Mai legmagasabb tőzsdei ár"
+      },
+      "today_spot_min": {
+        "name": "Mai legalacsonyabb tőzsdei ár"
+      },
+      "today_total_avg": {
+        "name": "Mai átlagos teljes ár"
+      },
+      "today_total_max": {
+        "name": "Mai legmagasabb teljes ár"
+      },
+      "today_total_min": {
+        "name": "Mai legalacsonyabb teljes ár"
+      },
+      "tomorrow_avg": {
+        "name": "Holnapi átlag"
+      },
+      "tomorrow_max": {
+        "name": "Holnapi maximum"
+      },
+      "tomorrow_min": {
+        "name": "Holnapi minimum"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Holnapi átlagos tőzsdei ár"
+      },
+      "tomorrow_spot_max": {
+        "name": "Holnapi legmagasabb tőzsdei ár"
+      },
+      "tomorrow_spot_min": {
+        "name": "Holnapi legalacsonyabb tőzsdei ár"
+      },
+      "tomorrow_total_avg": {
+        "name": "Holnapi átlagos teljes ár"
+      },
+      "tomorrow_total_max": {
+        "name": "Holnapi legmagasabb teljes ár"
+      },
+      "tomorrow_total_min": {
+        "name": "Holnapi legalacsonyabb teljes ár"
+      },
+      "total_price": {
+        "name": "Teljes ár"
+      },
+      "total_price_quartile": {
+        "name": "Teljes ár kvartilise"
+      },
+      "total_price_rank": {
+        "name": "Teljes ár helyezése"
+      },
+      "transfer_price": {
+        "name": "Hálózati díj"
       }
     },
     "number": {

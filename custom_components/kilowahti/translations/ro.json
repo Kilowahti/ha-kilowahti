@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Setări de bază",
-        "description": "Zona determină ce zonă de preț spot nordică/baltică este folosită.",
+        "description": "Zona determină ce zonă de ofertare europeană este folosită.",
         "data": {
           "name": "Nume",
           "region": "Zonă de preț",
@@ -14,6 +14,18 @@
           "name": "Folosit în numele entităților, de ex. 'Acasă'",
           "price_resolution": "15 minute (96 intervale/zi) sau 1 oră (24 intervale/zi). Alege în funcție de intervalul de măsurare al contractului tău.",
           "display_unit": "Unitatea senzorului"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Monedă",
+        "description": "Această zonă facturează în {currency}. Prețurile spot sunt convertite din EUR cu un curs de schimb zilnic; toate prețurile introduse (marjă, trepte de distribuție, praguri) sunt în moneda de afișare selectată.",
+        "data": {
+          "currency_mode": "Moneda de afișare",
+          "fx_mode": "Sursa cursului de schimb",
+          "fx_rate": "Curs de schimb manual (monedă locală per EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Folosit când sursa cursului de schimb este manuală și ca rezervă când cursul automat nu este disponibil. Lasă 0 dacă nu este folosit."
         }
       },
       "vat_and_tax": {
@@ -159,7 +171,13 @@
           "vat_rate_pct": "Cota TVA (%)",
           "electricity_tax": "Acciză (c/kWh)",
           "spot_commission": "Marjă la prețul spot (c/kWh)",
-          "monthly_fixed_cost": "Cost fix al contractului de energie (€/lună)"
+          "monthly_fixed_cost": "Cost fix al contractului de energie (€/lună)",
+          "currency_mode": "Moneda de afișare",
+          "fx_mode": "Sursa cursului de schimb",
+          "fx_rate": "Curs de schimb manual (monedă locală per EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Schimbarea convertește prețurile introduse (praguri, marje, trepte de distribuție, perioade fixe) cu cursul de schimb actual. Verifică valorile după schimbare."
         }
       },
       "transfer_groups": {
@@ -319,86 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Preț spot"
+      "arbitrage_spread_today": {
+        "name": "Diferență de arbitraj azi"
       },
-      "effective_price": {
-        "name": "Preț activ"
+      "avg_price_120min": {
+        "name": "Preț mediu 120 min"
       },
-      "transfer_price": {
-        "name": "Preț de distribuție"
+      "avg_price_30min": {
+        "name": "Preț mediu 30 min"
       },
-      "total_price": {
-        "name": "Preț total"
+      "avg_price_60min": {
+        "name": "Preț mediu 60 min"
       },
-      "price_rank": {
-        "name": "Rang"
+      "battery_charge_recommendation": {
+        "name": "Recomandare de încărcare a bateriei",
+        "state": {
+          "charge_from_grid": "Încărcare din rețea",
+          "discharge": "Descărcare",
+          "hold": "Menținere"
+        }
       },
-      "total_price_rank": {
-        "name": "Rangul prețului total"
-      },
-      "total_price_quartile": {
-        "name": "Cuartila prețului total"
-      },
-      "today_spot_avg": {
-        "name": "Preț spot mediu azi"
-      },
-      "today_spot_min": {
-        "name": "Preț spot minim azi"
-      },
-      "today_spot_max": {
-        "name": "Preț spot maxim azi"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Preț spot mediu mâine"
-      },
-      "tomorrow_spot_min": {
-        "name": "Preț spot minim mâine"
-      },
-      "tomorrow_spot_max": {
-        "name": "Preț spot maxim mâine"
-      },
-      "today_total_avg": {
-        "name": "Preț total mediu azi"
-      },
-      "today_total_min": {
-        "name": "Preț total minim azi"
-      },
-      "today_total_max": {
-        "name": "Preț total maxim azi"
-      },
-      "tomorrow_total_avg": {
-        "name": "Preț total mediu mâine"
-      },
-      "tomorrow_total_min": {
-        "name": "Preț total minim mâine"
-      },
-      "tomorrow_total_max": {
-        "name": "Preț total maxim mâine"
-      },
-      "today_avg": {
-        "name": "Media azi"
-      },
-      "today_min": {
-        "name": "Minim azi"
-      },
-      "today_max": {
-        "name": "Maxim azi"
-      },
-      "tomorrow_avg": {
-        "name": "Media mâine"
-      },
-      "tomorrow_min": {
-        "name": "Minim mâine"
-      },
-      "tomorrow_max": {
-        "name": "Maxim mâine"
-      },
-      "next_hours_avg": {
-        "name": "Media următoarelor ore"
-      },
-      "spot_next_hours_avg": {
-        "name": "Media spot a următoarelor ore"
+      "charge_opportunity_factor": {
+        "name": "Factor de oportunitate de încărcare"
       },
       "control_factor_price": {
         "name": "Factor de control al prețului"
@@ -409,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Factor de control al distribuției"
       },
-      "price_quartile": {
-        "name": "Cuartila prețului"
+      "effective_price": {
+        "name": "Preț activ"
       },
-      "setting_max_price": {
-        "name": "Prag de preț"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Pragul de preț include distribuția"
-      },
-      "setting_control_factor_function": {
-        "name": "Forma factorului de control"
-      },
-      "setting_acceptable_rank": {
-        "name": "Rang acceptabil"
-      },
-      "setting_forward_window": {
-        "name": "Fereastră viitoare"
-      },
-      "setting_active_transfer_group": {
-        "name": "Grup de distribuție activ"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Treaptă de distribuție activă"
-      },
-      "setting_active_fixed_period": {
-        "name": "Perioadă cu preț fix activă"
+      "exchange_rate": {
+        "name": "Curs de schimb"
       },
       "export_price": {
         "name": "Preț de livrare"
@@ -442,61 +381,146 @@
       "export_today_avg": {
         "name": "Preț de livrare mediu azi"
       },
-      "export_today_min": {
-        "name": "Preț de livrare minim azi"
-      },
       "export_today_max": {
         "name": "Preț de livrare maxim azi"
+      },
+      "export_today_min": {
+        "name": "Preț de livrare minim azi"
       },
       "export_tomorrow_avg": {
         "name": "Preț de livrare mediu mâine"
       },
-      "export_tomorrow_min": {
-        "name": "Preț de livrare minim mâine"
-      },
       "export_tomorrow_max": {
         "name": "Preț de livrare maxim mâine"
+      },
+      "export_tomorrow_min": {
+        "name": "Preț de livrare minim mâine"
       },
       "import_export_spread": {
         "name": "Diferență cumpărare-livrare"
       },
-      "self_consumption_value": {
-        "name": "Valoarea autoconsumului"
+      "monthly_fixed_cost_today": {
+        "name": "Cost fix lunar azi"
       },
-      "avg_price_30min": {
-        "name": "Preț mediu 30 min"
-      },
-      "avg_price_60min": {
-        "name": "Preț mediu 60 min"
-      },
-      "avg_price_120min": {
-        "name": "Preț mediu 120 min"
+      "next_hours_avg": {
+        "name": "Media următoarelor ore"
       },
       "next_solar_window_avg": {
         "name": "Media următoarei ferestre solare"
       },
-      "arbitrage_spread_today": {
-        "name": "Diferență de arbitraj azi"
-      },
-      "charge_opportunity_factor": {
-        "name": "Factor de oportunitate de încărcare"
+      "optimal_charge_window_end": {
+        "name": "Sfârșitul ferestrei optime de încărcare"
       },
       "optimal_charge_window_start": {
         "name": "Începutul ferestrei optime de încărcare"
       },
-      "optimal_charge_window_end": {
-        "name": "Sfârșitul ferestrei optime de încărcare"
+      "price_data_source": {
+        "name": "Sursa datelor de preț"
       },
-      "battery_charge_recommendation": {
-        "name": "Recomandare de încărcare a bateriei",
-        "state": {
-          "charge_from_grid": "Încărcare din rețea",
-          "discharge": "Descărcare",
-          "hold": "Menținere"
-        }
+      "price_quartile": {
+        "name": "Cuartila prețului"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Cost fix lunar azi"
+      "price_rank": {
+        "name": "Rang"
+      },
+      "self_consumption_value": {
+        "name": "Valoarea autoconsumului"
+      },
+      "setting_acceptable_rank": {
+        "name": "Rang acceptabil"
+      },
+      "setting_active_fixed_period": {
+        "name": "Perioadă cu preț fix activă"
+      },
+      "setting_active_transfer_group": {
+        "name": "Grup de distribuție activ"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Treaptă de distribuție activă"
+      },
+      "setting_control_factor_function": {
+        "name": "Forma factorului de control"
+      },
+      "setting_forward_window": {
+        "name": "Fereastră viitoare"
+      },
+      "setting_max_price": {
+        "name": "Prag de preț"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Pragul de preț include distribuția"
+      },
+      "spot_next_hours_avg": {
+        "name": "Media spot a următoarelor ore"
+      },
+      "spot_price": {
+        "name": "Preț spot"
+      },
+      "today_avg": {
+        "name": "Media azi"
+      },
+      "today_max": {
+        "name": "Maxim azi"
+      },
+      "today_min": {
+        "name": "Minim azi"
+      },
+      "today_spot_avg": {
+        "name": "Preț spot mediu azi"
+      },
+      "today_spot_max": {
+        "name": "Preț spot maxim azi"
+      },
+      "today_spot_min": {
+        "name": "Preț spot minim azi"
+      },
+      "today_total_avg": {
+        "name": "Preț total mediu azi"
+      },
+      "today_total_max": {
+        "name": "Preț total maxim azi"
+      },
+      "today_total_min": {
+        "name": "Preț total minim azi"
+      },
+      "tomorrow_avg": {
+        "name": "Media mâine"
+      },
+      "tomorrow_max": {
+        "name": "Maxim mâine"
+      },
+      "tomorrow_min": {
+        "name": "Minim mâine"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Preț spot mediu mâine"
+      },
+      "tomorrow_spot_max": {
+        "name": "Preț spot maxim mâine"
+      },
+      "tomorrow_spot_min": {
+        "name": "Preț spot minim mâine"
+      },
+      "tomorrow_total_avg": {
+        "name": "Preț total mediu mâine"
+      },
+      "tomorrow_total_max": {
+        "name": "Preț total maxim mâine"
+      },
+      "tomorrow_total_min": {
+        "name": "Preț total minim mâine"
+      },
+      "total_price": {
+        "name": "Preț total"
+      },
+      "total_price_quartile": {
+        "name": "Cuartila prețului total"
+      },
+      "total_price_rank": {
+        "name": "Rangul prețului total"
+      },
+      "transfer_price": {
+        "name": "Preț de distribuție"
       }
     },
     "number": {

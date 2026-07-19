@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Основни поставки",
-        "description": "Зоната одредува која нордиска/балтичка зона на берзански цени се користи.",
+        "description": "Зоната одредува која европска зона на берзански цени се користи.",
         "data": {
           "name": "Име",
           "region": "Ценовна зона",
@@ -14,6 +14,18 @@
           "name": "Се користи во имињата на ентитетите, на пр. 'Дом'",
           "price_resolution": "15 минути (96 интервали/ден) или 1 час (24 интервали/ден). Изберете според мерниот интервал на вашиот договор.",
           "display_unit": "Единица на сензорот"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Валута",
+        "description": "Оваа зона наплаќа во валута {currency}. Берзанските цени се пресметуваат од EUR со дневен курс; сите цени што ги внесувате (маржа, нивоа на мрежарина, прагови) се во избраната валута за приказ.",
+        "data": {
+          "currency_mode": "Валута за приказ",
+          "fx_mode": "Извор на курсот",
+          "fx_rate": "Рачен курс (локална валута за 1 EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Се користи кога изворот на курсот е рачен и како резерва кога автоматскиот курс не е достапен. Оставете 0 ако не се користи."
         }
       },
       "vat_and_tax": {
@@ -159,7 +171,13 @@
           "vat_rate_pct": "Стапка на ДДВ (%)",
           "electricity_tax": "Акциза (c/kWh)",
           "spot_commission": "Маржа на берзанската цена (c/kWh)",
-          "monthly_fixed_cost": "Фиксен трошок на договорот за снабдување (€/месец)"
+          "monthly_fixed_cost": "Фиксен трошок на договорот за снабдување (€/месец)",
+          "currency_mode": "Валута за приказ",
+          "fx_mode": "Извор на курсот",
+          "fx_rate": "Рачен курс (локална валута за 1 EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Промената ги пресметува внесените цени (прагови, маржи, нивоа на мрежарина, фиксни периоди) според тековниот курс. Проверете ги вредностите по промената."
         }
       },
       "transfer_groups": {
@@ -319,86 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Берзанска цена"
+      "arbitrage_spread_today": {
+        "name": "Арбитражен распон денес"
       },
-      "effective_price": {
-        "name": "Активна цена"
+      "avg_price_120min": {
+        "name": "Просечна цена 120 мин"
       },
-      "transfer_price": {
-        "name": "Мрежарина"
+      "avg_price_30min": {
+        "name": "Просечна цена 30 мин"
       },
-      "total_price": {
-        "name": "Вкупна цена"
+      "avg_price_60min": {
+        "name": "Просечна цена 60 мин"
       },
-      "price_rank": {
-        "name": "Ранг"
+      "battery_charge_recommendation": {
+        "name": "Препорака за полнење на батеријата",
+        "state": {
+          "charge_from_grid": "Полни од мрежа",
+          "discharge": "Празни",
+          "hold": "Задржи"
+        }
       },
-      "total_price_rank": {
-        "name": "Ранг на вкупната цена"
-      },
-      "total_price_quartile": {
-        "name": "Квартил на вкупната цена"
-      },
-      "today_spot_avg": {
-        "name": "Просечна берзанска цена денес"
-      },
-      "today_spot_min": {
-        "name": "Најниска берзанска цена денес"
-      },
-      "today_spot_max": {
-        "name": "Највисока берзанска цена денес"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Просечна берзанска цена утре"
-      },
-      "tomorrow_spot_min": {
-        "name": "Најниска берзанска цена утре"
-      },
-      "tomorrow_spot_max": {
-        "name": "Највисока берзанска цена утре"
-      },
-      "today_total_avg": {
-        "name": "Просечна вкупна цена денес"
-      },
-      "today_total_min": {
-        "name": "Најниска вкупна цена денес"
-      },
-      "today_total_max": {
-        "name": "Највисока вкупна цена денес"
-      },
-      "tomorrow_total_avg": {
-        "name": "Просечна вкупна цена утре"
-      },
-      "tomorrow_total_min": {
-        "name": "Најниска вкупна цена утре"
-      },
-      "tomorrow_total_max": {
-        "name": "Највисока вкупна цена утре"
-      },
-      "today_avg": {
-        "name": "Просек денес"
-      },
-      "today_min": {
-        "name": "Минимум денес"
-      },
-      "today_max": {
-        "name": "Максимум денес"
-      },
-      "tomorrow_avg": {
-        "name": "Просек утре"
-      },
-      "tomorrow_min": {
-        "name": "Минимум утре"
-      },
-      "tomorrow_max": {
-        "name": "Максимум утре"
-      },
-      "next_hours_avg": {
-        "name": "Просек на следните часови"
-      },
-      "spot_next_hours_avg": {
-        "name": "Берзански просек на следните часови"
+      "charge_opportunity_factor": {
+        "name": "Фактор на можност за полнење"
       },
       "control_factor_price": {
         "name": "Фактор на управување со цена"
@@ -409,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Фактор на управување со мрежарина"
       },
-      "price_quartile": {
-        "name": "Квартил на цената"
+      "effective_price": {
+        "name": "Активна цена"
       },
-      "setting_max_price": {
-        "name": "Праг на цена"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Прагот на цена ја вклучува мрежарината"
-      },
-      "setting_control_factor_function": {
-        "name": "Облик на факторот на управување"
-      },
-      "setting_acceptable_rank": {
-        "name": "Прифатлив ранг"
-      },
-      "setting_forward_window": {
-        "name": "Иден прозорец"
-      },
-      "setting_active_transfer_group": {
-        "name": "Активна група на мрежарина"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Активно ниво на мрежарина"
-      },
-      "setting_active_fixed_period": {
-        "name": "Активен период со фиксна цена"
+      "exchange_rate": {
+        "name": "Девизен курс"
       },
       "export_price": {
         "name": "Цена на предавање"
@@ -442,61 +381,146 @@
       "export_today_avg": {
         "name": "Просечна цена на предавање денес"
       },
-      "export_today_min": {
-        "name": "Најниска цена на предавање денес"
-      },
       "export_today_max": {
         "name": "Највисока цена на предавање денес"
+      },
+      "export_today_min": {
+        "name": "Најниска цена на предавање денес"
       },
       "export_tomorrow_avg": {
         "name": "Просечна цена на предавање утре"
       },
-      "export_tomorrow_min": {
-        "name": "Најниска цена на предавање утре"
-      },
       "export_tomorrow_max": {
         "name": "Највисока цена на предавање утре"
+      },
+      "export_tomorrow_min": {
+        "name": "Најниска цена на предавање утре"
       },
       "import_export_spread": {
         "name": "Распон преземање–предавање"
       },
-      "self_consumption_value": {
-        "name": "Вредност на сопствената потрошувачка"
+      "monthly_fixed_cost_today": {
+        "name": "Месечен фиксен трошок денес"
       },
-      "avg_price_30min": {
-        "name": "Просечна цена 30 мин"
-      },
-      "avg_price_60min": {
-        "name": "Просечна цена 60 мин"
-      },
-      "avg_price_120min": {
-        "name": "Просечна цена 120 мин"
+      "next_hours_avg": {
+        "name": "Просек на следните часови"
       },
       "next_solar_window_avg": {
         "name": "Просек на следниот сончев прозорец"
       },
-      "arbitrage_spread_today": {
-        "name": "Арбитражен распон денес"
-      },
-      "charge_opportunity_factor": {
-        "name": "Фактор на можност за полнење"
+      "optimal_charge_window_end": {
+        "name": "Крај на оптималниот прозорец за полнење"
       },
       "optimal_charge_window_start": {
         "name": "Почеток на оптималниот прозорец за полнење"
       },
-      "optimal_charge_window_end": {
-        "name": "Крај на оптималниот прозорец за полнење"
+      "price_data_source": {
+        "name": "Извор на податоци за цени"
       },
-      "battery_charge_recommendation": {
-        "name": "Препорака за полнење на батеријата",
-        "state": {
-          "charge_from_grid": "Полни од мрежа",
-          "discharge": "Празни",
-          "hold": "Задржи"
-        }
+      "price_quartile": {
+        "name": "Квартил на цената"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Месечен фиксен трошок денес"
+      "price_rank": {
+        "name": "Ранг"
+      },
+      "self_consumption_value": {
+        "name": "Вредност на сопствената потрошувачка"
+      },
+      "setting_acceptable_rank": {
+        "name": "Прифатлив ранг"
+      },
+      "setting_active_fixed_period": {
+        "name": "Активен период со фиксна цена"
+      },
+      "setting_active_transfer_group": {
+        "name": "Активна група на мрежарина"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Активно ниво на мрежарина"
+      },
+      "setting_control_factor_function": {
+        "name": "Облик на факторот на управување"
+      },
+      "setting_forward_window": {
+        "name": "Иден прозорец"
+      },
+      "setting_max_price": {
+        "name": "Праг на цена"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Прагот на цена ја вклучува мрежарината"
+      },
+      "spot_next_hours_avg": {
+        "name": "Берзански просек на следните часови"
+      },
+      "spot_price": {
+        "name": "Берзанска цена"
+      },
+      "today_avg": {
+        "name": "Просек денес"
+      },
+      "today_max": {
+        "name": "Максимум денес"
+      },
+      "today_min": {
+        "name": "Минимум денес"
+      },
+      "today_spot_avg": {
+        "name": "Просечна берзанска цена денес"
+      },
+      "today_spot_max": {
+        "name": "Највисока берзанска цена денес"
+      },
+      "today_spot_min": {
+        "name": "Најниска берзанска цена денес"
+      },
+      "today_total_avg": {
+        "name": "Просечна вкупна цена денес"
+      },
+      "today_total_max": {
+        "name": "Највисока вкупна цена денес"
+      },
+      "today_total_min": {
+        "name": "Најниска вкупна цена денес"
+      },
+      "tomorrow_avg": {
+        "name": "Просек утре"
+      },
+      "tomorrow_max": {
+        "name": "Максимум утре"
+      },
+      "tomorrow_min": {
+        "name": "Минимум утре"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Просечна берзанска цена утре"
+      },
+      "tomorrow_spot_max": {
+        "name": "Највисока берзанска цена утре"
+      },
+      "tomorrow_spot_min": {
+        "name": "Најниска берзанска цена утре"
+      },
+      "tomorrow_total_avg": {
+        "name": "Просечна вкупна цена утре"
+      },
+      "tomorrow_total_max": {
+        "name": "Највисока вкупна цена утре"
+      },
+      "tomorrow_total_min": {
+        "name": "Најниска вкупна цена утре"
+      },
+      "total_price": {
+        "name": "Вкупна цена"
+      },
+      "total_price_quartile": {
+        "name": "Квартил на вкупната цена"
+      },
+      "total_price_rank": {
+        "name": "Ранг на вкупната цена"
+      },
+      "transfer_price": {
+        "name": "Мрежарина"
       }
     },
     "number": {

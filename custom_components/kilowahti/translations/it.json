@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Impostazioni di base",
-        "description": "La zona determina quale area di prezzo spot nordica/baltica viene utilizzata.",
+        "description": "La zona determina quale area di mercato europea viene utilizzata.",
         "data": {
           "name": "Nome",
           "region": "Zona di prezzo",
@@ -14,6 +14,18 @@
           "name": "Usato nei nomi delle entità, ad es. 'Casa'",
           "price_resolution": "15 minuti (96 intervalli/giorno) o 1 ora (24 intervalli/giorno). Scegli in base all'intervallo di misurazione del tuo contratto.",
           "display_unit": "Unità del sensore"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Valuta",
+        "description": "Questa zona fattura in {currency}. I prezzi spot vengono convertiti dall'EUR con un tasso di cambio giornaliero; tutti i prezzi inseriti (margine, fasce di trasporto, soglie) sono nella valuta di visualizzazione selezionata.",
+        "data": {
+          "currency_mode": "Valuta di visualizzazione",
+          "fx_mode": "Fonte del tasso di cambio",
+          "fx_rate": "Tasso di cambio manuale (valuta locale per EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Usato quando la fonte del tasso di cambio è manuale e come riserva quando il tasso automatico non è disponibile. Lascia 0 se non utilizzato."
         }
       },
       "vat_and_tax": {
@@ -159,7 +171,13 @@
           "vat_rate_pct": "Aliquota IVA (%)",
           "electricity_tax": "Accisa (c/kWh)",
           "spot_commission": "Margine sul prezzo spot (c/kWh)",
-          "monthly_fixed_cost": "Costo fisso del contratto elettrico (€/mese)"
+          "monthly_fixed_cost": "Costo fisso del contratto elettrico (€/mese)",
+          "currency_mode": "Valuta di visualizzazione",
+          "fx_mode": "Fonte del tasso di cambio",
+          "fx_rate": "Tasso di cambio manuale (valuta locale per EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Il cambio converte i prezzi inseriti (soglie, margini, fasce di trasporto, periodi fissi) con il tasso di cambio attuale. Controlla i valori dopo il cambio."
         }
       },
       "transfer_groups": {
@@ -319,86 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Prezzo spot"
+      "arbitrage_spread_today": {
+        "name": "Differenziale di arbitraggio oggi"
       },
-      "effective_price": {
-        "name": "Prezzo attivo"
+      "avg_price_120min": {
+        "name": "Prezzo medio 120 min"
       },
-      "transfer_price": {
-        "name": "Prezzo di trasporto"
+      "avg_price_30min": {
+        "name": "Prezzo medio 30 min"
       },
-      "total_price": {
-        "name": "Prezzo totale"
+      "avg_price_60min": {
+        "name": "Prezzo medio 60 min"
       },
-      "price_rank": {
-        "name": "Posizione"
+      "battery_charge_recommendation": {
+        "name": "Raccomandazione di carica della batteria",
+        "state": {
+          "charge_from_grid": "Carica dalla rete",
+          "discharge": "Scarica",
+          "hold": "Mantieni"
+        }
       },
-      "total_price_rank": {
-        "name": "Posizione del prezzo totale"
-      },
-      "total_price_quartile": {
-        "name": "Quartile del prezzo totale"
-      },
-      "today_spot_avg": {
-        "name": "Prezzo spot medio oggi"
-      },
-      "today_spot_min": {
-        "name": "Prezzo spot minimo oggi"
-      },
-      "today_spot_max": {
-        "name": "Prezzo spot massimo oggi"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Prezzo spot medio domani"
-      },
-      "tomorrow_spot_min": {
-        "name": "Prezzo spot minimo domani"
-      },
-      "tomorrow_spot_max": {
-        "name": "Prezzo spot massimo domani"
-      },
-      "today_total_avg": {
-        "name": "Prezzo totale medio oggi"
-      },
-      "today_total_min": {
-        "name": "Prezzo totale minimo oggi"
-      },
-      "today_total_max": {
-        "name": "Prezzo totale massimo oggi"
-      },
-      "tomorrow_total_avg": {
-        "name": "Prezzo totale medio domani"
-      },
-      "tomorrow_total_min": {
-        "name": "Prezzo totale minimo domani"
-      },
-      "tomorrow_total_max": {
-        "name": "Prezzo totale massimo domani"
-      },
-      "today_avg": {
-        "name": "Media oggi"
-      },
-      "today_min": {
-        "name": "Minimo oggi"
-      },
-      "today_max": {
-        "name": "Massimo oggi"
-      },
-      "tomorrow_avg": {
-        "name": "Media domani"
-      },
-      "tomorrow_min": {
-        "name": "Minimo domani"
-      },
-      "tomorrow_max": {
-        "name": "Massimo domani"
-      },
-      "next_hours_avg": {
-        "name": "Media delle prossime ore"
-      },
-      "spot_next_hours_avg": {
-        "name": "Media spot delle prossime ore"
+      "charge_opportunity_factor": {
+        "name": "Fattore di opportunità di carica"
       },
       "control_factor_price": {
         "name": "Fattore di controllo del prezzo"
@@ -409,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Fattore di controllo del trasporto"
       },
-      "price_quartile": {
-        "name": "Quartile di prezzo"
+      "effective_price": {
+        "name": "Prezzo attivo"
       },
-      "setting_max_price": {
-        "name": "Soglia di prezzo"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "La soglia di prezzo include il trasporto"
-      },
-      "setting_control_factor_function": {
-        "name": "Forma del fattore di controllo"
-      },
-      "setting_acceptable_rank": {
-        "name": "Posizione accettabile"
-      },
-      "setting_forward_window": {
-        "name": "Finestra futura"
-      },
-      "setting_active_transfer_group": {
-        "name": "Gruppo di trasporto attivo"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Fascia di trasporto attiva"
-      },
-      "setting_active_fixed_period": {
-        "name": "Periodo a prezzo fisso attivo"
+      "exchange_rate": {
+        "name": "Tasso di cambio"
       },
       "export_price": {
         "name": "Prezzo di immissione"
@@ -442,61 +381,146 @@
       "export_today_avg": {
         "name": "Prezzo di immissione medio oggi"
       },
-      "export_today_min": {
-        "name": "Prezzo di immissione minimo oggi"
-      },
       "export_today_max": {
         "name": "Prezzo di immissione massimo oggi"
+      },
+      "export_today_min": {
+        "name": "Prezzo di immissione minimo oggi"
       },
       "export_tomorrow_avg": {
         "name": "Prezzo di immissione medio domani"
       },
-      "export_tomorrow_min": {
-        "name": "Prezzo di immissione minimo domani"
-      },
       "export_tomorrow_max": {
         "name": "Prezzo di immissione massimo domani"
+      },
+      "export_tomorrow_min": {
+        "name": "Prezzo di immissione minimo domani"
       },
       "import_export_spread": {
         "name": "Differenziale prelievo-immissione"
       },
-      "self_consumption_value": {
-        "name": "Valore dell'autoconsumo"
+      "monthly_fixed_cost_today": {
+        "name": "Costo fisso mensile oggi"
       },
-      "avg_price_30min": {
-        "name": "Prezzo medio 30 min"
-      },
-      "avg_price_60min": {
-        "name": "Prezzo medio 60 min"
-      },
-      "avg_price_120min": {
-        "name": "Prezzo medio 120 min"
+      "next_hours_avg": {
+        "name": "Media delle prossime ore"
       },
       "next_solar_window_avg": {
         "name": "Media della prossima finestra solare"
       },
-      "arbitrage_spread_today": {
-        "name": "Differenziale di arbitraggio oggi"
-      },
-      "charge_opportunity_factor": {
-        "name": "Fattore di opportunità di carica"
+      "optimal_charge_window_end": {
+        "name": "Fine della finestra di carica ottimale"
       },
       "optimal_charge_window_start": {
         "name": "Inizio della finestra di carica ottimale"
       },
-      "optimal_charge_window_end": {
-        "name": "Fine della finestra di carica ottimale"
+      "price_data_source": {
+        "name": "Fonte dei dati di prezzo"
       },
-      "battery_charge_recommendation": {
-        "name": "Raccomandazione di carica della batteria",
-        "state": {
-          "charge_from_grid": "Carica dalla rete",
-          "discharge": "Scarica",
-          "hold": "Mantieni"
-        }
+      "price_quartile": {
+        "name": "Quartile di prezzo"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Costo fisso mensile oggi"
+      "price_rank": {
+        "name": "Posizione"
+      },
+      "self_consumption_value": {
+        "name": "Valore dell'autoconsumo"
+      },
+      "setting_acceptable_rank": {
+        "name": "Posizione accettabile"
+      },
+      "setting_active_fixed_period": {
+        "name": "Periodo a prezzo fisso attivo"
+      },
+      "setting_active_transfer_group": {
+        "name": "Gruppo di trasporto attivo"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Fascia di trasporto attiva"
+      },
+      "setting_control_factor_function": {
+        "name": "Forma del fattore di controllo"
+      },
+      "setting_forward_window": {
+        "name": "Finestra futura"
+      },
+      "setting_max_price": {
+        "name": "Soglia di prezzo"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "La soglia di prezzo include il trasporto"
+      },
+      "spot_next_hours_avg": {
+        "name": "Media spot delle prossime ore"
+      },
+      "spot_price": {
+        "name": "Prezzo spot"
+      },
+      "today_avg": {
+        "name": "Media oggi"
+      },
+      "today_max": {
+        "name": "Massimo oggi"
+      },
+      "today_min": {
+        "name": "Minimo oggi"
+      },
+      "today_spot_avg": {
+        "name": "Prezzo spot medio oggi"
+      },
+      "today_spot_max": {
+        "name": "Prezzo spot massimo oggi"
+      },
+      "today_spot_min": {
+        "name": "Prezzo spot minimo oggi"
+      },
+      "today_total_avg": {
+        "name": "Prezzo totale medio oggi"
+      },
+      "today_total_max": {
+        "name": "Prezzo totale massimo oggi"
+      },
+      "today_total_min": {
+        "name": "Prezzo totale minimo oggi"
+      },
+      "tomorrow_avg": {
+        "name": "Media domani"
+      },
+      "tomorrow_max": {
+        "name": "Massimo domani"
+      },
+      "tomorrow_min": {
+        "name": "Minimo domani"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Prezzo spot medio domani"
+      },
+      "tomorrow_spot_max": {
+        "name": "Prezzo spot massimo domani"
+      },
+      "tomorrow_spot_min": {
+        "name": "Prezzo spot minimo domani"
+      },
+      "tomorrow_total_avg": {
+        "name": "Prezzo totale medio domani"
+      },
+      "tomorrow_total_max": {
+        "name": "Prezzo totale massimo domani"
+      },
+      "tomorrow_total_min": {
+        "name": "Prezzo totale minimo domani"
+      },
+      "total_price": {
+        "name": "Prezzo totale"
+      },
+      "total_price_quartile": {
+        "name": "Quartile del prezzo totale"
+      },
+      "total_price_rank": {
+        "name": "Posizione del prezzo totale"
+      },
+      "transfer_price": {
+        "name": "Prezzo di trasporto"
       }
     },
     "number": {

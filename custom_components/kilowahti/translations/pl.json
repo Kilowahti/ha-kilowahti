@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Ustawienia podstawowe",
-        "description": "Region określa, która nordycka/bałtycka strefa cen giełdowych jest używana.",
+        "description": "Region określa, z której europejskiej strefy cenowej pochodzą ceny.",
         "data": {
           "name": "Nazwa",
           "region": "Strefa cenowa",
@@ -14,6 +14,18 @@
           "name": "Używana w nazwach encji, np. 'Dom'",
           "price_resolution": "15 minut (96 przedziałów/dobę) lub 1 godzina (24 przedziały/dobę). Dopasuj do interwału pomiarowego swojej umowy.",
           "display_unit": "Jednostka sensora"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Waluta",
+        "description": "Ten region rozlicza się w walucie {currency}. Ceny giełdowe są przeliczane z EUR według dziennego kursu wymiany; wszystkie wprowadzane ceny (marża, stawki dystrybucyjne, progi) są w wybranej walucie wyświetlania.",
+        "data": {
+          "currency_mode": "Waluta wyświetlania",
+          "fx_mode": "Źródło kursu wymiany",
+          "fx_rate": "Ręczny kurs wymiany (waluta lokalna za EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Używany, gdy źródłem kursu wymiany jest kurs ręczny, oraz jako kurs zapasowy, gdy kurs automatyczny jest niedostępny. Pozostaw 0, jeśli nieużywany."
         }
       },
       "vat_and_tax": {
@@ -159,7 +171,13 @@
           "vat_rate_pct": "Stawka VAT (%)",
           "electricity_tax": "Akcyza (c/kWh)",
           "spot_commission": "Marża do ceny giełdowej (c/kWh)",
-          "monthly_fixed_cost": "Koszt stały umowy na energię (€/mies.)"
+          "monthly_fixed_cost": "Koszt stały umowy na energię (€/mies.)",
+          "currency_mode": "Waluta wyświetlania",
+          "fx_mode": "Źródło kursu wymiany",
+          "fx_rate": "Ręczny kurs wymiany (waluta lokalna za EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Przełączenie przelicza wprowadzone ceny (progi, marże, stawki dystrybucyjne, okresy stałej ceny) według bieżącego kursu wymiany. Sprawdź wartości po przełączeniu."
         }
       },
       "transfer_groups": {
@@ -319,86 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Cena giełdowa"
+      "arbitrage_spread_today": {
+        "name": "Różnica arbitrażowa dziś"
       },
-      "effective_price": {
-        "name": "Cena aktywna"
+      "avg_price_120min": {
+        "name": "Średnia cena 120 min"
       },
-      "transfer_price": {
-        "name": "Cena dystrybucji"
+      "avg_price_30min": {
+        "name": "Średnia cena 30 min"
       },
-      "total_price": {
-        "name": "Cena całkowita"
+      "avg_price_60min": {
+        "name": "Średnia cena 60 min"
       },
-      "price_rank": {
-        "name": "Ranga"
+      "battery_charge_recommendation": {
+        "name": "Rekomendacja ładowania akumulatora",
+        "state": {
+          "charge_from_grid": "Ładuj z sieci",
+          "discharge": "Rozładuj",
+          "hold": "Wstrzymaj"
+        }
       },
-      "total_price_rank": {
-        "name": "Ranga ceny całkowitej"
-      },
-      "total_price_quartile": {
-        "name": "Kwartyl ceny całkowitej"
-      },
-      "today_spot_avg": {
-        "name": "Średnia cena giełdowa dziś"
-      },
-      "today_spot_min": {
-        "name": "Najniższa cena giełdowa dziś"
-      },
-      "today_spot_max": {
-        "name": "Najwyższa cena giełdowa dziś"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Średnia cena giełdowa jutro"
-      },
-      "tomorrow_spot_min": {
-        "name": "Najniższa cena giełdowa jutro"
-      },
-      "tomorrow_spot_max": {
-        "name": "Najwyższa cena giełdowa jutro"
-      },
-      "today_total_avg": {
-        "name": "Średnia cena całkowita dziś"
-      },
-      "today_total_min": {
-        "name": "Najniższa cena całkowita dziś"
-      },
-      "today_total_max": {
-        "name": "Najwyższa cena całkowita dziś"
-      },
-      "tomorrow_total_avg": {
-        "name": "Średnia cena całkowita jutro"
-      },
-      "tomorrow_total_min": {
-        "name": "Najniższa cena całkowita jutro"
-      },
-      "tomorrow_total_max": {
-        "name": "Najwyższa cena całkowita jutro"
-      },
-      "today_avg": {
-        "name": "Średnia dziś"
-      },
-      "today_min": {
-        "name": "Minimum dziś"
-      },
-      "today_max": {
-        "name": "Maksimum dziś"
-      },
-      "tomorrow_avg": {
-        "name": "Średnia jutro"
-      },
-      "tomorrow_min": {
-        "name": "Minimum jutro"
-      },
-      "tomorrow_max": {
-        "name": "Maksimum jutro"
-      },
-      "next_hours_avg": {
-        "name": "Średnia najbliższych godzin"
-      },
-      "spot_next_hours_avg": {
-        "name": "Średnia giełdowa najbliższych godzin"
+      "charge_opportunity_factor": {
+        "name": "Współczynnik okazji ładowania"
       },
       "control_factor_price": {
         "name": "Współczynnik sterowania ceny"
@@ -409,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Współczynnik sterowania dystrybucji"
       },
-      "price_quartile": {
-        "name": "Kwartyl ceny"
+      "effective_price": {
+        "name": "Cena aktywna"
       },
-      "setting_max_price": {
-        "name": "Próg ceny"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Próg ceny obejmuje dystrybucję"
-      },
-      "setting_control_factor_function": {
-        "name": "Kształt współczynnika sterowania"
-      },
-      "setting_acceptable_rank": {
-        "name": "Akceptowalna ranga"
-      },
-      "setting_forward_window": {
-        "name": "Okno przyszłe"
-      },
-      "setting_active_transfer_group": {
-        "name": "Aktywna grupa stawek dystrybucyjnych"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Aktywna stawka dystrybucyjna"
-      },
-      "setting_active_fixed_period": {
-        "name": "Aktywny okres stałej ceny"
+      "exchange_rate": {
+        "name": "Kurs wymiany"
       },
       "export_price": {
         "name": "Cena sprzedaży"
@@ -442,61 +381,146 @@
       "export_today_avg": {
         "name": "Średnia cena sprzedaży dziś"
       },
-      "export_today_min": {
-        "name": "Najniższa cena sprzedaży dziś"
-      },
       "export_today_max": {
         "name": "Najwyższa cena sprzedaży dziś"
+      },
+      "export_today_min": {
+        "name": "Najniższa cena sprzedaży dziś"
       },
       "export_tomorrow_avg": {
         "name": "Średnia cena sprzedaży jutro"
       },
-      "export_tomorrow_min": {
-        "name": "Najniższa cena sprzedaży jutro"
-      },
       "export_tomorrow_max": {
         "name": "Najwyższa cena sprzedaży jutro"
+      },
+      "export_tomorrow_min": {
+        "name": "Najniższa cena sprzedaży jutro"
       },
       "import_export_spread": {
         "name": "Różnica zakup-sprzedaż"
       },
-      "self_consumption_value": {
-        "name": "Wartość autokonsumpcji"
+      "monthly_fixed_cost_today": {
+        "name": "Miesięczny koszt stały dziś"
       },
-      "avg_price_30min": {
-        "name": "Średnia cena 30 min"
-      },
-      "avg_price_60min": {
-        "name": "Średnia cena 60 min"
-      },
-      "avg_price_120min": {
-        "name": "Średnia cena 120 min"
+      "next_hours_avg": {
+        "name": "Średnia najbliższych godzin"
       },
       "next_solar_window_avg": {
         "name": "Średnia następnego okna słonecznego"
       },
-      "arbitrage_spread_today": {
-        "name": "Różnica arbitrażowa dziś"
-      },
-      "charge_opportunity_factor": {
-        "name": "Współczynnik okazji ładowania"
+      "optimal_charge_window_end": {
+        "name": "Koniec optymalnego okna ładowania"
       },
       "optimal_charge_window_start": {
         "name": "Początek optymalnego okna ładowania"
       },
-      "optimal_charge_window_end": {
-        "name": "Koniec optymalnego okna ładowania"
+      "price_data_source": {
+        "name": "Źródło danych cenowych"
       },
-      "battery_charge_recommendation": {
-        "name": "Rekomendacja ładowania akumulatora",
-        "state": {
-          "charge_from_grid": "Ładuj z sieci",
-          "discharge": "Rozładuj",
-          "hold": "Wstrzymaj"
-        }
+      "price_quartile": {
+        "name": "Kwartyl ceny"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Miesięczny koszt stały dziś"
+      "price_rank": {
+        "name": "Ranga"
+      },
+      "self_consumption_value": {
+        "name": "Wartość autokonsumpcji"
+      },
+      "setting_acceptable_rank": {
+        "name": "Akceptowalna ranga"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktywny okres stałej ceny"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktywna grupa stawek dystrybucyjnych"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktywna stawka dystrybucyjna"
+      },
+      "setting_control_factor_function": {
+        "name": "Kształt współczynnika sterowania"
+      },
+      "setting_forward_window": {
+        "name": "Okno przyszłe"
+      },
+      "setting_max_price": {
+        "name": "Próg ceny"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Próg ceny obejmuje dystrybucję"
+      },
+      "spot_next_hours_avg": {
+        "name": "Średnia giełdowa najbliższych godzin"
+      },
+      "spot_price": {
+        "name": "Cena giełdowa"
+      },
+      "today_avg": {
+        "name": "Średnia dziś"
+      },
+      "today_max": {
+        "name": "Maksimum dziś"
+      },
+      "today_min": {
+        "name": "Minimum dziś"
+      },
+      "today_spot_avg": {
+        "name": "Średnia cena giełdowa dziś"
+      },
+      "today_spot_max": {
+        "name": "Najwyższa cena giełdowa dziś"
+      },
+      "today_spot_min": {
+        "name": "Najniższa cena giełdowa dziś"
+      },
+      "today_total_avg": {
+        "name": "Średnia cena całkowita dziś"
+      },
+      "today_total_max": {
+        "name": "Najwyższa cena całkowita dziś"
+      },
+      "today_total_min": {
+        "name": "Najniższa cena całkowita dziś"
+      },
+      "tomorrow_avg": {
+        "name": "Średnia jutro"
+      },
+      "tomorrow_max": {
+        "name": "Maksimum jutro"
+      },
+      "tomorrow_min": {
+        "name": "Minimum jutro"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Średnia cena giełdowa jutro"
+      },
+      "tomorrow_spot_max": {
+        "name": "Najwyższa cena giełdowa jutro"
+      },
+      "tomorrow_spot_min": {
+        "name": "Najniższa cena giełdowa jutro"
+      },
+      "tomorrow_total_avg": {
+        "name": "Średnia cena całkowita jutro"
+      },
+      "tomorrow_total_max": {
+        "name": "Najwyższa cena całkowita jutro"
+      },
+      "tomorrow_total_min": {
+        "name": "Najniższa cena całkowita jutro"
+      },
+      "total_price": {
+        "name": "Cena całkowita"
+      },
+      "total_price_quartile": {
+        "name": "Kwartyl ceny całkowitej"
+      },
+      "total_price_rank": {
+        "name": "Ranga ceny całkowitej"
+      },
+      "transfer_price": {
+        "name": "Cena dystrybucji"
       }
     },
     "number": {

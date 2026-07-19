@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Grunnleggende innstillinger",
-        "description": "Region bestemmer hvilket nordisk/baltisk spotprisområde som brukes.",
+        "description": "Region bestemmer hvilket europeisk spotprisområde som brukes.",
         "data": {
           "name": "Navn",
           "region": "Prisområde",
@@ -14,6 +14,18 @@
           "name": "Brukes i enhetsnavn, f.eks. 'Hjem'",
           "price_resolution": "15 minutter (96 sloter/dag) eller 1 time (24 sloter/dag). Match kontraktens måleintervall.",
           "display_unit": "Sensorenhet"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Valuta",
+        "description": "Denne regionen faktureres i {currency}. Spotpriser regnes om fra EUR med en daglig valutakurs; alle priser du oppgir (provisjon, overføringspriser, prisgrenser) er i den valgte visningsvalutaen.",
+        "data": {
+          "currency_mode": "Visningsvaluta",
+          "fx_mode": "Valutakurskilde",
+          "fx_rate": "Manuell valutakurs (lokal valuta per EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Brukes når valutakurskilden er manuell, og som reserve når den automatiske kursen ikke er tilgjengelig. La stå på 0 hvis ubrukt."
         }
       },
       "vat_and_tax": {
@@ -93,13 +105,14 @@
           "price_threshold_includes_transfer": "PÅ: sammenlign totalpris (spot + overføring). AV: sammenlign kun energipris (spot).",
           "max_rank": "Når rangeringen av gjeldende spor er på eller under dette, slås rank_acceptable-sensoren på.",
           "forward_avg_hours": "Antall timer foran gjennomsnittet for next_hours_avg-sensoren.",
-          "control_factor_scaling": "Eksponent brukt på kontrollfaktor (forsterker ekstremer).",
-          "control_factor_function": "Form av 0—1 kontrollfaktorkurven."
+          "control_factor_function": "Form av 0—1 kontrollfaktorkurven.",
+          "control_factor_scaling": "Eksponent brukt på kontrollfaktor (forsterker ekstremer)."
         }
       },
       "score_profiles": {
         "title": "Optimaliseringspoeng",
-        "description": "Poeng måler hvor godt forbruket ditt flyttes til billige timer. Den permanente «Total» -profilen dekker alt forbruk - koble en måler (eller meter) til den i Alternativer etter oppsett."
+        "description": "Poeng måler hvor godt forbruket ditt flyttes til billige timer. Den permanente «Total» -profilen dekker alt forbruk - koble en måler (eller meter) til den i Alternativer etter oppsett.",
+        "data": {}
       },
       "advanced_options": {
         "title": "Avanserte alternativer",
@@ -158,7 +171,13 @@
           "vat_rate_pct": "Momssats (%)",
           "electricity_tax": "Strømskatt (c/kWh)",
           "spot_commission": "Spotprisprovisjon (c/kWh)",
-          "monthly_fixed_cost": "Strømkontrakt fast kostnad (€/måned)"
+          "monthly_fixed_cost": "Strømkontrakt fast kostnad (€/måned)",
+          "currency_mode": "Visningsvaluta",
+          "fx_mode": "Valutakurskilde",
+          "fx_rate": "Manuell valutakurs (lokal valuta per EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Bytte regner om prisene du har oppgitt (prisgrenser, provisjoner, overføringspriser, fastprisperioder) med gjeldende valutakurs. Kontroller verdiene etter byttet."
         }
       },
       "transfer_groups": {
@@ -218,7 +237,8 @@
         }
       },
       "score_profiles": {
-        "title": "Poengprofiler"
+        "title": "Poengprofiler",
+        "data": {}
       },
       "advanced_options": {
         "title": "Avanserte alternativer",
@@ -317,65 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Spotpris"
+      "arbitrage_spread_today": {
+        "name": "Arbitrasjedifferanse i dag"
       },
-      "effective_price": {
-        "name": "Aktiv pris"
+      "avg_price_120min": {
+        "name": "Snittpris 120 min"
       },
-      "transfer_price": {
-        "name": "Overføringspris"
+      "avg_price_30min": {
+        "name": "Snittpris 30 min"
       },
-      "total_price": {
-        "name": "Totalpris"
+      "avg_price_60min": {
+        "name": "Snittpris 60 min"
       },
-      "price_rank": {
-        "name": "Rang"
+      "battery_charge_recommendation": {
+        "name": "Anbefaling om batterilading",
+        "state": {
+          "charge_from_grid": "Lade fra strømnettet",
+          "discharge": "Utladning",
+          "hold": "Hold"
+        }
       },
-      "total_price_rank": {
-        "name": "Total prisrangering"
-      },
-      "total_price_quartile": {
-        "name": "Total priskvartil"
-      },
-      "today_spot_avg": {
-        "name": "Gjennomsnittlig spotpris i dag"
-      },
-      "today_spot_min": {
-        "name": "Laveste spotpris i dag"
-      },
-      "today_spot_max": {
-        "name": "Høyeste spotpris i dag"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Gjennomsnittlig spotpris i morgen"
-      },
-      "tomorrow_spot_min": {
-        "name": "Laveste spotpris i morgen"
-      },
-      "tomorrow_spot_max": {
-        "name": "Høyeste spotpris i morgen"
-      },
-      "today_total_avg": {
-        "name": "I dag totalt gjennomsnitt"
-      },
-      "today_total_min": {
-        "name": "I dag totalt minimum"
-      },
-      "today_total_max": {
-        "name": "I dag totalt maksimum"
-      },
-      "tomorrow_total_avg": {
-        "name": "Totalt gjennomsnitt i morgen"
-      },
-      "tomorrow_total_min": {
-        "name": "I morgen totalt minimum"
-      },
-      "tomorrow_total_max": {
-        "name": "I morgen totalt maksimum"
-      },
-      "next_hours_avg": {
-        "name": "Gjennomsnitt neste timer"
+      "charge_opportunity_factor": {
+        "name": "Lademulighetsfaktor"
       },
       "control_factor_price": {
         "name": "Kontrollfaktorpris"
@@ -386,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Overføring av kontrollfaktor"
       },
-      "price_quartile": {
-        "name": "Priskvartil"
+      "effective_price": {
+        "name": "Aktiv pris"
       },
-      "setting_max_price": {
-        "name": "Prisgrense"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Prisgrense inkluderer overføring"
-      },
-      "setting_control_factor_function": {
-        "name": "Kontrollfaktorform"
-      },
-      "setting_acceptable_rank": {
-        "name": "Akseptabel rangering"
-      },
-      "setting_forward_window": {
-        "name": "Fremovervindu"
-      },
-      "setting_active_transfer_group": {
-        "name": "Aktiv overføringsgruppe"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Aktivt overføringsnivå"
-      },
-      "setting_active_fixed_period": {
-        "name": "Aktiv fast periode"
+      "exchange_rate": {
+        "name": "Valutakurs"
       },
       "export_price": {
         "name": "Eksportpris"
@@ -419,82 +381,146 @@
       "export_today_avg": {
         "name": "Gjennomsnitt for eksport i dag"
       },
-      "export_today_min": {
-        "name": "Laveste eksportpris i dag"
-      },
       "export_today_max": {
         "name": "Høyeste eksportpris i dag"
+      },
+      "export_today_min": {
+        "name": "Laveste eksportpris i dag"
       },
       "export_tomorrow_avg": {
         "name": "Gjennomsnitt for eksport i morgen"
       },
-      "export_tomorrow_min": {
-        "name": "Laveste eksportpris i morgen"
-      },
       "export_tomorrow_max": {
         "name": "Høyeste eksportpris i morgen"
+      },
+      "export_tomorrow_min": {
+        "name": "Laveste eksportpris i morgen"
       },
       "import_export_spread": {
         "name": "Import-eksportspredning"
       },
-      "self_consumption_value": {
-        "name": "Egenforbruksverdi"
+      "monthly_fixed_cost_today": {
+        "name": "Månedlig fast kostnad i dag"
       },
-      "avg_price_30min": {
-        "name": "Snittpris 30 min"
-      },
-      "avg_price_60min": {
-        "name": "Snittpris 60 min"
-      },
-      "avg_price_120min": {
-        "name": "Snittpris 120 min"
+      "next_hours_avg": {
+        "name": "Gjennomsnitt neste timer"
       },
       "next_solar_window_avg": {
         "name": "Neste solvindusgjennomsnitt"
       },
-      "arbitrage_spread_today": {
-        "name": "Arbitrasjedifferanse i dag"
-      },
-      "charge_opportunity_factor": {
-        "name": "Lademulighetsfaktor"
+      "optimal_charge_window_end": {
+        "name": "Optimal ladevinduets ende"
       },
       "optimal_charge_window_start": {
         "name": "Optimal ladevinduets start"
       },
-      "optimal_charge_window_end": {
-        "name": "Optimal ladevinduets ende"
+      "price_data_source": {
+        "name": "Prisdatakilde"
       },
-      "battery_charge_recommendation": {
-        "name": "Anbefaling om batterilading",
-        "state": {
-          "charge_from_grid": "Lade fra strømnettet",
-          "discharge": "Utladning",
-          "hold": "Hold"
-        }
+      "price_quartile": {
+        "name": "Priskvartil"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Månedlig fast kostnad i dag"
+      "price_rank": {
+        "name": "Rang"
+      },
+      "self_consumption_value": {
+        "name": "Egenforbruksverdi"
+      },
+      "setting_acceptable_rank": {
+        "name": "Akseptabel rangering"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktiv fast periode"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktiv overføringsgruppe"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktivt overføringsnivå"
+      },
+      "setting_control_factor_function": {
+        "name": "Kontrollfaktorform"
+      },
+      "setting_forward_window": {
+        "name": "Fremovervindu"
+      },
+      "setting_max_price": {
+        "name": "Prisgrense"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Prisgrense inkluderer overføring"
+      },
+      "spot_next_hours_avg": {
+        "name": "Gjennomsnitt for neste timer"
+      },
+      "spot_price": {
+        "name": "Spotpris"
       },
       "today_avg": {
         "name": "I dag gjennomsnittlig"
       },
+      "today_max": {
+        "name": "I dag maksimalt"
+      },
       "today_min": {
         "name": "I dag minimum"
       },
-      "today_max": {
-        "name": "I dag maksimalt"
+      "today_spot_avg": {
+        "name": "Gjennomsnittlig spotpris i dag"
+      },
+      "today_spot_max": {
+        "name": "Høyeste spotpris i dag"
+      },
+      "today_spot_min": {
+        "name": "Laveste spotpris i dag"
+      },
+      "today_total_avg": {
+        "name": "I dag totalt gjennomsnitt"
+      },
+      "today_total_max": {
+        "name": "I dag totalt maksimum"
+      },
+      "today_total_min": {
+        "name": "I dag totalt minimum"
       },
       "tomorrow_avg": {
         "name": "Morgendagens gjennomsnitt"
       },
-      "tomorrow_min": {
-        "name": "I morgen minimum"
-      },
       "tomorrow_max": {
         "name": "Maksimalt i morgen"
       },
-      "spot_next_hours_avg": {
-        "name": "Gjennomsnitt for neste timer"
+      "tomorrow_min": {
+        "name": "I morgen minimum"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Gjennomsnittlig spotpris i morgen"
+      },
+      "tomorrow_spot_max": {
+        "name": "Høyeste spotpris i morgen"
+      },
+      "tomorrow_spot_min": {
+        "name": "Laveste spotpris i morgen"
+      },
+      "tomorrow_total_avg": {
+        "name": "Totalt gjennomsnitt i morgen"
+      },
+      "tomorrow_total_max": {
+        "name": "I morgen totalt maksimum"
+      },
+      "tomorrow_total_min": {
+        "name": "I morgen totalt minimum"
+      },
+      "total_price": {
+        "name": "Totalpris"
+      },
+      "total_price_quartile": {
+        "name": "Total priskvartil"
+      },
+      "total_price_rank": {
+        "name": "Total prisrangering"
+      },
+      "transfer_price": {
+        "name": "Overføringspris"
       }
     },
     "number": {

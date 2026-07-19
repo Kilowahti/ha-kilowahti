@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Basisinstellingen",
-        "description": "De regio bepaalt welke Noordse/Baltische spotprijszone wordt gebruikt.",
+        "description": "De regio bepaalt van welke Europese biedzone de prijzen worden gebruikt.",
         "data": {
           "name": "Naam",
           "region": "Prijszone",
@@ -14,6 +14,18 @@
           "name": "Wordt gebruikt in entiteitsnamen, bijv. 'Thuis'",
           "price_resolution": "15 minuten (96 blokken/dag) of 1 uur (24 blokken/dag). Kies passend bij het meetinterval van je contract.",
           "display_unit": "Sensoreenheid"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Valuta",
+        "description": "Deze regio rekent af in {currency}. Spotprijzen worden omgerekend vanuit EUR met een dagelijkse wisselkoers; alle prijzen die je invoert (opslag, nettariefniveaus, drempels) zijn in de gekozen weergavevaluta.",
+        "data": {
+          "currency_mode": "Weergavevaluta",
+          "fx_mode": "Wisselkoersbron",
+          "fx_rate": "Handmatige wisselkoers (lokale valuta per EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Wordt gebruikt wanneer de wisselkoersbron op handmatig staat, en als terugval wanneer de automatische koers niet beschikbaar is. Laat op 0 staan indien ongebruikt."
         }
       },
       "vat_and_tax": {
@@ -159,7 +171,13 @@
           "vat_rate_pct": "Btw-tarief (%)",
           "electricity_tax": "Energiebelasting (c/kWh)",
           "spot_commission": "Opslag op spotprijs (c/kWh)",
-          "monthly_fixed_cost": "Vaste kosten energiecontract (€/maand)"
+          "monthly_fixed_cost": "Vaste kosten energiecontract (€/maand)",
+          "currency_mode": "Weergavevaluta",
+          "fx_mode": "Wisselkoersbron",
+          "fx_rate": "Handmatige wisselkoers (lokale valuta per EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Bij het wisselen worden je ingevoerde prijzen (drempels, opslagen, nettariefniveaus, vasteprijsperiodes) omgerekend met de actuele wisselkoers. Controleer de waarden na het wisselen."
         }
       },
       "transfer_groups": {
@@ -319,86 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Spotprijs"
+      "arbitrage_spread_today": {
+        "name": "Arbitragespreiding vandaag"
       },
-      "effective_price": {
-        "name": "Actieve prijs"
+      "avg_price_120min": {
+        "name": "Gemiddelde prijs 120 min"
       },
-      "transfer_price": {
-        "name": "Nettarief"
+      "avg_price_30min": {
+        "name": "Gemiddelde prijs 30 min"
       },
-      "total_price": {
-        "name": "Totaalprijs"
+      "avg_price_60min": {
+        "name": "Gemiddelde prijs 60 min"
       },
-      "price_rank": {
-        "name": "Rang"
+      "battery_charge_recommendation": {
+        "name": "Batterijlaadadvies",
+        "state": {
+          "charge_from_grid": "Laden van het net",
+          "discharge": "Ontladen",
+          "hold": "Vasthouden"
+        }
       },
-      "total_price_rank": {
-        "name": "Totaalprijsrang"
-      },
-      "total_price_quartile": {
-        "name": "Totaalprijskwartiel"
-      },
-      "today_spot_avg": {
-        "name": "Gemiddelde spotprijs vandaag"
-      },
-      "today_spot_min": {
-        "name": "Laagste spotprijs vandaag"
-      },
-      "today_spot_max": {
-        "name": "Hoogste spotprijs vandaag"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Gemiddelde spotprijs morgen"
-      },
-      "tomorrow_spot_min": {
-        "name": "Laagste spotprijs morgen"
-      },
-      "tomorrow_spot_max": {
-        "name": "Hoogste spotprijs morgen"
-      },
-      "today_total_avg": {
-        "name": "Gemiddelde totaalprijs vandaag"
-      },
-      "today_total_min": {
-        "name": "Laagste totaalprijs vandaag"
-      },
-      "today_total_max": {
-        "name": "Hoogste totaalprijs vandaag"
-      },
-      "tomorrow_total_avg": {
-        "name": "Gemiddelde totaalprijs morgen"
-      },
-      "tomorrow_total_min": {
-        "name": "Laagste totaalprijs morgen"
-      },
-      "tomorrow_total_max": {
-        "name": "Hoogste totaalprijs morgen"
-      },
-      "today_avg": {
-        "name": "Gemiddelde vandaag"
-      },
-      "today_min": {
-        "name": "Minimum vandaag"
-      },
-      "today_max": {
-        "name": "Maximum vandaag"
-      },
-      "tomorrow_avg": {
-        "name": "Gemiddelde morgen"
-      },
-      "tomorrow_min": {
-        "name": "Minimum morgen"
-      },
-      "tomorrow_max": {
-        "name": "Maximum morgen"
-      },
-      "next_hours_avg": {
-        "name": "Gemiddelde komende uren"
-      },
-      "spot_next_hours_avg": {
-        "name": "Spotgemiddelde komende uren"
+      "charge_opportunity_factor": {
+        "name": "Laadkansfactor"
       },
       "control_factor_price": {
         "name": "Stuurfactor prijs"
@@ -409,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Stuurfactor nettarief"
       },
-      "price_quartile": {
-        "name": "Prijskwartiel"
+      "effective_price": {
+        "name": "Actieve prijs"
       },
-      "setting_max_price": {
-        "name": "Prijsdrempel"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Prijsdrempel inclusief nettarief"
-      },
-      "setting_control_factor_function": {
-        "name": "Stuurfactorvorm"
-      },
-      "setting_acceptable_rank": {
-        "name": "Acceptabele rang"
-      },
-      "setting_forward_window": {
-        "name": "Vooruitblikvenster"
-      },
-      "setting_active_transfer_group": {
-        "name": "Actieve nettariefgroep"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Actief nettariefniveau"
-      },
-      "setting_active_fixed_period": {
-        "name": "Actieve vasteprijsperiode"
+      "exchange_rate": {
+        "name": "Wisselkoers"
       },
       "export_price": {
         "name": "Terugleverprijs"
@@ -442,61 +381,146 @@
       "export_today_avg": {
         "name": "Gemiddelde terugleverprijs vandaag"
       },
-      "export_today_min": {
-        "name": "Laagste terugleverprijs vandaag"
-      },
       "export_today_max": {
         "name": "Hoogste terugleverprijs vandaag"
+      },
+      "export_today_min": {
+        "name": "Laagste terugleverprijs vandaag"
       },
       "export_tomorrow_avg": {
         "name": "Gemiddelde terugleverprijs morgen"
       },
-      "export_tomorrow_min": {
-        "name": "Laagste terugleverprijs morgen"
-      },
       "export_tomorrow_max": {
         "name": "Hoogste terugleverprijs morgen"
+      },
+      "export_tomorrow_min": {
+        "name": "Laagste terugleverprijs morgen"
       },
       "import_export_spread": {
         "name": "Afname-teruglevering-spreiding"
       },
-      "self_consumption_value": {
-        "name": "Eigenverbruikswaarde"
+      "monthly_fixed_cost_today": {
+        "name": "Maandelijkse vaste kosten vandaag"
       },
-      "avg_price_30min": {
-        "name": "Gemiddelde prijs 30 min"
-      },
-      "avg_price_60min": {
-        "name": "Gemiddelde prijs 60 min"
-      },
-      "avg_price_120min": {
-        "name": "Gemiddelde prijs 120 min"
+      "next_hours_avg": {
+        "name": "Gemiddelde komende uren"
       },
       "next_solar_window_avg": {
         "name": "Gemiddelde volgend zonnevenster"
       },
-      "arbitrage_spread_today": {
-        "name": "Arbitragespreiding vandaag"
-      },
-      "charge_opportunity_factor": {
-        "name": "Laadkansfactor"
+      "optimal_charge_window_end": {
+        "name": "Einde optimaal laadvenster"
       },
       "optimal_charge_window_start": {
         "name": "Start optimaal laadvenster"
       },
-      "optimal_charge_window_end": {
-        "name": "Einde optimaal laadvenster"
+      "price_data_source": {
+        "name": "Prijsgegevensbron"
       },
-      "battery_charge_recommendation": {
-        "name": "Batterijlaadadvies",
-        "state": {
-          "charge_from_grid": "Laden van het net",
-          "discharge": "Ontladen",
-          "hold": "Vasthouden"
-        }
+      "price_quartile": {
+        "name": "Prijskwartiel"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Maandelijkse vaste kosten vandaag"
+      "price_rank": {
+        "name": "Rang"
+      },
+      "self_consumption_value": {
+        "name": "Eigenverbruikswaarde"
+      },
+      "setting_acceptable_rank": {
+        "name": "Acceptabele rang"
+      },
+      "setting_active_fixed_period": {
+        "name": "Actieve vasteprijsperiode"
+      },
+      "setting_active_transfer_group": {
+        "name": "Actieve nettariefgroep"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Actief nettariefniveau"
+      },
+      "setting_control_factor_function": {
+        "name": "Stuurfactorvorm"
+      },
+      "setting_forward_window": {
+        "name": "Vooruitblikvenster"
+      },
+      "setting_max_price": {
+        "name": "Prijsdrempel"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Prijsdrempel inclusief nettarief"
+      },
+      "spot_next_hours_avg": {
+        "name": "Spotgemiddelde komende uren"
+      },
+      "spot_price": {
+        "name": "Spotprijs"
+      },
+      "today_avg": {
+        "name": "Gemiddelde vandaag"
+      },
+      "today_max": {
+        "name": "Maximum vandaag"
+      },
+      "today_min": {
+        "name": "Minimum vandaag"
+      },
+      "today_spot_avg": {
+        "name": "Gemiddelde spotprijs vandaag"
+      },
+      "today_spot_max": {
+        "name": "Hoogste spotprijs vandaag"
+      },
+      "today_spot_min": {
+        "name": "Laagste spotprijs vandaag"
+      },
+      "today_total_avg": {
+        "name": "Gemiddelde totaalprijs vandaag"
+      },
+      "today_total_max": {
+        "name": "Hoogste totaalprijs vandaag"
+      },
+      "today_total_min": {
+        "name": "Laagste totaalprijs vandaag"
+      },
+      "tomorrow_avg": {
+        "name": "Gemiddelde morgen"
+      },
+      "tomorrow_max": {
+        "name": "Maximum morgen"
+      },
+      "tomorrow_min": {
+        "name": "Minimum morgen"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Gemiddelde spotprijs morgen"
+      },
+      "tomorrow_spot_max": {
+        "name": "Hoogste spotprijs morgen"
+      },
+      "tomorrow_spot_min": {
+        "name": "Laagste spotprijs morgen"
+      },
+      "tomorrow_total_avg": {
+        "name": "Gemiddelde totaalprijs morgen"
+      },
+      "tomorrow_total_max": {
+        "name": "Hoogste totaalprijs morgen"
+      },
+      "tomorrow_total_min": {
+        "name": "Laagste totaalprijs morgen"
+      },
+      "total_price": {
+        "name": "Totaalprijs"
+      },
+      "total_price_quartile": {
+        "name": "Totaalprijskwartiel"
+      },
+      "total_price_rank": {
+        "name": "Totaalprijsrang"
+      },
+      "transfer_price": {
+        "name": "Nettarief"
       }
     },
     "number": {

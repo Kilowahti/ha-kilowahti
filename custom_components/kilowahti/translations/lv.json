@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — pamatiestatījumi",
-        "description": "Reģions nosaka, kura Ziemeļvalstu/Baltijas biržas cenu zona tiek izmantota.",
+        "description": "Reģions nosaka, kura Eiropas biržas cenu zona tiek izmantota.",
         "data": {
           "name": "Nosaukums",
           "region": "Cenu zona",
@@ -14,6 +14,18 @@
           "name": "Tiek izmantots entītiju nosaukumos, piem., 'Mājas'",
           "price_resolution": "15 minūtes (96 intervāli dienā) vai 1 stunda (24 intervāli dienā). Izvēlieties atbilstoši sava līguma uzskaites intervālam.",
           "display_unit": "Sensora mērvienība"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Valūta",
+        "description": "Šajā zonā norēķini notiek valūtā {currency}. Biržas cenas tiek pārrēķinātas no EUR pēc dienas valūtas kursa; visas ievadītās cenas (uzcenojums, sadales tarifa līmeņi, sliekšņi) ir izvēlētajā attēlošanas valūtā.",
+        "data": {
+          "currency_mode": "Attēlošanas valūta",
+          "fx_mode": "Valūtas kursa avots",
+          "fx_rate": "Manuāls valūtas kurss (vietējā valūta par 1 EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Tiek izmantots, ja valūtas kursa avots ir manuāls, un kā rezerve, ja automātiskais kurss nav pieejams. Atstājiet 0, ja netiek izmantots."
         }
       },
       "vat_and_tax": {
@@ -159,7 +171,13 @@
           "vat_rate_pct": "PVN likme (%)",
           "electricity_tax": "Elektroenerģijas nodoklis (c/kWh)",
           "spot_commission": "Biržas cenas uzcenojums (c/kWh)",
-          "monthly_fixed_cost": "Elektroenerģijas līguma fiksētā maksa (€/mēnesī)"
+          "monthly_fixed_cost": "Elektroenerģijas līguma fiksētā maksa (€/mēnesī)",
+          "currency_mode": "Attēlošanas valūta",
+          "fx_mode": "Valūtas kursa avots",
+          "fx_rate": "Manuāls valūtas kurss (vietējā valūta par 1 EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Pārslēgšana pārrēķina ievadītās cenas (sliekšņus, uzcenojumus, sadales tarifa līmeņus, fiksētos periodus) pēc pašreizējā valūtas kursa. Pēc pārslēgšanas pārbaudiet vērtības."
         }
       },
       "transfer_groups": {
@@ -319,86 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Biržas cena"
+      "arbitrage_spread_today": {
+        "name": "Arbitrāžas starpība šodien"
       },
-      "effective_price": {
-        "name": "Aktīvā cena"
+      "avg_price_120min": {
+        "name": "Vidējā cena 120 min"
       },
-      "transfer_price": {
-        "name": "Sadales tarifs"
+      "avg_price_30min": {
+        "name": "Vidējā cena 30 min"
       },
-      "total_price": {
-        "name": "Kopējā cena"
+      "avg_price_60min": {
+        "name": "Vidējā cena 60 min"
       },
-      "price_rank": {
-        "name": "Rangs"
+      "battery_charge_recommendation": {
+        "name": "Akumulatora uzlādes ieteikums",
+        "state": {
+          "charge_from_grid": "Uzlādēt no tīkla",
+          "discharge": "Izlādēt",
+          "hold": "Turēt"
+        }
       },
-      "total_price_rank": {
-        "name": "Kopējās cenas rangs"
-      },
-      "total_price_quartile": {
-        "name": "Kopējās cenas kvartile"
-      },
-      "today_spot_avg": {
-        "name": "Vidējā biržas cena šodien"
-      },
-      "today_spot_min": {
-        "name": "Zemākā biržas cena šodien"
-      },
-      "today_spot_max": {
-        "name": "Augstākā biržas cena šodien"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Vidējā biržas cena rīt"
-      },
-      "tomorrow_spot_min": {
-        "name": "Zemākā biržas cena rīt"
-      },
-      "tomorrow_spot_max": {
-        "name": "Augstākā biržas cena rīt"
-      },
-      "today_total_avg": {
-        "name": "Vidējā kopējā cena šodien"
-      },
-      "today_total_min": {
-        "name": "Zemākā kopējā cena šodien"
-      },
-      "today_total_max": {
-        "name": "Augstākā kopējā cena šodien"
-      },
-      "tomorrow_total_avg": {
-        "name": "Vidējā kopējā cena rīt"
-      },
-      "tomorrow_total_min": {
-        "name": "Zemākā kopējā cena rīt"
-      },
-      "tomorrow_total_max": {
-        "name": "Augstākā kopējā cena rīt"
-      },
-      "today_avg": {
-        "name": "Vidējais šodien"
-      },
-      "today_min": {
-        "name": "Minimums šodien"
-      },
-      "today_max": {
-        "name": "Maksimums šodien"
-      },
-      "tomorrow_avg": {
-        "name": "Vidējais rīt"
-      },
-      "tomorrow_min": {
-        "name": "Minimums rīt"
-      },
-      "tomorrow_max": {
-        "name": "Maksimums rīt"
-      },
-      "next_hours_avg": {
-        "name": "Nākamo stundu vidējā cena"
-      },
-      "spot_next_hours_avg": {
-        "name": "Nākamo stundu vidējā biržas cena"
+      "charge_opportunity_factor": {
+        "name": "Uzlādes iespējas faktors"
       },
       "control_factor_price": {
         "name": "Cenas vadības faktors"
@@ -409,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Sadales tarifa vadības faktors"
       },
-      "price_quartile": {
-        "name": "Cenas kvartile"
+      "effective_price": {
+        "name": "Aktīvā cena"
       },
-      "setting_max_price": {
-        "name": "Cenas slieksnis"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Cenas slieksnis ietver sadales tarifu"
-      },
-      "setting_control_factor_function": {
-        "name": "Vadības faktora forma"
-      },
-      "setting_acceptable_rank": {
-        "name": "Pieņemamais rangs"
-      },
-      "setting_forward_window": {
-        "name": "Nākotnes logs"
-      },
-      "setting_active_transfer_group": {
-        "name": "Aktīvā sadales tarifu grupa"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Aktīvais sadales tarifa līmenis"
-      },
-      "setting_active_fixed_period": {
-        "name": "Aktīvais fiksētās cenas periods"
+      "exchange_rate": {
+        "name": "Valūtas kurss"
       },
       "export_price": {
         "name": "Eksporta cena"
@@ -442,61 +381,146 @@
       "export_today_avg": {
         "name": "Vidējā eksporta cena šodien"
       },
-      "export_today_min": {
-        "name": "Zemākā eksporta cena šodien"
-      },
       "export_today_max": {
         "name": "Augstākā eksporta cena šodien"
+      },
+      "export_today_min": {
+        "name": "Zemākā eksporta cena šodien"
       },
       "export_tomorrow_avg": {
         "name": "Vidējā eksporta cena rīt"
       },
-      "export_tomorrow_min": {
-        "name": "Zemākā eksporta cena rīt"
-      },
       "export_tomorrow_max": {
         "name": "Augstākā eksporta cena rīt"
+      },
+      "export_tomorrow_min": {
+        "name": "Zemākā eksporta cena rīt"
       },
       "import_export_spread": {
         "name": "Importa-eksporta starpība"
       },
-      "self_consumption_value": {
-        "name": "Pašpatēriņa vērtība"
+      "monthly_fixed_cost_today": {
+        "name": "Ikmēneša fiksētā maksa šodien"
       },
-      "avg_price_30min": {
-        "name": "Vidējā cena 30 min"
-      },
-      "avg_price_60min": {
-        "name": "Vidējā cena 60 min"
-      },
-      "avg_price_120min": {
-        "name": "Vidējā cena 120 min"
+      "next_hours_avg": {
+        "name": "Nākamo stundu vidējā cena"
       },
       "next_solar_window_avg": {
         "name": "Nākamā saules loga vidējā cena"
       },
-      "arbitrage_spread_today": {
-        "name": "Arbitrāžas starpība šodien"
-      },
-      "charge_opportunity_factor": {
-        "name": "Uzlādes iespējas faktors"
+      "optimal_charge_window_end": {
+        "name": "Optimālā uzlādes loga beigas"
       },
       "optimal_charge_window_start": {
         "name": "Optimālā uzlādes loga sākums"
       },
-      "optimal_charge_window_end": {
-        "name": "Optimālā uzlādes loga beigas"
+      "price_data_source": {
+        "name": "Cenu datu avots"
       },
-      "battery_charge_recommendation": {
-        "name": "Akumulatora uzlādes ieteikums",
-        "state": {
-          "charge_from_grid": "Uzlādēt no tīkla",
-          "discharge": "Izlādēt",
-          "hold": "Turēt"
-        }
+      "price_quartile": {
+        "name": "Cenas kvartile"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Ikmēneša fiksētā maksa šodien"
+      "price_rank": {
+        "name": "Rangs"
+      },
+      "self_consumption_value": {
+        "name": "Pašpatēriņa vērtība"
+      },
+      "setting_acceptable_rank": {
+        "name": "Pieņemamais rangs"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktīvais fiksētās cenas periods"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktīvā sadales tarifu grupa"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktīvais sadales tarifa līmenis"
+      },
+      "setting_control_factor_function": {
+        "name": "Vadības faktora forma"
+      },
+      "setting_forward_window": {
+        "name": "Nākotnes logs"
+      },
+      "setting_max_price": {
+        "name": "Cenas slieksnis"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Cenas slieksnis ietver sadales tarifu"
+      },
+      "spot_next_hours_avg": {
+        "name": "Nākamo stundu vidējā biržas cena"
+      },
+      "spot_price": {
+        "name": "Biržas cena"
+      },
+      "today_avg": {
+        "name": "Vidējais šodien"
+      },
+      "today_max": {
+        "name": "Maksimums šodien"
+      },
+      "today_min": {
+        "name": "Minimums šodien"
+      },
+      "today_spot_avg": {
+        "name": "Vidējā biržas cena šodien"
+      },
+      "today_spot_max": {
+        "name": "Augstākā biržas cena šodien"
+      },
+      "today_spot_min": {
+        "name": "Zemākā biržas cena šodien"
+      },
+      "today_total_avg": {
+        "name": "Vidējā kopējā cena šodien"
+      },
+      "today_total_max": {
+        "name": "Augstākā kopējā cena šodien"
+      },
+      "today_total_min": {
+        "name": "Zemākā kopējā cena šodien"
+      },
+      "tomorrow_avg": {
+        "name": "Vidējais rīt"
+      },
+      "tomorrow_max": {
+        "name": "Maksimums rīt"
+      },
+      "tomorrow_min": {
+        "name": "Minimums rīt"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Vidējā biržas cena rīt"
+      },
+      "tomorrow_spot_max": {
+        "name": "Augstākā biržas cena rīt"
+      },
+      "tomorrow_spot_min": {
+        "name": "Zemākā biržas cena rīt"
+      },
+      "tomorrow_total_avg": {
+        "name": "Vidējā kopējā cena rīt"
+      },
+      "tomorrow_total_max": {
+        "name": "Augstākā kopējā cena rīt"
+      },
+      "tomorrow_total_min": {
+        "name": "Zemākā kopējā cena rīt"
+      },
+      "total_price": {
+        "name": "Kopējā cena"
+      },
+      "total_price_quartile": {
+        "name": "Kopējās cenas kvartile"
+      },
+      "total_price_rank": {
+        "name": "Kopējās cenas rangs"
+      },
+      "transfer_price": {
+        "name": "Sadales tarifs"
       }
     },
     "number": {

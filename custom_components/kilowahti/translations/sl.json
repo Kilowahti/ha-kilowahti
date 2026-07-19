@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Osnovne nastavitve",
-        "description": "Območje določa, katero nordijsko/baltsko območje borznih cen se uporablja.",
+        "description": "Območje določa, katero evropsko območje borznih cen se uporablja.",
         "data": {
           "name": "Ime",
           "region": "Cenovno območje",
@@ -14,6 +14,18 @@
           "name": "Uporablja se v imenih entitet, npr. 'Dom'",
           "price_resolution": "15 minut (96 intervalov/dan) ali 1 ura (24 intervalov/dan). Izberite glede na merilni interval svoje pogodbe.",
           "display_unit": "Enota senzorja"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Valuta",
+        "description": "To območje obračunava v valuti {currency}. Borzne cene se preračunajo iz EUR po dnevnem menjalnem tečaju; vse vnesene cene (marža, stopnje omrežnine, pragovi) so v izbrani valuti prikaza.",
+        "data": {
+          "currency_mode": "Valuta prikaza",
+          "fx_mode": "Vir menjalnega tečaja",
+          "fx_rate": "Ročni menjalni tečaj (lokalna valuta za 1 EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Uporablja se, kadar je vir menjalnega tečaja ročni, in kot rezerva, kadar samodejni tečaj ni na voljo. Pustite 0, če ni v uporabi."
         }
       },
       "vat_and_tax": {
@@ -159,7 +171,13 @@
           "vat_rate_pct": "Stopnja DDV (%)",
           "electricity_tax": "Trošarina (c/kWh)",
           "spot_commission": "Marža na borzno ceno (c/kWh)",
-          "monthly_fixed_cost": "Fiksni strošek pogodbe o dobavi (€/mesec)"
+          "monthly_fixed_cost": "Fiksni strošek pogodbe o dobavi (€/mesec)",
+          "currency_mode": "Valuta prikaza",
+          "fx_mode": "Vir menjalnega tečaja",
+          "fx_rate": "Ročni menjalni tečaj (lokalna valuta za 1 EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Preklop preračuna vnesene cene (pragove, marže, stopnje omrežnine, fiksna obdobja) po trenutnem menjalnem tečaju. Po preklopu preverite vrednosti."
         }
       },
       "transfer_groups": {
@@ -319,86 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Borzna cena"
+      "arbitrage_spread_today": {
+        "name": "Arbitražni razpon danes"
       },
-      "effective_price": {
-        "name": "Aktivna cena"
+      "avg_price_120min": {
+        "name": "Povprečna cena 120 min"
       },
-      "transfer_price": {
-        "name": "Omrežnina"
+      "avg_price_30min": {
+        "name": "Povprečna cena 30 min"
       },
-      "total_price": {
-        "name": "Skupna cena"
+      "avg_price_60min": {
+        "name": "Povprečna cena 60 min"
       },
-      "price_rank": {
-        "name": "Rang"
+      "battery_charge_recommendation": {
+        "name": "Priporočilo polnjenja baterije",
+        "state": {
+          "charge_from_grid": "Polni iz omrežja",
+          "discharge": "Prazni",
+          "hold": "Zadrži"
+        }
       },
-      "total_price_rank": {
-        "name": "Rang skupne cene"
-      },
-      "total_price_quartile": {
-        "name": "Kvartil skupne cene"
-      },
-      "today_spot_avg": {
-        "name": "Povprečna borzna cena danes"
-      },
-      "today_spot_min": {
-        "name": "Najnižja borzna cena danes"
-      },
-      "today_spot_max": {
-        "name": "Najvišja borzna cena danes"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Povprečna borzna cena jutri"
-      },
-      "tomorrow_spot_min": {
-        "name": "Najnižja borzna cena jutri"
-      },
-      "tomorrow_spot_max": {
-        "name": "Najvišja borzna cena jutri"
-      },
-      "today_total_avg": {
-        "name": "Povprečna skupna cena danes"
-      },
-      "today_total_min": {
-        "name": "Najnižja skupna cena danes"
-      },
-      "today_total_max": {
-        "name": "Najvišja skupna cena danes"
-      },
-      "tomorrow_total_avg": {
-        "name": "Povprečna skupna cena jutri"
-      },
-      "tomorrow_total_min": {
-        "name": "Najnižja skupna cena jutri"
-      },
-      "tomorrow_total_max": {
-        "name": "Najvišja skupna cena jutri"
-      },
-      "today_avg": {
-        "name": "Povprečje danes"
-      },
-      "today_min": {
-        "name": "Minimum danes"
-      },
-      "today_max": {
-        "name": "Maksimum danes"
-      },
-      "tomorrow_avg": {
-        "name": "Povprečje jutri"
-      },
-      "tomorrow_min": {
-        "name": "Minimum jutri"
-      },
-      "tomorrow_max": {
-        "name": "Maksimum jutri"
-      },
-      "next_hours_avg": {
-        "name": "Povprečje naslednjih ur"
-      },
-      "spot_next_hours_avg": {
-        "name": "Borzno povprečje naslednjih ur"
+      "charge_opportunity_factor": {
+        "name": "Faktor priložnosti za polnjenje"
       },
       "control_factor_price": {
         "name": "Krmilni faktor cene"
@@ -409,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Krmilni faktor omrežnine"
       },
-      "price_quartile": {
-        "name": "Kvartil cene"
+      "effective_price": {
+        "name": "Aktivna cena"
       },
-      "setting_max_price": {
-        "name": "Prag cene"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Prag cene vključuje omrežnino"
-      },
-      "setting_control_factor_function": {
-        "name": "Oblika krmilnega faktorja"
-      },
-      "setting_acceptable_rank": {
-        "name": "Sprejemljiv rang"
-      },
-      "setting_forward_window": {
-        "name": "Prihodnje okno"
-      },
-      "setting_active_transfer_group": {
-        "name": "Aktivna skupina omrežnine"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Aktivna stopnja omrežnine"
-      },
-      "setting_active_fixed_period": {
-        "name": "Aktivno obdobje fiksne cene"
+      "exchange_rate": {
+        "name": "Menjalni tečaj"
       },
       "export_price": {
         "name": "Cena oddaje"
@@ -442,61 +381,146 @@
       "export_today_avg": {
         "name": "Povprečna cena oddaje danes"
       },
-      "export_today_min": {
-        "name": "Najnižja cena oddaje danes"
-      },
       "export_today_max": {
         "name": "Najvišja cena oddaje danes"
+      },
+      "export_today_min": {
+        "name": "Najnižja cena oddaje danes"
       },
       "export_tomorrow_avg": {
         "name": "Povprečna cena oddaje jutri"
       },
-      "export_tomorrow_min": {
-        "name": "Najnižja cena oddaje jutri"
-      },
       "export_tomorrow_max": {
         "name": "Najvišja cena oddaje jutri"
+      },
+      "export_tomorrow_min": {
+        "name": "Najnižja cena oddaje jutri"
       },
       "import_export_spread": {
         "name": "Razpon odjem–oddaja"
       },
-      "self_consumption_value": {
-        "name": "Vrednost samooskrbe"
+      "monthly_fixed_cost_today": {
+        "name": "Mesečni fiksni strošek danes"
       },
-      "avg_price_30min": {
-        "name": "Povprečna cena 30 min"
-      },
-      "avg_price_60min": {
-        "name": "Povprečna cena 60 min"
-      },
-      "avg_price_120min": {
-        "name": "Povprečna cena 120 min"
+      "next_hours_avg": {
+        "name": "Povprečje naslednjih ur"
       },
       "next_solar_window_avg": {
         "name": "Povprečje naslednjega sončnega okna"
       },
-      "arbitrage_spread_today": {
-        "name": "Arbitražni razpon danes"
-      },
-      "charge_opportunity_factor": {
-        "name": "Faktor priložnosti za polnjenje"
+      "optimal_charge_window_end": {
+        "name": "Konec optimalnega okna polnjenja"
       },
       "optimal_charge_window_start": {
         "name": "Začetek optimalnega okna polnjenja"
       },
-      "optimal_charge_window_end": {
-        "name": "Konec optimalnega okna polnjenja"
+      "price_data_source": {
+        "name": "Vir podatkov o cenah"
       },
-      "battery_charge_recommendation": {
-        "name": "Priporočilo polnjenja baterije",
-        "state": {
-          "charge_from_grid": "Polni iz omrežja",
-          "discharge": "Prazni",
-          "hold": "Zadrži"
-        }
+      "price_quartile": {
+        "name": "Kvartil cene"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Mesečni fiksni strošek danes"
+      "price_rank": {
+        "name": "Rang"
+      },
+      "self_consumption_value": {
+        "name": "Vrednost samooskrbe"
+      },
+      "setting_acceptable_rank": {
+        "name": "Sprejemljiv rang"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktivno obdobje fiksne cene"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktivna skupina omrežnine"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktivna stopnja omrežnine"
+      },
+      "setting_control_factor_function": {
+        "name": "Oblika krmilnega faktorja"
+      },
+      "setting_forward_window": {
+        "name": "Prihodnje okno"
+      },
+      "setting_max_price": {
+        "name": "Prag cene"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Prag cene vključuje omrežnino"
+      },
+      "spot_next_hours_avg": {
+        "name": "Borzno povprečje naslednjih ur"
+      },
+      "spot_price": {
+        "name": "Borzna cena"
+      },
+      "today_avg": {
+        "name": "Povprečje danes"
+      },
+      "today_max": {
+        "name": "Maksimum danes"
+      },
+      "today_min": {
+        "name": "Minimum danes"
+      },
+      "today_spot_avg": {
+        "name": "Povprečna borzna cena danes"
+      },
+      "today_spot_max": {
+        "name": "Najvišja borzna cena danes"
+      },
+      "today_spot_min": {
+        "name": "Najnižja borzna cena danes"
+      },
+      "today_total_avg": {
+        "name": "Povprečna skupna cena danes"
+      },
+      "today_total_max": {
+        "name": "Najvišja skupna cena danes"
+      },
+      "today_total_min": {
+        "name": "Najnižja skupna cena danes"
+      },
+      "tomorrow_avg": {
+        "name": "Povprečje jutri"
+      },
+      "tomorrow_max": {
+        "name": "Maksimum jutri"
+      },
+      "tomorrow_min": {
+        "name": "Minimum jutri"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Povprečna borzna cena jutri"
+      },
+      "tomorrow_spot_max": {
+        "name": "Najvišja borzna cena jutri"
+      },
+      "tomorrow_spot_min": {
+        "name": "Najnižja borzna cena jutri"
+      },
+      "tomorrow_total_avg": {
+        "name": "Povprečna skupna cena jutri"
+      },
+      "tomorrow_total_max": {
+        "name": "Najvišja skupna cena jutri"
+      },
+      "tomorrow_total_min": {
+        "name": "Najnižja skupna cena jutri"
+      },
+      "total_price": {
+        "name": "Skupna cena"
+      },
+      "total_price_quartile": {
+        "name": "Kvartil skupne cene"
+      },
+      "total_price_rank": {
+        "name": "Rang skupne cene"
+      },
+      "transfer_price": {
+        "name": "Omrežnina"
       }
     },
     "number": {

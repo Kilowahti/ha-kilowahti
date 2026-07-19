@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Grundinställningar",
-        "description": "Regionen bestämmer vilket nordiskt/baltiskt spotprisområde som används.",
+        "description": "Regionen bestämmer vilket europeiskt elområde som används.",
         "data": {
           "name": "Namn",
           "region": "Prisområde",
@@ -14,6 +14,18 @@
           "name": "Används i entitetsnamn, t.ex. 'Hem'",
           "price_resolution": "15 minuter (96 perioder/dygn) eller 1 timme (24 perioder/dygn). Välj enligt ditt avtals mätintervall.",
           "display_unit": "Enhet för sensorer"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Valuta",
+        "description": "Denna region faktureras i {currency}. Spotpriser räknas om från EUR med en daglig växelkurs; alla priser du anger (påslag, överföringspriser, trösklar) är i den valda visningsvalutan.",
+        "data": {
+          "currency_mode": "Visningsvaluta",
+          "fx_mode": "Växelkurskälla",
+          "fx_rate": "Manuell växelkurs (lokal valuta per EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Används när växelkurskällan är manuell och som reserv när den automatiska kursen inte är tillgänglig. Lämna 0 om den inte används."
         }
       },
       "vat_and_tax": {
@@ -99,7 +111,8 @@
       },
       "score_profiles": {
         "title": "Optimeringspoäng",
-        "description": "Poängen mäter hur väl din förbrukning flyttas till billiga timmar. Den permanenta profilen 'Total' täcker all förbrukning – koppla en eller flera mätare till den i Inställningar efter installationen."
+        "description": "Poängen mäter hur väl din förbrukning flyttas till billiga timmar. Den permanenta profilen 'Total' täcker all förbrukning – koppla en eller flera mätare till den i Inställningar efter installationen.",
+        "data": {}
       },
       "advanced_options": {
         "title": "Avancerade inställningar",
@@ -158,7 +171,13 @@
           "vat_rate_pct": "Momssats (%)",
           "electricity_tax": "Elskatt (c/kWh)",
           "spot_commission": "Påslag (c/kWh)",
-          "monthly_fixed_cost": "Fast avgift för elavtal (€/mån)"
+          "monthly_fixed_cost": "Fast avgift för elavtal (€/mån)",
+          "currency_mode": "Visningsvaluta",
+          "fx_mode": "Växelkurskälla",
+          "fx_rate": "Manuell växelkurs (lokal valuta per EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Byte räknar om dina angivna priser (trösklar, påslag, överföringspriser, fastprisperioder) med aktuell växelkurs. Kontrollera värdena efter bytet."
         }
       },
       "transfer_groups": {
@@ -218,7 +237,8 @@
         }
       },
       "score_profiles": {
-        "title": "Poängprofiler"
+        "title": "Poängprofiler",
+        "data": {}
       },
       "advanced_options": {
         "title": "Avancerade inställningar",
@@ -317,86 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Spotpris"
+      "arbitrage_spread_today": {
+        "name": "Arbitragedifferens idag"
       },
-      "effective_price": {
-        "name": "Aktivt pris"
+      "avg_price_120min": {
+        "name": "Medelpris 120 min"
       },
-      "transfer_price": {
-        "name": "Överföringspris"
+      "avg_price_30min": {
+        "name": "Medelpris 30 min"
       },
-      "total_price": {
-        "name": "Totalpris"
+      "avg_price_60min": {
+        "name": "Medelpris 60 min"
       },
-      "price_rank": {
-        "name": "Rang"
+      "battery_charge_recommendation": {
+        "name": "Batteriladdningsrekommendation",
+        "state": {
+          "charge_from_grid": "Ladda från nät",
+          "discharge": "Ladda ur",
+          "hold": "Behåll"
+        }
       },
-      "total_price_rank": {
-        "name": "Totalprisets rang"
-      },
-      "total_price_quartile": {
-        "name": "Totalprisets kvartil"
-      },
-      "today_spot_avg": {
-        "name": "Medelspotpris idag"
-      },
-      "today_spot_min": {
-        "name": "Lägsta spotpris idag"
-      },
-      "today_spot_max": {
-        "name": "Högsta spotpris idag"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Medelspotpris imorgon"
-      },
-      "tomorrow_spot_min": {
-        "name": "Lägsta spotpris imorgon"
-      },
-      "tomorrow_spot_max": {
-        "name": "Högsta spotpris imorgon"
-      },
-      "today_total_avg": {
-        "name": "Medeltotalpris idag"
-      },
-      "today_total_min": {
-        "name": "Lägsta totalpris idag"
-      },
-      "today_total_max": {
-        "name": "Högsta totalpris idag"
-      },
-      "tomorrow_total_avg": {
-        "name": "Medeltotalpris imorgon"
-      },
-      "tomorrow_total_min": {
-        "name": "Lägsta totalpris imorgon"
-      },
-      "tomorrow_total_max": {
-        "name": "Högsta totalpris imorgon"
-      },
-      "today_avg": {
-        "name": "Medelpris idag"
-      },
-      "today_min": {
-        "name": "Lägsta pris idag"
-      },
-      "today_max": {
-        "name": "Högsta pris idag"
-      },
-      "tomorrow_avg": {
-        "name": "Medelpris imorgon"
-      },
-      "tomorrow_min": {
-        "name": "Lägsta pris imorgon"
-      },
-      "tomorrow_max": {
-        "name": "Högsta pris imorgon"
-      },
-      "next_hours_avg": {
-        "name": "Medelpris kommande timmar"
-      },
-      "spot_next_hours_avg": {
-        "name": "Medelspotpris kommande timmar"
+      "charge_opportunity_factor": {
+        "name": "Laddningsmöjlighetsfaktor"
       },
       "control_factor_price": {
         "name": "Prisstyrfaktor"
@@ -407,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Överföringsstyrfaktor"
       },
-      "price_quartile": {
-        "name": "Priskvartil"
+      "effective_price": {
+        "name": "Aktivt pris"
       },
-      "setting_max_price": {
-        "name": "Priströskel"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Priströskel inkl. överföring"
-      },
-      "setting_control_factor_function": {
-        "name": "Styrfaktorns form"
-      },
-      "setting_acceptable_rank": {
-        "name": "Acceptabel rang"
-      },
-      "setting_forward_window": {
-        "name": "Framåtfönster"
-      },
-      "setting_active_transfer_group": {
-        "name": "Aktiv överföringsgrupp"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Aktiv överföringsnivå"
-      },
-      "setting_active_fixed_period": {
-        "name": "Aktiv fast period"
+      "exchange_rate": {
+        "name": "Växelkurs"
       },
       "export_price": {
         "name": "Försäljningspris"
@@ -440,61 +381,146 @@
       "export_today_avg": {
         "name": "Medelförsäljningspris idag"
       },
-      "export_today_min": {
-        "name": "Lägsta försäljningspris idag"
-      },
       "export_today_max": {
         "name": "Högsta försäljningspris idag"
+      },
+      "export_today_min": {
+        "name": "Lägsta försäljningspris idag"
       },
       "export_tomorrow_avg": {
         "name": "Medelförsäljningspris imorgon"
       },
-      "export_tomorrow_min": {
-        "name": "Lägsta försäljningspris imorgon"
-      },
       "export_tomorrow_max": {
         "name": "Högsta försäljningspris imorgon"
+      },
+      "export_tomorrow_min": {
+        "name": "Lägsta försäljningspris imorgon"
       },
       "import_export_spread": {
         "name": "Köp/sälj-differens"
       },
-      "self_consumption_value": {
-        "name": "Egenförbrukningsvärde"
+      "monthly_fixed_cost_today": {
+        "name": "Fast månadskostnad idag"
       },
-      "avg_price_30min": {
-        "name": "Medelpris 30 min"
-      },
-      "avg_price_60min": {
-        "name": "Medelpris 60 min"
-      },
-      "avg_price_120min": {
-        "name": "Medelpris 120 min"
+      "next_hours_avg": {
+        "name": "Medelpris kommande timmar"
       },
       "next_solar_window_avg": {
         "name": "Medelpris nästa solfönster"
       },
-      "arbitrage_spread_today": {
-        "name": "Arbitragedifferens idag"
-      },
-      "charge_opportunity_factor": {
-        "name": "Laddningsmöjlighetsfaktor"
+      "optimal_charge_window_end": {
+        "name": "Optimalt laddningsfönster slut"
       },
       "optimal_charge_window_start": {
         "name": "Optimalt laddningsfönster start"
       },
-      "optimal_charge_window_end": {
-        "name": "Optimalt laddningsfönster slut"
+      "price_data_source": {
+        "name": "Prisdatakälla"
       },
-      "battery_charge_recommendation": {
-        "name": "Batteriladdningsrekommendation",
-        "state": {
-          "charge_from_grid": "Ladda från nät",
-          "discharge": "Ladda ur",
-          "hold": "Behåll"
-        }
+      "price_quartile": {
+        "name": "Priskvartil"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Fast månadskostnad idag"
+      "price_rank": {
+        "name": "Rang"
+      },
+      "self_consumption_value": {
+        "name": "Egenförbrukningsvärde"
+      },
+      "setting_acceptable_rank": {
+        "name": "Acceptabel rang"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktiv fast period"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktiv överföringsgrupp"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktiv överföringsnivå"
+      },
+      "setting_control_factor_function": {
+        "name": "Styrfaktorns form"
+      },
+      "setting_forward_window": {
+        "name": "Framåtfönster"
+      },
+      "setting_max_price": {
+        "name": "Priströskel"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Priströskel inkl. överföring"
+      },
+      "spot_next_hours_avg": {
+        "name": "Medelspotpris kommande timmar"
+      },
+      "spot_price": {
+        "name": "Spotpris"
+      },
+      "today_avg": {
+        "name": "Medelpris idag"
+      },
+      "today_max": {
+        "name": "Högsta pris idag"
+      },
+      "today_min": {
+        "name": "Lägsta pris idag"
+      },
+      "today_spot_avg": {
+        "name": "Medelspotpris idag"
+      },
+      "today_spot_max": {
+        "name": "Högsta spotpris idag"
+      },
+      "today_spot_min": {
+        "name": "Lägsta spotpris idag"
+      },
+      "today_total_avg": {
+        "name": "Medeltotalpris idag"
+      },
+      "today_total_max": {
+        "name": "Högsta totalpris idag"
+      },
+      "today_total_min": {
+        "name": "Lägsta totalpris idag"
+      },
+      "tomorrow_avg": {
+        "name": "Medelpris imorgon"
+      },
+      "tomorrow_max": {
+        "name": "Högsta pris imorgon"
+      },
+      "tomorrow_min": {
+        "name": "Lägsta pris imorgon"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Medelspotpris imorgon"
+      },
+      "tomorrow_spot_max": {
+        "name": "Högsta spotpris imorgon"
+      },
+      "tomorrow_spot_min": {
+        "name": "Lägsta spotpris imorgon"
+      },
+      "tomorrow_total_avg": {
+        "name": "Medeltotalpris imorgon"
+      },
+      "tomorrow_total_max": {
+        "name": "Högsta totalpris imorgon"
+      },
+      "tomorrow_total_min": {
+        "name": "Lägsta totalpris imorgon"
+      },
+      "total_price": {
+        "name": "Totalpris"
+      },
+      "total_price_quartile": {
+        "name": "Totalprisets kvartil"
+      },
+      "total_price_rank": {
+        "name": "Totalprisets rang"
+      },
+      "transfer_price": {
+        "name": "Överföringspris"
       }
     },
     "number": {

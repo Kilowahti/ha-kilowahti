@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — pagrindiniai nustatymai",
-        "description": "Regionas nustato, kuri Šiaurės šalių/Baltijos biržos kainų zona naudojama.",
+        "description": "Regionas nustato, kuri Europos biržos kainų zona naudojama.",
         "data": {
           "name": "Pavadinimas",
           "region": "Kainų zona",
@@ -14,6 +14,18 @@
           "name": "Naudojamas esybių pavadinimuose, pvz., 'Namai'",
           "price_resolution": "15 minučių (96 intervalai per dieną) arba 1 valanda (24 intervalai per dieną). Pasirinkite pagal savo sutarties apskaitos intervalą.",
           "display_unit": "Jutiklio vienetas"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Valiuta",
+        "description": "Šiame regione atsiskaitoma valiuta {currency}. Biržos kainos perskaičiuojamos iš EUR pagal dienos valiutos kursą; visos įvestos kainos (antkainis, persiuntimo pakopos, slenksčiai) yra pasirinkta rodymo valiuta.",
+        "data": {
+          "currency_mode": "Rodymo valiuta",
+          "fx_mode": "Valiutos kurso šaltinis",
+          "fx_rate": "Rankinis valiutos kursas (vietos valiuta už 1 EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Naudojamas, kai valiutos kurso šaltinis yra rankinis, ir kaip atsarginis, kai automatinis kursas nepasiekiamas. Palikite 0, jei nenaudojama."
         }
       },
       "vat_and_tax": {
@@ -159,7 +171,13 @@
           "vat_rate_pct": "PVM tarifas (%)",
           "electricity_tax": "Elektros akcizas (c/kWh)",
           "spot_commission": "Biržos kainos antkainis (c/kWh)",
-          "monthly_fixed_cost": "Elektros sutarties fiksuotas mokestis (€/mėn.)"
+          "monthly_fixed_cost": "Elektros sutarties fiksuotas mokestis (€/mėn.)",
+          "currency_mode": "Rodymo valiuta",
+          "fx_mode": "Valiutos kurso šaltinis",
+          "fx_rate": "Rankinis valiutos kursas (vietos valiuta už 1 EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Perjungimas perskaičiuoja įvestas kainas (slenksčius, antkainius, persiuntimo pakopas, fiksuotus laikotarpius) pagal dabartinį valiutos kursą. Po perjungimo patikrinkite vertes."
         }
       },
       "transfer_groups": {
@@ -319,86 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Biržos kaina"
+      "arbitrage_spread_today": {
+        "name": "Arbitražo skirtumas šiandien"
       },
-      "effective_price": {
-        "name": "Aktyvi kaina"
+      "avg_price_120min": {
+        "name": "Vidutinė kaina 120 min"
       },
-      "transfer_price": {
-        "name": "Persiuntimo kaina"
+      "avg_price_30min": {
+        "name": "Vidutinė kaina 30 min"
       },
-      "total_price": {
-        "name": "Bendra kaina"
+      "avg_price_60min": {
+        "name": "Vidutinė kaina 60 min"
       },
-      "price_rank": {
-        "name": "Rangas"
+      "battery_charge_recommendation": {
+        "name": "Akumuliatoriaus įkrovimo rekomendacija",
+        "state": {
+          "charge_from_grid": "Įkrauti iš tinklo",
+          "discharge": "Iškrauti",
+          "hold": "Laikyti"
+        }
       },
-      "total_price_rank": {
-        "name": "Bendros kainos rangas"
-      },
-      "total_price_quartile": {
-        "name": "Bendros kainos kvartilis"
-      },
-      "today_spot_avg": {
-        "name": "Vidutinė biržos kaina šiandien"
-      },
-      "today_spot_min": {
-        "name": "Mažiausia biržos kaina šiandien"
-      },
-      "today_spot_max": {
-        "name": "Didžiausia biržos kaina šiandien"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Vidutinė biržos kaina rytoj"
-      },
-      "tomorrow_spot_min": {
-        "name": "Mažiausia biržos kaina rytoj"
-      },
-      "tomorrow_spot_max": {
-        "name": "Didžiausia biržos kaina rytoj"
-      },
-      "today_total_avg": {
-        "name": "Vidutinė bendra kaina šiandien"
-      },
-      "today_total_min": {
-        "name": "Mažiausia bendra kaina šiandien"
-      },
-      "today_total_max": {
-        "name": "Didžiausia bendra kaina šiandien"
-      },
-      "tomorrow_total_avg": {
-        "name": "Vidutinė bendra kaina rytoj"
-      },
-      "tomorrow_total_min": {
-        "name": "Mažiausia bendra kaina rytoj"
-      },
-      "tomorrow_total_max": {
-        "name": "Didžiausia bendra kaina rytoj"
-      },
-      "today_avg": {
-        "name": "Vidurkis šiandien"
-      },
-      "today_min": {
-        "name": "Minimumas šiandien"
-      },
-      "today_max": {
-        "name": "Maksimumas šiandien"
-      },
-      "tomorrow_avg": {
-        "name": "Vidurkis rytoj"
-      },
-      "tomorrow_min": {
-        "name": "Minimumas rytoj"
-      },
-      "tomorrow_max": {
-        "name": "Maksimumas rytoj"
-      },
-      "next_hours_avg": {
-        "name": "Ateinančių valandų vidurkis"
-      },
-      "spot_next_hours_avg": {
-        "name": "Ateinančių valandų biržos vidurkis"
+      "charge_opportunity_factor": {
+        "name": "Įkrovimo galimybės koeficientas"
       },
       "control_factor_price": {
         "name": "Kainos valdymo koeficientas"
@@ -409,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Persiuntimo valdymo koeficientas"
       },
-      "price_quartile": {
-        "name": "Kainos kvartilis"
+      "effective_price": {
+        "name": "Aktyvi kaina"
       },
-      "setting_max_price": {
-        "name": "Kainos slenkstis"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Kainos slenkstis apima persiuntimą"
-      },
-      "setting_control_factor_function": {
-        "name": "Valdymo koeficiento forma"
-      },
-      "setting_acceptable_rank": {
-        "name": "Priimtinas rangas"
-      },
-      "setting_forward_window": {
-        "name": "Ateities langas"
-      },
-      "setting_active_transfer_group": {
-        "name": "Aktyvi persiuntimo kainų grupė"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Aktyvi persiuntimo kainos pakopa"
-      },
-      "setting_active_fixed_period": {
-        "name": "Aktyvus fiksuotos kainos laikotarpis"
+      "exchange_rate": {
+        "name": "Valiutos kursas"
       },
       "export_price": {
         "name": "Eksporto kaina"
@@ -442,61 +381,146 @@
       "export_today_avg": {
         "name": "Vidutinė eksporto kaina šiandien"
       },
-      "export_today_min": {
-        "name": "Mažiausia eksporto kaina šiandien"
-      },
       "export_today_max": {
         "name": "Didžiausia eksporto kaina šiandien"
+      },
+      "export_today_min": {
+        "name": "Mažiausia eksporto kaina šiandien"
       },
       "export_tomorrow_avg": {
         "name": "Vidutinė eksporto kaina rytoj"
       },
-      "export_tomorrow_min": {
-        "name": "Mažiausia eksporto kaina rytoj"
-      },
       "export_tomorrow_max": {
         "name": "Didžiausia eksporto kaina rytoj"
+      },
+      "export_tomorrow_min": {
+        "name": "Mažiausia eksporto kaina rytoj"
       },
       "import_export_spread": {
         "name": "Importo ir eksporto skirtumas"
       },
-      "self_consumption_value": {
-        "name": "Suvartojimo savo reikmėms vertė"
+      "monthly_fixed_cost_today": {
+        "name": "Mėnesinis fiksuotas mokestis šiandien"
       },
-      "avg_price_30min": {
-        "name": "Vidutinė kaina 30 min"
-      },
-      "avg_price_60min": {
-        "name": "Vidutinė kaina 60 min"
-      },
-      "avg_price_120min": {
-        "name": "Vidutinė kaina 120 min"
+      "next_hours_avg": {
+        "name": "Ateinančių valandų vidurkis"
       },
       "next_solar_window_avg": {
         "name": "Kito saulės lango vidurkis"
       },
-      "arbitrage_spread_today": {
-        "name": "Arbitražo skirtumas šiandien"
-      },
-      "charge_opportunity_factor": {
-        "name": "Įkrovimo galimybės koeficientas"
+      "optimal_charge_window_end": {
+        "name": "Optimalaus įkrovimo lango pabaiga"
       },
       "optimal_charge_window_start": {
         "name": "Optimalaus įkrovimo lango pradžia"
       },
-      "optimal_charge_window_end": {
-        "name": "Optimalaus įkrovimo lango pabaiga"
+      "price_data_source": {
+        "name": "Kainų duomenų šaltinis"
       },
-      "battery_charge_recommendation": {
-        "name": "Akumuliatoriaus įkrovimo rekomendacija",
-        "state": {
-          "charge_from_grid": "Įkrauti iš tinklo",
-          "discharge": "Iškrauti",
-          "hold": "Laikyti"
-        }
+      "price_quartile": {
+        "name": "Kainos kvartilis"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Mėnesinis fiksuotas mokestis šiandien"
+      "price_rank": {
+        "name": "Rangas"
+      },
+      "self_consumption_value": {
+        "name": "Suvartojimo savo reikmėms vertė"
+      },
+      "setting_acceptable_rank": {
+        "name": "Priimtinas rangas"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktyvus fiksuotos kainos laikotarpis"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktyvi persiuntimo kainų grupė"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktyvi persiuntimo kainos pakopa"
+      },
+      "setting_control_factor_function": {
+        "name": "Valdymo koeficiento forma"
+      },
+      "setting_forward_window": {
+        "name": "Ateities langas"
+      },
+      "setting_max_price": {
+        "name": "Kainos slenkstis"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Kainos slenkstis apima persiuntimą"
+      },
+      "spot_next_hours_avg": {
+        "name": "Ateinančių valandų biržos vidurkis"
+      },
+      "spot_price": {
+        "name": "Biržos kaina"
+      },
+      "today_avg": {
+        "name": "Vidurkis šiandien"
+      },
+      "today_max": {
+        "name": "Maksimumas šiandien"
+      },
+      "today_min": {
+        "name": "Minimumas šiandien"
+      },
+      "today_spot_avg": {
+        "name": "Vidutinė biržos kaina šiandien"
+      },
+      "today_spot_max": {
+        "name": "Didžiausia biržos kaina šiandien"
+      },
+      "today_spot_min": {
+        "name": "Mažiausia biržos kaina šiandien"
+      },
+      "today_total_avg": {
+        "name": "Vidutinė bendra kaina šiandien"
+      },
+      "today_total_max": {
+        "name": "Didžiausia bendra kaina šiandien"
+      },
+      "today_total_min": {
+        "name": "Mažiausia bendra kaina šiandien"
+      },
+      "tomorrow_avg": {
+        "name": "Vidurkis rytoj"
+      },
+      "tomorrow_max": {
+        "name": "Maksimumas rytoj"
+      },
+      "tomorrow_min": {
+        "name": "Minimumas rytoj"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Vidutinė biržos kaina rytoj"
+      },
+      "tomorrow_spot_max": {
+        "name": "Didžiausia biržos kaina rytoj"
+      },
+      "tomorrow_spot_min": {
+        "name": "Mažiausia biržos kaina rytoj"
+      },
+      "tomorrow_total_avg": {
+        "name": "Vidutinė bendra kaina rytoj"
+      },
+      "tomorrow_total_max": {
+        "name": "Didžiausia bendra kaina rytoj"
+      },
+      "tomorrow_total_min": {
+        "name": "Mažiausia bendra kaina rytoj"
+      },
+      "total_price": {
+        "name": "Bendra kaina"
+      },
+      "total_price_quartile": {
+        "name": "Bendros kainos kvartilis"
+      },
+      "total_price_rank": {
+        "name": "Bendros kainos rangas"
+      },
+      "transfer_price": {
+        "name": "Persiuntimo kaina"
       }
     },
     "number": {

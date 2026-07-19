@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Grundeinstellungen",
-        "description": "Die Region bestimmt, welche nordische/baltische Spotpreiszone verwendet wird.",
+        "description": "Die Region bestimmt, aus welcher europäischen Gebotszone die Preise stammen.",
         "data": {
           "name": "Name",
           "region": "Preiszone",
@@ -14,6 +14,18 @@
           "name": "Wird in Entitätsnamen verwendet, z. B. 'Zuhause'",
           "price_resolution": "15 Minuten (96 Intervalle/Tag) oder 1 Stunde (24 Intervalle/Tag). Wähle passend zum Messintervall deines Vertrags.",
           "display_unit": "Sensoreinheit"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Währung",
+        "description": "Diese Region rechnet in {currency} ab. Spotpreise werden mit einem täglichen Wechselkurs aus EUR umgerechnet; alle von dir eingegebenen Preise (Aufschlag, Netzentgelt-Stufen, Schwellen) sind in der gewählten Anzeigewährung.",
+        "data": {
+          "currency_mode": "Anzeigewährung",
+          "fx_mode": "Wechselkursquelle",
+          "fx_rate": "Manueller Wechselkurs (Landeswährung pro EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Wird verwendet, wenn die Wechselkursquelle auf manuell steht, und als Ausweichkurs, wenn der automatische Kurs nicht verfügbar ist. Bei Nichtverwendung auf 0 lassen."
         }
       },
       "vat_and_tax": {
@@ -159,7 +171,13 @@
           "vat_rate_pct": "MwSt.-Satz (%)",
           "electricity_tax": "Stromsteuer (c/kWh)",
           "spot_commission": "Spotpreis-Aufschlag (c/kWh)",
-          "monthly_fixed_cost": "Fixkosten des Stromvertrags (€/Monat)"
+          "monthly_fixed_cost": "Fixkosten des Stromvertrags (€/Monat)",
+          "currency_mode": "Anzeigewährung",
+          "fx_mode": "Wechselkursquelle",
+          "fx_rate": "Manueller Wechselkurs (Landeswährung pro EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Beim Umschalten werden deine eingegebenen Preise (Schwellen, Aufschläge, Netzentgelt-Stufen, Festpreiszeiträume) mit dem aktuellen Wechselkurs umgerechnet. Überprüfe die Werte nach dem Wechsel."
         }
       },
       "transfer_groups": {
@@ -319,86 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Spotpreis"
+      "arbitrage_spread_today": {
+        "name": "Arbitragespanne heute"
       },
-      "effective_price": {
-        "name": "Aktiver Preis"
+      "avg_price_120min": {
+        "name": "Durchschnittspreis 120 min"
       },
-      "transfer_price": {
-        "name": "Netzentgelt"
+      "avg_price_30min": {
+        "name": "Durchschnittspreis 30 min"
       },
-      "total_price": {
-        "name": "Gesamtpreis"
+      "avg_price_60min": {
+        "name": "Durchschnittspreis 60 min"
       },
-      "price_rank": {
-        "name": "Rang"
+      "battery_charge_recommendation": {
+        "name": "Batterielade-Empfehlung",
+        "state": {
+          "charge_from_grid": "Aus dem Netz laden",
+          "discharge": "Entladen",
+          "hold": "Halten"
+        }
       },
-      "total_price_rank": {
-        "name": "Gesamtpreisrang"
-      },
-      "total_price_quartile": {
-        "name": "Gesamtpreisquartil"
-      },
-      "today_spot_avg": {
-        "name": "Durchschnittlicher Spotpreis heute"
-      },
-      "today_spot_min": {
-        "name": "Niedrigster Spotpreis heute"
-      },
-      "today_spot_max": {
-        "name": "Höchster Spotpreis heute"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Durchschnittlicher Spotpreis morgen"
-      },
-      "tomorrow_spot_min": {
-        "name": "Niedrigster Spotpreis morgen"
-      },
-      "tomorrow_spot_max": {
-        "name": "Höchster Spotpreis morgen"
-      },
-      "today_total_avg": {
-        "name": "Durchschnittlicher Gesamtpreis heute"
-      },
-      "today_total_min": {
-        "name": "Niedrigster Gesamtpreis heute"
-      },
-      "today_total_max": {
-        "name": "Höchster Gesamtpreis heute"
-      },
-      "tomorrow_total_avg": {
-        "name": "Durchschnittlicher Gesamtpreis morgen"
-      },
-      "tomorrow_total_min": {
-        "name": "Niedrigster Gesamtpreis morgen"
-      },
-      "tomorrow_total_max": {
-        "name": "Höchster Gesamtpreis morgen"
-      },
-      "today_avg": {
-        "name": "Durchschnitt heute"
-      },
-      "today_min": {
-        "name": "Minimum heute"
-      },
-      "today_max": {
-        "name": "Maximum heute"
-      },
-      "tomorrow_avg": {
-        "name": "Durchschnitt morgen"
-      },
-      "tomorrow_min": {
-        "name": "Minimum morgen"
-      },
-      "tomorrow_max": {
-        "name": "Maximum morgen"
-      },
-      "next_hours_avg": {
-        "name": "Durchschnitt der nächsten Stunden"
-      },
-      "spot_next_hours_avg": {
-        "name": "Spot-Durchschnitt der nächsten Stunden"
+      "charge_opportunity_factor": {
+        "name": "Ladechancenfaktor"
       },
       "control_factor_price": {
         "name": "Steuerfaktor Preis"
@@ -409,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Steuerfaktor Netzentgelt"
       },
-      "price_quartile": {
-        "name": "Preisquartil"
+      "effective_price": {
+        "name": "Aktiver Preis"
       },
-      "setting_max_price": {
-        "name": "Preisschwelle"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Preisschwelle inklusive Netzentgelt"
-      },
-      "setting_control_factor_function": {
-        "name": "Steuerfaktorform"
-      },
-      "setting_acceptable_rank": {
-        "name": "Akzeptabler Rang"
-      },
-      "setting_forward_window": {
-        "name": "Vorausschaufenster"
-      },
-      "setting_active_transfer_group": {
-        "name": "Aktive Netzentgeltgruppe"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Aktive Netzentgeltstufe"
-      },
-      "setting_active_fixed_period": {
-        "name": "Aktiver Festpreiszeitraum"
+      "exchange_rate": {
+        "name": "Wechselkurs"
       },
       "export_price": {
         "name": "Einspeisepreis"
@@ -442,61 +381,146 @@
       "export_today_avg": {
         "name": "Durchschnittlicher Einspeisepreis heute"
       },
-      "export_today_min": {
-        "name": "Niedrigster Einspeisepreis heute"
-      },
       "export_today_max": {
         "name": "Höchster Einspeisepreis heute"
+      },
+      "export_today_min": {
+        "name": "Niedrigster Einspeisepreis heute"
       },
       "export_tomorrow_avg": {
         "name": "Durchschnittlicher Einspeisepreis morgen"
       },
-      "export_tomorrow_min": {
-        "name": "Niedrigster Einspeisepreis morgen"
-      },
       "export_tomorrow_max": {
         "name": "Höchster Einspeisepreis morgen"
+      },
+      "export_tomorrow_min": {
+        "name": "Niedrigster Einspeisepreis morgen"
       },
       "import_export_spread": {
         "name": "Bezugs-Einspeise-Spanne"
       },
-      "self_consumption_value": {
-        "name": "Eigenverbrauchswert"
+      "monthly_fixed_cost_today": {
+        "name": "Monatliche Fixkosten heute"
       },
-      "avg_price_30min": {
-        "name": "Durchschnittspreis 30 min"
-      },
-      "avg_price_60min": {
-        "name": "Durchschnittspreis 60 min"
-      },
-      "avg_price_120min": {
-        "name": "Durchschnittspreis 120 min"
+      "next_hours_avg": {
+        "name": "Durchschnitt der nächsten Stunden"
       },
       "next_solar_window_avg": {
         "name": "Durchschnitt des nächsten Solarfensters"
       },
-      "arbitrage_spread_today": {
-        "name": "Arbitragespanne heute"
-      },
-      "charge_opportunity_factor": {
-        "name": "Ladechancenfaktor"
+      "optimal_charge_window_end": {
+        "name": "Ende des optimalen Ladefensters"
       },
       "optimal_charge_window_start": {
         "name": "Beginn des optimalen Ladefensters"
       },
-      "optimal_charge_window_end": {
-        "name": "Ende des optimalen Ladefensters"
+      "price_data_source": {
+        "name": "Preisdatenquelle"
       },
-      "battery_charge_recommendation": {
-        "name": "Batterielade-Empfehlung",
-        "state": {
-          "charge_from_grid": "Aus dem Netz laden",
-          "discharge": "Entladen",
-          "hold": "Halten"
-        }
+      "price_quartile": {
+        "name": "Preisquartil"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Monatliche Fixkosten heute"
+      "price_rank": {
+        "name": "Rang"
+      },
+      "self_consumption_value": {
+        "name": "Eigenverbrauchswert"
+      },
+      "setting_acceptable_rank": {
+        "name": "Akzeptabler Rang"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktiver Festpreiszeitraum"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktive Netzentgeltgruppe"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktive Netzentgeltstufe"
+      },
+      "setting_control_factor_function": {
+        "name": "Steuerfaktorform"
+      },
+      "setting_forward_window": {
+        "name": "Vorausschaufenster"
+      },
+      "setting_max_price": {
+        "name": "Preisschwelle"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Preisschwelle inklusive Netzentgelt"
+      },
+      "spot_next_hours_avg": {
+        "name": "Spot-Durchschnitt der nächsten Stunden"
+      },
+      "spot_price": {
+        "name": "Spotpreis"
+      },
+      "today_avg": {
+        "name": "Durchschnitt heute"
+      },
+      "today_max": {
+        "name": "Maximum heute"
+      },
+      "today_min": {
+        "name": "Minimum heute"
+      },
+      "today_spot_avg": {
+        "name": "Durchschnittlicher Spotpreis heute"
+      },
+      "today_spot_max": {
+        "name": "Höchster Spotpreis heute"
+      },
+      "today_spot_min": {
+        "name": "Niedrigster Spotpreis heute"
+      },
+      "today_total_avg": {
+        "name": "Durchschnittlicher Gesamtpreis heute"
+      },
+      "today_total_max": {
+        "name": "Höchster Gesamtpreis heute"
+      },
+      "today_total_min": {
+        "name": "Niedrigster Gesamtpreis heute"
+      },
+      "tomorrow_avg": {
+        "name": "Durchschnitt morgen"
+      },
+      "tomorrow_max": {
+        "name": "Maximum morgen"
+      },
+      "tomorrow_min": {
+        "name": "Minimum morgen"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Durchschnittlicher Spotpreis morgen"
+      },
+      "tomorrow_spot_max": {
+        "name": "Höchster Spotpreis morgen"
+      },
+      "tomorrow_spot_min": {
+        "name": "Niedrigster Spotpreis morgen"
+      },
+      "tomorrow_total_avg": {
+        "name": "Durchschnittlicher Gesamtpreis morgen"
+      },
+      "tomorrow_total_max": {
+        "name": "Höchster Gesamtpreis morgen"
+      },
+      "tomorrow_total_min": {
+        "name": "Niedrigster Gesamtpreis morgen"
+      },
+      "total_price": {
+        "name": "Gesamtpreis"
+      },
+      "total_price_quartile": {
+        "name": "Gesamtpreisquartil"
+      },
+      "total_price_rank": {
+        "name": "Gesamtpreisrang"
+      },
+      "transfer_price": {
+        "name": "Netzentgelt"
       }
     },
     "number": {

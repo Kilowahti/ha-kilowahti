@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Základní nastavení",
-        "description": "Zóna určuje, která severská/pobaltská zóna spotových cen se použije.",
+        "description": "Zóna určuje, která evropská nabídková zóna se použije.",
         "data": {
           "name": "Název",
           "region": "Cenová zóna",
@@ -14,6 +14,18 @@
           "name": "Používá se v názvech entit, např. 'Domov'",
           "price_resolution": "15 minut (96 intervalů/den) nebo 1 hodina (24 intervalů/den). Zvolte podle měřicího intervalu vaší smlouvy.",
           "display_unit": "Jednotka senzoru"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Měna",
+        "description": "Tato zóna účtuje v měně {currency}. Spotové ceny se přepočítávají z EUR denním směnným kurzem; všechny zadané ceny (marže, pásma distribuce, prahy) jsou ve zvolené měně zobrazení.",
+        "data": {
+          "currency_mode": "Měna zobrazení",
+          "fx_mode": "Zdroj směnného kurzu",
+          "fx_rate": "Ruční směnný kurz (místní měna za EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Použije se, když je zdroj směnného kurzu ruční, a jako záloha, když automatický kurz není dostupný. Pokud se nepoužívá, ponechte 0."
         }
       },
       "vat_and_tax": {
@@ -159,7 +171,13 @@
           "vat_rate_pct": "Sazba DPH (%)",
           "electricity_tax": "Daň z elektřiny (c/kWh)",
           "spot_commission": "Marže ke spotové ceně (c/kWh)",
-          "monthly_fixed_cost": "Fixní náklady smlouvy o dodávce elektřiny (€/měsíc)"
+          "monthly_fixed_cost": "Fixní náklady smlouvy o dodávce elektřiny (€/měsíc)",
+          "currency_mode": "Měna zobrazení",
+          "fx_mode": "Zdroj směnného kurzu",
+          "fx_rate": "Ruční směnný kurz (místní měna za EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Přepnutí přepočítá zadané ceny (prahy, marže, pásma distribuce, fixní období) aktuálním směnným kurzem. Po přepnutí hodnoty zkontrolujte."
         }
       },
       "transfer_groups": {
@@ -319,86 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Spotová cena"
+      "arbitrage_spread_today": {
+        "name": "Arbitrážní rozpětí dnes"
       },
-      "effective_price": {
-        "name": "Aktivní cena"
+      "avg_price_120min": {
+        "name": "Průměrná cena 120 min"
       },
-      "transfer_price": {
-        "name": "Cena distribuce"
+      "avg_price_30min": {
+        "name": "Průměrná cena 30 min"
       },
-      "total_price": {
-        "name": "Celková cena"
+      "avg_price_60min": {
+        "name": "Průměrná cena 60 min"
       },
-      "price_rank": {
-        "name": "Pořadí"
+      "battery_charge_recommendation": {
+        "name": "Doporučení nabíjení baterie",
+        "state": {
+          "charge_from_grid": "Nabíjet ze sítě",
+          "discharge": "Vybíjet",
+          "hold": "Držet"
+        }
       },
-      "total_price_rank": {
-        "name": "Pořadí celkové ceny"
-      },
-      "total_price_quartile": {
-        "name": "Kvartil celkové ceny"
-      },
-      "today_spot_avg": {
-        "name": "Průměrná spotová cena dnes"
-      },
-      "today_spot_min": {
-        "name": "Nejnižší spotová cena dnes"
-      },
-      "today_spot_max": {
-        "name": "Nejvyšší spotová cena dnes"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Průměrná spotová cena zítra"
-      },
-      "tomorrow_spot_min": {
-        "name": "Nejnižší spotová cena zítra"
-      },
-      "tomorrow_spot_max": {
-        "name": "Nejvyšší spotová cena zítra"
-      },
-      "today_total_avg": {
-        "name": "Průměrná celková cena dnes"
-      },
-      "today_total_min": {
-        "name": "Nejnižší celková cena dnes"
-      },
-      "today_total_max": {
-        "name": "Nejvyšší celková cena dnes"
-      },
-      "tomorrow_total_avg": {
-        "name": "Průměrná celková cena zítra"
-      },
-      "tomorrow_total_min": {
-        "name": "Nejnižší celková cena zítra"
-      },
-      "tomorrow_total_max": {
-        "name": "Nejvyšší celková cena zítra"
-      },
-      "today_avg": {
-        "name": "Průměr dnes"
-      },
-      "today_min": {
-        "name": "Minimum dnes"
-      },
-      "today_max": {
-        "name": "Maximum dnes"
-      },
-      "tomorrow_avg": {
-        "name": "Průměr zítra"
-      },
-      "tomorrow_min": {
-        "name": "Minimum zítra"
-      },
-      "tomorrow_max": {
-        "name": "Maximum zítra"
-      },
-      "next_hours_avg": {
-        "name": "Průměr příštích hodin"
-      },
-      "spot_next_hours_avg": {
-        "name": "Spotový průměr příštích hodin"
+      "charge_opportunity_factor": {
+        "name": "Faktor příležitosti k nabíjení"
       },
       "control_factor_price": {
         "name": "Řídicí faktor ceny"
@@ -409,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Řídicí faktor distribuce"
       },
-      "price_quartile": {
-        "name": "Cenový kvartil"
+      "effective_price": {
+        "name": "Aktivní cena"
       },
-      "setting_max_price": {
-        "name": "Práh ceny"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Práh ceny zahrnuje distribuci"
-      },
-      "setting_control_factor_function": {
-        "name": "Tvar řídicího faktoru"
-      },
-      "setting_acceptable_rank": {
-        "name": "Přijatelné pořadí"
-      },
-      "setting_forward_window": {
-        "name": "Budoucí okno"
-      },
-      "setting_active_transfer_group": {
-        "name": "Aktivní distribuční skupina"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Aktivní distribuční pásmo"
-      },
-      "setting_active_fixed_period": {
-        "name": "Aktivní období fixní ceny"
+      "exchange_rate": {
+        "name": "Směnný kurz"
       },
       "export_price": {
         "name": "Výkupní cena"
@@ -442,61 +381,146 @@
       "export_today_avg": {
         "name": "Průměrná výkupní cena dnes"
       },
-      "export_today_min": {
-        "name": "Nejnižší výkupní cena dnes"
-      },
       "export_today_max": {
         "name": "Nejvyšší výkupní cena dnes"
+      },
+      "export_today_min": {
+        "name": "Nejnižší výkupní cena dnes"
       },
       "export_tomorrow_avg": {
         "name": "Průměrná výkupní cena zítra"
       },
-      "export_tomorrow_min": {
-        "name": "Nejnižší výkupní cena zítra"
-      },
       "export_tomorrow_max": {
         "name": "Nejvyšší výkupní cena zítra"
+      },
+      "export_tomorrow_min": {
+        "name": "Nejnižší výkupní cena zítra"
       },
       "import_export_spread": {
         "name": "Rozpětí odběr–výkup"
       },
-      "self_consumption_value": {
-        "name": "Hodnota vlastní spotřeby"
+      "monthly_fixed_cost_today": {
+        "name": "Měsíční fixní náklady dnes"
       },
-      "avg_price_30min": {
-        "name": "Průměrná cena 30 min"
-      },
-      "avg_price_60min": {
-        "name": "Průměrná cena 60 min"
-      },
-      "avg_price_120min": {
-        "name": "Průměrná cena 120 min"
+      "next_hours_avg": {
+        "name": "Průměr příštích hodin"
       },
       "next_solar_window_avg": {
         "name": "Průměr příštího solárního okna"
       },
-      "arbitrage_spread_today": {
-        "name": "Arbitrážní rozpětí dnes"
-      },
-      "charge_opportunity_factor": {
-        "name": "Faktor příležitosti k nabíjení"
+      "optimal_charge_window_end": {
+        "name": "Konec optimálního nabíjecího okna"
       },
       "optimal_charge_window_start": {
         "name": "Začátek optimálního nabíjecího okna"
       },
-      "optimal_charge_window_end": {
-        "name": "Konec optimálního nabíjecího okna"
+      "price_data_source": {
+        "name": "Zdroj cenových dat"
       },
-      "battery_charge_recommendation": {
-        "name": "Doporučení nabíjení baterie",
-        "state": {
-          "charge_from_grid": "Nabíjet ze sítě",
-          "discharge": "Vybíjet",
-          "hold": "Držet"
-        }
+      "price_quartile": {
+        "name": "Cenový kvartil"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Měsíční fixní náklady dnes"
+      "price_rank": {
+        "name": "Pořadí"
+      },
+      "self_consumption_value": {
+        "name": "Hodnota vlastní spotřeby"
+      },
+      "setting_acceptable_rank": {
+        "name": "Přijatelné pořadí"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktivní období fixní ceny"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktivní distribuční skupina"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktivní distribuční pásmo"
+      },
+      "setting_control_factor_function": {
+        "name": "Tvar řídicího faktoru"
+      },
+      "setting_forward_window": {
+        "name": "Budoucí okno"
+      },
+      "setting_max_price": {
+        "name": "Práh ceny"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Práh ceny zahrnuje distribuci"
+      },
+      "spot_next_hours_avg": {
+        "name": "Spotový průměr příštích hodin"
+      },
+      "spot_price": {
+        "name": "Spotová cena"
+      },
+      "today_avg": {
+        "name": "Průměr dnes"
+      },
+      "today_max": {
+        "name": "Maximum dnes"
+      },
+      "today_min": {
+        "name": "Minimum dnes"
+      },
+      "today_spot_avg": {
+        "name": "Průměrná spotová cena dnes"
+      },
+      "today_spot_max": {
+        "name": "Nejvyšší spotová cena dnes"
+      },
+      "today_spot_min": {
+        "name": "Nejnižší spotová cena dnes"
+      },
+      "today_total_avg": {
+        "name": "Průměrná celková cena dnes"
+      },
+      "today_total_max": {
+        "name": "Nejvyšší celková cena dnes"
+      },
+      "today_total_min": {
+        "name": "Nejnižší celková cena dnes"
+      },
+      "tomorrow_avg": {
+        "name": "Průměr zítra"
+      },
+      "tomorrow_max": {
+        "name": "Maximum zítra"
+      },
+      "tomorrow_min": {
+        "name": "Minimum zítra"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Průměrná spotová cena zítra"
+      },
+      "tomorrow_spot_max": {
+        "name": "Nejvyšší spotová cena zítra"
+      },
+      "tomorrow_spot_min": {
+        "name": "Nejnižší spotová cena zítra"
+      },
+      "tomorrow_total_avg": {
+        "name": "Průměrná celková cena zítra"
+      },
+      "tomorrow_total_max": {
+        "name": "Nejvyšší celková cena zítra"
+      },
+      "tomorrow_total_min": {
+        "name": "Nejnižší celková cena zítra"
+      },
+      "total_price": {
+        "name": "Celková cena"
+      },
+      "total_price_quartile": {
+        "name": "Kvartil celkové ceny"
+      },
+      "total_price_rank": {
+        "name": "Pořadí celkové ceny"
+      },
+      "transfer_price": {
+        "name": "Cena distribuce"
       }
     },
     "number": {

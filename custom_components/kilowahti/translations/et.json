@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Põhiseadistused",
-        "description": "Piirkond määratleb konkreetse Põhjala/Balti turupiirkonna, mille hetkehindu kasutatakse.",
+        "description": "Piirkond määrab, millise Euroopa pakkumispiirkonna hindu kasutatakse.",
         "data": {
           "name": "Nimi",
           "region": "Hinnapiirkond",
@@ -14,6 +14,18 @@
           "name": "Kasutatakse olemite nimedes, nt 'Kodu'",
           "price_resolution": "15 minutit (96 perioodi/ööpäevas) või 1 tund (24 perioodi/ööpäevas). Vali vastavalt lepingu mõõtmisintervallile.",
           "display_unit": "Andurite ühik"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Valuuta",
+        "description": "Selles piirkonnas arveldatakse valuutas {currency}. Spot-hinnad arvutatakse eurodest ümber päevase vahetuskursiga; kõik sisestatud hinnad (marginaal, võrgutasu astmed, läved) on valitud kuvamisvaluutas.",
+        "data": {
+          "currency_mode": "Kuvamisvaluuta",
+          "fx_mode": "Vahetuskursi allikas",
+          "fx_rate": "Käsitsi määratud vahetuskurss (kohalik valuuta euro kohta)"
+        },
+        "data_description": {
+          "fx_rate": "Kasutatakse, kui vahetuskursi allikaks on valitud käsitsi, ning varuvariandina, kui automaatne kurss pole saadaval. Kui ei kasutata, jäta väärtuseks 0."
         }
       },
       "vat_and_tax": {
@@ -99,7 +111,8 @@
       },
       "score_profiles": {
         "title": "Optimeerimispunktid",
-        "description": "Punktid näitavad, kui hästi tarbimine on nihutatud odavatele tundidele. Püsiv profiil 'Total' katab kogu tarbimise — seo sellega üks või mitu arvestit seadetes pärast paigaldust."
+        "description": "Punktid näitavad, kui hästi tarbimine on nihutatud odavatele tundidele. Püsiv profiil 'Total' katab kogu tarbimise — seo sellega üks või mitu arvestit seadetes pärast paigaldust.",
+        "data": {}
       },
       "advanced_options": {
         "title": "Täpsemad seaded",
@@ -158,7 +171,13 @@
           "vat_rate_pct": "Käibemaksumäär (%)",
           "electricity_tax": "Elektriaktsiis (c/kWh)",
           "spot_commission": "Marginaal (c/kWh)",
-          "monthly_fixed_cost": "Elektrilepingu püsitasu (€/kuus)"
+          "monthly_fixed_cost": "Elektrilepingu püsitasu (€/kuus)",
+          "currency_mode": "Kuvamisvaluuta",
+          "fx_mode": "Vahetuskursi allikas",
+          "fx_rate": "Käsitsi määratud vahetuskurss (kohalik valuuta euro kohta)"
+        },
+        "data_description": {
+          "currency_mode": "Vahetamine arvutab sisestatud hinnad (läved, marginaalid, võrgutasu astmed, fikseeritud perioodid) ümber kehtiva vahetuskursiga. Kontrolli väärtusi pärast vahetamist."
         }
       },
       "transfer_groups": {
@@ -218,7 +237,8 @@
         }
       },
       "score_profiles": {
-        "title": "Punktiprofiilid"
+        "title": "Punktiprofiilid",
+        "data": {}
       },
       "advanced_options": {
         "title": "Täpsemad seaded",
@@ -317,86 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Spot-hind"
+      "arbitrage_spread_today": {
+        "name": "Arbitraaži vahe täna"
       },
-      "effective_price": {
-        "name": "Aktiivne hind"
+      "avg_price_120min": {
+        "name": "Keskmine hind 120 min"
       },
-      "transfer_price": {
-        "name": "Võrgutasu"
+      "avg_price_30min": {
+        "name": "Keskmine hind 30 min"
       },
-      "total_price": {
-        "name": "Koguhind"
+      "avg_price_60min": {
+        "name": "Keskmine hind 60 min"
       },
-      "price_rank": {
-        "name": "Järjekoht"
+      "battery_charge_recommendation": {
+        "name": "Aku laadimissoovitus",
+        "state": {
+          "charge_from_grid": "Laadi võrgust",
+          "discharge": "Laadi tühjaks",
+          "hold": "Hoia"
+        }
       },
-      "total_price_rank": {
-        "name": "Koguhinna järjekoht"
-      },
-      "total_price_quartile": {
-        "name": "Koguhinna kvartiil"
-      },
-      "today_spot_avg": {
-        "name": "Keskmine spot-hind täna"
-      },
-      "today_spot_min": {
-        "name": "Madalaim spot-hind täna"
-      },
-      "today_spot_max": {
-        "name": "Kõrgeim spot-hind täna"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Keskmine spot-hind homme"
-      },
-      "tomorrow_spot_min": {
-        "name": "Madalaim spot-hind homme"
-      },
-      "tomorrow_spot_max": {
-        "name": "Kõrgeim spot-hind homme"
-      },
-      "today_total_avg": {
-        "name": "Keskmine koguhind täna"
-      },
-      "today_total_min": {
-        "name": "Madalaim koguhind täna"
-      },
-      "today_total_max": {
-        "name": "Kõrgeim koguhind täna"
-      },
-      "tomorrow_total_avg": {
-        "name": "Keskmine koguhind homme"
-      },
-      "tomorrow_total_min": {
-        "name": "Madalaim koguhind homme"
-      },
-      "tomorrow_total_max": {
-        "name": "Kõrgeim koguhind homme"
-      },
-      "today_avg": {
-        "name": "Keskmine hind täna"
-      },
-      "today_min": {
-        "name": "Madalaim hind täna"
-      },
-      "today_max": {
-        "name": "Kõrgeim hind täna"
-      },
-      "tomorrow_avg": {
-        "name": "Keskmine hind homme"
-      },
-      "tomorrow_min": {
-        "name": "Madalaim hind homme"
-      },
-      "tomorrow_max": {
-        "name": "Kõrgeim hind homme"
-      },
-      "next_hours_avg": {
-        "name": "Järgmiste tundide keskmine"
-      },
-      "spot_next_hours_avg": {
-        "name": "Järgmiste tundide keskmine spot-hind"
+      "charge_opportunity_factor": {
+        "name": "Laadimisvõimaluse tegur"
       },
       "control_factor_price": {
         "name": "Hinna juhtimistegur"
@@ -407,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Võrgutasu juhtimistegur"
       },
-      "price_quartile": {
-        "name": "Hinnakvartiil"
+      "effective_price": {
+        "name": "Aktiivne hind"
       },
-      "setting_max_price": {
-        "name": "Hinnalävi"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Hinnalävi sisaldab võrgutasu"
-      },
-      "setting_control_factor_function": {
-        "name": "Juhtimisteguri kuju"
-      },
-      "setting_acceptable_rank": {
-        "name": "Aktsepteeritav järjekoht"
-      },
-      "setting_forward_window": {
-        "name": "Etteulatuv aken"
-      },
-      "setting_active_transfer_group": {
-        "name": "Aktiivne võrgutasu grupp"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Aktiivne võrgutasu tase"
-      },
-      "setting_active_fixed_period": {
-        "name": "Aktiivne fikseeritud periood"
+      "exchange_rate": {
+        "name": "Vahetuskurss"
       },
       "export_price": {
         "name": "Müügihind"
@@ -440,61 +381,146 @@
       "export_today_avg": {
         "name": "Keskmine müügihind täna"
       },
-      "export_today_min": {
-        "name": "Madalaim müügihind täna"
-      },
       "export_today_max": {
         "name": "Kõrgeim müügihind täna"
+      },
+      "export_today_min": {
+        "name": "Madalaim müügihind täna"
       },
       "export_tomorrow_avg": {
         "name": "Keskmine müügihind homme"
       },
-      "export_tomorrow_min": {
-        "name": "Madalaim müügihind homme"
-      },
       "export_tomorrow_max": {
         "name": "Kõrgeim müügihind homme"
+      },
+      "export_tomorrow_min": {
+        "name": "Madalaim müügihind homme"
       },
       "import_export_spread": {
         "name": "Ostu-müügi vahe"
       },
-      "self_consumption_value": {
-        "name": "Omatarbimise väärtus"
+      "monthly_fixed_cost_today": {
+        "name": "Püsiv kuutasu täna"
       },
-      "avg_price_30min": {
-        "name": "Keskmine hind 30 min"
-      },
-      "avg_price_60min": {
-        "name": "Keskmine hind 60 min"
-      },
-      "avg_price_120min": {
-        "name": "Keskmine hind 120 min"
+      "next_hours_avg": {
+        "name": "Järgmiste tundide keskmine"
       },
       "next_solar_window_avg": {
         "name": "Järgmise päikeseakna keskmine"
       },
-      "arbitrage_spread_today": {
-        "name": "Arbitraaži vahe täna"
-      },
-      "charge_opportunity_factor": {
-        "name": "Laadimisvõimaluse tegur"
+      "optimal_charge_window_end": {
+        "name": "Optimaalse laadimisakna lõpp"
       },
       "optimal_charge_window_start": {
         "name": "Optimaalse laadimisakna algus"
       },
-      "optimal_charge_window_end": {
-        "name": "Optimaalse laadimisakna lõpp"
+      "price_data_source": {
+        "name": "Hinnaandmete allikas"
       },
-      "battery_charge_recommendation": {
-        "name": "Aku laadimissoovitus",
-        "state": {
-          "charge_from_grid": "Laadi võrgust",
-          "discharge": "Laadi tühjaks",
-          "hold": "Hoia"
-        }
+      "price_quartile": {
+        "name": "Hinnakvartiil"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Püsiv kuutasu täna"
+      "price_rank": {
+        "name": "Järjekoht"
+      },
+      "self_consumption_value": {
+        "name": "Omatarbimise väärtus"
+      },
+      "setting_acceptable_rank": {
+        "name": "Aktsepteeritav järjekoht"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktiivne fikseeritud periood"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktiivne võrgutasu grupp"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktiivne võrgutasu tase"
+      },
+      "setting_control_factor_function": {
+        "name": "Juhtimisteguri kuju"
+      },
+      "setting_forward_window": {
+        "name": "Etteulatuv aken"
+      },
+      "setting_max_price": {
+        "name": "Hinnalävi"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Hinnalävi sisaldab võrgutasu"
+      },
+      "spot_next_hours_avg": {
+        "name": "Järgmiste tundide keskmine spot-hind"
+      },
+      "spot_price": {
+        "name": "Spot-hind"
+      },
+      "today_avg": {
+        "name": "Keskmine hind täna"
+      },
+      "today_max": {
+        "name": "Kõrgeim hind täna"
+      },
+      "today_min": {
+        "name": "Madalaim hind täna"
+      },
+      "today_spot_avg": {
+        "name": "Keskmine spot-hind täna"
+      },
+      "today_spot_max": {
+        "name": "Kõrgeim spot-hind täna"
+      },
+      "today_spot_min": {
+        "name": "Madalaim spot-hind täna"
+      },
+      "today_total_avg": {
+        "name": "Keskmine koguhind täna"
+      },
+      "today_total_max": {
+        "name": "Kõrgeim koguhind täna"
+      },
+      "today_total_min": {
+        "name": "Madalaim koguhind täna"
+      },
+      "tomorrow_avg": {
+        "name": "Keskmine hind homme"
+      },
+      "tomorrow_max": {
+        "name": "Kõrgeim hind homme"
+      },
+      "tomorrow_min": {
+        "name": "Madalaim hind homme"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Keskmine spot-hind homme"
+      },
+      "tomorrow_spot_max": {
+        "name": "Kõrgeim spot-hind homme"
+      },
+      "tomorrow_spot_min": {
+        "name": "Madalaim spot-hind homme"
+      },
+      "tomorrow_total_avg": {
+        "name": "Keskmine koguhind homme"
+      },
+      "tomorrow_total_max": {
+        "name": "Kõrgeim koguhind homme"
+      },
+      "tomorrow_total_min": {
+        "name": "Madalaim koguhind homme"
+      },
+      "total_price": {
+        "name": "Koguhind"
+      },
+      "total_price_quartile": {
+        "name": "Koguhinna kvartiil"
+      },
+      "total_price_rank": {
+        "name": "Koguhinna järjekoht"
+      },
+      "transfer_price": {
+        "name": "Võrgutasu"
       }
     },
     "number": {
