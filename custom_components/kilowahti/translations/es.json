@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "title": "Kilowahti — Ajustes básicos",
+        "title": "Kilowahti — Ajustes simples",
         "description": "La región determina qué zona de precios spot nórdica/báltica se utiliza.",
         "data": {
           "name": "Nombre",
