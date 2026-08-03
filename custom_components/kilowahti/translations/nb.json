@@ -1,0 +1,617 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kilowahti — Grunnleggende innstillinger",
+        "description": "Region bestemmer hvilket europeisk spotprisområde som brukes.",
+        "data": {
+          "name": "Navn",
+          "region": "Prisområde",
+          "price_resolution": "Prisoppløsning",
+          "display_unit": "Displayenhet"
+        },
+        "data_description": {
+          "name": "Brukes i enhetsnavn, f.eks. 'Hjem'",
+          "price_resolution": "15 minutter (96 sloter/dag) eller 1 time (24 sloter/dag). Match kontraktens måleintervall.",
+          "display_unit": "Sensorenhet"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Valuta",
+        "description": "Denne regionen faktureres i {currency}. Spotpriser regnes om fra EUR med en daglig valutakurs; alle priser du oppgir (provisjon, overføringspriser, prisgrenser) er i den valgte visningsvalutaen.",
+        "data": {
+          "currency_mode": "Visningsvaluta",
+          "fx_mode": "Valutakurskilde",
+          "fx_rate": "Manuell valutakurs (lokal valuta per EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Brukes når valutakurskilden er manuell, og som reserve når den automatiske kursen ikke er tilgjengelig. La stå på 0 hvis ubrukt."
+        }
+      },
+      "vat_and_tax": {
+        "title": "MVA og elektrisitetsavgift",
+        "description": "Forhåndsfylt fra din region. Juster om nødvendig. Alle priser (overføringsnivåer, faste perioder) er oppgitt inkl. mva.",
+        "data": {
+          "vat_rate_pct": "Momssats (%)",
+          "electricity_tax": "Strømskatt (c/kWh)",
+          "spot_commission": "Spotprisprovisjon (c/kWh)",
+          "monthly_fixed_cost": "Strømkontrakt fast kostnad (€/måned)"
+        },
+        "data_description": {
+          "electricity_tax": "Flat elektrisitetsavgift per kWh lagt på toppen av spot/fast pris.",
+          "spot_commission": "Forhandlerens provisjon per kWh lagt til på toppen av spotprisen. Skriv inn brutto (inkludert mva). La stå på 0 hvis ikke aktuelt.",
+          "monthly_fixed_cost": "Fast månedlig avgift fra strømkontrakten din (f.eks. Grunnleggende serviceavgift). Bruttobeløp (inkludert mva). La stå på 0 hvis ikke aktuelt."
+        }
+      },
+      "transfer_groups": {
+        "title": "Overføringspriser",
+        "description": "Organiser overføringsprisnivåer i navngitte grupper (f.eks. Brukstid, Sesongmessig, Generelt). Bare én gruppe er aktiv om gangen. Du kan hoppe over dette og konfigurere grupper senere i Alternativer.",
+        "data": {
+          "action": "Handling"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Legg til gruppe",
+        "data": {
+          "label": "Gruppenavn",
+          "monthly_fixed_cost": "Månedlig fast kostnad (€/måned)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Nettforbindelse + kontraktsbasisavgift. Bruttobeløp (inkludert mva)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Rediger gruppeinnstillinger",
+        "data": {
+          "label": "Gruppenavn",
+          "monthly_fixed_cost": "Månedlig fast kostnad (€/måned)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Nettforbindelse + kontraktsbasisavgift. Bruttobeløp (inkludert mva)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Rediger gruppe",
+        "description": "{group_label} — Legg til eller fjern nivåer, eller angi denne gruppen som aktiv.",
+        "data": {
+          "action": "Handling"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Legg til overføringspris",
+        "description": "Evaluert i prioritert rekkefølge; første treff gjelder. Legg til en basissats som laveste prioritet uten tidsbegrensninger.",
+        "data": {
+          "label": "Nivåetikett",
+          "price": "Pris (c/kWh)",
+          "months": "Måneder aktive",
+          "weekdays": "Ukedager aktive",
+          "hour_start": "Starttid (inkludert)",
+          "hour_end": "Sluttid (eksklusiv)",
+          "priority": "Prioritet (lavere = første)"
+        }
+      },
+      "thresholds": {
+        "title": "Terskler og kontroll",
+        "data": {
+          "max_price": "Kontroller maks pris (c/kWh)",
+          "price_threshold_includes_transfer": "Maks pris inkluderer overføring",
+          "max_rank": "Kontroller maks rangering",
+          "forward_avg_hours": "Gjennomsnittlig vinduslengde fremover (timer)",
+          "control_factor_function": "Kontrollfaktorfunksjon",
+          "control_factor_scaling": "Kontrollfaktorskalering (1—3)"
+        },
+        "data_description": {
+          "max_price": "Når prisen på gjeldende spor er på eller under dette, slås price_acceptable-sensoren på.",
+          "price_threshold_includes_transfer": "PÅ: sammenlign totalpris (spot + overføring). AV: sammenlign kun energipris (spot).",
+          "max_rank": "Når rangeringen av gjeldende spor er på eller under dette, slås rank_acceptable-sensoren på.",
+          "forward_avg_hours": "Antall timer foran gjennomsnittet for next_hours_avg-sensoren.",
+          "control_factor_function": "Form av 0—1 kontrollfaktorkurven.",
+          "control_factor_scaling": "Eksponent brukt på kontrollfaktor (forsterker ekstremer)."
+        }
+      },
+      "score_profiles": {
+        "title": "Optimaliseringspoeng",
+        "description": "Poeng måler hvor godt forbruket ditt flyttes til billige timer. Den permanente «Total» -profilen dekker alt forbruk - koble en måler (eller meter) til den i Alternativer etter oppsett.",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Avanserte alternativer",
+        "description": "Konfigurer hvordan sensorverdier vises i Hjemmeassistent.",
+        "data": {
+          "expose_price_arrays": "Eksponere prismatriser som sensorattributter (øker DB-størrelsen)",
+          "high_precision": "Modus med høy presisjon",
+          "show_rolling_averages": "Vis neste gjennomsnittspriser på 30 min, 1 t og 2 t",
+          "generation_enabled": "Aktiver generasjons- og eksportfunksjoner"
+        },
+        "data_description": {
+          "expose_price_arrays": "Skriver today_prices og tomorrow_prices-arrays til spot_price sensorattributtene, som deretter lagres i databasen. Gjør dashbordgrafer enklere å bygge, men er ikke nødvendig for å vise dem og legger til unødvendig DB-belastning.",
+          "high_precision": "Når den er på, viser prissensorer flere desimaler. Attributter og beregninger bruker alltid full presisjon.",
+          "show_rolling_averages": "Legger til sensorer for gjennomsnittspris i løpet av de neste 30, 60 og 120 minuttene.",
+          "generation_enabled": "Aktiverer eksportpris-, batteri- og arbitrasjesensorer og -tjenester. Konfigurer generasjonsinnstillinger i menyen Generering og eksport innstillinger."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Kunne ikke koble til. Sjekk nettverket ditt.",
+      "invalid_region": "Den valgte regionen returnerte ingen data fra API-en.",
+      "tier_hour_range": "Slutttiden må være større enn starttiden.",
+      "tier_no_months": "Velg minst en måned.",
+      "tier_no_weekdays": "Velg minst en ukedag.",
+      "period_invalid_dates": "Sluttdatoen må være på eller etter startdatoen.",
+      "period_overlap": "Denne perioden overlapper med en eksisterende fastprisperiode.",
+      "period_price_zero": "Prisen må være større enn null."
+    },
+    "abort": {
+      "already_configured": "Denne forekomsten er allerede konfigurert."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Kilowahti-alternativer",
+        "description": "Velg hvilke innstillinger du vil redigere.",
+        "menu_options": {
+          "basic": "Grunnleggende innstillinger og moms",
+          "transfer_groups": "Overføringspriser",
+          "thresholds": "Terskler og kontroll",
+          "score_profiles": "Poengprofiler",
+          "advanced_options": "Avanserte alternativer",
+          "fixed_periods": "Fastprisperioder/faste kontrakter",
+          "generation_settings": "Generering og eksport"
+        }
+      },
+      "basic": {
+        "title": "Grunnleggende innstillinger",
+        "description": "Advarsel: Hvis du endrer visningsenheten etter at sensorer er opprettet, vil det føre til enhetsfeil i historikkgrafer. Det kan hende du må tømme sensorhistorikken eller justere dashbordkort manuelt.",
+        "data": {
+          "name": "Navn",
+          "region": "Prisområde",
+          "price_resolution": "Prisoppløsning",
+          "display_unit": "Displayenhet",
+          "vat_rate_pct": "Momssats (%)",
+          "electricity_tax": "Strømskatt (c/kWh)",
+          "spot_commission": "Spotprisprovisjon (c/kWh)",
+          "monthly_fixed_cost": "Strømkontrakt fast kostnad (€/måned)",
+          "currency_mode": "Visningsvaluta",
+          "fx_mode": "Valutakurskilde",
+          "fx_rate": "Manuell valutakurs (lokal valuta per EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Bytte regner om prisene du har oppgitt (prisgrenser, provisjoner, overføringspriser, fastprisperioder) med gjeldende valutakurs. Kontroller verdiene etter byttet."
+        }
+      },
+      "transfer_groups": {
+        "title": "Overføringspriser",
+        "data": {
+          "action": "Handling"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Legg til gruppe",
+        "data": {
+          "label": "Gruppenavn",
+          "monthly_fixed_cost": "Månedlig fast kostnad (€/måned)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Nettforbindelse + kontraktsbasisavgift. Bruttobeløp (inkludert mva)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Rediger gruppeinnstillinger",
+        "data": {
+          "label": "Gruppenavn",
+          "monthly_fixed_cost": "Månedlig fast kostnad (€/måned)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Nettforbindelse + kontraktsbasisavgift. Bruttobeløp (inkludert mva)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Rediger gruppe",
+        "description": "{group_label} — Legg til eller fjern nivåer, eller angi denne gruppen som aktiv.",
+        "data": {
+          "action": "Handling"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Legg til overføringspris",
+        "data": {
+          "label": "Nivånavn (f.eks. Vinterukedag)",
+          "price": "Pris (c/kWh)",
+          "months": "Måneder aktive",
+          "weekdays": "Ukedager aktive",
+          "hour_start": "Starttid (inkludert)",
+          "hour_end": "Sluttid (eksklusiv)",
+          "priority": "Prioritet (lavere = første)"
+        }
+      },
+      "thresholds": {
+        "title": "Terskler og kontroll",
+        "data": {
+          "max_price": "Kontroller maks pris (c/kWh)",
+          "price_threshold_includes_transfer": "Maks pris inkluderer overføring",
+          "max_rank": "Kontroller maks rangering",
+          "forward_avg_hours": "Gjennomsnittlig vinduslengde fremover (timer)",
+          "control_factor_function": "Kontrollfaktorfunksjon",
+          "control_factor_scaling": "Kontrollfaktorskalering (1—3)"
+        }
+      },
+      "score_profiles": {
+        "title": "Poengprofiler",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Avanserte alternativer",
+        "data": {
+          "expose_price_arrays": "Eksponere prismatriser som sensorattributter (øker DB-størrelsen)",
+          "high_precision": "Modus med høy presisjon",
+          "show_rolling_averages": "Vis neste gjennomsnittspriser på 30 min, 1 t og 2 t",
+          "generation_enabled": "Aktiver generasjons- og eksportfunksjoner"
+        },
+        "data_description": {
+          "show_rolling_averages": "Legger til sensorer for gjennomsnittspris i løpet av de neste 30, 60 og 120 minuttene.",
+          "generation_enabled": "Aktiverer eksportpris-, batteri- og arbitrasjesensorer og -tjenester. Konfigurer generasjonsinnstillinger i menyen Generering og eksport innstillinger."
+        }
+      },
+      "add_score_profile": {
+        "title": "Legg til poengprofil",
+        "data": {
+          "label": "Profiletikett",
+          "meters": "Energimålerenheter",
+          "formula": "Poengformel"
+        },
+        "data_description": {
+          "formula": "Standardformel: 50 = bra, 37,5 ved jevn fordeling (straffer gjennomsnittlig bruk). Råformel: 50 ved jevn fordeling (nøytral baseline)."
+        }
+      },
+      "edit_score_profile": {
+        "title": "Rediger poengprofil: {profile_label}",
+        "description": "{meter_count} meter (er) konfigurert.",
+        "data": {
+          "action": "Handling"
+        }
+      },
+      "add_profile_meters": {
+        "title": "Legg til meter (er)",
+        "data": {
+          "meters": "Energimålerenheter"
+        }
+      },
+      "edit_profile_formula": {
+        "title": "Poengformel: {profile_label}",
+        "data": {
+          "formula": "Poengformel"
+        },
+        "data_description": {
+          "formula": "Standardformel: 50 = bra, 37,5 ved jevn fordeling (straffer gjennomsnittlig bruk). Råformel: 50 ved jevn fordeling (nøytral baseline)."
+        }
+      },
+      "fixed_periods": {
+        "title": "Fastprisperioder/faste kontrakter",
+        "description": "Administrer fastprisperioder eller faste kontrakter. Når den er aktiv, viser effective_price den fastsatte faste prisen i stedet for spot.",
+        "data": {
+          "action": "Handling"
+        }
+      },
+      "generation_settings": {
+        "title": "Innstillinger for generering og eksport",
+        "description": "Konfigurer eksportpriser og batteriinnstillinger. Sett batterikapasiteten til 0 for å deaktivere batterisensorer.",
+        "data": {
+          "export_pricing_mode": "Eksportprismodus",
+          "export_commission": "Eksportprovisjon (c/kWh trukket fra spot)",
+          "fixed_export_rate": "Fast eksportrate (c/kWh)",
+          "export_price_threshold": "Eksportprisgrense (c/kWh)",
+          "solar_window_start": "Starttime for solvindu",
+          "solar_window_end": "Slutttid for solvindu",
+          "battery_capacity_kwh": "Batterikapasitet (kWh, 0 = deaktivert)",
+          "battery_charge_power_kw": "Batteriladningskraft (kW)"
+        },
+        "data_description": {
+          "export_commission": "Bare spotkoblet modus. Selgers margin trukket fra spot-API-prisen (ekskl. MVA). Små produsenter krever vanligvis ikke moms på eksport.",
+          "fixed_export_rate": "Bare fast modus. Fast pris du mottar per eksportert kWh.",
+          "solar_window_start": "Starttime for ditt typiske solproduksjonsvindu (brukt av next_solar_window_avg sensor).",
+          "solar_window_end": "Slutttime (eksklusiv) for ditt typiske solproduksjonsvindu."
+        }
+      },
+      "add_fixed_period": {
+        "title": "Legg til fastprisperiode/fast kontrakt",
+        "data": {
+          "label": "Periodeetikett",
+          "start_date": "Startdato",
+          "end_date": "Sluttdato (inkludert)",
+          "price": "Pris (c/kWh, inkl mva)"
+        },
+        "data_description": {
+          "price": "Angi pris inkl. mva. Denne prisen brukes som den er - ingen moms legges til."
+        }
+      }
+    },
+    "error": {
+      "tier_hour_range": "Slutttiden må være større enn starttiden.",
+      "tier_no_months": "Velg minst en måned.",
+      "tier_no_weekdays": "Velg minst en ukedag.",
+      "period_invalid_dates": "Sluttdatoen må være på eller etter startdatoen.",
+      "period_overlap": "Denne perioden overlapper med en eksisterende fastprisperiode.",
+      "period_price_zero": "Prisen må være større enn null."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "arbitrage_spread_today": {
+        "name": "Arbitrasjedifferanse i dag"
+      },
+      "avg_price_120min": {
+        "name": "Snittpris 120 min"
+      },
+      "avg_price_30min": {
+        "name": "Snittpris 30 min"
+      },
+      "avg_price_60min": {
+        "name": "Snittpris 60 min"
+      },
+      "battery_charge_recommendation": {
+        "name": "Anbefaling om batterilading",
+        "state": {
+          "charge_from_grid": "Lade fra strømnettet",
+          "discharge": "Utladning",
+          "hold": "Hold"
+        }
+      },
+      "charge_opportunity_factor": {
+        "name": "Lademulighetsfaktor"
+      },
+      "control_factor_price": {
+        "name": "Kontrollfaktorpris"
+      },
+      "control_factor_price_bipolar": {
+        "name": "Kontrollfaktorpris (bipolar)"
+      },
+      "control_factor_transfer": {
+        "name": "Overføring av kontrollfaktor"
+      },
+      "effective_price": {
+        "name": "Aktiv pris"
+      },
+      "exchange_rate": {
+        "name": "Valutakurs"
+      },
+      "export_price": {
+        "name": "Eksportpris"
+      },
+      "export_today_avg": {
+        "name": "Gjennomsnitt for eksport i dag"
+      },
+      "export_today_max": {
+        "name": "Høyeste eksportpris i dag"
+      },
+      "export_today_min": {
+        "name": "Laveste eksportpris i dag"
+      },
+      "export_tomorrow_avg": {
+        "name": "Gjennomsnitt for eksport i morgen"
+      },
+      "export_tomorrow_max": {
+        "name": "Høyeste eksportpris i morgen"
+      },
+      "export_tomorrow_min": {
+        "name": "Laveste eksportpris i morgen"
+      },
+      "import_export_spread": {
+        "name": "Import-eksportspredning"
+      },
+      "monthly_fixed_cost_today": {
+        "name": "Månedlig fast kostnad i dag"
+      },
+      "next_hours_avg": {
+        "name": "Gjennomsnitt neste timer"
+      },
+      "next_solar_window_avg": {
+        "name": "Neste solvindusgjennomsnitt"
+      },
+      "optimal_charge_window_end": {
+        "name": "Optimal ladevinduets ende"
+      },
+      "optimal_charge_window_start": {
+        "name": "Optimal ladevinduets start"
+      },
+      "price_data_source": {
+        "name": "Prisdatakilde"
+      },
+      "price_quartile": {
+        "name": "Priskvartil"
+      },
+      "price_rank": {
+        "name": "Rang"
+      },
+      "self_consumption_value": {
+        "name": "Egenforbruksverdi"
+      },
+      "setting_acceptable_rank": {
+        "name": "Akseptabel rangering"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktiv fast periode"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktiv overføringsgruppe"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktivt overføringsnivå"
+      },
+      "setting_control_factor_function": {
+        "name": "Kontrollfaktorform"
+      },
+      "setting_forward_window": {
+        "name": "Fremovervindu"
+      },
+      "setting_max_price": {
+        "name": "Prisgrense"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Prisgrense inkluderer overføring"
+      },
+      "spot_next_hours_avg": {
+        "name": "Gjennomsnitt for neste timer"
+      },
+      "spot_price": {
+        "name": "Spotpris"
+      },
+      "today_avg": {
+        "name": "I dag gjennomsnittlig"
+      },
+      "today_max": {
+        "name": "I dag maksimalt"
+      },
+      "today_min": {
+        "name": "I dag minimum"
+      },
+      "today_spot_avg": {
+        "name": "Gjennomsnittlig spotpris i dag"
+      },
+      "today_spot_max": {
+        "name": "Høyeste spotpris i dag"
+      },
+      "today_spot_min": {
+        "name": "Laveste spotpris i dag"
+      },
+      "today_total_avg": {
+        "name": "I dag totalt gjennomsnitt"
+      },
+      "today_total_max": {
+        "name": "I dag totalt maksimum"
+      },
+      "today_total_min": {
+        "name": "I dag totalt minimum"
+      },
+      "tomorrow_avg": {
+        "name": "Morgendagens gjennomsnitt"
+      },
+      "tomorrow_max": {
+        "name": "Maksimalt i morgen"
+      },
+      "tomorrow_min": {
+        "name": "I morgen minimum"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Gjennomsnittlig spotpris i morgen"
+      },
+      "tomorrow_spot_max": {
+        "name": "Høyeste spotpris i morgen"
+      },
+      "tomorrow_spot_min": {
+        "name": "Laveste spotpris i morgen"
+      },
+      "tomorrow_total_avg": {
+        "name": "Totalt gjennomsnitt i morgen"
+      },
+      "tomorrow_total_max": {
+        "name": "I morgen totalt maksimum"
+      },
+      "tomorrow_total_min": {
+        "name": "I morgen totalt minimum"
+      },
+      "total_price": {
+        "name": "Totalpris"
+      },
+      "total_price_quartile": {
+        "name": "Total priskvartil"
+      },
+      "total_price_rank": {
+        "name": "Total prisrangering"
+      },
+      "transfer_price": {
+        "name": "Overføringspris"
+      }
+    },
+    "number": {
+      "price_threshold": {
+        "name": "Prisgrense"
+      },
+      "rank_threshold": {
+        "name": "Rangeringsterskel"
+      }
+    },
+    "binary_sensor": {
+      "price_acceptable": {
+        "name": "Pris akseptabel"
+      },
+      "rank_acceptable": {
+        "name": "Rang akseptabelt"
+      },
+      "price_or_rank_acceptable": {
+        "name": "Pris eller rangering akseptabel"
+      },
+      "fixed_period_active": {
+        "name": "Fastprisperiode aktiv"
+      },
+      "tomorrow_available": {
+        "name": "Morgendagens priser tilgjengelig"
+      },
+      "export_price_acceptable": {
+        "name": "Eksportpris akseptabel"
+      },
+      "charge_from_grid_recommended": {
+        "name": "Lading fra strømnettet anbefales"
+      },
+      "discharge_to_grid_recommended": {
+        "name": "Utlading til strømnettet anbefales"
+      }
+    }
+  },
+  "triggers": {
+    "price_became_acceptable": {
+      "name": "Prisen ble akseptabel",
+      "description": "Utløser når gjeldende strømpris synker til et akseptabelt nivå (på eller under prisgrensen)."
+    },
+    "price_no_longer_acceptable": {
+      "name": "Prisen er ikke lenger akseptabel",
+      "description": "Utløses når dagens strømpris stiger over prisgrensen."
+    },
+    "rank_became_acceptable": {
+      "name": "Rangeringen ble akseptabel",
+      "description": "Utløses når gjeldende prisrangering faller til et akseptabelt nivå (på eller under rangeringsterskelen)."
+    },
+    "rank_no_longer_acceptable": {
+      "name": "Rangeringen er ikke lenger akseptabel",
+      "description": "Utløses når gjeldende prisrangering stiger over rangeringsterskelen."
+    },
+    "became_cheapest_slot": {
+      "name": "Ble billigste spilleautomat",
+      "description": "Utløses når gjeldende tidsluke blir dagens billigste."
+    },
+    "fixed_period_started": {
+      "name": "Fast periode startet",
+      "description": "Utløses når en fastprisperiode blir aktiv."
+    },
+    "fixed_period_ended": {
+      "name": "Fast periode avsluttet",
+      "description": "Utløses når en fastprisperiode slutter å være aktiv."
+    },
+    "tomorrow_prices_available": {
+      "name": "Morgendagens priser tilgjengelig",
+      "description": "Utløser når morgendagens strømpriser blir tilgjengelige."
+    }
+  },
+  "conditions": {
+    "price_is_acceptable": {
+      "name": "Prisen er akseptabel",
+      "description": "Passerer når gjeldende strømpris er på eller under prisgrensen."
+    },
+    "rank_is_acceptable": {
+      "name": "Rangering er akseptabelt",
+      "description": "Passerer når gjeldende prisrangering er på eller under rangeringsterskelen."
+    },
+    "price_is_lowest_today": {
+      "name": "Prisen er lavest i dag",
+      "description": "Passerer når gjeldende tidsluke er dagens billigste."
+    },
+    "fixed_period_active": {
+      "name": "Fast periode aktiv",
+      "description": "Passerer når en fastprisperiode for øyeblikket er aktiv."
+    },
+    "tomorrow_available": {
+      "name": "Morgendagens priser tilgjengelig",
+      "description": "Pass når morgendagens strømpriser er tilgjengelige."
+    }
+  }
+}

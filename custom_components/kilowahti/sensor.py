@@ -33,6 +33,7 @@ from .const import (
     SENSOR_CURRENT_60MIN_AVG,
     SENSOR_CURRENT_120MIN_AVG,
     SENSOR_EFFECTIVE_PRICE,
+    SENSOR_EXCHANGE_RATE,
     SENSOR_EXPORT_PRICE,
     SENSOR_EXPORT_TODAY_AVG,
     SENSOR_EXPORT_TODAY_MAX,
@@ -46,6 +47,7 @@ from .const import (
     SENSOR_NEXT_SOLAR_WINDOW_AVG,
     SENSOR_OPTIMAL_CHARGE_WINDOW_END,
     SENSOR_OPTIMAL_CHARGE_WINDOW_START,
+    SENSOR_PRICE_DATA_SOURCE,
     SENSOR_PRICE_QUARTILE,
     SENSOR_PRICE_RANK,
     SENSOR_SELF_CONSUMPTION_VALUE,
@@ -57,13 +59,20 @@ from .const import (
     SENSOR_SETTING_FORWARD_WINDOW,
     SENSOR_SETTING_MAX_PRICE,
     SENSOR_SETTING_PRICE_THRESHOLD_INCLUDES_TRANSFER,
+    SENSOR_SPOT_NEXT_HOURS_AVG,
     SENSOR_SPOT_PRICE,
+    SENSOR_TODAY_AVG,
+    SENSOR_TODAY_MAX,
+    SENSOR_TODAY_MIN,
     SENSOR_TODAY_SPOT_AVG,
     SENSOR_TODAY_SPOT_MAX,
     SENSOR_TODAY_SPOT_MIN,
     SENSOR_TODAY_TOTAL_AVG,
     SENSOR_TODAY_TOTAL_MAX,
     SENSOR_TODAY_TOTAL_MIN,
+    SENSOR_TOMORROW_AVG,
+    SENSOR_TOMORROW_MAX,
+    SENSOR_TOMORROW_MIN,
     SENSOR_TOMORROW_SPOT_AVG,
     SENSOR_TOMORROW_SPOT_MAX,
     SENSOR_TOMORROW_SPOT_MIN,
@@ -74,7 +83,6 @@ from .const import (
     SENSOR_TOTAL_PRICE_QUARTILE,
     SENSOR_TOTAL_PRICE_RANK,
     SENSOR_TRANSFER_PRICE,
-    UNIT_EUROKWH,
 )
 from .coordinator import KilowahtiCoordinator
 from .models import ScoreProfile
@@ -87,9 +95,15 @@ _PRICE_SENSOR_KEYS = frozenset(
         SENSOR_EFFECTIVE_PRICE,
         SENSOR_TRANSFER_PRICE,
         SENSOR_TOTAL_PRICE,
+        SENSOR_TODAY_AVG,
+        SENSOR_TODAY_MIN,
+        SENSOR_TODAY_MAX,
         SENSOR_TODAY_SPOT_AVG,
         SENSOR_TODAY_SPOT_MIN,
         SENSOR_TODAY_SPOT_MAX,
+        SENSOR_TOMORROW_AVG,
+        SENSOR_TOMORROW_MIN,
+        SENSOR_TOMORROW_MAX,
         SENSOR_TOMORROW_SPOT_AVG,
         SENSOR_TOMORROW_SPOT_MIN,
         SENSOR_TOMORROW_SPOT_MAX,
@@ -100,6 +114,7 @@ _PRICE_SENSOR_KEYS = frozenset(
         SENSOR_TOMORROW_TOTAL_MIN,
         SENSOR_TOMORROW_TOTAL_MAX,
         SENSOR_NEXT_HOURS_AVG,
+        SENSOR_SPOT_NEXT_HOURS_AVG,
         SENSOR_EXPORT_PRICE,
         SENSOR_EXPORT_TODAY_AVG,
         SENSOR_EXPORT_TODAY_MIN,
@@ -184,7 +199,14 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
     _price_sensor(SENSOR_TOMORROW_TOTAL_AVG, lambda c: c.format_price(c.tomorrow_total_avg())),
     _price_sensor(SENSOR_TOMORROW_TOTAL_MIN, lambda c: c.format_price(c.tomorrow_total_min())),
     _price_sensor(SENSOR_TOMORROW_TOTAL_MAX, lambda c: c.format_price(c.tomorrow_total_max())),
+    _price_sensor(SENSOR_TODAY_AVG, lambda c: c.format_price(c.today_avg())),
+    _price_sensor(SENSOR_TODAY_MIN, lambda c: c.format_price(c.today_min())),
+    _price_sensor(SENSOR_TODAY_MAX, lambda c: c.format_price(c.today_max())),
+    _price_sensor(SENSOR_TOMORROW_AVG, lambda c: c.format_price(c.tomorrow_avg())),
+    _price_sensor(SENSOR_TOMORROW_MIN, lambda c: c.format_price(c.tomorrow_min())),
+    _price_sensor(SENSOR_TOMORROW_MAX, lambda c: c.format_price(c.tomorrow_max())),
     _price_sensor(SENSOR_NEXT_HOURS_AVG, lambda c: c.format_price(c.next_hours_avg())),
+    _price_sensor(SENSOR_SPOT_NEXT_HOURS_AVG, lambda c: c.format_price(c.spot_next_hours_avg())),
     KilowahtiSensorEntityDescription(
         key=SENSOR_PRICE_RANK,
         translation_key=SENSOR_PRICE_RANK,
@@ -233,6 +255,12 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda c: c.current_quartile(),
         native_unit_of_measurement=None,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_PRICE_DATA_SOURCE,
+        translation_key=SENSOR_PRICE_DATA_SOURCE,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda c: c.price_source_name,
     ),
     KilowahtiSensorEntityDescription(
         key=SENSOR_SETTING_MAX_PRICE,
@@ -377,12 +405,28 @@ async def async_setup_entry(
             continue
         if key == SENSOR_SPOT_PRICE:
             entities.append(KilowahtiSpotPriceSensor(coordinator, entry, description))
+        elif key == SENSOR_PRICE_DATA_SOURCE:
+            entities.append(KilowahtiPriceDataSourceSensor(coordinator, entry, description))
         elif key == SENSOR_CONTROL_FACTOR_TRANSFER:
             entities.append(KilowahtiTransferRankSensor(coordinator, entry, description))
         elif key in (SENSOR_OPTIMAL_CHARGE_WINDOW_START, SENSOR_OPTIMAL_CHARGE_WINDOW_END):
             entities.append(KilowahtiOptimalChargeWindowSensor(coordinator, entry, description))
         else:
             entities.append(KilowahtiSensor(coordinator, entry, description))
+
+    # Exchange rate diagnostic sensor — only in local currency mode
+    if coordinator.currency_mode_is_local:
+        entities.append(
+            KilowahtiExchangeRateSensor(
+                coordinator,
+                entry,
+                KilowahtiSensorEntityDescription(
+                    key=SENSOR_EXCHANGE_RATE,
+                    translation_key=SENSOR_EXCHANGE_RATE,
+                    entity_category=EntityCategory.DIAGNOSTIC,
+                ),
+            )
+        )
 
     # Effective price sensor (has extra attributes)
     entities.append(
@@ -446,7 +490,7 @@ class KilowahtiSensorBase(CoordinatorEntity[KilowahtiCoordinator], SensorEntity)
             return 3
         if key in _PRICE_SENSOR_KEYS:
             base = 5 if self.coordinator._high_precision else 2
-            euro_extra = 2 if self.coordinator.native_unit == UNIT_EUROKWH else 0
+            euro_extra = 2 if self.coordinator.display_in_major else 0
             return base + euro_extra
         return None
 
@@ -477,7 +521,7 @@ class KilowahtiSensor(KilowahtiSensorBase):
 class KilowahtiSpotPriceSensor(KilowahtiSensor):
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
-        attrs: dict[str, Any] = {}
+        attrs: dict[str, Any] = {"price_source": self.coordinator.price_source_name}
         today_arr = self.coordinator.today_price_array()
         if today_arr is not None:
             attrs["today_prices"] = today_arr
@@ -485,6 +529,45 @@ class KilowahtiSpotPriceSensor(KilowahtiSensor):
         if tomorrow_arr is not None:
             attrs["tomorrow_prices"] = tomorrow_arr
         return attrs
+
+
+# ---------------------------------------------------------------------------
+# Price data source diagnostic sensor
+# ---------------------------------------------------------------------------
+
+
+class KilowahtiPriceDataSourceSensor(KilowahtiSensor):
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        failover = self.coordinator.last_failover_utc
+        return {"last_failover": failover.isoformat() if failover is not None else None}
+
+
+# ---------------------------------------------------------------------------
+# Exchange rate diagnostic sensor (local currency mode only)
+# ---------------------------------------------------------------------------
+
+
+class KilowahtiExchangeRateSensor(KilowahtiSensorBase):
+    @property
+    def native_value(self) -> float | None:
+        rate = self.coordinator.fx_rate
+        return rate if rate != 1.0 else None
+
+    @property
+    def native_unit_of_measurement(self) -> str:
+        return f"{self.coordinator.currency}/EUR"
+
+    @property
+    def suggested_display_precision(self) -> int:
+        return 4
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        return {
+            "rate_date": self.coordinator.fx_rate_date,
+            "fx_mode": self.coordinator.fx_mode,
+        }
 
 
 # ---------------------------------------------------------------------------

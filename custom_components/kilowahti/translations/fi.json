@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Perusasetukset",
-        "description": "Alue määrittää, miltä pohjoismaiden tai baltian spot-hinta-alueelta hinnat haetaan.",
+        "description": "Alue määrittää, miltä eurooppalaiselta tarjousalueelta hinnat haetaan.",
         "data": {
           "name": "Nimi",
           "region": "Hinta-alue",
@@ -14,6 +14,18 @@
           "name": "Käytetään entiteettien nimissä, esim. 'Koti'",
           "price_resolution": "15 minuuttia (96 aikaväliä/vrk) tai 1 tunti (24 aikaväliä/vrk). Valitse liittymäsi mittaustavan mukaan.",
           "display_unit": "Anturien yksikkö"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Valuutta",
+        "description": "Tämän alueen laskutusvaluutta on {currency}. Spot-hinnat muunnetaan euroista päivittäisellä vaihtokurssilla; kaikki syöttämäsi hinnat (marginaali, siirtohinnat, hintarajat) ovat valitussa näyttövaluutassa.",
+        "data": {
+          "currency_mode": "Näyttövaluutta",
+          "fx_mode": "Vaihtokurssin lähde",
+          "fx_rate": "Manuaalinen vaihtokurssi (paikallisvaluuttaa / EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Käytetään, kun vaihtokurssin lähteeksi on valittu manuaalinen, sekä varakurssina, jos automaattinen kurssi ei ole saatavilla. Jätä nollaksi, jos ei käytössä."
         }
       },
       "vat_and_tax": {
@@ -27,8 +39,8 @@
         },
         "data_description": {
           "electricity_tax": "Sähkövero per kWh, lisätään spot/kiinteään hintaan.",
-          "spot_commission": "Myyjän per-kWh-marginaali spottihinnan päälle. Syötä verollinen hinta. Jätä nollaksi, jos ei sovelleta.",
-          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu (esim. perusmaksu). Syötä verollinen hinta. Jätä nollaksi, jos ei sovelleta."
+          "spot_commission": "Myyjän per-kWh-marginaali spottihinnan päälle. Syötä verollinen hinta. Jätä nollaksi, jos ei käytössä.",
+          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu (esim. perusmaksu). Syötä verollinen hinta. Jätä nollaksi, jos ei käytössä."
         }
       },
       "transfer_groups": {
@@ -73,8 +85,8 @@
           "price": "Hinta (c/kWh)",
           "months": "Voimassa kuukausina",
           "weekdays": "Voimassa viikonpäivinä",
-          "hour_start": "Alkamisaika (mukaanlukien)",
-          "hour_end": "Loppumisaika (poissulkien)",
+          "hour_start": "Alkamisaika (mukaan lukien)",
+          "hour_end": "Loppumisaika (pois lukien)",
           "priority": "Prioriteetti (pienempi = ensin)"
         }
       },
@@ -85,7 +97,7 @@
           "price_threshold_includes_transfer": "Maksimihinta sisältää myös siirron",
           "max_rank": "Ohjauksen maksimisijaluku",
           "forward_avg_hours": "Tulevan keskiarvoikkunan pituus (tuntia)",
-          "control_factor_function": "Ohjauskertoimen funktio",
+          "control_factor_function": "Ohjauskertoimen käyrä",
           "control_factor_scaling": "Ohjauskertoimen skaalaus (1–3)"
         },
         "data_description": {
@@ -106,8 +118,8 @@
         "title": "Lisäasetukset",
         "description": "Määritä, miten anturien arvot näytetään Home Assistantissa.",
         "data": {
-          "expose_price_arrays": "Näytä hinta-taulukot anturin attribuutteina (kasvattaa tietokannan kokoa)",
-          "high_precision": "Tarkka desimaalitarkkuus",
+          "expose_price_arrays": "Näytä hintataulukot anturin attribuutteina (kasvattaa tietokannan kokoa)",
+          "high_precision": "Suuri tarkkuus",
           "show_rolling_averages": "Näytä seuraavan 30 min, 1h ja 2h keskihinnat",
           "generation_enabled": "Ota tuotanto- ja myyntiominaisuudet käyttöön"
         },
@@ -144,7 +156,7 @@
           "thresholds": "Kynnysarvot ja ohjaus",
           "score_profiles": "Pisteprofiilit",
           "advanced_options": "Lisäasetukset",
-          "fixed_periods": "Kiinnitetyt hintajaksot / kiinteät sopimukset",
+          "fixed_periods": "Kiinteähintaiset jaksot / kiinteät sopimukset",
           "generation_settings": "Tuotanto ja myynti"
         }
       },
@@ -159,7 +171,13 @@
           "vat_rate_pct": "ALV-prosentti (%)",
           "electricity_tax": "Sähkövero (c/kWh)",
           "spot_commission": "Marginaali (c/kWh)",
-          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu (€/kk)"
+          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu (€/kk)",
+          "currency_mode": "Näyttövaluutta",
+          "fx_mode": "Vaihtokurssin lähde",
+          "fx_rate": "Manuaalinen vaihtokurssi (paikallisvaluuttaa / EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Vaihto muuntaa syöttämäsi hinnat (hintarajat, marginaalit, siirtohinnat, kiinteät jaksot) nykyisellä vaihtokurssilla. Tarkista arvot vaihdon jälkeen."
         }
       },
       "transfer_groups": {
@@ -202,8 +220,8 @@
           "price": "Hinta (c/kWh)",
           "months": "Voimassaolokuukaudet",
           "weekdays": "Voimassaoloviikonpäivät",
-          "hour_start": "Alkamistunti (mukaanlukien)",
-          "hour_end": "Loppumistunti (poissulkien)",
+          "hour_start": "Alkamistunti (mukaan lukien)",
+          "hour_end": "Loppumistunti (pois lukien)",
           "priority": "Prioriteetti (pienempi = ensin)"
         }
       },
@@ -214,7 +232,7 @@
           "price_threshold_includes_transfer": "Maksimihinta sisältää myös siirron",
           "max_rank": "Ohjauksen maksimisijaluku",
           "forward_avg_hours": "Tulevan keskiarvoikkunan pituus (tuntia)",
-          "control_factor_function": "Ohjauskertoimen funktio",
+          "control_factor_function": "Ohjauskertoimen käyrä",
           "control_factor_scaling": "Ohjauskertoimen skaalaus (1–3)"
         }
       },
@@ -225,8 +243,8 @@
       "advanced_options": {
         "title": "Lisäasetukset",
         "data": {
-          "expose_price_arrays": "Näytä hinta-taulukot anturin attribuutteina (kasvattaa tietokannan kokoa)",
-          "high_precision": "Tarkka desimaalitarkkuus",
+          "expose_price_arrays": "Näytä hintataulukot anturin attribuutteina (kasvattaa tietokannan kokoa)",
+          "high_precision": "Suuri tarkkuus",
           "show_rolling_averages": "Näytä seuraavan 30 min, 1h ja 2h keskihinnat",
           "generation_enabled": "Ota tuotanto- ja myyntiominaisuudet käyttöön"
         },
@@ -239,7 +257,7 @@
         "title": "Lisää pisteprofiili",
         "data": {
           "label": "Profiilin nimi",
-          "meters": "Energiamittarientiteetit",
+          "meters": "Energiamittarien entiteetit",
           "formula": "Pisteytyslaskelma"
         },
         "data_description": {
@@ -247,7 +265,7 @@
         }
       },
       "edit_score_profile": {
-        "title": "Muokkaa pisteprofiiilia: {profile_label}",
+        "title": "Muokkaa pisteprofiilia: {profile_label}",
         "description": "{meter_count} mittaria konfiguroitu.",
         "data": {
           "action": "Toiminto"
@@ -256,7 +274,7 @@
       "add_profile_meters": {
         "title": "Lisää mittareita",
         "data": {
-          "meters": "Energiamittarientiteetit"
+          "meters": "Energiamittarien entiteetit"
         }
       },
       "edit_profile_formula": {
@@ -269,39 +287,39 @@
         }
       },
       "fixed_periods": {
-        "title": "Kiinnitetyt hintajaksot / kiinteät sopimukset",
-        "description": "Hallitse kiinnitettyjä hintajaksoja tai kiinteitä sopimuksia. Kun aktiivinen, effective_price näyttää asetetun kiinteän hinnan spot-hinnan sijaan.",
+        "title": "Kiinteähintaiset jaksot / kiinteät sopimukset",
+        "description": "Hallitse kiinteähintaisia jaksoja tai kiinteitä sopimuksia. Kun aktiivinen, effective_price näyttää asetetun kiinteän hinnan spot-hinnan sijaan.",
         "data": {
           "action": "Toiminto"
         }
       },
       "generation_settings": {
         "title": "Tuotanto- ja myyntiasetukset",
-        "description": "Määritä sähkön myyntihinta ja akkuasetukset. Aseta akun kapasiteetti nollaksi poistaaksesi akkusensorit käytöstä.",
+        "description": "Määritä sähkön myyntihinta ja akkuasetukset. Aseta akun kapasiteetti nollaksi poistaaksesi akkuanturit käytöstä.",
         "data": {
           "export_pricing_mode": "Myyntihinnan laskentatapa",
-          "export_commission": "Myyntikomissio (snt/kWh vähennetään spot-hinnasta)",
-          "fixed_export_rate": "Kiinteä myyntihinta (snt/kWh)",
-          "export_price_threshold": "Myyntihinnan kynnysarvo (snt/kWh)",
+          "export_commission": "Myyntimarginaali (c/kWh vähennetään spot-hinnasta)",
+          "fixed_export_rate": "Kiinteä myyntihinta (c/kWh)",
+          "export_price_threshold": "Myyntihinnan kynnysarvo (c/kWh)",
           "solar_window_start": "Aurinkotuotantoikkunan alkutunti",
           "solar_window_end": "Aurinkotuotantoikkunan lopputunti",
           "battery_capacity_kwh": "Akun kapasiteetti (kWh, 0 = poistettu käytöstä)",
           "battery_charge_power_kw": "Akun latausteho (kW)"
         },
         "data_description": {
-          "export_commission": "Vain spot-linkitetty tila. Myyjän kate vähennetään spot-API:n hinnasta (alv 0%). Pienet tuottajat eivät yleensä peri arvonlisäveroa myydystä sähköstä.",
+          "export_commission": "Vain spot-linkitetty tila. Myyjän marginaali vähennetään spot-API:n hinnasta (ALV 0 %). Pienet tuottajat eivät yleensä peri arvonlisäveroa myydystä sähköstä.",
           "fixed_export_rate": "Vain kiinteä tila. Kiinteä hinta jonka saat jokaisesta myydystä kilowattitunnista.",
-          "solar_window_start": "Tyypillisen aurinkotuotantoikkunasi alkutunti (käytetään next_solar_window_avg-sensorissa).",
+          "solar_window_start": "Tyypillisen aurinkotuotantoikkunasi alkutunti (käytetään next_solar_window_avg-anturissa).",
           "solar_window_end": "Tyypillisen aurinkotuotantoikkunasi lopputunti (poissulkeva)."
         }
       },
       "add_fixed_period": {
-        "title": "Lisää kiinnitetty hintajakso / kiinteä sopimus",
+        "title": "Lisää kiinteähintainen jakso / kiinteä sopimus",
         "data": {
           "label": "Jakson nimi",
           "start_date": "Alkamispäivä",
-          "end_date": "Päättymispäivä (mukaanlukien)",
-          "price": "Hinta (c/kWh, sis ALV)"
+          "end_date": "Päättymispäivä (mukaan lukien)",
+          "price": "Hinta (c/kWh, sis. ALV)"
         },
         "data_description": {
           "price": "Syötä tämä hinta verollisena. Tätä hintaa käytetään sellaisenaan — ALV:ta ei lisätä erikseen."
@@ -313,158 +331,23 @@
       "tier_no_months": "Valitse vähintään yksi kuukausi.",
       "tier_no_weekdays": "Valitse vähintään yksi viikonpäivä.",
       "period_invalid_dates": "Päättymispäivän on oltava sama tai myöhäisempi kuin alkamispäivän.",
-      "period_overlap": "Tämä jakso päällekkäinen olemassa olevan hintajakson kanssa.",
+      "period_overlap": "Tämä jakso on päällekkäinen olemassa olevan hintajakson kanssa.",
       "period_price_zero": "Hinnan on oltava suurempi kuin nolla."
     }
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Spot-hinta"
+      "arbitrage_spread_today": {
+        "name": "Arbitraasiero tänään"
       },
-      "effective_price": {
-        "name": "Toteutuva hinta"
-      },
-      "transfer_price": {
-        "name": "Siirtohinta"
-      },
-      "total_price": {
-        "name": "Kokonaishinta"
-      },
-      "price_rank": {
-        "name": "Sijaluku"
-      },
-      "total_price_rank": {
-        "name": "Kokonaishinnan sijaluku"
-      },
-      "total_price_quartile": {
-        "name": "Kokonaishinnan kvartiili"
-      },
-      "today_spot_avg": {
-        "name": "Tänään spot-keskiarvo"
-      },
-      "today_spot_min": {
-        "name": "Tänään spot-minimi"
-      },
-      "today_spot_max": {
-        "name": "Tänään spot-maksimi"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Huomenna spot-keskiarvo"
-      },
-      "tomorrow_spot_min": {
-        "name": "Huomenna spot-minimi"
-      },
-      "tomorrow_spot_max": {
-        "name": "Huomenna spot-maksimi"
-      },
-      "today_total_avg": {
-        "name": "Tänään kokonaishinta keskiarvo"
-      },
-      "today_total_min": {
-        "name": "Tänään kokonaishinta minimi"
-      },
-      "today_total_max": {
-        "name": "Tänään kokonaishinta maksimi"
-      },
-      "tomorrow_total_avg": {
-        "name": "Huomenna kokonaishinta keskiarvo"
-      },
-      "tomorrow_total_min": {
-        "name": "Huomenna kokonaishinta minimi"
-      },
-      "tomorrow_total_max": {
-        "name": "Huomenna kokonaishinta maksimi"
-      },
-      "next_hours_avg": {
-        "name": "Seuraavien tuntien keskiarvo"
-      },
-      "control_factor_price": {
-        "name": "Ohjauskerroin hinta"
-      },
-      "control_factor_price_bipolar": {
-        "name": "Ohjauskerroin hinta (bipolaarinen)"
-      },
-      "control_factor_transfer": {
-        "name": "Ohjauskerroin siirto"
-      },
-      "price_quartile": {
-        "name": "Hintakvartiili"
-      },
-      "setting_max_price": {
-        "name": "Hintaraja"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Hintaraja sisältää siirron"
-      },
-      "setting_control_factor_function": {
-        "name": "Ohjausfunktion muoto"
-      },
-      "setting_acceptable_rank": {
-        "name": "Hyväksyttävä sijaluku"
-      },
-      "setting_forward_window": {
-        "name": "Ennakkoikkuna"
-      },
-      "setting_active_transfer_group": {
-        "name": "Aktiivinen siirtoryhmä"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Aktiivinen siirtotaso"
-      },
-      "setting_active_fixed_period": {
-        "name": "Aktiivinen kiinteä jakso"
-      },
-      "export_price": {
-        "name": "Myyntihinta"
-      },
-      "export_today_avg": {
-        "name": "Tänään myyntihinta keskiarvo"
-      },
-      "export_today_min": {
-        "name": "Tänään myyntihinta minimi"
-      },
-      "export_today_max": {
-        "name": "Tänään myyntihinta maksimi"
-      },
-      "export_tomorrow_avg": {
-        "name": "Huomenna myyntihinta keskiarvo"
-      },
-      "export_tomorrow_min": {
-        "name": "Huomenna myyntihinta minimi"
-      },
-      "export_tomorrow_max": {
-        "name": "Huomenna myyntihinta maksimi"
-      },
-      "import_export_spread": {
-        "name": "Osto-myyntiero"
-      },
-      "self_consumption_value": {
-        "name": "Omakulutuksen arvo"
+      "avg_price_120min": {
+        "name": "Keskihinta 120 min"
       },
       "avg_price_30min": {
         "name": "Keskihinta 30 min"
       },
       "avg_price_60min": {
         "name": "Keskihinta 60 min"
-      },
-      "avg_price_120min": {
-        "name": "Keskihinta 120 min"
-      },
-      "next_solar_window_avg": {
-        "name": "Seuraavan aurinkoikkunan keskiarvo"
-      },
-      "arbitrage_spread_today": {
-        "name": "Arbitraasiero tänään"
-      },
-      "charge_opportunity_factor": {
-        "name": "Latausmahdollisuuskerroin"
-      },
-      "optimal_charge_window_start": {
-        "name": "Optimaalisen latausikkunan alku"
-      },
-      "optimal_charge_window_end": {
-        "name": "Optimaalisen latausikkunan loppu"
       },
       "battery_charge_recommendation": {
         "name": "Akun lataussuositus",
@@ -474,8 +357,170 @@
           "hold": "Pidä"
         }
       },
+      "charge_opportunity_factor": {
+        "name": "Latausmahdollisuuskerroin"
+      },
+      "control_factor_price": {
+        "name": "Hinnan ohjauskerroin"
+      },
+      "control_factor_price_bipolar": {
+        "name": "Hinnan ohjauskerroin (bipolaarinen)"
+      },
+      "control_factor_transfer": {
+        "name": "Siirron ohjauskerroin"
+      },
+      "effective_price": {
+        "name": "Toteutuva hinta"
+      },
+      "exchange_rate": {
+        "name": "Vaihtokurssi"
+      },
+      "export_price": {
+        "name": "Myyntihinta"
+      },
+      "export_today_avg": {
+        "name": "Tänään myyntihinnan keskiarvo"
+      },
+      "export_today_max": {
+        "name": "Tänään myyntihinnan maksimi"
+      },
+      "export_today_min": {
+        "name": "Tänään myyntihinnan minimi"
+      },
+      "export_tomorrow_avg": {
+        "name": "Huomenna myyntihinnan keskiarvo"
+      },
+      "export_tomorrow_max": {
+        "name": "Huomenna myyntihinnan maksimi"
+      },
+      "export_tomorrow_min": {
+        "name": "Huomenna myyntihinnan minimi"
+      },
+      "import_export_spread": {
+        "name": "Osto-myyntiero"
+      },
       "monthly_fixed_cost_today": {
         "name": "Kiinteä kuukausikustannus tänään"
+      },
+      "next_hours_avg": {
+        "name": "Seuraavien tuntien keskiarvo"
+      },
+      "next_solar_window_avg": {
+        "name": "Seuraavan aurinkoikkunan keskiarvo"
+      },
+      "optimal_charge_window_end": {
+        "name": "Optimaalisen latausikkunan loppu"
+      },
+      "optimal_charge_window_start": {
+        "name": "Optimaalisen latausikkunan alku"
+      },
+      "price_data_source": {
+        "name": "Hintatietojen lähde"
+      },
+      "price_quartile": {
+        "name": "Hintakvartiili"
+      },
+      "price_rank": {
+        "name": "Sijaluku"
+      },
+      "self_consumption_value": {
+        "name": "Omakulutuksen arvo"
+      },
+      "setting_acceptable_rank": {
+        "name": "Hyväksyttävä sijaluku"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktiivinen kiinteä jakso"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktiivinen siirtoryhmä"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktiivinen siirtotaso"
+      },
+      "setting_control_factor_function": {
+        "name": "Ohjausfunktion muoto"
+      },
+      "setting_forward_window": {
+        "name": "Ennakkoikkuna"
+      },
+      "setting_max_price": {
+        "name": "Hintaraja"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Hintaraja sisältää siirron"
+      },
+      "spot_next_hours_avg": {
+        "name": "Spot seuraavien tuntien keskiarvo"
+      },
+      "spot_price": {
+        "name": "Spot-hinta"
+      },
+      "today_avg": {
+        "name": "Tänään keskiarvo"
+      },
+      "today_max": {
+        "name": "Tänään maksimi"
+      },
+      "today_min": {
+        "name": "Tänään minimi"
+      },
+      "today_spot_avg": {
+        "name": "Tänään spot-keskiarvo"
+      },
+      "today_spot_max": {
+        "name": "Tänään spot-maksimi"
+      },
+      "today_spot_min": {
+        "name": "Tänään spot-minimi"
+      },
+      "today_total_avg": {
+        "name": "Tänään kokonaishinnan keskiarvo"
+      },
+      "today_total_max": {
+        "name": "Tänään kokonaishinnan maksimi"
+      },
+      "today_total_min": {
+        "name": "Tänään kokonaishinnan minimi"
+      },
+      "tomorrow_avg": {
+        "name": "Huomenna keskiarvo"
+      },
+      "tomorrow_max": {
+        "name": "Huomenna maksimi"
+      },
+      "tomorrow_min": {
+        "name": "Huomenna minimi"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Huomenna spot-keskiarvo"
+      },
+      "tomorrow_spot_max": {
+        "name": "Huomenna spot-maksimi"
+      },
+      "tomorrow_spot_min": {
+        "name": "Huomenna spot-minimi"
+      },
+      "tomorrow_total_avg": {
+        "name": "Huomenna kokonaishinnan keskiarvo"
+      },
+      "tomorrow_total_max": {
+        "name": "Huomenna kokonaishinnan maksimi"
+      },
+      "tomorrow_total_min": {
+        "name": "Huomenna kokonaishinnan minimi"
+      },
+      "total_price": {
+        "name": "Kokonaishinta"
+      },
+      "total_price_quartile": {
+        "name": "Kokonaishinnan kvartiili"
+      },
+      "total_price_rank": {
+        "name": "Kokonaishinnan sijaluku"
+      },
+      "transfer_price": {
+        "name": "Siirtohinta"
       }
     },
     "number": {
@@ -511,6 +556,62 @@
       "discharge_to_grid_recommended": {
         "name": "Verkkoon myyminen suositeltavaa"
       }
+    }
+  },
+  "triggers": {
+    "price_became_acceptable": {
+      "name": "Hinta muuttui hyväksyttäväksi",
+      "description": "Laukeaa, kun sähkön nykyinen hinta laskee hyväksyttävälle tasolle (hintarajaan tai sen alle)."
+    },
+    "price_no_longer_acceptable": {
+      "name": "Hinta ei ole enää hyväksyttävä",
+      "description": "Laukeaa, kun sähkön nykyinen hinta nousee hintarajan yläpuolelle."
+    },
+    "rank_became_acceptable": {
+      "name": "Sijaluku muuttui hyväksyttäväksi",
+      "description": "Laukeaa, kun nykyisen hinnan sijaluku laskee hyväksyttävälle tasolle (sijalukurajaan tai sen alle)."
+    },
+    "rank_no_longer_acceptable": {
+      "name": "Sijaluku ei ole enää hyväksyttävä",
+      "description": "Laukeaa, kun nykyisen hinnan sijaluku nousee sijalukurajan yläpuolelle."
+    },
+    "became_cheapest_slot": {
+      "name": "Muuttui halvimmaksi jaksoksi",
+      "description": "Laukeaa, kun nykyisestä aikajaksosta tulee vuorokauden halvin."
+    },
+    "fixed_period_started": {
+      "name": "Kiinteä jakso alkoi",
+      "description": "Laukeaa, kun kiinteähintainen jakso tulee voimaan."
+    },
+    "fixed_period_ended": {
+      "name": "Kiinteä jakso päättyi",
+      "description": "Laukeaa, kun kiinteähintainen jakso päättyy."
+    },
+    "tomorrow_prices_available": {
+      "name": "Huomisen hinnat saatavilla",
+      "description": "Laukeaa, kun huomisen sähkön hinnat tulevat saataville."
+    }
+  },
+  "conditions": {
+    "price_is_acceptable": {
+      "name": "Hinta on hyväksyttävä",
+      "description": "Täyttyy, kun sähkön nykyinen hinta on hintarajassa tai sen alle."
+    },
+    "rank_is_acceptable": {
+      "name": "Sijaluku on hyväksyttävä",
+      "description": "Täyttyy, kun nykyisen hinnan sijaluku on sijalukurajassa tai sen alle."
+    },
+    "price_is_lowest_today": {
+      "name": "Hinta on vuorokauden halvin",
+      "description": "Täyttyy, kun nykyinen aikajakso on vuorokauden halvin."
+    },
+    "fixed_period_active": {
+      "name": "Kiinteä jakso voimassa",
+      "description": "Täyttyy, kun kiinteähintainen jakso on parhaillaan voimassa."
+    },
+    "tomorrow_available": {
+      "name": "Huomisen hinnat saatavilla",
+      "description": "Täyttyy, kun huomisen sähkön hinnat ovat saatavilla."
     }
   }
 }

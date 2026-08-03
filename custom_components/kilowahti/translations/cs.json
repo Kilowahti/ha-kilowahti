@@ -1,0 +1,617 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kilowahti — Základní nastavení",
+        "description": "Zóna určuje, která evropská nabídková zóna se použije.",
+        "data": {
+          "name": "Název",
+          "region": "Cenová zóna",
+          "price_resolution": "Rozlišení cen",
+          "display_unit": "Jednotka zobrazení"
+        },
+        "data_description": {
+          "name": "Používá se v názvech entit, např. 'Domov'",
+          "price_resolution": "15 minut (96 intervalů/den) nebo 1 hodina (24 intervalů/den). Zvolte podle měřicího intervalu vaší smlouvy.",
+          "display_unit": "Jednotka senzoru"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Měna",
+        "description": "Tato zóna účtuje v měně {currency}. Spotové ceny se přepočítávají z EUR denním směnným kurzem; všechny zadané ceny (marže, pásma distribuce, prahy) jsou ve zvolené měně zobrazení.",
+        "data": {
+          "currency_mode": "Měna zobrazení",
+          "fx_mode": "Zdroj směnného kurzu",
+          "fx_rate": "Ruční směnný kurz (místní měna za EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Použije se, když je zdroj směnného kurzu ruční, a jako záloha, když automatický kurz není dostupný. Pokud se nepoužívá, ponechte 0."
+        }
+      },
+      "vat_and_tax": {
+        "title": "DPH a daň z elektřiny",
+        "description": "Předvyplněno podle vaší zóny. V případě potřeby upravte. Všechny ceny (distribuční pásma, období fixní ceny) se zadávají včetně DPH.",
+        "data": {
+          "vat_rate_pct": "Sazba DPH (%)",
+          "electricity_tax": "Daň z elektřiny (c/kWh)",
+          "spot_commission": "Marže ke spotové ceně (c/kWh)",
+          "monthly_fixed_cost": "Fixní náklady smlouvy o dodávce elektřiny (€/měsíc)"
+        },
+        "data_description": {
+          "electricity_tax": "Pevná daň z elektřiny za kWh přičítaná ke spotové/fixní ceně.",
+          "spot_commission": "Marže dodavatele za kWh přičítaná ke spotové ceně. Zadejte hrubou částku (včetně DPH). Pokud se neuplatňuje, ponechte 0.",
+          "monthly_fixed_cost": "Pevný měsíční poplatek vaší smlouvy o dodávce elektřiny (např. stálý plat). Hrubá částka (včetně DPH). Pokud se neuplatňuje, ponechte 0."
+        }
+      },
+      "transfer_groups": {
+        "title": "Ceny distribuce",
+        "description": "Uspořádejte distribuční cenová pásma do pojmenovaných skupin (např. VT/NT, Sezónní, Obecná). Aktivní je vždy jen jedna skupina. Tento krok můžete přeskočit a skupiny nastavit později v možnostech.",
+        "data": {
+          "action": "Akce"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Přidat skupinu",
+        "data": {
+          "label": "Název skupiny",
+          "monthly_fixed_cost": "Měsíční fixní náklady (€/měsíc)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Připojení k síti + stálý plat smlouvy. Hrubá částka (včetně DPH)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Upravit nastavení skupiny",
+        "data": {
+          "label": "Název skupiny",
+          "monthly_fixed_cost": "Měsíční fixní náklady (€/měsíc)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Připojení k síti + stálý plat smlouvy. Hrubá částka (včetně DPH)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Upravit skupinu",
+        "description": "{group_label} — Přidejte nebo odeberte pásma, nebo nastavte tuto skupinu jako aktivní.",
+        "data": {
+          "action": "Akce"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Přidat cenu distribuce",
+        "description": "Vyhodnocují se v pořadí priority; vyhrává první shoda. Přidejte základní sazbu s nejnižší prioritou a bez časových omezení.",
+        "data": {
+          "label": "Název pásma",
+          "price": "Cena (c/kWh)",
+          "months": "Aktivní měsíce",
+          "weekdays": "Aktivní dny",
+          "hour_start": "Čas začátku (včetně)",
+          "hour_end": "Čas konce (mimo)",
+          "priority": "Priorita (nižší = dříve)"
+        }
+      },
+      "thresholds": {
+        "title": "Prahy a řízení",
+        "data": {
+          "max_price": "Maximální cena pro řízení (c/kWh)",
+          "price_threshold_includes_transfer": "Maximální cena zahrnuje distribuci",
+          "max_rank": "Maximální pořadí pro řízení",
+          "forward_avg_hours": "Délka okna budoucího průměru (hodiny)",
+          "control_factor_function": "Křivka řídicího faktoru",
+          "control_factor_scaling": "Škálování řídicího faktoru (1–3)"
+        },
+        "data_description": {
+          "max_price": "Když je cena aktuálního intervalu na této hodnotě nebo pod ní, senzor price_acceptable se zapne.",
+          "price_threshold_includes_transfer": "ZAPNUTO: porovnává celkovou cenu (spot + distribuce). VYPNUTO: porovnává jen cenu energie (spot).",
+          "max_rank": "Když je pořadí aktuálního intervalu na této hodnotě nebo pod ní, senzor rank_acceptable se zapne.",
+          "forward_avg_hours": "Počet hodin dopředu, ze kterých se počítá průměr pro senzor next_hours_avg.",
+          "control_factor_function": "Tvar křivky řídicího faktoru (0–1).",
+          "control_factor_scaling": "Exponent aplikovaný na řídicí faktor (zesiluje extrémy)."
+        }
+      },
+      "score_profiles": {
+        "title": "Optimalizační skóre",
+        "description": "Skóre měří, jak dobře přesouváte spotřebu do levných hodin. Trvalý profil 'Total' pokrývá veškerou spotřebu — po nastavení k němu v možnostech připojte měřič (nebo měřiče).",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Pokročilé možnosti",
+        "description": "Nastavte, jak se hodnoty senzorů zobrazují v Home Assistantu.",
+        "data": {
+          "expose_price_arrays": "Zveřejnit cenová pole jako atributy senzoru (zvětšuje databázi)",
+          "high_precision": "Režim vysoké přesnosti",
+          "show_rolling_averages": "Zobrazit průměrné ceny na příštích 30 min, 1 h a 2 h",
+          "generation_enabled": "Povolit funkce výroby a výkupu"
+        },
+        "data_description": {
+          "expose_price_arrays": "Zapisuje pole today_prices a tomorrow_prices do atributů senzoru spot_price, která se pak ukládají do databáze. Usnadňuje tvorbu grafů na dashboardu, ale pro jejich zobrazení není nutné a zbytečně zatěžuje databázi.",
+          "high_precision": "Při zapnutí zobrazují cenové senzory více desetinných míst. Atributy a výpočty vždy používají plnou přesnost.",
+          "show_rolling_averages": "Přidá senzory průměrné ceny na příštích 30, 60 a 120 minut.",
+          "generation_enabled": "Povolí senzory a služby výkupní ceny, baterie a arbitráže. Nastavení výroby najdete v nabídce Výroba a výkup."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Připojení se nezdařilo. Zkontrolujte síť.",
+      "invalid_region": "Vybraná zóna nevrátila z API žádná data.",
+      "tier_hour_range": "Čas konce musí být pozdější než čas začátku.",
+      "tier_no_months": "Vyberte alespoň jeden měsíc.",
+      "tier_no_weekdays": "Vyberte alespoň jeden den v týdnu.",
+      "period_invalid_dates": "Datum konce musí být stejné nebo pozdější než datum začátku.",
+      "period_overlap": "Toto období se překrývá s existujícím obdobím fixní ceny.",
+      "period_price_zero": "Cena musí být větší než nula."
+    },
+    "abort": {
+      "already_configured": "Tato instance je již nakonfigurována."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Možnosti Kilowahti",
+        "description": "Zvolte, která nastavení chcete upravit.",
+        "menu_options": {
+          "basic": "Základní nastavení a DPH",
+          "transfer_groups": "Ceny distribuce",
+          "thresholds": "Prahy a řízení",
+          "score_profiles": "Profily skóre",
+          "advanced_options": "Pokročilé možnosti",
+          "fixed_periods": "Období fixní ceny / fixní smlouvy",
+          "generation_settings": "Výroba a výkup"
+        }
+      },
+      "basic": {
+        "title": "Základní nastavení",
+        "description": "Upozornění: změna jednotky zobrazení po vytvoření senzorů způsobí nesoulad jednotek v grafech historie. Možná bude nutné vymazat historii senzorů nebo ručně upravit karty dashboardu.",
+        "data": {
+          "name": "Název",
+          "region": "Cenová zóna",
+          "price_resolution": "Rozlišení cen",
+          "display_unit": "Jednotka zobrazení",
+          "vat_rate_pct": "Sazba DPH (%)",
+          "electricity_tax": "Daň z elektřiny (c/kWh)",
+          "spot_commission": "Marže ke spotové ceně (c/kWh)",
+          "monthly_fixed_cost": "Fixní náklady smlouvy o dodávce elektřiny (€/měsíc)",
+          "currency_mode": "Měna zobrazení",
+          "fx_mode": "Zdroj směnného kurzu",
+          "fx_rate": "Ruční směnný kurz (místní měna za EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Přepnutí přepočítá zadané ceny (prahy, marže, pásma distribuce, fixní období) aktuálním směnným kurzem. Po přepnutí hodnoty zkontrolujte."
+        }
+      },
+      "transfer_groups": {
+        "title": "Ceny distribuce",
+        "data": {
+          "action": "Akce"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Přidat skupinu",
+        "data": {
+          "label": "Název skupiny",
+          "monthly_fixed_cost": "Měsíční fixní náklady (€/měsíc)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Připojení k síti + stálý plat smlouvy. Hrubá částka (včetně DPH)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Upravit nastavení skupiny",
+        "data": {
+          "label": "Název skupiny",
+          "monthly_fixed_cost": "Měsíční fixní náklady (€/měsíc)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Připojení k síti + stálý plat smlouvy. Hrubá částka (včetně DPH)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Upravit skupinu",
+        "description": "{group_label} — Přidejte nebo odeberte pásma, nebo nastavte tuto skupinu jako aktivní.",
+        "data": {
+          "action": "Akce"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Přidat cenu distribuce",
+        "data": {
+          "label": "Název pásma (např. Zimní všední den)",
+          "price": "Cena (c/kWh)",
+          "months": "Aktivní měsíce",
+          "weekdays": "Aktivní dny",
+          "hour_start": "Čas začátku (včetně)",
+          "hour_end": "Čas konce (mimo)",
+          "priority": "Priorita (nižší = dříve)"
+        }
+      },
+      "thresholds": {
+        "title": "Prahy a řízení",
+        "data": {
+          "max_price": "Maximální cena pro řízení (c/kWh)",
+          "price_threshold_includes_transfer": "Maximální cena zahrnuje distribuci",
+          "max_rank": "Maximální pořadí pro řízení",
+          "forward_avg_hours": "Délka okna budoucího průměru (hodiny)",
+          "control_factor_function": "Křivka řídicího faktoru",
+          "control_factor_scaling": "Škálování řídicího faktoru (1–3)"
+        }
+      },
+      "score_profiles": {
+        "title": "Profily skóre",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Pokročilé možnosti",
+        "data": {
+          "expose_price_arrays": "Zveřejnit cenová pole jako atributy senzoru (zvětšuje databázi)",
+          "high_precision": "Režim vysoké přesnosti",
+          "show_rolling_averages": "Zobrazit průměrné ceny na příštích 30 min, 1 h a 2 h",
+          "generation_enabled": "Povolit funkce výroby a výkupu"
+        },
+        "data_description": {
+          "show_rolling_averages": "Přidá senzory průměrné ceny na příštích 30, 60 a 120 minut.",
+          "generation_enabled": "Povolí senzory a služby výkupní ceny, baterie a arbitráže. Nastavení výroby najdete v nabídce Výroba a výkup."
+        }
+      },
+      "add_score_profile": {
+        "title": "Přidat profil skóre",
+        "data": {
+          "label": "Název profilu",
+          "meters": "Entity měřičů energie",
+          "formula": "Vzorec skóre"
+        },
+        "data_description": {
+          "formula": "Výchozí vzorec: 50 = dobré, 37,5 při rovnoměrném rozložení (penalizuje průměrné využití). Hrubý vzorec: 50 při rovnoměrném rozložení (neutrální základ)."
+        }
+      },
+      "edit_score_profile": {
+        "title": "Upravit profil skóre: {profile_label}",
+        "description": "Nakonfigurováno měřičů: {meter_count}.",
+        "data": {
+          "action": "Akce"
+        }
+      },
+      "add_profile_meters": {
+        "title": "Přidat měřič(e)",
+        "data": {
+          "meters": "Entity měřičů energie"
+        }
+      },
+      "edit_profile_formula": {
+        "title": "Vzorec skóre: {profile_label}",
+        "data": {
+          "formula": "Vzorec skóre"
+        },
+        "data_description": {
+          "formula": "Výchozí vzorec: 50 = dobré, 37,5 při rovnoměrném rozložení (penalizuje průměrné využití). Hrubý vzorec: 50 při rovnoměrném rozložení (neutrální základ)."
+        }
+      },
+      "fixed_periods": {
+        "title": "Období fixní ceny / fixní smlouvy",
+        "description": "Spravujte období fixní ceny nebo fixní smlouvy. Když je období aktivní, effective_price zobrazuje nastavenou fixní cenu místo spotové.",
+        "data": {
+          "action": "Akce"
+        }
+      },
+      "generation_settings": {
+        "title": "Nastavení výroby a výkupu",
+        "description": "Nastavte výkupní ceny a parametry baterie. Nastavením kapacity baterie na 0 vypnete senzory baterie.",
+        "data": {
+          "export_pricing_mode": "Režim výkupní ceny",
+          "export_commission": "Výkupní marže (c/kWh, odečtená od spotu)",
+          "fixed_export_rate": "Pevná výkupní sazba (c/kWh)",
+          "export_price_threshold": "Práh výkupní ceny (c/kWh)",
+          "solar_window_start": "Hodina začátku solárního okna",
+          "solar_window_end": "Hodina konce solárního okna",
+          "battery_capacity_kwh": "Kapacita baterie (kWh, 0 = vypnuto)",
+          "battery_charge_power_kw": "Nabíjecí výkon baterie (kW)"
+        },
+        "data_description": {
+          "export_commission": "Pouze v režimu vázaném na spot. Marže odběratele odečtená od spotové ceny API (bez DPH). Malí výrobci obvykle z dodávek do sítě DPH neodvádějí.",
+          "fixed_export_rate": "Pouze v pevném režimu. Pevná sazba, kterou dostáváte za každou dodanou kWh.",
+          "solar_window_start": "Hodina začátku vašeho typického okna solární výroby (používá senzor next_solar_window_avg).",
+          "solar_window_end": "Hodina konce (mimo) vašeho typického okna solární výroby."
+        }
+      },
+      "add_fixed_period": {
+        "title": "Přidat období fixní ceny / fixní smlouvu",
+        "data": {
+          "label": "Název období",
+          "start_date": "Datum začátku",
+          "end_date": "Datum konce (včetně)",
+          "price": "Cena (c/kWh, včetně DPH)"
+        },
+        "data_description": {
+          "price": "Zadejte cenu včetně DPH. Tato cena se používá tak, jak je — DPH se nepřičítá."
+        }
+      }
+    },
+    "error": {
+      "tier_hour_range": "Čas konce musí být pozdější než čas začátku.",
+      "tier_no_months": "Vyberte alespoň jeden měsíc.",
+      "tier_no_weekdays": "Vyberte alespoň jeden den v týdnu.",
+      "period_invalid_dates": "Datum konce musí být stejné nebo pozdější než datum začátku.",
+      "period_overlap": "Toto období se překrývá s existujícím obdobím fixní ceny.",
+      "period_price_zero": "Cena musí být větší než nula."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "arbitrage_spread_today": {
+        "name": "Arbitrážní rozpětí dnes"
+      },
+      "avg_price_120min": {
+        "name": "Průměrná cena 120 min"
+      },
+      "avg_price_30min": {
+        "name": "Průměrná cena 30 min"
+      },
+      "avg_price_60min": {
+        "name": "Průměrná cena 60 min"
+      },
+      "battery_charge_recommendation": {
+        "name": "Doporučení nabíjení baterie",
+        "state": {
+          "charge_from_grid": "Nabíjet ze sítě",
+          "discharge": "Vybíjet",
+          "hold": "Držet"
+        }
+      },
+      "charge_opportunity_factor": {
+        "name": "Faktor příležitosti k nabíjení"
+      },
+      "control_factor_price": {
+        "name": "Řídicí faktor ceny"
+      },
+      "control_factor_price_bipolar": {
+        "name": "Řídicí faktor ceny (bipolární)"
+      },
+      "control_factor_transfer": {
+        "name": "Řídicí faktor distribuce"
+      },
+      "effective_price": {
+        "name": "Aktivní cena"
+      },
+      "exchange_rate": {
+        "name": "Směnný kurz"
+      },
+      "export_price": {
+        "name": "Výkupní cena"
+      },
+      "export_today_avg": {
+        "name": "Průměrná výkupní cena dnes"
+      },
+      "export_today_max": {
+        "name": "Nejvyšší výkupní cena dnes"
+      },
+      "export_today_min": {
+        "name": "Nejnižší výkupní cena dnes"
+      },
+      "export_tomorrow_avg": {
+        "name": "Průměrná výkupní cena zítra"
+      },
+      "export_tomorrow_max": {
+        "name": "Nejvyšší výkupní cena zítra"
+      },
+      "export_tomorrow_min": {
+        "name": "Nejnižší výkupní cena zítra"
+      },
+      "import_export_spread": {
+        "name": "Rozpětí odběr–výkup"
+      },
+      "monthly_fixed_cost_today": {
+        "name": "Měsíční fixní náklady dnes"
+      },
+      "next_hours_avg": {
+        "name": "Průměr příštích hodin"
+      },
+      "next_solar_window_avg": {
+        "name": "Průměr příštího solárního okna"
+      },
+      "optimal_charge_window_end": {
+        "name": "Konec optimálního nabíjecího okna"
+      },
+      "optimal_charge_window_start": {
+        "name": "Začátek optimálního nabíjecího okna"
+      },
+      "price_data_source": {
+        "name": "Zdroj cenových dat"
+      },
+      "price_quartile": {
+        "name": "Cenový kvartil"
+      },
+      "price_rank": {
+        "name": "Pořadí"
+      },
+      "self_consumption_value": {
+        "name": "Hodnota vlastní spotřeby"
+      },
+      "setting_acceptable_rank": {
+        "name": "Přijatelné pořadí"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktivní období fixní ceny"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktivní distribuční skupina"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktivní distribuční pásmo"
+      },
+      "setting_control_factor_function": {
+        "name": "Tvar řídicího faktoru"
+      },
+      "setting_forward_window": {
+        "name": "Budoucí okno"
+      },
+      "setting_max_price": {
+        "name": "Práh ceny"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Práh ceny zahrnuje distribuci"
+      },
+      "spot_next_hours_avg": {
+        "name": "Spotový průměr příštích hodin"
+      },
+      "spot_price": {
+        "name": "Spotová cena"
+      },
+      "today_avg": {
+        "name": "Průměr dnes"
+      },
+      "today_max": {
+        "name": "Maximum dnes"
+      },
+      "today_min": {
+        "name": "Minimum dnes"
+      },
+      "today_spot_avg": {
+        "name": "Průměrná spotová cena dnes"
+      },
+      "today_spot_max": {
+        "name": "Nejvyšší spotová cena dnes"
+      },
+      "today_spot_min": {
+        "name": "Nejnižší spotová cena dnes"
+      },
+      "today_total_avg": {
+        "name": "Průměrná celková cena dnes"
+      },
+      "today_total_max": {
+        "name": "Nejvyšší celková cena dnes"
+      },
+      "today_total_min": {
+        "name": "Nejnižší celková cena dnes"
+      },
+      "tomorrow_avg": {
+        "name": "Průměr zítra"
+      },
+      "tomorrow_max": {
+        "name": "Maximum zítra"
+      },
+      "tomorrow_min": {
+        "name": "Minimum zítra"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Průměrná spotová cena zítra"
+      },
+      "tomorrow_spot_max": {
+        "name": "Nejvyšší spotová cena zítra"
+      },
+      "tomorrow_spot_min": {
+        "name": "Nejnižší spotová cena zítra"
+      },
+      "tomorrow_total_avg": {
+        "name": "Průměrná celková cena zítra"
+      },
+      "tomorrow_total_max": {
+        "name": "Nejvyšší celková cena zítra"
+      },
+      "tomorrow_total_min": {
+        "name": "Nejnižší celková cena zítra"
+      },
+      "total_price": {
+        "name": "Celková cena"
+      },
+      "total_price_quartile": {
+        "name": "Kvartil celkové ceny"
+      },
+      "total_price_rank": {
+        "name": "Pořadí celkové ceny"
+      },
+      "transfer_price": {
+        "name": "Cena distribuce"
+      }
+    },
+    "number": {
+      "price_threshold": {
+        "name": "Práh ceny"
+      },
+      "rank_threshold": {
+        "name": "Práh pořadí"
+      }
+    },
+    "binary_sensor": {
+      "price_acceptable": {
+        "name": "Cena přijatelná"
+      },
+      "rank_acceptable": {
+        "name": "Pořadí přijatelné"
+      },
+      "price_or_rank_acceptable": {
+        "name": "Cena nebo pořadí přijatelné"
+      },
+      "fixed_period_active": {
+        "name": "Období fixní ceny aktivní"
+      },
+      "tomorrow_available": {
+        "name": "Zítřejší ceny dostupné"
+      },
+      "export_price_acceptable": {
+        "name": "Výkupní cena přijatelná"
+      },
+      "charge_from_grid_recommended": {
+        "name": "Doporučeno nabíjet ze sítě"
+      },
+      "discharge_to_grid_recommended": {
+        "name": "Doporučeno vybíjet do sítě"
+      }
+    }
+  },
+  "triggers": {
+    "price_became_acceptable": {
+      "name": "Cena se stala přijatelnou",
+      "description": "Spustí se, když aktuální cena elektřiny klesne na přijatelnou úroveň (na práh ceny nebo pod něj)."
+    },
+    "price_no_longer_acceptable": {
+      "name": "Cena už není přijatelná",
+      "description": "Spustí se, když aktuální cena elektřiny stoupne nad práh ceny."
+    },
+    "rank_became_acceptable": {
+      "name": "Pořadí se stalo přijatelným",
+      "description": "Spustí se, když pořadí aktuální ceny klesne na přijatelnou úroveň (na práh pořadí nebo pod něj)."
+    },
+    "rank_no_longer_acceptable": {
+      "name": "Pořadí už není přijatelné",
+      "description": "Spustí se, když pořadí aktuální ceny stoupne nad práh pořadí."
+    },
+    "became_cheapest_slot": {
+      "name": "Stal se nejlevnějším intervalem",
+      "description": "Spustí se, když se aktuální časový interval stane nejlevnějším v rámci dne."
+    },
+    "fixed_period_started": {
+      "name": "Období fixní ceny začalo",
+      "description": "Spustí se, když se období fixní ceny stane aktivním."
+    },
+    "fixed_period_ended": {
+      "name": "Období fixní ceny skončilo",
+      "description": "Spustí se, když období fixní ceny přestane být aktivní."
+    },
+    "tomorrow_prices_available": {
+      "name": "Zítřejší ceny dostupné",
+      "description": "Spustí se, když budou dostupné zítřejší ceny elektřiny."
+    }
+  },
+  "conditions": {
+    "price_is_acceptable": {
+      "name": "Cena je přijatelná",
+      "description": "Platí, když je aktuální cena elektřiny na prahu ceny nebo pod ním."
+    },
+    "rank_is_acceptable": {
+      "name": "Pořadí je přijatelné",
+      "description": "Platí, když je pořadí aktuální ceny na prahu pořadí nebo pod ním."
+    },
+    "price_is_lowest_today": {
+      "name": "Cena je dnes nejnižší",
+      "description": "Platí, když je aktuální časový interval nejlevnější v rámci dne."
+    },
+    "fixed_period_active": {
+      "name": "Období fixní ceny aktivní",
+      "description": "Platí, když je právě aktivní období fixní ceny."
+    },
+    "tomorrow_available": {
+      "name": "Zítřejší ceny dostupné",
+      "description": "Platí, když jsou dostupné zítřejší ceny elektřiny."
+    }
+  }
+}

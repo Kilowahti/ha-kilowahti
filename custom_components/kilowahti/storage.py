@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from dataclasses import replace
 from datetime import date
 
 from homeassistant.core import HomeAssistant
@@ -21,10 +22,12 @@ class KilowahtiStorage:
         self._store_periods: Store = Store(hass, STORAGE_VERSION, f"kilowahti_{entry_id}_periods")
         self._store_cache: Store = Store(hass, STORAGE_VERSION, f"kilowahti_{entry_id}_cache")
         self._store_scores: Store = Store(hass, STORAGE_VERSION, f"kilowahti_{entry_id}_scores")
+        self._store_fx: Store = Store(hass, STORAGE_VERSION, f"kilowahti_{entry_id}_fx")
 
         self._periods: list[FixedPeriod] = []
         self._cache: dict = {}
         self._scores: dict = {}
+        self._fx: dict = {}
 
     # ------------------------------------------------------------------
     # Load all stores on startup
@@ -42,6 +45,10 @@ class KilowahtiStorage:
         data = await self._store_scores.async_load()
         if data:
             self._scores = data
+
+        data = await self._store_fx.async_load()
+        if data:
+            self._fx = data
 
     # ------------------------------------------------------------------
     # Fixed-price periods
@@ -68,6 +75,23 @@ class KilowahtiStorage:
 
     async def _save_periods(self) -> None:
         await self._store_periods.async_save({"periods": [p.to_dict() for p in self._periods]})
+
+    async def async_scale_period_prices(self, factor: float) -> None:
+        """Multiply every fixed-period price by factor (currency-mode flip)."""
+        self._periods = [replace(p, price=p.price * factor) for p in self._periods]
+        await self._save_periods()
+
+    # ------------------------------------------------------------------
+    # FX rate persistence (active + staged daily reference rates)
+    # ------------------------------------------------------------------
+
+    def get_fx(self) -> dict:
+        """Return the persisted FX dict (active/staged rates + dates + currency)."""
+        return dict(self._fx)
+
+    async def async_save_fx(self, data: dict) -> None:
+        self._fx = dict(data)
+        await self._store_fx.async_save(self._fx)
 
     # ------------------------------------------------------------------
     # Price cache (today + tomorrow slots, keyed by date string)

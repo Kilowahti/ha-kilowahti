@@ -1,0 +1,18 @@
+price_is_acceptable:
+  target: &target
+    entity:
+      integration: kilowahti
+    device:
+      integration: kilowahti
+
+rank_is_acceptable:
+  target: *target
+
+price_is_lowest_today:
+  target: *target
+
+fixed_period_active:
+  target: *target
+
+tomorrow_available:
+  target: *target

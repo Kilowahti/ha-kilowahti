@@ -1,0 +1,27 @@
+price_became_acceptable:
+  target: &target
+    entity:
+      integration: kilowahti
+    device:
+      integration: kilowahti
+
+price_no_longer_acceptable:
+  target: *target
+
+rank_became_acceptable:
+  target: *target
+
+rank_no_longer_acceptable:
+  target: *target
+
+became_cheapest_slot:
+  target: *target
+
+fixed_period_started:
+  target: *target
+
+fixed_period_ended:
+  target: *target
+
+tomorrow_prices_available:
+  target: *target

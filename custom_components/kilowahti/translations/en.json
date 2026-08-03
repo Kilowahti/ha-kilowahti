@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Basic settings",
-        "description": "Region determines which Nordic/Baltic spot-price area is used.",
+        "description": "Region determines which European bidding zone's prices are used.",
         "data": {
           "name": "Name",
           "region": "Price region",
@@ -14,6 +14,18 @@
           "name": "Used in entity names, e.g. 'Home'",
           "price_resolution": "15 minutes (96 slots/day) or 1 hour (24 slots/day). Match your contract's metering interval.",
           "display_unit": "Sensor unit"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Currency",
+        "description": "This region bills in {currency}. Spot prices are converted from EUR with a daily exchange rate; all prices you enter (commission, transfer tiers, thresholds) are in the selected display currency.",
+        "data": {
+          "currency_mode": "Display currency",
+          "fx_mode": "Exchange rate source",
+          "fx_rate": "Manual exchange rate (local currency per EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Used when the exchange rate source is manual, and as a fallback when the automatic rate is unavailable. Leave at 0 if unused."
         }
       },
       "vat_and_tax": {
@@ -85,7 +97,7 @@
           "price_threshold_includes_transfer": "Max price includes transfer",
           "max_rank": "Control max rank",
           "forward_avg_hours": "Forward average window length (hours)",
-          "control_factor_function": "Control factor function",
+          "control_factor_function": "Control factor curve",
           "control_factor_scaling": "Control factor scaling (1–3)"
         },
         "data_description": {
@@ -159,7 +171,13 @@
           "vat_rate_pct": "VAT rate (%)",
           "electricity_tax": "Electricity tax (c/kWh)",
           "spot_commission": "Spot price commission (c/kWh)",
-          "monthly_fixed_cost": "Electricity contract fixed cost (€/month)"
+          "monthly_fixed_cost": "Electricity contract fixed cost (€/month)",
+          "currency_mode": "Display currency",
+          "fx_mode": "Exchange rate source",
+          "fx_rate": "Manual exchange rate (local currency per EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Switching converts your entered prices (thresholds, commissions, transfer tiers, fixed periods) with the current exchange rate. Review values after switching."
         }
       },
       "transfer_groups": {
@@ -214,7 +232,7 @@
           "price_threshold_includes_transfer": "Max price includes transfer",
           "max_rank": "Control max rank",
           "forward_avg_hours": "Forward average window length (hours)",
-          "control_factor_function": "Control factor function",
+          "control_factor_function": "Control factor curve",
           "control_factor_scaling": "Control factor scaling (1–3)"
         }
       },
@@ -319,65 +337,28 @@
   },
   "entity": {
     "sensor": {
-      "spot_price": {
-        "name": "Spot price"
+      "arbitrage_spread_today": {
+        "name": "Arbitrage spread today"
       },
-      "effective_price": {
-        "name": "Active price"
+      "avg_price_120min": {
+        "name": "Average price 120 min"
       },
-      "transfer_price": {
-        "name": "Transfer price"
+      "avg_price_30min": {
+        "name": "Average price 30 min"
       },
-      "total_price": {
-        "name": "Total price"
+      "avg_price_60min": {
+        "name": "Average price 60 min"
       },
-      "price_rank": {
-        "name": "Rank"
+      "battery_charge_recommendation": {
+        "name": "Battery charge recommendation",
+        "state": {
+          "charge_from_grid": "Charge from grid",
+          "discharge": "Discharge",
+          "hold": "Hold"
+        }
       },
-      "total_price_rank": {
-        "name": "Total price rank"
-      },
-      "total_price_quartile": {
-        "name": "Total price quartile"
-      },
-      "today_spot_avg": {
-        "name": "Today spot average"
-      },
-      "today_spot_min": {
-        "name": "Today spot minimum"
-      },
-      "today_spot_max": {
-        "name": "Today spot maximum"
-      },
-      "tomorrow_spot_avg": {
-        "name": "Tomorrow spot average"
-      },
-      "tomorrow_spot_min": {
-        "name": "Tomorrow spot minimum"
-      },
-      "tomorrow_spot_max": {
-        "name": "Tomorrow spot maximum"
-      },
-      "today_total_avg": {
-        "name": "Today total average"
-      },
-      "today_total_min": {
-        "name": "Today total minimum"
-      },
-      "today_total_max": {
-        "name": "Today total maximum"
-      },
-      "tomorrow_total_avg": {
-        "name": "Tomorrow total average"
-      },
-      "tomorrow_total_min": {
-        "name": "Tomorrow total minimum"
-      },
-      "tomorrow_total_max": {
-        "name": "Tomorrow total maximum"
-      },
-      "next_hours_avg": {
-        "name": "Next hours average"
+      "charge_opportunity_factor": {
+        "name": "Charge opportunity factor"
       },
       "control_factor_price": {
         "name": "Control factor price"
@@ -388,32 +369,11 @@
       "control_factor_transfer": {
         "name": "Control factor transfer"
       },
-      "price_quartile": {
-        "name": "Price quartile"
+      "effective_price": {
+        "name": "Active price"
       },
-      "setting_max_price": {
-        "name": "Price threshold"
-      },
-      "setting_price_threshold_includes_transfer": {
-        "name": "Price threshold includes transfer"
-      },
-      "setting_control_factor_function": {
-        "name": "Control factor shape"
-      },
-      "setting_acceptable_rank": {
-        "name": "Acceptable rank"
-      },
-      "setting_forward_window": {
-        "name": "Forward window"
-      },
-      "setting_active_transfer_group": {
-        "name": "Active transfer group"
-      },
-      "setting_active_transfer_tier": {
-        "name": "Active transfer tier"
-      },
-      "setting_active_fixed_period": {
-        "name": "Active fixed period"
+      "exchange_rate": {
+        "name": "Exchange rate"
       },
       "export_price": {
         "name": "Export price"
@@ -421,61 +381,146 @@
       "export_today_avg": {
         "name": "Export today average"
       },
-      "export_today_min": {
-        "name": "Export today minimum"
-      },
       "export_today_max": {
         "name": "Export today maximum"
+      },
+      "export_today_min": {
+        "name": "Export today minimum"
       },
       "export_tomorrow_avg": {
         "name": "Export tomorrow average"
       },
-      "export_tomorrow_min": {
-        "name": "Export tomorrow minimum"
-      },
       "export_tomorrow_max": {
         "name": "Export tomorrow maximum"
+      },
+      "export_tomorrow_min": {
+        "name": "Export tomorrow minimum"
       },
       "import_export_spread": {
         "name": "Import-export spread"
       },
-      "self_consumption_value": {
-        "name": "Self-consumption value"
+      "monthly_fixed_cost_today": {
+        "name": "Monthly fixed cost today"
       },
-      "avg_price_30min": {
-        "name": "Average price 30 min"
-      },
-      "avg_price_60min": {
-        "name": "Average price 60 min"
-      },
-      "avg_price_120min": {
-        "name": "Average price 120 min"
+      "next_hours_avg": {
+        "name": "Next hours average"
       },
       "next_solar_window_avg": {
         "name": "Next solar window average"
       },
-      "arbitrage_spread_today": {
-        "name": "Arbitrage spread today"
-      },
-      "charge_opportunity_factor": {
-        "name": "Charge opportunity factor"
+      "optimal_charge_window_end": {
+        "name": "Optimal charge window end"
       },
       "optimal_charge_window_start": {
         "name": "Optimal charge window start"
       },
-      "optimal_charge_window_end": {
-        "name": "Optimal charge window end"
+      "price_data_source": {
+        "name": "Price data source"
       },
-      "battery_charge_recommendation": {
-        "name": "Battery charge recommendation",
-        "state": {
-          "charge_from_grid": "Charge from grid",
-          "discharge": "Discharge",
-          "hold": "Hold"
-        }
+      "price_quartile": {
+        "name": "Price quartile"
       },
-      "monthly_fixed_cost_today": {
-        "name": "Monthly fixed cost today"
+      "price_rank": {
+        "name": "Rank"
+      },
+      "self_consumption_value": {
+        "name": "Self-consumption value"
+      },
+      "setting_acceptable_rank": {
+        "name": "Acceptable rank"
+      },
+      "setting_active_fixed_period": {
+        "name": "Active fixed period"
+      },
+      "setting_active_transfer_group": {
+        "name": "Active transfer group"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Active transfer tier"
+      },
+      "setting_control_factor_function": {
+        "name": "Control factor shape"
+      },
+      "setting_forward_window": {
+        "name": "Forward window"
+      },
+      "setting_max_price": {
+        "name": "Price threshold"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Price threshold includes transfer"
+      },
+      "spot_next_hours_avg": {
+        "name": "Spot next hours average"
+      },
+      "spot_price": {
+        "name": "Spot price"
+      },
+      "today_avg": {
+        "name": "Today average"
+      },
+      "today_max": {
+        "name": "Today maximum"
+      },
+      "today_min": {
+        "name": "Today minimum"
+      },
+      "today_spot_avg": {
+        "name": "Today spot average"
+      },
+      "today_spot_max": {
+        "name": "Today spot maximum"
+      },
+      "today_spot_min": {
+        "name": "Today spot minimum"
+      },
+      "today_total_avg": {
+        "name": "Today total average"
+      },
+      "today_total_max": {
+        "name": "Today total maximum"
+      },
+      "today_total_min": {
+        "name": "Today total minimum"
+      },
+      "tomorrow_avg": {
+        "name": "Tomorrow average"
+      },
+      "tomorrow_max": {
+        "name": "Tomorrow maximum"
+      },
+      "tomorrow_min": {
+        "name": "Tomorrow minimum"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Tomorrow spot average"
+      },
+      "tomorrow_spot_max": {
+        "name": "Tomorrow spot maximum"
+      },
+      "tomorrow_spot_min": {
+        "name": "Tomorrow spot minimum"
+      },
+      "tomorrow_total_avg": {
+        "name": "Tomorrow total average"
+      },
+      "tomorrow_total_max": {
+        "name": "Tomorrow total maximum"
+      },
+      "tomorrow_total_min": {
+        "name": "Tomorrow total minimum"
+      },
+      "total_price": {
+        "name": "Total price"
+      },
+      "total_price_quartile": {
+        "name": "Total price quartile"
+      },
+      "total_price_rank": {
+        "name": "Total price rank"
+      },
+      "transfer_price": {
+        "name": "Transfer price"
       }
     },
     "number": {
@@ -511,6 +556,62 @@
       "discharge_to_grid_recommended": {
         "name": "Discharge to grid recommended"
       }
+    }
+  },
+  "triggers": {
+    "price_became_acceptable": {
+      "name": "Price became acceptable",
+      "description": "Triggers when the current electricity price drops to an acceptable level (at or below the price threshold)."
+    },
+    "price_no_longer_acceptable": {
+      "name": "Price no longer acceptable",
+      "description": "Triggers when the current electricity price rises above the price threshold."
+    },
+    "rank_became_acceptable": {
+      "name": "Rank became acceptable",
+      "description": "Triggers when the current price rank drops to an acceptable level (at or below the rank threshold)."
+    },
+    "rank_no_longer_acceptable": {
+      "name": "Rank no longer acceptable",
+      "description": "Triggers when the current price rank rises above the rank threshold."
+    },
+    "became_cheapest_slot": {
+      "name": "Became cheapest slot",
+      "description": "Triggers when the current time slot becomes the cheapest of the day."
+    },
+    "fixed_period_started": {
+      "name": "Fixed period started",
+      "description": "Triggers when a fixed-price period becomes active."
+    },
+    "fixed_period_ended": {
+      "name": "Fixed period ended",
+      "description": "Triggers when a fixed-price period stops being active."
+    },
+    "tomorrow_prices_available": {
+      "name": "Tomorrow's prices available",
+      "description": "Triggers when tomorrow's electricity prices become available."
+    }
+  },
+  "conditions": {
+    "price_is_acceptable": {
+      "name": "Price is acceptable",
+      "description": "Passes when the current electricity price is at or below the price threshold."
+    },
+    "rank_is_acceptable": {
+      "name": "Rank is acceptable",
+      "description": "Passes when the current price rank is at or below the rank threshold."
+    },
+    "price_is_lowest_today": {
+      "name": "Price is lowest today",
+      "description": "Passes when the current time slot is the cheapest of the day."
+    },
+    "fixed_period_active": {
+      "name": "Fixed period active",
+      "description": "Passes when a fixed-price period is currently active."
+    },
+    "tomorrow_available": {
+      "name": "Tomorrow's prices available",
+      "description": "Passes when tomorrow's electricity prices are available."
     }
   }
 }

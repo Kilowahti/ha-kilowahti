@@ -1,0 +1,617 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kilowahti — Ustawienia podstawowe",
+        "description": "Region określa, z której europejskiej strefy cenowej pochodzą ceny.",
+        "data": {
+          "name": "Nazwa",
+          "region": "Strefa cenowa",
+          "price_resolution": "Rozdzielczość cen",
+          "display_unit": "Jednostka wyświetlania"
+        },
+        "data_description": {
+          "name": "Używana w nazwach encji, np. 'Dom'",
+          "price_resolution": "15 minut (96 przedziałów/dobę) lub 1 godzina (24 przedziały/dobę). Dopasuj do interwału pomiarowego swojej umowy.",
+          "display_unit": "Jednostka sensora"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Waluta",
+        "description": "Ten region rozlicza się w walucie {currency}. Ceny giełdowe są przeliczane z EUR według dziennego kursu wymiany; wszystkie wprowadzane ceny (marża, stawki dystrybucyjne, progi) są w wybranej walucie wyświetlania.",
+        "data": {
+          "currency_mode": "Waluta wyświetlania",
+          "fx_mode": "Źródło kursu wymiany",
+          "fx_rate": "Ręczny kurs wymiany (waluta lokalna za EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Używany, gdy źródłem kursu wymiany jest kurs ręczny, oraz jako kurs zapasowy, gdy kurs automatyczny jest niedostępny. Pozostaw 0, jeśli nieużywany."
+        }
+      },
+      "vat_and_tax": {
+        "title": "VAT i akcyza",
+        "description": "Wstępnie wypełnione na podstawie regionu. W razie potrzeby dostosuj. Wszystkie ceny (stawki dystrybucyjne, okresy stałej ceny) podaje się z VAT.",
+        "data": {
+          "vat_rate_pct": "Stawka VAT (%)",
+          "electricity_tax": "Akcyza (c/kWh)",
+          "spot_commission": "Marża do ceny giełdowej (c/kWh)",
+          "monthly_fixed_cost": "Koszt stały umowy na energię (€/mies.)"
+        },
+        "data_description": {
+          "electricity_tax": "Stała akcyza za kWh doliczana do ceny giełdowej/stałej.",
+          "spot_commission": "Marża sprzedawcy za kWh doliczana do ceny giełdowej. Podaj brutto (z VAT). Zostaw 0, jeśli nie dotyczy.",
+          "monthly_fixed_cost": "Stała miesięczna opłata z umowy na energię (np. opłata handlowa). Kwota brutto (z VAT). Zostaw 0, jeśli nie dotyczy."
+        }
+      },
+      "transfer_groups": {
+        "title": "Stawki dystrybucyjne",
+        "description": "Uporządkuj stawki dystrybucyjne w nazwane grupy (np. Taryfa strefowa, Sezonowa, Ogólna). Aktywna jest zawsze tylko jedna grupa. Możesz pominąć ten krok i skonfigurować grupy później w opcjach.",
+        "data": {
+          "action": "Akcja"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Dodaj grupę",
+        "data": {
+          "label": "Nazwa grupy",
+          "monthly_fixed_cost": "Miesięczny koszt stały (€/mies.)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Przyłącze sieciowe + opłata stała umowy. Kwota brutto (z VAT)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Edytuj ustawienia grupy",
+        "data": {
+          "label": "Nazwa grupy",
+          "monthly_fixed_cost": "Miesięczny koszt stały (€/mies.)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Przyłącze sieciowe + opłata stała umowy. Kwota brutto (z VAT)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Edytuj grupę",
+        "description": "{group_label} — Dodaj lub usuń stawki albo ustaw tę grupę jako aktywną.",
+        "data": {
+          "action": "Akcja"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Dodaj stawkę dystrybucyjną",
+        "description": "Oceniane w kolejności priorytetów; wygrywa pierwsze dopasowanie. Dodaj stawkę podstawową z najniższym priorytetem, bez ograniczeń czasowych.",
+        "data": {
+          "label": "Nazwa stawki",
+          "price": "Cena (c/kWh)",
+          "months": "Aktywne miesiące",
+          "weekdays": "Aktywne dni tygodnia",
+          "hour_start": "Czas rozpoczęcia (włącznie)",
+          "hour_end": "Czas zakończenia (wyłącznie)",
+          "priority": "Priorytet (niższy = pierwszy)"
+        }
+      },
+      "thresholds": {
+        "title": "Progi i sterowanie",
+        "data": {
+          "max_price": "Maksymalna cena sterowania (c/kWh)",
+          "price_threshold_includes_transfer": "Cena maksymalna obejmuje dystrybucję",
+          "max_rank": "Maksymalna ranga sterowania",
+          "forward_avg_hours": "Długość okna średniej przyszłej (godziny)",
+          "control_factor_function": "Krzywa współczynnika sterowania",
+          "control_factor_scaling": "Skalowanie współczynnika sterowania (1–3)"
+        },
+        "data_description": {
+          "max_price": "Gdy cena bieżącego przedziału jest równa tej wartości lub niższa, włącza się sensor price_acceptable.",
+          "price_threshold_includes_transfer": "WŁ.: porównuje cenę całkowitą (giełda + dystrybucja). WYŁ.: porównuje tylko cenę energii (giełda).",
+          "max_rank": "Gdy ranga bieżącego przedziału jest równa tej wartości lub niższa, włącza się sensor rank_acceptable.",
+          "forward_avg_hours": "Liczba godzin naprzód, z których liczona jest średnia dla sensora next_hours_avg.",
+          "control_factor_function": "Kształt krzywej współczynnika sterowania (0–1).",
+          "control_factor_scaling": "Wykładnik stosowany do współczynnika sterowania (wzmacnia skrajności)."
+        }
+      },
+      "score_profiles": {
+        "title": "Punkty optymalizacji",
+        "description": "Punkty mierzą, jak dobrze zużycie jest przesuwane na tanie godziny. Stały profil 'Total' obejmuje całe zużycie — po konfiguracji powiąż z nim licznik (lub liczniki) w opcjach.",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Opcje zaawansowane",
+        "description": "Skonfiguruj sposób wyświetlania wartości sensorów w Home Assistant.",
+        "data": {
+          "expose_price_arrays": "Udostępniaj tablice cen jako atrybuty sensora (zwiększa rozmiar bazy danych)",
+          "high_precision": "Tryb wysokiej precyzji",
+          "show_rolling_averages": "Pokaż średnie ceny na najbliższe 30 min, 1 h i 2 h",
+          "generation_enabled": "Włącz funkcje produkcji i sprzedaży"
+        },
+        "data_description": {
+          "expose_price_arrays": "Zapisuje tablice today_prices i tomorrow_prices w atrybutach sensora spot_price, które trafiają następnie do bazy danych. Ułatwia budowanie wykresów na dashboardzie, ale nie jest do ich wyświetlania wymagane i niepotrzebnie obciąża bazę.",
+          "high_precision": "Po włączeniu sensory cen pokazują więcej miejsc po przecinku. Atrybuty i obliczenia zawsze używają pełnej precyzji.",
+          "show_rolling_averages": "Dodaje sensory średniej ceny na najbliższe 30, 60 i 120 minut.",
+          "generation_enabled": "Włącza sensory i usługi ceny sprzedaży, akumulatora i arbitrażu. Ustawienia produkcji skonfigurujesz w menu Produkcja i sprzedaż."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nie udało się połączyć. Sprawdź sieć.",
+      "invalid_region": "Wybrany region nie zwrócił danych z API.",
+      "tier_hour_range": "Czas zakończenia musi być późniejszy niż czas rozpoczęcia.",
+      "tier_no_months": "Wybierz co najmniej jeden miesiąc.",
+      "tier_no_weekdays": "Wybierz co najmniej jeden dzień tygodnia.",
+      "period_invalid_dates": "Data zakończenia musi przypadać w dniu rozpoczęcia lub później.",
+      "period_overlap": "Ten okres nakłada się na istniejący okres stałej ceny.",
+      "period_price_zero": "Cena musi być większa od zera."
+    },
+    "abort": {
+      "already_configured": "Ta instancja jest już skonfigurowana."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opcje Kilowahti",
+        "description": "Wybierz, które ustawienia edytować.",
+        "menu_options": {
+          "basic": "Ustawienia podstawowe i VAT",
+          "transfer_groups": "Stawki dystrybucyjne",
+          "thresholds": "Progi i sterowanie",
+          "score_profiles": "Profile punktowe",
+          "advanced_options": "Opcje zaawansowane",
+          "fixed_periods": "Okresy stałej ceny / umowy stałe",
+          "generation_settings": "Produkcja i sprzedaż"
+        }
+      },
+      "basic": {
+        "title": "Ustawienia podstawowe",
+        "description": "Uwaga: zmiana jednostki wyświetlania po utworzeniu sensorów spowoduje niezgodności jednostek na wykresach historii. Może być konieczne wyczyszczenie historii sensorów lub ręczne dostosowanie kart dashboardu.",
+        "data": {
+          "name": "Nazwa",
+          "region": "Strefa cenowa",
+          "price_resolution": "Rozdzielczość cen",
+          "display_unit": "Jednostka wyświetlania",
+          "vat_rate_pct": "Stawka VAT (%)",
+          "electricity_tax": "Akcyza (c/kWh)",
+          "spot_commission": "Marża do ceny giełdowej (c/kWh)",
+          "monthly_fixed_cost": "Koszt stały umowy na energię (€/mies.)",
+          "currency_mode": "Waluta wyświetlania",
+          "fx_mode": "Źródło kursu wymiany",
+          "fx_rate": "Ręczny kurs wymiany (waluta lokalna za EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Przełączenie przelicza wprowadzone ceny (progi, marże, stawki dystrybucyjne, okresy stałej ceny) według bieżącego kursu wymiany. Sprawdź wartości po przełączeniu."
+        }
+      },
+      "transfer_groups": {
+        "title": "Stawki dystrybucyjne",
+        "data": {
+          "action": "Akcja"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Dodaj grupę",
+        "data": {
+          "label": "Nazwa grupy",
+          "monthly_fixed_cost": "Miesięczny koszt stały (€/mies.)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Przyłącze sieciowe + opłata stała umowy. Kwota brutto (z VAT)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Edytuj ustawienia grupy",
+        "data": {
+          "label": "Nazwa grupy",
+          "monthly_fixed_cost": "Miesięczny koszt stały (€/mies.)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Przyłącze sieciowe + opłata stała umowy. Kwota brutto (z VAT)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Edytuj grupę",
+        "description": "{group_label} — Dodaj lub usuń stawki albo ustaw tę grupę jako aktywną.",
+        "data": {
+          "action": "Akcja"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Dodaj stawkę dystrybucyjną",
+        "data": {
+          "label": "Nazwa stawki (np. Zimowy dzień roboczy)",
+          "price": "Cena (c/kWh)",
+          "months": "Aktywne miesiące",
+          "weekdays": "Aktywne dni tygodnia",
+          "hour_start": "Czas rozpoczęcia (włącznie)",
+          "hour_end": "Czas zakończenia (wyłącznie)",
+          "priority": "Priorytet (niższy = pierwszy)"
+        }
+      },
+      "thresholds": {
+        "title": "Progi i sterowanie",
+        "data": {
+          "max_price": "Maksymalna cena sterowania (c/kWh)",
+          "price_threshold_includes_transfer": "Cena maksymalna obejmuje dystrybucję",
+          "max_rank": "Maksymalna ranga sterowania",
+          "forward_avg_hours": "Długość okna średniej przyszłej (godziny)",
+          "control_factor_function": "Krzywa współczynnika sterowania",
+          "control_factor_scaling": "Skalowanie współczynnika sterowania (1–3)"
+        }
+      },
+      "score_profiles": {
+        "title": "Profile punktowe",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Opcje zaawansowane",
+        "data": {
+          "expose_price_arrays": "Udostępniaj tablice cen jako atrybuty sensora (zwiększa rozmiar bazy danych)",
+          "high_precision": "Tryb wysokiej precyzji",
+          "show_rolling_averages": "Pokaż średnie ceny na najbliższe 30 min, 1 h i 2 h",
+          "generation_enabled": "Włącz funkcje produkcji i sprzedaży"
+        },
+        "data_description": {
+          "show_rolling_averages": "Dodaje sensory średniej ceny na najbliższe 30, 60 i 120 minut.",
+          "generation_enabled": "Włącza sensory i usługi ceny sprzedaży, akumulatora i arbitrażu. Ustawienia produkcji skonfigurujesz w menu Produkcja i sprzedaż."
+        }
+      },
+      "add_score_profile": {
+        "title": "Dodaj profil punktowy",
+        "data": {
+          "label": "Nazwa profilu",
+          "meters": "Encje liczników energii",
+          "formula": "Formuła punktacji"
+        },
+        "data_description": {
+          "formula": "Formuła domyślna: 50 = dobrze, 37,5 przy równomiernym rozkładzie (karze przeciętne zużycie). Formuła surowa: 50 przy równomiernym rozkładzie (neutralny punkt odniesienia)."
+        }
+      },
+      "edit_score_profile": {
+        "title": "Edytuj profil punktowy: {profile_label}",
+        "description": "Skonfigurowane liczniki: {meter_count}.",
+        "data": {
+          "action": "Akcja"
+        }
+      },
+      "add_profile_meters": {
+        "title": "Dodaj licznik(i)",
+        "data": {
+          "meters": "Encje liczników energii"
+        }
+      },
+      "edit_profile_formula": {
+        "title": "Formuła punktacji: {profile_label}",
+        "data": {
+          "formula": "Formuła punktacji"
+        },
+        "data_description": {
+          "formula": "Formuła domyślna: 50 = dobrze, 37,5 przy równomiernym rozkładzie (karze przeciętne zużycie). Formuła surowa: 50 przy równomiernym rozkładzie (neutralny punkt odniesienia)."
+        }
+      },
+      "fixed_periods": {
+        "title": "Okresy stałej ceny / umowy stałe",
+        "description": "Zarządzaj okresami stałej ceny lub umowami stałymi. Gdy okres jest aktywny, effective_price pokazuje ustaloną cenę stałą zamiast giełdowej.",
+        "data": {
+          "action": "Akcja"
+        }
+      },
+      "generation_settings": {
+        "title": "Ustawienia produkcji i sprzedaży",
+        "description": "Skonfiguruj ceny sprzedaży i ustawienia akumulatora. Ustaw pojemność akumulatora na 0, aby wyłączyć sensory akumulatora.",
+        "data": {
+          "export_pricing_mode": "Tryb ceny sprzedaży",
+          "export_commission": "Marża sprzedaży (c/kWh, odejmowana od ceny giełdowej)",
+          "fixed_export_rate": "Stała cena sprzedaży (c/kWh)",
+          "export_price_threshold": "Próg ceny sprzedaży (c/kWh)",
+          "solar_window_start": "Godzina początku okna słonecznego",
+          "solar_window_end": "Godzina końca okna słonecznego",
+          "battery_capacity_kwh": "Pojemność akumulatora (kWh, 0 = wyłączone)",
+          "battery_charge_power_kw": "Moc ładowania akumulatora (kW)"
+        },
+        "data_description": {
+          "export_commission": "Tylko w trybie powiązanym z giełdą. Marża odbiorcy odejmowana od ceny giełdowej z API (bez VAT). Mali producenci zwykle nie naliczają VAT od sprzedaży.",
+          "fixed_export_rate": "Tylko w trybie stałym. Stała stawka otrzymywana za każdą sprzedaną kWh.",
+          "solar_window_start": "Godzina początku typowego okna produkcji słonecznej (używana przez sensor next_solar_window_avg).",
+          "solar_window_end": "Godzina końca (wyłącznie) typowego okna produkcji słonecznej."
+        }
+      },
+      "add_fixed_period": {
+        "title": "Dodaj okres stałej ceny / umowę stałą",
+        "data": {
+          "label": "Nazwa okresu",
+          "start_date": "Data rozpoczęcia",
+          "end_date": "Data zakończenia (włącznie)",
+          "price": "Cena (c/kWh, z VAT)"
+        },
+        "data_description": {
+          "price": "Podaj cenę z VAT. Ta cena jest używana bez zmian — VAT nie jest doliczany."
+        }
+      }
+    },
+    "error": {
+      "tier_hour_range": "Czas zakończenia musi być późniejszy niż czas rozpoczęcia.",
+      "tier_no_months": "Wybierz co najmniej jeden miesiąc.",
+      "tier_no_weekdays": "Wybierz co najmniej jeden dzień tygodnia.",
+      "period_invalid_dates": "Data zakończenia musi przypadać w dniu rozpoczęcia lub później.",
+      "period_overlap": "Ten okres nakłada się na istniejący okres stałej ceny.",
+      "period_price_zero": "Cena musi być większa od zera."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "arbitrage_spread_today": {
+        "name": "Różnica arbitrażowa dziś"
+      },
+      "avg_price_120min": {
+        "name": "Średnia cena 120 min"
+      },
+      "avg_price_30min": {
+        "name": "Średnia cena 30 min"
+      },
+      "avg_price_60min": {
+        "name": "Średnia cena 60 min"
+      },
+      "battery_charge_recommendation": {
+        "name": "Rekomendacja ładowania akumulatora",
+        "state": {
+          "charge_from_grid": "Ładuj z sieci",
+          "discharge": "Rozładuj",
+          "hold": "Wstrzymaj"
+        }
+      },
+      "charge_opportunity_factor": {
+        "name": "Współczynnik okazji ładowania"
+      },
+      "control_factor_price": {
+        "name": "Współczynnik sterowania ceny"
+      },
+      "control_factor_price_bipolar": {
+        "name": "Współczynnik sterowania ceny (bipolarny)"
+      },
+      "control_factor_transfer": {
+        "name": "Współczynnik sterowania dystrybucji"
+      },
+      "effective_price": {
+        "name": "Cena aktywna"
+      },
+      "exchange_rate": {
+        "name": "Kurs wymiany"
+      },
+      "export_price": {
+        "name": "Cena sprzedaży"
+      },
+      "export_today_avg": {
+        "name": "Średnia cena sprzedaży dziś"
+      },
+      "export_today_max": {
+        "name": "Najwyższa cena sprzedaży dziś"
+      },
+      "export_today_min": {
+        "name": "Najniższa cena sprzedaży dziś"
+      },
+      "export_tomorrow_avg": {
+        "name": "Średnia cena sprzedaży jutro"
+      },
+      "export_tomorrow_max": {
+        "name": "Najwyższa cena sprzedaży jutro"
+      },
+      "export_tomorrow_min": {
+        "name": "Najniższa cena sprzedaży jutro"
+      },
+      "import_export_spread": {
+        "name": "Różnica zakup-sprzedaż"
+      },
+      "monthly_fixed_cost_today": {
+        "name": "Miesięczny koszt stały dziś"
+      },
+      "next_hours_avg": {
+        "name": "Średnia najbliższych godzin"
+      },
+      "next_solar_window_avg": {
+        "name": "Średnia następnego okna słonecznego"
+      },
+      "optimal_charge_window_end": {
+        "name": "Koniec optymalnego okna ładowania"
+      },
+      "optimal_charge_window_start": {
+        "name": "Początek optymalnego okna ładowania"
+      },
+      "price_data_source": {
+        "name": "Źródło danych cenowych"
+      },
+      "price_quartile": {
+        "name": "Kwartyl ceny"
+      },
+      "price_rank": {
+        "name": "Ranga"
+      },
+      "self_consumption_value": {
+        "name": "Wartość autokonsumpcji"
+      },
+      "setting_acceptable_rank": {
+        "name": "Akceptowalna ranga"
+      },
+      "setting_active_fixed_period": {
+        "name": "Aktywny okres stałej ceny"
+      },
+      "setting_active_transfer_group": {
+        "name": "Aktywna grupa stawek dystrybucyjnych"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Aktywna stawka dystrybucyjna"
+      },
+      "setting_control_factor_function": {
+        "name": "Kształt współczynnika sterowania"
+      },
+      "setting_forward_window": {
+        "name": "Okno przyszłe"
+      },
+      "setting_max_price": {
+        "name": "Próg ceny"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Próg ceny obejmuje dystrybucję"
+      },
+      "spot_next_hours_avg": {
+        "name": "Średnia giełdowa najbliższych godzin"
+      },
+      "spot_price": {
+        "name": "Cena giełdowa"
+      },
+      "today_avg": {
+        "name": "Średnia dziś"
+      },
+      "today_max": {
+        "name": "Maksimum dziś"
+      },
+      "today_min": {
+        "name": "Minimum dziś"
+      },
+      "today_spot_avg": {
+        "name": "Średnia cena giełdowa dziś"
+      },
+      "today_spot_max": {
+        "name": "Najwyższa cena giełdowa dziś"
+      },
+      "today_spot_min": {
+        "name": "Najniższa cena giełdowa dziś"
+      },
+      "today_total_avg": {
+        "name": "Średnia cena całkowita dziś"
+      },
+      "today_total_max": {
+        "name": "Najwyższa cena całkowita dziś"
+      },
+      "today_total_min": {
+        "name": "Najniższa cena całkowita dziś"
+      },
+      "tomorrow_avg": {
+        "name": "Średnia jutro"
+      },
+      "tomorrow_max": {
+        "name": "Maksimum jutro"
+      },
+      "tomorrow_min": {
+        "name": "Minimum jutro"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Średnia cena giełdowa jutro"
+      },
+      "tomorrow_spot_max": {
+        "name": "Najwyższa cena giełdowa jutro"
+      },
+      "tomorrow_spot_min": {
+        "name": "Najniższa cena giełdowa jutro"
+      },
+      "tomorrow_total_avg": {
+        "name": "Średnia cena całkowita jutro"
+      },
+      "tomorrow_total_max": {
+        "name": "Najwyższa cena całkowita jutro"
+      },
+      "tomorrow_total_min": {
+        "name": "Najniższa cena całkowita jutro"
+      },
+      "total_price": {
+        "name": "Cena całkowita"
+      },
+      "total_price_quartile": {
+        "name": "Kwartyl ceny całkowitej"
+      },
+      "total_price_rank": {
+        "name": "Ranga ceny całkowitej"
+      },
+      "transfer_price": {
+        "name": "Cena dystrybucji"
+      }
+    },
+    "number": {
+      "price_threshold": {
+        "name": "Próg ceny"
+      },
+      "rank_threshold": {
+        "name": "Próg rangi"
+      }
+    },
+    "binary_sensor": {
+      "price_acceptable": {
+        "name": "Cena akceptowalna"
+      },
+      "rank_acceptable": {
+        "name": "Ranga akceptowalna"
+      },
+      "price_or_rank_acceptable": {
+        "name": "Cena lub ranga akceptowalna"
+      },
+      "fixed_period_active": {
+        "name": "Okres stałej ceny aktywny"
+      },
+      "tomorrow_available": {
+        "name": "Jutrzejsze ceny dostępne"
+      },
+      "export_price_acceptable": {
+        "name": "Cena sprzedaży akceptowalna"
+      },
+      "charge_from_grid_recommended": {
+        "name": "Zalecane ładowanie z sieci"
+      },
+      "discharge_to_grid_recommended": {
+        "name": "Zalecane rozładowanie do sieci"
+      }
+    }
+  },
+  "triggers": {
+    "price_became_acceptable": {
+      "name": "Cena stała się akceptowalna",
+      "description": "Wyzwala się, gdy bieżąca cena energii spada do akceptowalnego poziomu (równa progowi ceny lub niższa)."
+    },
+    "price_no_longer_acceptable": {
+      "name": "Cena przestała być akceptowalna",
+      "description": "Wyzwala się, gdy bieżąca cena energii wzrasta powyżej progu ceny."
+    },
+    "rank_became_acceptable": {
+      "name": "Ranga stała się akceptowalna",
+      "description": "Wyzwala się, gdy bieżąca ranga ceny spada do akceptowalnego poziomu (równa progowi rangi lub niższa)."
+    },
+    "rank_no_longer_acceptable": {
+      "name": "Ranga przestała być akceptowalna",
+      "description": "Wyzwala się, gdy bieżąca ranga ceny wzrasta powyżej progu rangi."
+    },
+    "became_cheapest_slot": {
+      "name": "Został najtańszym przedziałem",
+      "description": "Wyzwala się, gdy bieżący przedział czasowy staje się najtańszym w ciągu doby."
+    },
+    "fixed_period_started": {
+      "name": "Okres stałej ceny rozpoczęty",
+      "description": "Wyzwala się, gdy okres stałej ceny staje się aktywny."
+    },
+    "fixed_period_ended": {
+      "name": "Okres stałej ceny zakończony",
+      "description": "Wyzwala się, gdy okres stałej ceny przestaje być aktywny."
+    },
+    "tomorrow_prices_available": {
+      "name": "Jutrzejsze ceny dostępne",
+      "description": "Wyzwala się, gdy jutrzejsze ceny energii stają się dostępne."
+    }
+  },
+  "conditions": {
+    "price_is_acceptable": {
+      "name": "Cena jest akceptowalna",
+      "description": "Spełniony, gdy bieżąca cena energii jest równa progowi ceny lub niższa."
+    },
+    "rank_is_acceptable": {
+      "name": "Ranga jest akceptowalna",
+      "description": "Spełniony, gdy bieżąca ranga ceny jest równa progowi rangi lub niższa."
+    },
+    "price_is_lowest_today": {
+      "name": "Cena jest dziś najniższa",
+      "description": "Spełniony, gdy bieżący przedział czasowy jest najtańszy w ciągu doby."
+    },
+    "fixed_period_active": {
+      "name": "Okres stałej ceny aktywny",
+      "description": "Spełniony, gdy okres stałej ceny jest obecnie aktywny."
+    },
+    "tomorrow_available": {
+      "name": "Jutrzejsze ceny dostępne",
+      "description": "Spełniony, gdy jutrzejsze ceny energii są dostępne."
+    }
+  }
+}

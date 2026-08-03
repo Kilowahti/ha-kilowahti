@@ -11,16 +11,22 @@ from kilowahti.const import (
     CONTROL_FACTOR_LINEAR,
     CONTROL_FACTOR_SINUSOIDAL,
     COUNTRY_PRESETS,
+    CURRENCY_UNITS,
+    ECB_CURRENCIES,
     SCORE_FORMULA_DEFAULT,
     SCORE_FORMULA_RAW,
     UNIT_EUROKWH,
     UNIT_SNTPERKWH,
 )
+from kilowahti.zones import CDN_ZONES, CURRENCY_FOR_REGION, ZONES
 
 DOMAIN = "kilowahti"
 
 # Config / options entry keys
 CONF_REGION = "region"
+CONF_CURRENCY_MODE = "currency_mode"
+CONF_FX_MODE = "fx_mode"
+CONF_FX_RATE = "fx_rate"
 CONF_PRICE_RESOLUTION = "price_resolution"
 CONF_DISPLAY_UNIT = "display_unit"
 CONF_VAT_RATE = "vat_rate"
@@ -57,6 +63,18 @@ CONF_MONTHLY_FIXED_COST = "monthly_fixed_cost"
 EXPORT_PRICING_SPOT_LINKED = "spot_linked"
 EXPORT_PRICING_FIXED = "fixed"
 
+# Price data source ids (chain order is built in the coordinator; these
+# remain as the price_data_source diagnostic sensor states)
+PRICE_SOURCE_SPOT_HINTA = "spot_hinta"
+PRICE_SOURCE_KILOWAHTI_CDN = "kilowahti_cdn"
+
+# Currency display modes; absent option = EUR so existing entries keep their
+# behavior without a config-entry version bump
+CURRENCY_MODE_EUR = "eur"
+CURRENCY_MODE_LOCAL = "local"
+FX_MODE_AUTO = "auto"
+FX_MODE_MANUAL = "manual"
+
 # Defaults
 DEFAULT_PRICE_RESOLUTION = 15
 DEFAULT_VAT_RATE = 0.255  # FI
@@ -67,7 +85,7 @@ DEFAULT_MAX_RANK = 24
 DEFAULT_FORWARD_AVG_HOURS = 4.0
 DEFAULT_CONTROL_FACTOR_FUNCTION = "linear"
 DEFAULT_CONTROL_FACTOR_SCALING = 1.0
-DEFAULT_EAGER_START_HOUR = 14
+DEFAULT_EAGER_START_HOUR = 13
 DEFAULT_EAGER_END_HOUR = 21
 DEFAULT_PRICE_THRESHOLD_INCLUDES_TRANSFER = True
 DEFAULT_EXPOSE_PRICE_ARRAYS = False
@@ -113,7 +131,14 @@ SENSOR_TODAY_TOTAL_MAX = "today_total_max"
 SENSOR_TOMORROW_TOTAL_AVG = "tomorrow_total_avg"
 SENSOR_TOMORROW_TOTAL_MIN = "tomorrow_total_min"
 SENSOR_TOMORROW_TOTAL_MAX = "tomorrow_total_max"
+SENSOR_TODAY_AVG = "today_avg"
+SENSOR_TODAY_MIN = "today_min"
+SENSOR_TODAY_MAX = "today_max"
+SENSOR_TOMORROW_AVG = "tomorrow_avg"
+SENSOR_TOMORROW_MIN = "tomorrow_min"
+SENSOR_TOMORROW_MAX = "tomorrow_max"
 SENSOR_NEXT_HOURS_AVG = "next_hours_avg"
+SENSOR_SPOT_NEXT_HOURS_AVG = "spot_next_hours_avg"
 # E1 — Export & generation sensors
 SENSOR_EXPORT_PRICE = "export_price"
 SENSOR_EXPORT_TODAY_AVG = "export_today_avg"
@@ -148,9 +173,28 @@ SENSOR_SETTING_FORWARD_WINDOW = "setting_forward_window"
 SENSOR_SETTING_ACTIVE_TRANSFER_GROUP = "setting_active_transfer_group"
 SENSOR_SETTING_ACTIVE_TRANSFER_TIER = "setting_active_transfer_tier"
 SENSOR_SETTING_ACTIVE_FIXED_PERIOD = "setting_active_fixed_period"
+SENSOR_PRICE_DATA_SOURCE = "price_data_source"
+SENSOR_EXCHANGE_RATE = "exchange_rate"
 
 NUMBER_PRICE_THRESHOLD = "price_threshold"
 NUMBER_RANK_THRESHOLD = "rank_threshold"
+
+# Automation triggers (HA 2026.7 purpose-specific triggers)
+TRIGGER_PRICE_BECAME_ACCEPTABLE = "price_became_acceptable"
+TRIGGER_PRICE_NO_LONGER_ACCEPTABLE = "price_no_longer_acceptable"
+TRIGGER_RANK_BECAME_ACCEPTABLE = "rank_became_acceptable"
+TRIGGER_RANK_NO_LONGER_ACCEPTABLE = "rank_no_longer_acceptable"
+TRIGGER_BECAME_CHEAPEST_SLOT = "became_cheapest_slot"
+TRIGGER_FIXED_PERIOD_STARTED = "fixed_period_started"
+TRIGGER_FIXED_PERIOD_ENDED = "fixed_period_ended"
+TRIGGER_TOMORROW_PRICES_AVAILABLE = "tomorrow_prices_available"
+
+# Automation conditions (HA 2026.7 purpose-specific conditions)
+CONDITION_PRICE_IS_ACCEPTABLE = "price_is_acceptable"
+CONDITION_RANK_IS_ACCEPTABLE = "rank_is_acceptable"
+CONDITION_PRICE_IS_LOWEST_TODAY = "price_is_lowest_today"
+CONDITION_FIXED_PERIOD_ACTIVE = "fixed_period_active"
+CONDITION_TOMORROW_AVAILABLE = "tomorrow_available"
 
 BINARY_SENSOR_PRICE_ACCEPTABLE = "price_acceptable"
 BINARY_SENSOR_RANK_ACCEPTABLE = "rank_acceptable"
@@ -180,4 +224,10 @@ __all__ = [
     "SCORE_FORMULA_RAW",
     "UNIT_EUROKWH",
     "UNIT_SNTPERKWH",
+    "CURRENCY_UNITS",
+    "ECB_CURRENCIES",
+    # re-exported from kilowahti.zones
+    "CDN_ZONES",
+    "CURRENCY_FOR_REGION",
+    "ZONES",
 ]

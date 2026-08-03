@@ -1,0 +1,617 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kilowahti — Ajustes básicos",
+        "description": "La región determina qué zona de precios europea se utiliza.",
+        "data": {
+          "name": "Nombre",
+          "region": "Zona de precios",
+          "price_resolution": "Resolución de precios",
+          "display_unit": "Unidad de visualización"
+        },
+        "data_description": {
+          "name": "Se usa en los nombres de las entidades, p. ej. 'Casa'",
+          "price_resolution": "15 minutos (96 intervalos/día) o 1 hora (24 intervalos/día). Elige según el intervalo de medición de tu contrato.",
+          "display_unit": "Unidad del sensor"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Moneda",
+        "description": "Esta región factura en {currency}. Los precios spot se convierten desde EUR con un tipo de cambio diario; todos los precios que introduces (margen, tramos de peaje, umbrales) están en la moneda de visualización seleccionada.",
+        "data": {
+          "currency_mode": "Moneda de visualización",
+          "fx_mode": "Fuente del tipo de cambio",
+          "fx_rate": "Tipo de cambio manual (moneda local por EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Se usa cuando la fuente del tipo de cambio es manual y como respaldo cuando el tipo automático no está disponible. Déjalo en 0 si no se usa."
+        }
+      },
+      "vat_and_tax": {
+        "title": "IVA e impuesto eléctrico",
+        "description": "Precargado según tu región. Ajusta si es necesario. Todos los precios (tramos de peaje, periodos de precio fijo) se introducen con IVA incluido.",
+        "data": {
+          "vat_rate_pct": "Tipo de IVA (%)",
+          "electricity_tax": "Impuesto eléctrico (c/kWh)",
+          "spot_commission": "Margen sobre el precio spot (c/kWh)",
+          "monthly_fixed_cost": "Coste fijo del contrato eléctrico (€/mes)"
+        },
+        "data_description": {
+          "electricity_tax": "Impuesto eléctrico fijo por kWh que se añade al precio spot/fijo.",
+          "spot_commission": "Margen de la comercializadora por kWh que se añade al precio spot. Introduce el importe bruto (IVA incluido). Deja 0 si no aplica.",
+          "monthly_fixed_cost": "Cuota mensual fija de tu contrato eléctrico (p. ej. cuota de servicio). Importe bruto (IVA incluido). Deja 0 si no aplica."
+        }
+      },
+      "transfer_groups": {
+        "title": "Peajes de red",
+        "description": "Organiza los tramos de peaje en grupos con nombre (p. ej. Discriminación horaria, Estacional, General). Solo hay un grupo activo a la vez. Puedes omitir este paso y configurar los grupos más tarde en las opciones.",
+        "data": {
+          "action": "Acción"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Añadir grupo",
+        "data": {
+          "label": "Nombre del grupo",
+          "monthly_fixed_cost": "Coste fijo mensual (€/mes)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Conexión a la red + cuota fija del contrato. Importe bruto (IVA incluido)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Editar ajustes del grupo",
+        "data": {
+          "label": "Nombre del grupo",
+          "monthly_fixed_cost": "Coste fijo mensual (€/mes)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Conexión a la red + cuota fija del contrato. Importe bruto (IVA incluido)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Editar grupo",
+        "description": "{group_label} — Añade o elimina tramos, o establece este grupo como activo.",
+        "data": {
+          "action": "Acción"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Añadir peaje",
+        "description": "Se evalúa por orden de prioridad; gana la primera coincidencia. Añade una tarifa base con la prioridad más baja y sin restricciones horarias.",
+        "data": {
+          "label": "Nombre del tramo",
+          "price": "Precio (c/kWh)",
+          "months": "Meses activos",
+          "weekdays": "Días activos",
+          "hour_start": "Hora de inicio (incluida)",
+          "hour_end": "Hora de fin (excluida)",
+          "priority": "Prioridad (menor = primero)"
+        }
+      },
+      "thresholds": {
+        "title": "Umbrales y control",
+        "data": {
+          "max_price": "Precio máximo de control (c/kWh)",
+          "price_threshold_includes_transfer": "El precio máximo incluye el peaje",
+          "max_rank": "Posición máxima de control",
+          "forward_avg_hours": "Longitud de la ventana de media futura (horas)",
+          "control_factor_function": "Curva del factor de control",
+          "control_factor_scaling": "Escalado del factor de control (1–3)"
+        },
+        "data_description": {
+          "max_price": "Cuando el precio del intervalo actual es igual o inferior a este valor, se activa el sensor price_acceptable.",
+          "price_threshold_includes_transfer": "ACTIVADO: compara el precio total (spot + peaje). DESACTIVADO: compara solo el precio de la energía (spot).",
+          "max_rank": "Cuando la posición del intervalo actual es igual o inferior a este valor, se activa el sensor rank_acceptable.",
+          "forward_avg_hours": "Número de horas futuras sobre las que se calcula la media para el sensor next_hours_avg.",
+          "control_factor_function": "Forma de la curva del factor de control (0–1).",
+          "control_factor_scaling": "Exponente aplicado al factor de control (amplifica los extremos)."
+        }
+      },
+      "score_profiles": {
+        "title": "Puntos de optimización",
+        "description": "Los puntos miden cuánto se desplaza tu consumo hacia las horas baratas. El perfil permanente 'Total' cubre todo el consumo — vincúlale un contador (o varios) en las opciones tras la configuración.",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Opciones avanzadas",
+        "description": "Configura cómo se muestran los valores de los sensores en Home Assistant.",
+        "data": {
+          "expose_price_arrays": "Exponer las matrices de precios como atributos del sensor (aumenta el tamaño de la base de datos)",
+          "high_precision": "Modo de alta precisión",
+          "show_rolling_averages": "Mostrar precios medios de los próximos 30 min, 1 h y 2 h",
+          "generation_enabled": "Activar funciones de generación y excedentes"
+        },
+        "data_description": {
+          "expose_price_arrays": "Escribe las matrices today_prices y tomorrow_prices en los atributos del sensor spot_price, que luego se guardan en la base de datos. Facilita crear gráficos en el panel, pero no es necesario para mostrarlos y añade carga innecesaria a la base de datos.",
+          "high_precision": "Si está activado, los sensores de precio muestran más decimales. Los atributos y cálculos siempre usan la precisión completa.",
+          "show_rolling_averages": "Añade sensores del precio medio de los próximos 30, 60 y 120 minutos.",
+          "generation_enabled": "Activa los sensores y servicios de precio de excedentes, batería y arbitraje. Configura los ajustes de generación en el menú Generación y excedentes."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "No se pudo conectar. Comprueba tu red.",
+      "invalid_region": "La región seleccionada no devolvió datos de la API.",
+      "tier_hour_range": "La hora de fin debe ser posterior a la hora de inicio.",
+      "tier_no_months": "Selecciona al menos un mes.",
+      "tier_no_weekdays": "Selecciona al menos un día de la semana.",
+      "period_invalid_dates": "La fecha de fin debe ser igual o posterior a la fecha de inicio.",
+      "period_overlap": "Este periodo se solapa con un periodo de precio fijo existente.",
+      "period_price_zero": "El precio debe ser mayor que cero."
+    },
+    "abort": {
+      "already_configured": "Esta instancia ya está configurada."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opciones de Kilowahti",
+        "description": "Elige qué ajustes editar.",
+        "menu_options": {
+          "basic": "Ajustes básicos e IVA",
+          "transfer_groups": "Peajes de red",
+          "thresholds": "Umbrales y control",
+          "score_profiles": "Perfiles de puntos",
+          "advanced_options": "Opciones avanzadas",
+          "fixed_periods": "Periodos de precio fijo / contratos fijos",
+          "generation_settings": "Generación y excedentes"
+        }
+      },
+      "basic": {
+        "title": "Ajustes básicos",
+        "description": "Advertencia: cambiar la unidad de visualización después de crear los sensores provocará incoherencias de unidades en los gráficos de historial. Puede que necesites borrar el historial de los sensores o ajustar manualmente las tarjetas del panel.",
+        "data": {
+          "name": "Nombre",
+          "region": "Zona de precios",
+          "price_resolution": "Resolución de precios",
+          "display_unit": "Unidad de visualización",
+          "vat_rate_pct": "Tipo de IVA (%)",
+          "electricity_tax": "Impuesto eléctrico (c/kWh)",
+          "spot_commission": "Margen sobre el precio spot (c/kWh)",
+          "monthly_fixed_cost": "Coste fijo del contrato eléctrico (€/mes)",
+          "currency_mode": "Moneda de visualización",
+          "fx_mode": "Fuente del tipo de cambio",
+          "fx_rate": "Tipo de cambio manual (moneda local por EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Al cambiar se convierten los precios introducidos (umbrales, márgenes, tramos de peaje, periodos fijos) con el tipo de cambio actual. Revisa los valores después del cambio."
+        }
+      },
+      "transfer_groups": {
+        "title": "Peajes de red",
+        "data": {
+          "action": "Acción"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Añadir grupo",
+        "data": {
+          "label": "Nombre del grupo",
+          "monthly_fixed_cost": "Coste fijo mensual (€/mes)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Conexión a la red + cuota fija del contrato. Importe bruto (IVA incluido)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Editar ajustes del grupo",
+        "data": {
+          "label": "Nombre del grupo",
+          "monthly_fixed_cost": "Coste fijo mensual (€/mes)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Conexión a la red + cuota fija del contrato. Importe bruto (IVA incluido)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Editar grupo",
+        "description": "{group_label} — Añade o elimina tramos, o establece este grupo como activo.",
+        "data": {
+          "action": "Acción"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Añadir peaje",
+        "data": {
+          "label": "Nombre del tramo (p. ej. Laborable de invierno)",
+          "price": "Precio (c/kWh)",
+          "months": "Meses activos",
+          "weekdays": "Días activos",
+          "hour_start": "Hora de inicio (incluida)",
+          "hour_end": "Hora de fin (excluida)",
+          "priority": "Prioridad (menor = primero)"
+        }
+      },
+      "thresholds": {
+        "title": "Umbrales y control",
+        "data": {
+          "max_price": "Precio máximo de control (c/kWh)",
+          "price_threshold_includes_transfer": "El precio máximo incluye el peaje",
+          "max_rank": "Posición máxima de control",
+          "forward_avg_hours": "Longitud de la ventana de media futura (horas)",
+          "control_factor_function": "Curva del factor de control",
+          "control_factor_scaling": "Escalado del factor de control (1–3)"
+        }
+      },
+      "score_profiles": {
+        "title": "Perfiles de puntos",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Opciones avanzadas",
+        "data": {
+          "expose_price_arrays": "Exponer las matrices de precios como atributos del sensor (aumenta el tamaño de la base de datos)",
+          "high_precision": "Modo de alta precisión",
+          "show_rolling_averages": "Mostrar precios medios de los próximos 30 min, 1 h y 2 h",
+          "generation_enabled": "Activar funciones de generación y excedentes"
+        },
+        "data_description": {
+          "show_rolling_averages": "Añade sensores del precio medio de los próximos 30, 60 y 120 minutos.",
+          "generation_enabled": "Activa los sensores y servicios de precio de excedentes, batería y arbitraje. Configura los ajustes de generación en el menú Generación y excedentes."
+        }
+      },
+      "add_score_profile": {
+        "title": "Añadir perfil de puntos",
+        "data": {
+          "label": "Nombre del perfil",
+          "meters": "Entidades de contador de energía",
+          "formula": "Fórmula de puntuación"
+        },
+        "data_description": {
+          "formula": "Fórmula predeterminada: 50 = bien, 37,5 con distribución uniforme (penaliza el uso medio). Fórmula bruta: 50 con distribución uniforme (base neutra)."
+        }
+      },
+      "edit_score_profile": {
+        "title": "Editar perfil de puntos: {profile_label}",
+        "description": "{meter_count} contador(es) configurado(s).",
+        "data": {
+          "action": "Acción"
+        }
+      },
+      "add_profile_meters": {
+        "title": "Añadir contador(es)",
+        "data": {
+          "meters": "Entidades de contador de energía"
+        }
+      },
+      "edit_profile_formula": {
+        "title": "Fórmula de puntuación: {profile_label}",
+        "data": {
+          "formula": "Fórmula de puntuación"
+        },
+        "data_description": {
+          "formula": "Fórmula predeterminada: 50 = bien, 37,5 con distribución uniforme (penaliza el uso medio). Fórmula bruta: 50 con distribución uniforme (base neutra)."
+        }
+      },
+      "fixed_periods": {
+        "title": "Periodos de precio fijo / contratos fijos",
+        "description": "Gestiona los periodos de precio fijo o los contratos fijos. Cuando un periodo está activo, effective_price muestra el precio fijo establecido en lugar del spot.",
+        "data": {
+          "action": "Acción"
+        }
+      },
+      "generation_settings": {
+        "title": "Ajustes de generación y excedentes",
+        "description": "Configura los precios de excedentes y los ajustes de la batería. Pon la capacidad de la batería a 0 para desactivar los sensores de batería.",
+        "data": {
+          "export_pricing_mode": "Modo de precio de excedentes",
+          "export_commission": "Margen de excedentes (c/kWh, deducido del spot)",
+          "fixed_export_rate": "Precio fijo de excedentes (c/kWh)",
+          "export_price_threshold": "Umbral de precio de excedentes (c/kWh)",
+          "solar_window_start": "Hora de inicio de la ventana solar",
+          "solar_window_end": "Hora de fin de la ventana solar",
+          "battery_capacity_kwh": "Capacidad de la batería (kWh, 0 = desactivado)",
+          "battery_charge_power_kw": "Potencia de carga de la batería (kW)"
+        },
+        "data_description": {
+          "export_commission": "Solo en modo vinculado al spot. Margen del comprador que se deduce del precio spot de la API (sin IVA). Los pequeños productores normalmente no repercuten IVA en los excedentes.",
+          "fixed_export_rate": "Solo en modo fijo. Precio fijo que recibes por cada kWh vertido.",
+          "solar_window_start": "Hora de inicio de tu ventana típica de producción solar (usada por el sensor next_solar_window_avg).",
+          "solar_window_end": "Hora de fin (excluida) de tu ventana típica de producción solar."
+        }
+      },
+      "add_fixed_period": {
+        "title": "Añadir periodo de precio fijo / contrato fijo",
+        "data": {
+          "label": "Nombre del periodo",
+          "start_date": "Fecha de inicio",
+          "end_date": "Fecha de fin (incluida)",
+          "price": "Precio (c/kWh, IVA incluido)"
+        },
+        "data_description": {
+          "price": "Introduce el precio con IVA incluido. Este precio se usa tal cual — no se añade IVA."
+        }
+      }
+    },
+    "error": {
+      "tier_hour_range": "La hora de fin debe ser posterior a la hora de inicio.",
+      "tier_no_months": "Selecciona al menos un mes.",
+      "tier_no_weekdays": "Selecciona al menos un día de la semana.",
+      "period_invalid_dates": "La fecha de fin debe ser igual o posterior a la fecha de inicio.",
+      "period_overlap": "Este periodo se solapa con un periodo de precio fijo existente.",
+      "period_price_zero": "El precio debe ser mayor que cero."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "arbitrage_spread_today": {
+        "name": "Diferencial de arbitraje hoy"
+      },
+      "avg_price_120min": {
+        "name": "Precio medio 120 min"
+      },
+      "avg_price_30min": {
+        "name": "Precio medio 30 min"
+      },
+      "avg_price_60min": {
+        "name": "Precio medio 60 min"
+      },
+      "battery_charge_recommendation": {
+        "name": "Recomendación de carga de la batería",
+        "state": {
+          "charge_from_grid": "Cargar desde la red",
+          "discharge": "Descargar",
+          "hold": "Mantener"
+        }
+      },
+      "charge_opportunity_factor": {
+        "name": "Factor de oportunidad de carga"
+      },
+      "control_factor_price": {
+        "name": "Factor de control de precio"
+      },
+      "control_factor_price_bipolar": {
+        "name": "Factor de control de precio (bipolar)"
+      },
+      "control_factor_transfer": {
+        "name": "Factor de control de peaje"
+      },
+      "effective_price": {
+        "name": "Precio activo"
+      },
+      "exchange_rate": {
+        "name": "Tipo de cambio"
+      },
+      "export_price": {
+        "name": "Precio de excedentes"
+      },
+      "export_today_avg": {
+        "name": "Precio de excedentes medio hoy"
+      },
+      "export_today_max": {
+        "name": "Precio de excedentes máximo hoy"
+      },
+      "export_today_min": {
+        "name": "Precio de excedentes mínimo hoy"
+      },
+      "export_tomorrow_avg": {
+        "name": "Precio de excedentes medio mañana"
+      },
+      "export_tomorrow_max": {
+        "name": "Precio de excedentes máximo mañana"
+      },
+      "export_tomorrow_min": {
+        "name": "Precio de excedentes mínimo mañana"
+      },
+      "import_export_spread": {
+        "name": "Diferencial compra-excedentes"
+      },
+      "monthly_fixed_cost_today": {
+        "name": "Coste fijo mensual hoy"
+      },
+      "next_hours_avg": {
+        "name": "Media de las próximas horas"
+      },
+      "next_solar_window_avg": {
+        "name": "Media de la próxima ventana solar"
+      },
+      "optimal_charge_window_end": {
+        "name": "Fin de la ventana de carga óptima"
+      },
+      "optimal_charge_window_start": {
+        "name": "Inicio de la ventana de carga óptima"
+      },
+      "price_data_source": {
+        "name": "Fuente de datos de precios"
+      },
+      "price_quartile": {
+        "name": "Cuartil de precio"
+      },
+      "price_rank": {
+        "name": "Posición"
+      },
+      "self_consumption_value": {
+        "name": "Valor del autoconsumo"
+      },
+      "setting_acceptable_rank": {
+        "name": "Posición aceptable"
+      },
+      "setting_active_fixed_period": {
+        "name": "Periodo de precio fijo activo"
+      },
+      "setting_active_transfer_group": {
+        "name": "Grupo de peajes activo"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Tramo de peaje activo"
+      },
+      "setting_control_factor_function": {
+        "name": "Forma del factor de control"
+      },
+      "setting_forward_window": {
+        "name": "Ventana futura"
+      },
+      "setting_max_price": {
+        "name": "Umbral de precio"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "El umbral de precio incluye el peaje"
+      },
+      "spot_next_hours_avg": {
+        "name": "Media spot de las próximas horas"
+      },
+      "spot_price": {
+        "name": "Precio spot"
+      },
+      "today_avg": {
+        "name": "Media hoy"
+      },
+      "today_max": {
+        "name": "Máximo hoy"
+      },
+      "today_min": {
+        "name": "Mínimo hoy"
+      },
+      "today_spot_avg": {
+        "name": "Precio spot medio hoy"
+      },
+      "today_spot_max": {
+        "name": "Precio spot máximo hoy"
+      },
+      "today_spot_min": {
+        "name": "Precio spot mínimo hoy"
+      },
+      "today_total_avg": {
+        "name": "Precio total medio hoy"
+      },
+      "today_total_max": {
+        "name": "Precio total máximo hoy"
+      },
+      "today_total_min": {
+        "name": "Precio total mínimo hoy"
+      },
+      "tomorrow_avg": {
+        "name": "Media mañana"
+      },
+      "tomorrow_max": {
+        "name": "Máximo mañana"
+      },
+      "tomorrow_min": {
+        "name": "Mínimo mañana"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Precio spot medio mañana"
+      },
+      "tomorrow_spot_max": {
+        "name": "Precio spot máximo mañana"
+      },
+      "tomorrow_spot_min": {
+        "name": "Precio spot mínimo mañana"
+      },
+      "tomorrow_total_avg": {
+        "name": "Precio total medio mañana"
+      },
+      "tomorrow_total_max": {
+        "name": "Precio total máximo mañana"
+      },
+      "tomorrow_total_min": {
+        "name": "Precio total mínimo mañana"
+      },
+      "total_price": {
+        "name": "Precio total"
+      },
+      "total_price_quartile": {
+        "name": "Cuartil del precio total"
+      },
+      "total_price_rank": {
+        "name": "Posición del precio total"
+      },
+      "transfer_price": {
+        "name": "Peaje"
+      }
+    },
+    "number": {
+      "price_threshold": {
+        "name": "Umbral de precio"
+      },
+      "rank_threshold": {
+        "name": "Umbral de posición"
+      }
+    },
+    "binary_sensor": {
+      "price_acceptable": {
+        "name": "Precio aceptable"
+      },
+      "rank_acceptable": {
+        "name": "Posición aceptable"
+      },
+      "price_or_rank_acceptable": {
+        "name": "Precio o posición aceptable"
+      },
+      "fixed_period_active": {
+        "name": "Periodo de precio fijo activo"
+      },
+      "tomorrow_available": {
+        "name": "Precios de mañana disponibles"
+      },
+      "export_price_acceptable": {
+        "name": "Precio de excedentes aceptable"
+      },
+      "charge_from_grid_recommended": {
+        "name": "Carga desde la red recomendada"
+      },
+      "discharge_to_grid_recommended": {
+        "name": "Descarga a la red recomendada"
+      }
+    }
+  },
+  "triggers": {
+    "price_became_acceptable": {
+      "name": "El precio pasó a ser aceptable",
+      "description": "Se dispara cuando el precio actual de la electricidad baja a un nivel aceptable (igual o inferior al umbral de precio)."
+    },
+    "price_no_longer_acceptable": {
+      "name": "El precio ya no es aceptable",
+      "description": "Se dispara cuando el precio actual de la electricidad sube por encima del umbral de precio."
+    },
+    "rank_became_acceptable": {
+      "name": "La posición pasó a ser aceptable",
+      "description": "Se dispara cuando la posición del precio actual baja a un nivel aceptable (igual o inferior al umbral de posición)."
+    },
+    "rank_no_longer_acceptable": {
+      "name": "La posición ya no es aceptable",
+      "description": "Se dispara cuando la posición del precio actual sube por encima del umbral de posición."
+    },
+    "became_cheapest_slot": {
+      "name": "Pasó a ser el intervalo más barato",
+      "description": "Se dispara cuando el intervalo actual se convierte en el más barato del día."
+    },
+    "fixed_period_started": {
+      "name": "Periodo de precio fijo iniciado",
+      "description": "Se dispara cuando un periodo de precio fijo se activa."
+    },
+    "fixed_period_ended": {
+      "name": "Periodo de precio fijo finalizado",
+      "description": "Se dispara cuando un periodo de precio fijo deja de estar activo."
+    },
+    "tomorrow_prices_available": {
+      "name": "Precios de mañana disponibles",
+      "description": "Se dispara cuando los precios de la electricidad de mañana están disponibles."
+    }
+  },
+  "conditions": {
+    "price_is_acceptable": {
+      "name": "El precio es aceptable",
+      "description": "Se cumple cuando el precio actual de la electricidad es igual o inferior al umbral de precio."
+    },
+    "rank_is_acceptable": {
+      "name": "La posición es aceptable",
+      "description": "Se cumple cuando la posición del precio actual es igual o inferior al umbral de posición."
+    },
+    "price_is_lowest_today": {
+      "name": "El precio es el más bajo de hoy",
+      "description": "Se cumple cuando el intervalo actual es el más barato del día."
+    },
+    "fixed_period_active": {
+      "name": "Periodo de precio fijo activo",
+      "description": "Se cumple cuando hay un periodo de precio fijo activo en este momento."
+    },
+    "tomorrow_available": {
+      "name": "Precios de mañana disponibles",
+      "description": "Se cumple cuando los precios de la electricidad de mañana están disponibles."
+    }
+  }
+}

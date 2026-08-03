@@ -1,0 +1,617 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kilowahti — Setări de bază",
+        "description": "Zona determină ce zonă de ofertare europeană este folosită.",
+        "data": {
+          "name": "Nume",
+          "region": "Zonă de preț",
+          "price_resolution": "Rezoluția prețurilor",
+          "display_unit": "Unitate de afișare"
+        },
+        "data_description": {
+          "name": "Folosit în numele entităților, de ex. 'Acasă'",
+          "price_resolution": "15 minute (96 intervale/zi) sau 1 oră (24 intervale/zi). Alege în funcție de intervalul de măsurare al contractului tău.",
+          "display_unit": "Unitatea senzorului"
+        }
+      },
+      "currency": {
+        "title": "Kilowahti — Monedă",
+        "description": "Această zonă facturează în {currency}. Prețurile spot sunt convertite din EUR cu un curs de schimb zilnic; toate prețurile introduse (marjă, trepte de distribuție, praguri) sunt în moneda de afișare selectată.",
+        "data": {
+          "currency_mode": "Moneda de afișare",
+          "fx_mode": "Sursa cursului de schimb",
+          "fx_rate": "Curs de schimb manual (monedă locală per EUR)"
+        },
+        "data_description": {
+          "fx_rate": "Folosit când sursa cursului de schimb este manuală și ca rezervă când cursul automat nu este disponibil. Lasă 0 dacă nu este folosit."
+        }
+      },
+      "vat_and_tax": {
+        "title": "TVA și acciză",
+        "description": "Precompletat pe baza zonei tale. Ajustează dacă este nevoie. Toate prețurile (treptele de distribuție, perioadele cu preț fix) se introduc cu TVA inclus.",
+        "data": {
+          "vat_rate_pct": "Cota TVA (%)",
+          "electricity_tax": "Acciză (c/kWh)",
+          "spot_commission": "Marjă la prețul spot (c/kWh)",
+          "monthly_fixed_cost": "Cost fix al contractului de energie (€/lună)"
+        },
+        "data_description": {
+          "electricity_tax": "Acciză fixă pe kWh adăugată peste prețul spot/fix.",
+          "spot_commission": "Marja furnizorului pe kWh adăugată peste prețul spot. Introdu valoarea brută (cu TVA inclus). Lasă 0 dacă nu se aplică.",
+          "monthly_fixed_cost": "Abonament lunar fix al contractului tău de energie (de ex. taxă de furnizare). Valoare brută (cu TVA inclus). Lasă 0 dacă nu se aplică."
+        }
+      },
+      "transfer_groups": {
+        "title": "Tarife de distribuție",
+        "description": "Organizează treptele de preț ale distribuției în grupuri denumite (de ex. Tarif zi/noapte, Sezonier, General). Doar un grup este activ la un moment dat. Poți sări peste acest pas și configura grupurile mai târziu în opțiuni.",
+        "data": {
+          "action": "Acțiune"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Adaugă grup",
+        "data": {
+          "label": "Numele grupului",
+          "monthly_fixed_cost": "Cost fix lunar (€/lună)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Racordare la rețea + abonamentul contractului. Valoare brută (cu TVA inclus)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Editează setările grupului",
+        "data": {
+          "label": "Numele grupului",
+          "monthly_fixed_cost": "Cost fix lunar (€/lună)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Racordare la rețea + abonamentul contractului. Valoare brută (cu TVA inclus)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Editează grupul",
+        "description": "{group_label} — Adaugă sau elimină trepte, ori setează acest grup ca activ.",
+        "data": {
+          "action": "Acțiune"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Adaugă preț de distribuție",
+        "description": "Evaluate în ordinea priorității; prima potrivire câștigă. Adaugă un tarif de bază cu prioritatea cea mai mică și fără restricții de timp.",
+        "data": {
+          "label": "Numele treptei",
+          "price": "Preț (c/kWh)",
+          "months": "Luni active",
+          "weekdays": "Zile active",
+          "hour_start": "Ora de început (inclusiv)",
+          "hour_end": "Ora de sfârșit (exclusiv)",
+          "priority": "Prioritate (mai mic = primul)"
+        }
+      },
+      "thresholds": {
+        "title": "Praguri și control",
+        "data": {
+          "max_price": "Preț maxim de control (c/kWh)",
+          "price_threshold_includes_transfer": "Prețul maxim include distribuția",
+          "max_rank": "Rang maxim de control",
+          "forward_avg_hours": "Lungimea ferestrei de medie viitoare (ore)",
+          "control_factor_function": "Curba factorului de control",
+          "control_factor_scaling": "Scalarea factorului de control (1–3)"
+        },
+        "data_description": {
+          "max_price": "Când prețul intervalului curent este la sau sub această valoare, senzorul price_acceptable se activează.",
+          "price_threshold_includes_transfer": "ACTIVAT: compară prețul total (spot + distribuție). DEZACTIVAT: compară doar prețul energiei (spot).",
+          "max_rank": "Când rangul intervalului curent este la sau sub această valoare, senzorul rank_acceptable se activează.",
+          "forward_avg_hours": "Numărul de ore viitoare pentru care se calculează media senzorului next_hours_avg.",
+          "control_factor_function": "Forma curbei factorului de control (0–1).",
+          "control_factor_scaling": "Exponent aplicat factorului de control (amplifică extremele)."
+        }
+      },
+      "score_profiles": {
+        "title": "Scoruri de optimizare",
+        "description": "Scorurile măsoară cât de bine este mutat consumul tău spre orele ieftine. Profilul permanent 'Total' acoperă tot consumul — leagă-i un contor (sau mai multe) în opțiuni după configurare.",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Opțiuni avansate",
+        "description": "Configurează cum sunt afișate valorile senzorilor în Home Assistant.",
+        "data": {
+          "expose_price_arrays": "Expune șirurile de prețuri ca atribute ale senzorului (crește dimensiunea bazei de date)",
+          "high_precision": "Mod de precizie ridicată",
+          "show_rolling_averages": "Arată prețurile medii pentru următoarele 30 min, 1 h și 2 h",
+          "generation_enabled": "Activează funcțiile de producție și livrare"
+        },
+        "data_description": {
+          "expose_price_arrays": "Scrie șirurile today_prices și tomorrow_prices în atributele senzorului spot_price, care sunt apoi stocate în baza de date. Ușurează crearea graficelor pe dashboard, dar nu este necesar pentru afișarea lor și adaugă încărcare inutilă bazei de date.",
+          "high_precision": "Când este activ, senzorii de preț afișează mai multe zecimale. Atributele și calculele folosesc întotdeauna precizia completă.",
+          "show_rolling_averages": "Adaugă senzori pentru prețul mediu al următoarelor 30, 60 și 120 de minute.",
+          "generation_enabled": "Activează senzorii și serviciile pentru prețul de livrare, baterie și arbitraj. Configurează setările de producție în meniul Producție și livrare."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Conectare eșuată. Verifică rețeaua.",
+      "invalid_region": "Zona selectată nu a returnat date de la API.",
+      "tier_hour_range": "Ora de sfârșit trebuie să fie după ora de început.",
+      "tier_no_months": "Selectează cel puțin o lună.",
+      "tier_no_weekdays": "Selectează cel puțin o zi a săptămânii.",
+      "period_invalid_dates": "Data de sfârșit trebuie să fie la sau după data de început.",
+      "period_overlap": "Această perioadă se suprapune cu o perioadă cu preț fix existentă.",
+      "period_price_zero": "Prețul trebuie să fie mai mare decât zero."
+    },
+    "abort": {
+      "already_configured": "Această instanță este deja configurată."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opțiuni Kilowahti",
+        "description": "Alege ce setări să editezi.",
+        "menu_options": {
+          "basic": "Setări de bază și TVA",
+          "transfer_groups": "Tarife de distribuție",
+          "thresholds": "Praguri și control",
+          "score_profiles": "Profiluri de scor",
+          "advanced_options": "Opțiuni avansate",
+          "fixed_periods": "Perioade cu preț fix / contracte fixe",
+          "generation_settings": "Producție și livrare"
+        }
+      },
+      "basic": {
+        "title": "Setări de bază",
+        "description": "Avertisment: schimbarea unității de afișare după crearea senzorilor va cauza nepotriviri de unități în graficele de istoric. Poate fi nevoie să ștergi istoricul senzorilor sau să ajustezi manual cardurile de pe dashboard.",
+        "data": {
+          "name": "Nume",
+          "region": "Zonă de preț",
+          "price_resolution": "Rezoluția prețurilor",
+          "display_unit": "Unitate de afișare",
+          "vat_rate_pct": "Cota TVA (%)",
+          "electricity_tax": "Acciză (c/kWh)",
+          "spot_commission": "Marjă la prețul spot (c/kWh)",
+          "monthly_fixed_cost": "Cost fix al contractului de energie (€/lună)",
+          "currency_mode": "Moneda de afișare",
+          "fx_mode": "Sursa cursului de schimb",
+          "fx_rate": "Curs de schimb manual (monedă locală per EUR)"
+        },
+        "data_description": {
+          "currency_mode": "Schimbarea convertește prețurile introduse (praguri, marje, trepte de distribuție, perioade fixe) cu cursul de schimb actual. Verifică valorile după schimbare."
+        }
+      },
+      "transfer_groups": {
+        "title": "Tarife de distribuție",
+        "data": {
+          "action": "Acțiune"
+        }
+      },
+      "add_transfer_group": {
+        "title": "Adaugă grup",
+        "data": {
+          "label": "Numele grupului",
+          "monthly_fixed_cost": "Cost fix lunar (€/lună)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Racordare la rețea + abonamentul contractului. Valoare brută (cu TVA inclus)."
+        }
+      },
+      "edit_group_settings": {
+        "title": "Editează setările grupului",
+        "data": {
+          "label": "Numele grupului",
+          "monthly_fixed_cost": "Cost fix lunar (€/lună)"
+        },
+        "data_description": {
+          "monthly_fixed_cost": "Racordare la rețea + abonamentul contractului. Valoare brută (cu TVA inclus)."
+        }
+      },
+      "transfer_group_detail": {
+        "title": "Editează grupul",
+        "description": "{group_label} — Adaugă sau elimină trepte, ori setează acest grup ca activ.",
+        "data": {
+          "action": "Acțiune"
+        }
+      },
+      "add_transfer_tier": {
+        "title": "Adaugă preț de distribuție",
+        "data": {
+          "label": "Numele treptei (de ex. Zi lucrătoare de iarnă)",
+          "price": "Preț (c/kWh)",
+          "months": "Luni active",
+          "weekdays": "Zile active",
+          "hour_start": "Ora de început (inclusiv)",
+          "hour_end": "Ora de sfârșit (exclusiv)",
+          "priority": "Prioritate (mai mic = primul)"
+        }
+      },
+      "thresholds": {
+        "title": "Praguri și control",
+        "data": {
+          "max_price": "Preț maxim de control (c/kWh)",
+          "price_threshold_includes_transfer": "Prețul maxim include distribuția",
+          "max_rank": "Rang maxim de control",
+          "forward_avg_hours": "Lungimea ferestrei de medie viitoare (ore)",
+          "control_factor_function": "Curba factorului de control",
+          "control_factor_scaling": "Scalarea factorului de control (1–3)"
+        }
+      },
+      "score_profiles": {
+        "title": "Profiluri de scor",
+        "data": {}
+      },
+      "advanced_options": {
+        "title": "Opțiuni avansate",
+        "data": {
+          "expose_price_arrays": "Expune șirurile de prețuri ca atribute ale senzorului (crește dimensiunea bazei de date)",
+          "high_precision": "Mod de precizie ridicată",
+          "show_rolling_averages": "Arată prețurile medii pentru următoarele 30 min, 1 h și 2 h",
+          "generation_enabled": "Activează funcțiile de producție și livrare"
+        },
+        "data_description": {
+          "show_rolling_averages": "Adaugă senzori pentru prețul mediu al următoarelor 30, 60 și 120 de minute.",
+          "generation_enabled": "Activează senzorii și serviciile pentru prețul de livrare, baterie și arbitraj. Configurează setările de producție în meniul Producție și livrare."
+        }
+      },
+      "add_score_profile": {
+        "title": "Adaugă profil de scor",
+        "data": {
+          "label": "Numele profilului",
+          "meters": "Entități contor de energie",
+          "formula": "Formulă de scor"
+        },
+        "data_description": {
+          "formula": "Formula implicită: 50 = bine, 37,5 la distribuție uniformă (penalizează consumul mediu). Formula brută: 50 la distribuție uniformă (bază neutră)."
+        }
+      },
+      "edit_score_profile": {
+        "title": "Editează profilul de scor: {profile_label}",
+        "description": "{meter_count} contor/contoare configurat(e).",
+        "data": {
+          "action": "Acțiune"
+        }
+      },
+      "add_profile_meters": {
+        "title": "Adaugă contor/contoare",
+        "data": {
+          "meters": "Entități contor de energie"
+        }
+      },
+      "edit_profile_formula": {
+        "title": "Formulă de scor: {profile_label}",
+        "data": {
+          "formula": "Formulă de scor"
+        },
+        "data_description": {
+          "formula": "Formula implicită: 50 = bine, 37,5 la distribuție uniformă (penalizează consumul mediu). Formula brută: 50 la distribuție uniformă (bază neutră)."
+        }
+      },
+      "fixed_periods": {
+        "title": "Perioade cu preț fix / contracte fixe",
+        "description": "Gestionează perioadele cu preț fix sau contractele fixe. Când o perioadă este activă, effective_price arată prețul fix setat în locul celui spot.",
+        "data": {
+          "action": "Acțiune"
+        }
+      },
+      "generation_settings": {
+        "title": "Setări de producție și livrare",
+        "description": "Configurează prețurile de livrare și setările bateriei. Setează capacitatea bateriei la 0 pentru a dezactiva senzorii bateriei.",
+        "data": {
+          "export_pricing_mode": "Mod de preț pentru livrare",
+          "export_commission": "Marjă de livrare (c/kWh, scăzută din spot)",
+          "fixed_export_rate": "Tarif fix de livrare (c/kWh)",
+          "export_price_threshold": "Prag al prețului de livrare (c/kWh)",
+          "solar_window_start": "Ora de început a ferestrei solare",
+          "solar_window_end": "Ora de sfârșit a ferestrei solare",
+          "battery_capacity_kwh": "Capacitatea bateriei (kWh, 0 = dezactivat)",
+          "battery_charge_power_kw": "Puterea de încărcare a bateriei (kW)"
+        },
+        "data_description": {
+          "export_commission": "Doar în modul legat de spot. Marja cumpărătorului scăzută din prețul spot al API-ului (fără TVA). Micii producători de regulă nu colectează TVA pentru energia livrată.",
+          "fixed_export_rate": "Doar în modul fix. Tarif fix pe care îl primești pentru fiecare kWh livrat.",
+          "solar_window_start": "Ora de început a ferestrei tale tipice de producție solară (folosită de senzorul next_solar_window_avg).",
+          "solar_window_end": "Ora de sfârșit (exclusiv) a ferestrei tale tipice de producție solară."
+        }
+      },
+      "add_fixed_period": {
+        "title": "Adaugă perioadă cu preț fix / contract fix",
+        "data": {
+          "label": "Numele perioadei",
+          "start_date": "Data de început",
+          "end_date": "Data de sfârșit (inclusiv)",
+          "price": "Preț (c/kWh, cu TVA inclus)"
+        },
+        "data_description": {
+          "price": "Introdu prețul cu TVA inclus. Acest preț este folosit ca atare — nu se adaugă TVA."
+        }
+      }
+    },
+    "error": {
+      "tier_hour_range": "Ora de sfârșit trebuie să fie după ora de început.",
+      "tier_no_months": "Selectează cel puțin o lună.",
+      "tier_no_weekdays": "Selectează cel puțin o zi a săptămânii.",
+      "period_invalid_dates": "Data de sfârșit trebuie să fie la sau după data de început.",
+      "period_overlap": "Această perioadă se suprapune cu o perioadă cu preț fix existentă.",
+      "period_price_zero": "Prețul trebuie să fie mai mare decât zero."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "arbitrage_spread_today": {
+        "name": "Diferență de arbitraj azi"
+      },
+      "avg_price_120min": {
+        "name": "Preț mediu 120 min"
+      },
+      "avg_price_30min": {
+        "name": "Preț mediu 30 min"
+      },
+      "avg_price_60min": {
+        "name": "Preț mediu 60 min"
+      },
+      "battery_charge_recommendation": {
+        "name": "Recomandare de încărcare a bateriei",
+        "state": {
+          "charge_from_grid": "Încărcare din rețea",
+          "discharge": "Descărcare",
+          "hold": "Menținere"
+        }
+      },
+      "charge_opportunity_factor": {
+        "name": "Factor de oportunitate de încărcare"
+      },
+      "control_factor_price": {
+        "name": "Factor de control al prețului"
+      },
+      "control_factor_price_bipolar": {
+        "name": "Factor de control al prețului (bipolar)"
+      },
+      "control_factor_transfer": {
+        "name": "Factor de control al distribuției"
+      },
+      "effective_price": {
+        "name": "Preț activ"
+      },
+      "exchange_rate": {
+        "name": "Curs de schimb"
+      },
+      "export_price": {
+        "name": "Preț de livrare"
+      },
+      "export_today_avg": {
+        "name": "Preț de livrare mediu azi"
+      },
+      "export_today_max": {
+        "name": "Preț de livrare maxim azi"
+      },
+      "export_today_min": {
+        "name": "Preț de livrare minim azi"
+      },
+      "export_tomorrow_avg": {
+        "name": "Preț de livrare mediu mâine"
+      },
+      "export_tomorrow_max": {
+        "name": "Preț de livrare maxim mâine"
+      },
+      "export_tomorrow_min": {
+        "name": "Preț de livrare minim mâine"
+      },
+      "import_export_spread": {
+        "name": "Diferență cumpărare-livrare"
+      },
+      "monthly_fixed_cost_today": {
+        "name": "Cost fix lunar azi"
+      },
+      "next_hours_avg": {
+        "name": "Media următoarelor ore"
+      },
+      "next_solar_window_avg": {
+        "name": "Media următoarei ferestre solare"
+      },
+      "optimal_charge_window_end": {
+        "name": "Sfârșitul ferestrei optime de încărcare"
+      },
+      "optimal_charge_window_start": {
+        "name": "Începutul ferestrei optime de încărcare"
+      },
+      "price_data_source": {
+        "name": "Sursa datelor de preț"
+      },
+      "price_quartile": {
+        "name": "Cuartila prețului"
+      },
+      "price_rank": {
+        "name": "Rang"
+      },
+      "self_consumption_value": {
+        "name": "Valoarea autoconsumului"
+      },
+      "setting_acceptable_rank": {
+        "name": "Rang acceptabil"
+      },
+      "setting_active_fixed_period": {
+        "name": "Perioadă cu preț fix activă"
+      },
+      "setting_active_transfer_group": {
+        "name": "Grup de distribuție activ"
+      },
+      "setting_active_transfer_tier": {
+        "name": "Treaptă de distribuție activă"
+      },
+      "setting_control_factor_function": {
+        "name": "Forma factorului de control"
+      },
+      "setting_forward_window": {
+        "name": "Fereastră viitoare"
+      },
+      "setting_max_price": {
+        "name": "Prag de preț"
+      },
+      "setting_price_threshold_includes_transfer": {
+        "name": "Pragul de preț include distribuția"
+      },
+      "spot_next_hours_avg": {
+        "name": "Media spot a următoarelor ore"
+      },
+      "spot_price": {
+        "name": "Preț spot"
+      },
+      "today_avg": {
+        "name": "Media azi"
+      },
+      "today_max": {
+        "name": "Maxim azi"
+      },
+      "today_min": {
+        "name": "Minim azi"
+      },
+      "today_spot_avg": {
+        "name": "Preț spot mediu azi"
+      },
+      "today_spot_max": {
+        "name": "Preț spot maxim azi"
+      },
+      "today_spot_min": {
+        "name": "Preț spot minim azi"
+      },
+      "today_total_avg": {
+        "name": "Preț total mediu azi"
+      },
+      "today_total_max": {
+        "name": "Preț total maxim azi"
+      },
+      "today_total_min": {
+        "name": "Preț total minim azi"
+      },
+      "tomorrow_avg": {
+        "name": "Media mâine"
+      },
+      "tomorrow_max": {
+        "name": "Maxim mâine"
+      },
+      "tomorrow_min": {
+        "name": "Minim mâine"
+      },
+      "tomorrow_spot_avg": {
+        "name": "Preț spot mediu mâine"
+      },
+      "tomorrow_spot_max": {
+        "name": "Preț spot maxim mâine"
+      },
+      "tomorrow_spot_min": {
+        "name": "Preț spot minim mâine"
+      },
+      "tomorrow_total_avg": {
+        "name": "Preț total mediu mâine"
+      },
+      "tomorrow_total_max": {
+        "name": "Preț total maxim mâine"
+      },
+      "tomorrow_total_min": {
+        "name": "Preț total minim mâine"
+      },
+      "total_price": {
+        "name": "Preț total"
+      },
+      "total_price_quartile": {
+        "name": "Cuartila prețului total"
+      },
+      "total_price_rank": {
+        "name": "Rangul prețului total"
+      },
+      "transfer_price": {
+        "name": "Preț de distribuție"
+      }
+    },
+    "number": {
+      "price_threshold": {
+        "name": "Prag de preț"
+      },
+      "rank_threshold": {
+        "name": "Prag de rang"
+      }
+    },
+    "binary_sensor": {
+      "price_acceptable": {
+        "name": "Preț acceptabil"
+      },
+      "rank_acceptable": {
+        "name": "Rang acceptabil"
+      },
+      "price_or_rank_acceptable": {
+        "name": "Preț sau rang acceptabil"
+      },
+      "fixed_period_active": {
+        "name": "Perioadă cu preț fix activă"
+      },
+      "tomorrow_available": {
+        "name": "Prețurile de mâine disponibile"
+      },
+      "export_price_acceptable": {
+        "name": "Preț de livrare acceptabil"
+      },
+      "charge_from_grid_recommended": {
+        "name": "Încărcare din rețea recomandată"
+      },
+      "discharge_to_grid_recommended": {
+        "name": "Descărcare în rețea recomandată"
+      }
+    }
+  },
+  "triggers": {
+    "price_became_acceptable": {
+      "name": "Prețul a devenit acceptabil",
+      "description": "Se declanșează când prețul curent al energiei electrice scade la un nivel acceptabil (la sau sub pragul de preț)."
+    },
+    "price_no_longer_acceptable": {
+      "name": "Prețul nu mai este acceptabil",
+      "description": "Se declanșează când prețul curent al energiei electrice urcă peste pragul de preț."
+    },
+    "rank_became_acceptable": {
+      "name": "Rangul a devenit acceptabil",
+      "description": "Se declanșează când rangul prețului curent scade la un nivel acceptabil (la sau sub pragul de rang)."
+    },
+    "rank_no_longer_acceptable": {
+      "name": "Rangul nu mai este acceptabil",
+      "description": "Se declanșează când rangul prețului curent urcă peste pragul de rang."
+    },
+    "became_cheapest_slot": {
+      "name": "A devenit intervalul cel mai ieftin",
+      "description": "Se declanșează când intervalul de timp curent devine cel mai ieftin al zilei."
+    },
+    "fixed_period_started": {
+      "name": "Perioadă cu preț fix începută",
+      "description": "Se declanșează când o perioadă cu preț fix devine activă."
+    },
+    "fixed_period_ended": {
+      "name": "Perioadă cu preț fix încheiată",
+      "description": "Se declanșează când o perioadă cu preț fix încetează să fie activă."
+    },
+    "tomorrow_prices_available": {
+      "name": "Prețurile de mâine disponibile",
+      "description": "Se declanșează când prețurile energiei electrice de mâine devin disponibile."
+    }
+  },
+  "conditions": {
+    "price_is_acceptable": {
+      "name": "Prețul este acceptabil",
+      "description": "Se îndeplinește când prețul curent al energiei electrice este la sau sub pragul de preț."
+    },
+    "rank_is_acceptable": {
+      "name": "Rangul este acceptabil",
+      "description": "Se îndeplinește când rangul prețului curent este la sau sub pragul de rang."
+    },
+    "price_is_lowest_today": {
+      "name": "Prețul este cel mai mic azi",
+      "description": "Se îndeplinește când intervalul de timp curent este cel mai ieftin al zilei."
+    },
+    "fixed_period_active": {
+      "name": "Perioadă cu preț fix activă",
+      "description": "Se îndeplinește când o perioadă cu preț fix este activă în acest moment."
+    },
+    "tomorrow_available": {
+      "name": "Prețurile de mâine disponibile",
+      "description": "Se îndeplinește când prețurile energiei electrice de mâine sunt disponibile."
+    }
+  }
+}

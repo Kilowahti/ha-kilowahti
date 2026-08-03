@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import calendar
+import functools
 import logging
 from collections.abc import Callable
 from datetime import date, datetime, timedelta
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -18,13 +20,17 @@ from homeassistant.helpers.event import (
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.util import dt as dt_util
 from kilowahti import calc
+from kilowahti.sources.ecb import fetch_ecb_rate
+from kilowahti.sources.kilowahti_cdn import KilowahtiCdnSource, KilowahtiCdnZoneNotFoundError
 from kilowahti.sources.spot_hinta import SpotHintaRateLimitError, SpotHintaSource
 
 from .const import (
+    API_REGIONS,
     CONF_BATTERY_CAPACITY_KWH,
     CONF_BATTERY_CHARGE_POWER_KW,
     CONF_CONTROL_FACTOR_FUNCTION,
     CONF_CONTROL_FACTOR_SCALING,
+    CONF_CURRENCY_MODE,
     CONF_DISPLAY_UNIT,
     CONF_EAGER_END_HOUR,
     CONF_EAGER_START_HOUR,
@@ -35,6 +41,8 @@ from .const import (
     CONF_EXPOSE_PRICE_ARRAYS,
     CONF_FIXED_EXPORT_RATE,
     CONF_FORWARD_AVG_HOURS,
+    CONF_FX_MODE,
+    CONF_FX_RATE,
     CONF_GENERATION_ENABLED,
     CONF_HIGH_PRECISION,
     CONF_MAX_PRICE,
@@ -50,6 +58,10 @@ from .const import (
     CONF_SPOT_COMMISSION,
     CONF_TRANSFER_GROUPS,
     CONF_VAT_RATE,
+    CURRENCY_FOR_REGION,
+    CURRENCY_MODE_EUR,
+    CURRENCY_MODE_LOCAL,
+    CURRENCY_UNITS,
     DEFAULT_BATTERY_CAPACITY_KWH,
     DEFAULT_BATTERY_CHARGE_POWER_KW,
     DEFAULT_CONTROL_FACTOR_FUNCTION,
@@ -76,7 +88,12 @@ from .const import (
     DEFAULT_SPOT_COMMISSION,
     DEFAULT_VAT_RATE,
     DOMAIN,
+    ECB_CURRENCIES,
     EXPORT_PRICING_FIXED,
+    FX_MODE_AUTO,
+    FX_MODE_MANUAL,
+    PRICE_SOURCE_KILOWAHTI_CDN,
+    PRICE_SOURCE_SPOT_HINTA,
     UNIT_EUROKWH,
     UNIT_SNTPERKWH,
 )
@@ -87,6 +104,16 @@ _LOGGER = logging.getLogger(__name__)
 
 # Debounce interval for persisting score accumulators
 _SCORE_PERSIST_DEBOUNCE = 60  # seconds
+
+# Day-ahead exchange publication times are quoted in CET/CEST regardless of the
+# HA instance's or the price region's own timezone — anchor the eager-poll
+# window to it rather than local time.
+_EAGER_POLL_TZ = ZoneInfo("Europe/Berlin")
+
+# Nord Pool publishes ~12:45 CET. If the primary source still returns no
+# tomorrow data (without erroring) past this CET hour, the eager poll starts
+# trying fallback sources; before it, a silent None is normal pre-publication.
+_FALLBACK_DEADLINE_HOUR = 15
 
 # Placeholder daily score per quartile when no consumption is recorded yet —
 # the literal midpoint of each quartile's score range (Q1: 75–100, Q4: 0–25).
@@ -110,7 +137,24 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         )
         self._entry = entry
         self._storage = storage
-        self._source = SpotHintaSource()
+        # Automatic source chain: CDN primary, spot-hinta.fi fallback only
+        # where it has coverage. The euenergy layer slots in between once
+        # token distribution is decided (price-source-chain-plan.md).
+        self._sources: list[tuple[str, KilowahtiCdnSource | SpotHintaSource]] = [
+            (PRICE_SOURCE_KILOWAHTI_CDN, KilowahtiCdnSource(now_fn=dt_util.utcnow))
+        ]
+        if self._region in API_REGIONS:
+            self._sources.append((PRICE_SOURCE_SPOT_HINTA, SpotHintaSource()))
+        self._active_source_name: str = self._sources[0][0]
+        self._last_failover_utc: datetime | None = None
+
+        # FX state for local-currency display. The active rate is frozen per
+        # local day; the daily ECB fetch stages the next day's rate, which is
+        # promoted at midnight rollover.
+        self._fx_active_rate: float | None = None
+        self._fx_active_date: str | None = None
+        self._fx_staged_rate: float | None = None
+        self._fx_staged_date: str | None = None
 
         # Threshold instance vars — updated by number entities and synced in the options listener
         self._max_price_value: float = entry.options.get(CONF_MAX_PRICE, DEFAULT_MAX_PRICE)
@@ -132,10 +176,15 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         # Timer management
         self._unsubscribers: list[Callable] = []
         self._eager_poll_unsub: Callable | None = None
+        self._eager_start_timer_unsub: Callable | None = None
 
     # ------------------------------------------------------------------
     # Config helpers
     # ------------------------------------------------------------------
+
+    @property
+    def entry_id(self) -> str:
+        return self._entry.entry_id
 
     @property
     def _opts(self) -> dict:
@@ -303,14 +352,8 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             self._today_date = today
             _LOGGER.debug("Restored %d today-slots from cache", len(self._today_slots))
         else:
-            # Cache stale or missing — fetch from API
-            try:
-                self._today_slots = await self._source.fetch_today(
-                    async_get_clientsession(self.hass), self._region, self._resolution
-                )
-            except Exception as err:
-                raise UpdateFailed(f"Failed to fetch today's prices: {err}") from err
-
+            # Cache stale or missing — fetch from the source chain
+            self._today_slots = await self._chain_fetch_today()
             self._today_date = today
             self._tomorrow_slots = None
             await self._storage.async_save_cache(self._today_slots, None, today)
@@ -321,6 +364,8 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         self._daily_history = self._storage.get_daily_history()
         self._month_scores = self._storage.get_month_scores()
         self._last_meter_values = self._storage.get_last_meter_values()
+
+        await self._async_init_fx()
 
         return None
 
@@ -346,32 +391,36 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
                 )
             )
 
-        self._unsubscribers.extend(
-            [
-                # Midnight rollover
-                async_track_time_change(
-                    self.hass,
-                    self._on_midnight,
-                    hour=0,
-                    minute=0,
-                    second=0,
-                ),
-                # Start eager polling for tomorrow's prices
-                async_track_time_change(
-                    self.hass,
-                    self._on_eager_fetch_start,
-                    hour=eager_start,
-                    minute=0,
-                    second=0,
-                ),
-            ]
+        self._unsubscribers.append(
+            # Midnight rollover
+            async_track_time_change(
+                self.hass,
+                self._on_midnight,
+                hour=0,
+                minute=0,
+                second=0,
+            ),
         )
+
+        # Start eager polling for tomorrow's prices, anchored to CET/CEST (see
+        # _EAGER_POLL_TZ) rather than HA local time.
+        self._schedule_eager_start_timer(eager_start)
+
+        # Daily FX refresh after ECB publish (~16:00 CET); callback no-ops
+        # unless local currency + auto mode are active, so fx_mode changes
+        # need no reload.
+        if self.currency in ECB_CURRENCIES:
+            self._unsubscribers.append(
+                async_track_time_change(
+                    self.hass, self._on_fx_refresh, hour=17, minute=15, second=0
+                )
+            )
 
         await self._async_setup_score_tracking()
 
         # If we're already past eager_start and missing tomorrow, start polling now
-        now_local = dt_util.as_local(dt_util.utcnow())
-        if self._tomorrow_slots is None and eager_start <= now_local.hour < eager_end:
+        now_cet = self._now_cet()
+        if self._tomorrow_slots is None and eager_start <= now_cet.hour < eager_end:
             self.hass.async_create_task(self._async_eager_poll())
 
     def async_unload(self) -> None:
@@ -383,6 +432,10 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         if self._eager_poll_unsub is not None:
             self._eager_poll_unsub()
             self._eager_poll_unsub = None
+
+        if self._eager_start_timer_unsub is not None:
+            self._eager_start_timer_unsub()
+            self._eager_start_timer_unsub = None
 
         if self._score_persist_unsub is not None:
             self._score_persist_unsub()
@@ -402,12 +455,27 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         """Schedule midnight rollover as an async task."""
         self.hass.async_create_task(self._async_midnight_rollover())
 
+    def _now_cet(self) -> datetime:
+        return dt_util.utcnow().astimezone(_EAGER_POLL_TZ)
+
+    def _schedule_eager_start_timer(self, eager_start: int) -> None:
+        """Schedule the next CET/CEST eager-start trigger; reschedules itself daily."""
+        now_cet = self._now_cet()
+        target = now_cet.replace(hour=eager_start, minute=0, second=0, microsecond=0)
+        if target <= now_cet:
+            target += timedelta(days=1)
+        delay = (target - now_cet).total_seconds()
+        self._eager_start_timer_unsub = async_call_later(
+            self.hass, delay, functools.partial(self._on_eager_start_timer, eager_start)
+        )
+
     @callback
-    def _on_eager_fetch_start(self, _now: datetime) -> None:
-        """Start eager polling for tomorrow's prices."""
-        if self._tomorrow_slots is not None:
-            return
-        self.hass.async_create_task(self._async_eager_poll())
+    def _on_eager_start_timer(self, eager_start: int, _now: datetime) -> None:
+        """Fire at eager_start CET/CEST daily to start eager polling for tomorrow's prices."""
+        self._eager_start_timer_unsub = None
+        if self._tomorrow_slots is None:
+            self.hass.async_create_task(self._async_eager_poll())
+        self._schedule_eager_start_timer(eager_start)
 
     # ------------------------------------------------------------------
     # Midnight rollover
@@ -426,9 +494,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         else:
             # No tomorrow cache — fetch today fresh
             try:
-                self._today_slots = await self._source.fetch_today(
-                    async_get_clientsession(self.hass), self._region, self._resolution
-                )
+                self._today_slots = await self._chain_fetch_today()
                 self._today_date = today
                 _LOGGER.info(
                     "Midnight rollover: fetched today from API (%d slots)", len(self._today_slots)
@@ -438,48 +504,195 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
 
         await self._storage.async_save_cache(self._today_slots, None, today)
 
+        # New local day — the staged FX rate becomes active
+        await self._async_promote_staged_fx()
+
         # Finalise yesterday's score and reset
         await self._async_finalise_daily_scores()
 
         self.async_update_listeners()
 
     # ------------------------------------------------------------------
+    # Source chain
+    # ------------------------------------------------------------------
+
+    def _mark_active_source(self, name: str) -> None:
+        if name != self._active_source_name:
+            self._last_failover_utc = dt_util.utcnow()
+            _LOGGER.warning("Price data now served by %s (was %s)", name, self._active_source_name)
+            self._active_source_name = name
+
+    async def _chain_fetch_today(self) -> list[PriceSlot]:
+        """Fetch today's prices from the first source in the chain that delivers."""
+        session = async_get_clientsession(self.hass)
+        last_err: Exception | None = None
+        for name, source in self._sources:
+            try:
+                slots = await source.fetch_today(session, self._region, self._resolution)
+            except KilowahtiCdnZoneNotFoundError as err:
+                _LOGGER.warning(
+                    "Price source %s: region %s not available; trying next source",
+                    name,
+                    self._region,
+                )
+                last_err = err
+                continue
+            except Exception as err:
+                _LOGGER.warning("Price source %s failed for today's prices: %s", name, err)
+                last_err = err
+                continue
+            self._mark_active_source(name)
+            return slots
+        raise UpdateFailed(f"All price sources failed for today's prices: {last_err}")
+
+    # ------------------------------------------------------------------
+    # FX rate lifecycle (auto mode)
+    # ------------------------------------------------------------------
+
+    async def _async_init_fx(self) -> None:
+        """Restore persisted FX state; fetch immediately only on first start."""
+        if self.currency == "EUR":
+            return
+        data = self._storage.get_fx()
+        if data.get("currency") == self.currency:
+            self._fx_active_rate = data.get("active_rate")
+            self._fx_active_date = data.get("active_date")
+            self._fx_staged_rate = data.get("staged_rate")
+            self._fx_staged_date = data.get("staged_date")
+        if (
+            self._currency_mode == CURRENCY_MODE_LOCAL
+            and self.fx_mode == FX_MODE_AUTO
+            and self._fx_active_rate is None
+            and self.currency in ECB_CURRENCIES
+        ):
+            await self._async_fetch_fx(stage_only=False)
+
+    async def _async_fetch_fx(self, stage_only: bool = True) -> None:
+        """Fetch the ECB reference rate. Staged rates apply at rollover so the
+        active rate never changes mid-day; stage_only=False applies at once
+        (first start without a persisted rate)."""
+        try:
+            result = await fetch_ecb_rate(async_get_clientsession(self.hass), self.currency)
+        except Exception as err:
+            _LOGGER.warning("ECB rate fetch failed for %s: %s", self.currency, err)
+            return
+        self._fx_staged_rate = result.rate
+        self._fx_staged_date = str(result.rate_date)
+        if not stage_only or self._fx_active_rate is None:
+            self._fx_active_rate = result.rate
+            self._fx_active_date = str(dt_util.as_local(dt_util.utcnow()).date())
+            self.async_update_listeners()
+        await self._async_save_fx()
+
+    async def _async_save_fx(self) -> None:
+        await self._storage.async_save_fx(
+            {
+                "currency": self.currency,
+                "active_rate": self._fx_active_rate,
+                "active_date": self._fx_active_date,
+                "staged_rate": self._fx_staged_rate,
+                "staged_date": self._fx_staged_date,
+            }
+        )
+
+    async def _async_promote_staged_fx(self) -> None:
+        """Apply the staged rate as the new day's active rate (midnight rollover)."""
+        if self.currency == "EUR" or self._fx_staged_rate is None:
+            return
+        if self._fx_staged_rate != self._fx_active_rate:
+            _LOGGER.info(
+                "FX rate for %s updated at rollover: %s → %s per EUR",
+                self.currency,
+                self._fx_active_rate,
+                self._fx_staged_rate,
+            )
+        self._fx_active_rate = self._fx_staged_rate
+        self._fx_active_date = str(dt_util.as_local(dt_util.utcnow()).date())
+        await self._async_save_fx()
+
+    @callback
+    def _on_fx_refresh(self, _now: datetime) -> None:
+        """Daily post-ECB-publish fetch; stages the rate for the next day."""
+        if self._currency_mode == CURRENCY_MODE_LOCAL and self.fx_mode == FX_MODE_AUTO:
+            self.hass.async_create_task(self._async_fetch_fx())
+
+    # ------------------------------------------------------------------
     # Eager fetch for tomorrow's prices
     # ------------------------------------------------------------------
 
     async def _async_eager_poll(self) -> None:
-        """Single poll attempt for tomorrow's prices; reschedules if not yet available."""
+        """Single poll attempt for tomorrow's prices; reschedules if not yet available.
+
+        The primary source returning None (not yet published) is normal
+        before _FALLBACK_DEADLINE_HOUR CET and only reschedules; past the
+        deadline the remaining sources are tried in chain order. Source
+        errors always advance the chain. A tomorrow fetched from a fallback
+        source is final for the day — polling stops once slots are stored.
+        """
         if self._tomorrow_slots is not None:
             return
 
         eager_end = self._opts.get(CONF_EAGER_END_HOUR, DEFAULT_EAGER_END_HOUR)
-        now_local = dt_util.as_local(dt_util.utcnow())
-        if now_local.hour >= eager_end:
-            _LOGGER.debug("Eager fetch: window closed at %d:00", eager_end)
+        if self._now_cet().hour >= eager_end:
+            _LOGGER.debug("Eager fetch: window closed at %d:00 CET/CEST", eager_end)
             return
 
-        try:
-            slots = await self._source.fetch_tomorrow(
-                async_get_clientsession(self.hass), self._region, self._resolution
-            )
-        except SpotHintaRateLimitError as err:
-            _LOGGER.warning("Eager fetch: rate-limited; retrying in %ds", err.retry_after)
-            self._schedule_eager_poll(err.retry_after)
-            return
-        except Exception as err:
-            _LOGGER.warning("Eager fetch: error polling for tomorrow: %s", err)
-            self._schedule_eager_poll(60)
+        session = async_get_clientsession(self.hass)
+        past_deadline = self._now_cet().hour >= _FALLBACK_DEADLINE_HOUR
+        retry_delay: float = 60
+        permanent_failures = 0
+        slots: list[PriceSlot] | None = None
+        served_by: str | None = None
+
+        for index, (name, source) in enumerate(self._sources):
+            is_primary = index == 0
+            try:
+                result = await source.fetch_tomorrow(session, self._region, self._resolution)
+            except SpotHintaRateLimitError as err:
+                _LOGGER.warning(
+                    "Eager fetch: %s rate-limited; retrying in %ds", name, err.retry_after
+                )
+                retry_delay = max(retry_delay, err.retry_after)
+                continue
+            except KilowahtiCdnZoneNotFoundError:
+                _LOGGER.warning(
+                    "Eager fetch: region %s not available on %s; trying next source",
+                    self._region,
+                    name,
+                )
+                permanent_failures += 1
+                continue
+            except Exception as err:
+                _LOGGER.warning("Eager fetch: %s error polling for tomorrow: %s", name, err)
+                continue
+
+            if result is None:
+                if is_primary and not past_deadline:
+                    _LOGGER.debug("Eager fetch: tomorrow not yet published; retrying in 60s")
+                    self._schedule_eager_poll(60)
+                    return
+                _LOGGER.debug("Eager fetch: %s has no tomorrow data", name)
+                continue
+
+            slots = result
+            served_by = name
+            break
+
+        if slots is None or served_by is None:
+            if permanent_failures == len(self._sources):
+                _LOGGER.error(
+                    "Eager fetch: region %s has no data on any configured source; not retrying",
+                    self._region,
+                )
+                return
+            self._schedule_eager_poll(retry_delay)
             return
 
-        if slots is None:
-            _LOGGER.debug("Eager fetch: tomorrow not yet published; retrying in 60s")
-            self._schedule_eager_poll(60)
-            return
-
+        self._mark_active_source(served_by)
         self._tomorrow_slots = slots
         today = self._today_date or dt_util.as_local(dt_util.utcnow()).date()
         await self._storage.async_save_cache(self._today_slots, self._tomorrow_slots, today)
-        _LOGGER.info("Eager fetch: got %d tomorrow-slots", len(slots))
+        _LOGGER.info("Eager fetch: got %d tomorrow-slots from %s", len(slots), served_by)
         self.async_update_listeners()
 
     def _schedule_eager_poll(self, delay_seconds: float) -> None:
@@ -558,8 +771,12 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     # ------------------------------------------------------------------
 
     def _spot_effective(self, slot: PriceSlot) -> float:
-        """Apply VAT to raw spot price, then add commission (gross). API always returns prices excl. VAT."""
-        return calc.spot_effective(slot, self._vat_rate, self._spot_commission)
+        """Apply FX and VAT to raw spot price, then add commission (gross).
+
+        API always returns prices excl. VAT in EUR; user-entered values
+        (commission, transfer, thresholds) are already in the local currency.
+        """
+        return calc.spot_effective(slot, self._vat_rate, self._spot_commission, rate=self.fx_rate)
 
     def _energy_price_for_slot(self, slot: PriceSlot) -> float:
         """Return effective energy price for a slot, respecting fixed-price periods."""
@@ -652,24 +869,110 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             return effective + transfer
         return effective
 
+    # ------------------------------------------------------------------
+    # Currency / FX
+    # ------------------------------------------------------------------
+
+    @property
+    def currency(self) -> str:
+        """Local currency of the configured region (EUR for euro zones)."""
+        return CURRENCY_FOR_REGION.get(self._region, "EUR")
+
+    @property
+    def _currency_mode(self) -> str:
+        if self.currency == "EUR":
+            return CURRENCY_MODE_EUR
+        return self._opts.get(CONF_CURRENCY_MODE, CURRENCY_MODE_EUR)
+
+    @property
+    def fx_mode(self) -> str:
+        default = FX_MODE_AUTO if self.currency in ECB_CURRENCIES else FX_MODE_MANUAL
+        return self._opts.get(CONF_FX_MODE, default)
+
+    @property
+    def fx_rate(self) -> float:
+        """FX multiplier applied to EUR spot prices. 1.0 = EUR display.
+
+        Fallback chain in auto mode: active (persisted) rate → manual rate
+        option → 1.0, which falls the display back to EUR entirely.
+        """
+        if self._currency_mode != CURRENCY_MODE_LOCAL:
+            return 1.0
+        manual = float(self._opts.get(CONF_FX_RATE) or 0.0)
+        if self.fx_mode == FX_MODE_MANUAL:
+            return manual if manual > 0 else 1.0
+        if self._fx_active_rate:
+            return self._fx_active_rate
+        return manual if manual > 0 else 1.0
+
+    @property
+    def local_display_active(self) -> bool:
+        """True when prices are shown in the local currency (an FX rate applies)."""
+        return self._currency_mode == CURRENCY_MODE_LOCAL and self.fx_rate != 1.0
+
+    @property
+    def currency_mode_is_local(self) -> bool:
+        """True when the entry is configured for local-currency display."""
+        return self._currency_mode == CURRENCY_MODE_LOCAL
+
+    @property
+    def fx_rate_date(self) -> str | None:
+        """ECB rate date of the active rate (auto mode), None in manual mode."""
+        if self.fx_mode == FX_MODE_MANUAL:
+            return None
+        return (
+            self._fx_staged_date
+            if self._fx_active_rate == self._fx_staged_rate
+            else self._fx_active_date
+        )
+
+    @property
+    def _unit_pair(self) -> tuple[str | None, str]:
+        """(minor, major) unit labels for the active display currency."""
+        if self.local_display_active:
+            return CURRENCY_UNITS[self.currency]
+        return (UNIT_SNTPERKWH, UNIT_EUROKWH)
+
+    @property
+    def display_in_major(self) -> bool:
+        """True when values are displayed in the major unit (€/kr/zł/…)."""
+        minor, _major = self._unit_pair
+        return self._display_unit == UNIT_EUROKWH or minor is None
+
     def format_price(self, price_snt: float | None) -> float | None:
-        """Convert c/kWh to display unit (€/kWh if configured)."""
+        """Convert internal minor-unit price to the display unit."""
         if price_snt is None:
             return None
-        if self._display_unit == UNIT_EUROKWH:
+        if self.display_in_major:
             return price_snt / 100.0
         return price_snt
 
     @property
     def native_unit(self) -> str:
-        return self._display_unit
+        minor, major = self._unit_pair
+        return major if self.display_in_major else minor
+
+    @property
+    def price_source_name(self) -> str:
+        """Source currently serving the price data."""
+        return self._active_source_name
+
+    @property
+    def last_failover_utc(self) -> datetime | None:
+        """UTC time of the most recent change of serving source, if any."""
+        return self._last_failover_utc
 
     # ------------------------------------------------------------------
     # Today / tomorrow statistics
     # ------------------------------------------------------------------
 
     def _effective_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
-        return calc.effective_prices(slots, self._vat_rate, self._spot_commission)
+        return calc.effective_prices(
+            slots, self._vat_rate, self._spot_commission, rate=self.fx_rate
+        )
+
+    def _energy_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
+        return [self._energy_price_for_slot(s) for s in slots]
 
     def _total_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
         return [
@@ -750,7 +1053,57 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             return None
         return max(self._total_prices_for_slots(slots))
 
+    def today_avg(self) -> float | None:
+        if not self._today_slots:
+            return None
+        prices = self._energy_prices_for_slots(self._today_slots)
+        return sum(prices) / len(prices)
+
+    def today_min(self) -> float | None:
+        if not self._today_slots:
+            return None
+        return min(self._energy_prices_for_slots(self._today_slots))
+
+    def today_max(self) -> float | None:
+        if not self._today_slots:
+            return None
+        return max(self._energy_prices_for_slots(self._today_slots))
+
+    def _tomorrow_energy_slots(self) -> list[PriceSlot] | None:
+        tomorrow = (self._now_local() + timedelta(days=1)).date()
+        if self.fixed_period_for_date(tomorrow) is not None:
+            return self._synthetic_slots_for_date(tomorrow)
+        return self._tomorrow_slots or None
+
+    def tomorrow_avg(self) -> float | None:
+        slots = self._tomorrow_energy_slots()
+        if not slots:
+            return None
+        prices = self._energy_prices_for_slots(slots)
+        return sum(prices) / len(prices)
+
+    def tomorrow_min(self) -> float | None:
+        slots = self._tomorrow_energy_slots()
+        if not slots:
+            return None
+        return min(self._energy_prices_for_slots(slots))
+
+    def tomorrow_max(self) -> float | None:
+        slots = self._tomorrow_energy_slots()
+        if not slots:
+            return None
+        return max(self._energy_prices_for_slots(slots))
+
     def next_hours_avg(self) -> float | None:
+        now = self._now_local()
+        end = now + timedelta(hours=self._forward_avg_hours)
+        slots = self.slots_in_range(now, end)
+        if not slots:
+            return None
+        prices = self._energy_prices_for_slots(slots)
+        return sum(prices) / len(prices)
+
+    def spot_next_hours_avg(self) -> float | None:
         now = self._now_local()
         end = now + timedelta(hours=self._forward_avg_hours)
         slots = self.slots_in_range(now, end)
@@ -767,7 +1120,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         """Feed-in price for a given slot. No VAT (small producers don't collect VAT in FI)."""
         if self._export_pricing_mode == EXPORT_PRICING_FIXED:
             return self._fixed_export_rate
-        return max(0.0, slot.price_no_tax - self._export_commission)
+        return max(0.0, slot.price_no_tax * self.fx_rate - self._export_commission)
 
     def _export_prices_for_slots(self, slots: list[PriceSlot]) -> list[float]:
         return [self.export_price_for_slot(s) for s in slots]

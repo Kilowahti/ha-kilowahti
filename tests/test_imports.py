@@ -19,3 +19,11 @@ def test_config_flow_imports() -> None:
 
 def test_services_imports() -> None:
     import custom_components.kilowahti.services  # noqa: F401
+
+
+def test_trigger_imports() -> None:
+    import custom_components.kilowahti.trigger  # noqa: F401
+
+
+def test_condition_imports() -> None:
+    import custom_components.kilowahti.condition  # noqa: F401
