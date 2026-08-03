@@ -111,8 +111,7 @@
       },
       "score_profiles": {
         "title": "Optimalisatiepunten",
-        "description": "Punten meten hoe goed je verbruik naar goedkope uren wordt verschoven. Het permanente profiel 'Total' dekt al het verbruik — koppel er na de installatie een meter (of meerdere) aan via Opties.",
-        "data": {}
+        "description": "Punten meten hoe goed je verbruik naar goedkope uren wordt verschoven. Het permanente profiel 'Total' dekt al het verbruik — koppel er na de installatie een meter (of meerdere) aan via Opties."
       },
       "advanced_options": {
         "title": "Geavanceerde opties",
@@ -237,8 +236,7 @@
         }
       },
       "score_profiles": {
-        "title": "Puntenprofielen",
-        "data": {}
+        "title": "Puntenprofielen"
       },
       "advanced_options": {
         "title": "Geavanceerde opties",

@@ -111,8 +111,7 @@
       },
       "score_profiles": {
         "title": "Optimeringspoint",
-        "description": "Point måler, hvor godt dit forbrug flyttes til billige timer. Den permanente 'Total'-profil dækker alt forbrug — tilknyt en måler (eller flere) til den under Indstillinger efter opsætningen.",
-        "data": {}
+        "description": "Point måler, hvor godt dit forbrug flyttes til billige timer. Den permanente 'Total'-profil dækker alt forbrug — tilknyt en måler (eller flere) til den under Indstillinger efter opsætningen."
       },
       "advanced_options": {
         "title": "Avancerede indstillinger",
@@ -237,8 +236,7 @@
         }
       },
       "score_profiles": {
-        "title": "Pointprofiler",
-        "data": {}
+        "title": "Pointprofiler"
       },
       "advanced_options": {
         "title": "Avancerede indstillinger",

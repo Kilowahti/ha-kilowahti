@@ -111,8 +111,7 @@
       },
       "score_profiles": {
         "title": "Scoruri de optimizare",
-        "description": "Scorurile măsoară cât de bine este mutat consumul tău spre orele ieftine. Profilul permanent 'Total' acoperă tot consumul — leagă-i un contor (sau mai multe) în opțiuni după configurare.",
-        "data": {}
+        "description": "Scorurile măsoară cât de bine este mutat consumul tău spre orele ieftine. Profilul permanent 'Total' acoperă tot consumul — leagă-i un contor (sau mai multe) în opțiuni după configurare."
       },
       "advanced_options": {
         "title": "Opțiuni avansate",
@@ -237,8 +236,7 @@
         }
       },
       "score_profiles": {
-        "title": "Profiluri de scor",
-        "data": {}
+        "title": "Profiluri de scor"
       },
       "advanced_options": {
         "title": "Opțiuni avansate",

@@ -111,8 +111,7 @@
       },
       "score_profiles": {
         "title": "Pontos de otimização",
-        "description": "Os pontos medem até que ponto o seu consumo é deslocado para as horas baratas. O perfil permanente 'Total' cobre todo o consumo — associe-lhe um contador (ou vários) nas opções após a configuração.",
-        "data": {}
+        "description": "Os pontos medem até que ponto o seu consumo é deslocado para as horas baratas. O perfil permanente 'Total' cobre todo o consumo — associe-lhe um contador (ou vários) nas opções após a configuração."
       },
       "advanced_options": {
         "title": "Opções avançadas",
@@ -237,8 +236,7 @@
         }
       },
       "score_profiles": {
-        "title": "Perfis de pontos",
-        "data": {}
+        "title": "Perfis de pontos"
       },
       "advanced_options": {
         "title": "Opções avançadas",

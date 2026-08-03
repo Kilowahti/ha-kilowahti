@@ -111,8 +111,7 @@
       },
       "score_profiles": {
         "title": "Punteggi di ottimizzazione",
-        "description": "I punteggi misurano quanto i tuoi consumi si spostano verso le ore economiche. Il profilo permanente 'Total' copre tutti i consumi — collegagli un contatore (o più) nelle opzioni dopo la configurazione.",
-        "data": {}
+        "description": "I punteggi misurano quanto i tuoi consumi si spostano verso le ore economiche. Il profilo permanente 'Total' copre tutti i consumi — collegagli un contatore (o più) nelle opzioni dopo la configurazione."
       },
       "advanced_options": {
         "title": "Opzioni avanzate",
@@ -237,8 +236,7 @@
         }
       },
       "score_profiles": {
-        "title": "Profili di punteggio",
-        "data": {}
+        "title": "Profili di punteggio"
       },
       "advanced_options": {
         "title": "Opzioni avanzate",

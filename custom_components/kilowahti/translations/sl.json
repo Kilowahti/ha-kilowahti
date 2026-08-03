@@ -111,8 +111,7 @@
       },
       "score_profiles": {
         "title": "Točke optimizacije",
-        "description": "Točke merijo, kako dobro premikate porabo v poceni ure. Stalni profil 'Total' pokriva vso porabo — po nastavitvi mu v možnostih povežite števec (ali števce).",
-        "data": {}
+        "description": "Točke merijo, kako dobro premikate porabo v poceni ure. Stalni profil 'Total' pokriva vso porabo — po nastavitvi mu v možnostih povežite števec (ali števce)."
       },
       "advanced_options": {
         "title": "Napredne možnosti",
@@ -237,8 +236,7 @@
         }
       },
       "score_profiles": {
-        "title": "Profili točk",
-        "data": {}
+        "title": "Profili točk"
       },
       "advanced_options": {
         "title": "Napredne možnosti",
