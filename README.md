@@ -5,6 +5,8 @@
 
 **Kilowahti** (*kilowatti* + *vahti* — "the kilowatt sentinel") is a Home Assistant integration for European electricity cost awareness and optimization — whether you are on a spot contract or a fixed rate.
 
+**From version 2026.8.0 Kilowahti supports all European electricity market zones, see below.**
+
 [![HACS](https://img.shields.io/badge/HACS-Default-blue.svg)](https://hacs.xyz/)
 [![Documentation](https://img.shields.io/badge/docs-kilowahti.fi-blue)](https://docs.kilowahti.fi/)
 [![Feedback](https://img.shields.io/badge/feedback-share%20yours-brightgreen)](https://tally.so/r/QK05XY)
@@ -44,7 +46,7 @@
 
 All **43 European day-ahead bidding zones across 30 countries** — the Nordics and Baltics where Kilowahti started, and now Central, Western, and Southeast Europe, and Ireland. Pick your zone in the setup wizard; VAT and unit presets are applied automatically.
 
-Prices come from the first-party **Kilowahti CDN** (ENTSO-E day-ahead data) with automatic fallback to spot-hinta.fi — no API keys, nothing to configure.
+Prices come from the first-party **Kilowahti CDN** (ENTSO-E day-ahead data) with automatic fallback to spot-hinta.fi — no API keys, nothing to configure. The spot-hinta.fi fallback covers the Nordic and Baltic zones only; other regions rely on the CDN alone (more fallback options are being looked at).
 
 > **Currency:** regions outside the eurozone (SEK, NOK, DKK, CHF, PLN, CZK, HUF, RON, RSD, MKD) can show all prices in local currency, converted with a daily ECB exchange rate or a manual rate you control.
 

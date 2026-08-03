@@ -1,7 +1,7 @@
 {
   "name": "Kilowahti",
   "homeassistant": "2024.1.0",
-  "country": ["DK", "EE", "FI", "LT", "LV", "NO", "SE"],
+  "country": ["AT", "BE", "BG", "CH", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "ME", "MK", "NL", "NO", "PL", "PT", "RO", "RS", "SE", "SI", "SK"],
   "content_in_root": false,
   "hide_default_branch": true,
   "render_readme": true,
