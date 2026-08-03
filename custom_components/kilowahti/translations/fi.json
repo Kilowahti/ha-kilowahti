@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Kilowahti — Perusasetukset",
-        "description": "Alue määrittää, miltä pohjoismaiden tai baltian spot-hinta-alueelta hinnat haetaan.",
+        "description": "Alue määrittää, miltä spot-hinta-alueelta hinnat haetaan.",
         "data": {
           "name": "Nimi",
           "region": "Hinta-alue",
@@ -116,6 +116,18 @@
           "show_rolling_averages": "Lisää anturit seuraavan 30, 60 ja 120 minuutin keskihinnoille.",
           "generation_enabled": "Ottaa käyttöön myyntihinnan, akun ja arbitraasianturit sekä palvelut. Määritä tuotantoasetukset Tuotanto ja myynti -valikosta."
         }
+      },
+      "currency": {
+        "title": "Kilowahti — Valuutta",
+        "description": "Tämän alueen valuutta on {currency}. Spot-hinnat muunnetaan eurosta päivittäisellä valuuttakurssilla. Kaikki antamasi hinnat (palkkiot, siirtotasot, kynnysarvot) ovat valitussa näyttövaluutassa.",
+        "data": {
+          "currency_mode": "Näyttövaluutta",
+          "fx_mode": "Valuuttakurssien lähde",
+          "fx_rate": "Manuaalinen vaihtokurssi (paikallinen valuutta euroa kohti)"
+        },
+        "data_description": {
+          "fx_rate": "Käytetään, kun valuuttakurssilähde on manuaalinen, ja varalla jos automaattinen kurssi ei ole käytettävissä. Jätä arvo nollaksi, ellei käytössä."
+        }
       }
     },
     "error": {
@@ -158,7 +170,13 @@
           "vat_rate_pct": "ALV-prosentti (%)",
           "electricity_tax": "Sähkövero (c/kWh)",
           "spot_commission": "Marginaali (c/kWh)",
-          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu (€/kk)"
+          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu (€/kk)",
+          "currency_mode": "Näyttövaluutta",
+          "fx_mode": "Valuuttakurssien lähde",
+          "fx_rate": "Manuaalinen vaihtokurssi (paikallinen valuutta euroa kohti)"
+        },
+        "data_description": {
+          "currency_mode": "Vaihtaminen muuntaa jo syötetyt hinnat (kynnysarvot, palkkiot, siirtotasot, kiinteät jaksot) tämänhetkisen valuuttakurssin mukaan. Tarkista arvot muutoksen jälkeen."
         }
       },
       "transfer_groups": {
@@ -495,6 +513,12 @@
       },
       "monthly_fixed_cost_today": {
         "name": "Kiinteä kuukausikustannus tänään"
+      },
+      "exchange_rate": {
+        "name": "Vaihtokurssi"
+      },
+      "price_data_source": {
+        "name": "Hintatietojen lähde"
       }
     },
     "number": {
