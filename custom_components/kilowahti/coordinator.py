@@ -1489,9 +1489,12 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return self._total_price_array(self._today_slots)
 
     def tomorrow_total_price_array(self) -> list[dict] | None:
-        if not self._expose_total_price_arrays or not self._tomorrow_slots:
+        if not self._expose_total_price_arrays:
             return None
-        return self._total_price_array(self._tomorrow_slots)
+        slots = self._tomorrow_total_slots()
+        if not slots:
+            return None
+        return self._total_price_array(slots)
 
     # ------------------------------------------------------------------
     # Optimization scores

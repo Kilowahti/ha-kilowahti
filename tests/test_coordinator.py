@@ -1123,6 +1123,65 @@ async def test_tomorrow_total_price_array_ranks_within_its_own_day(hass, options
     assert min(e["rank"] for e in arr) == 1
 
 
+async def test_total_price_array_uses_fixed_period_price(hass, options, mock_utcnow):
+    """Today's entries price energy from the active fixed period, not spot."""
+    from datetime import date
+
+    from kilowahti.models import FixedPeriod
+
+    coord = await _setup_with(
+        hass,
+        options,
+        {CONF_EXPOSE_TOTAL_PRICE_ARRAYS: True, CONF_TRANSFER_GROUPS: [_TRANSFER_GROUP]},
+    )
+    coord._storage._periods = [
+        FixedPeriod(
+            id="fp1",
+            label="Fixed",
+            start_date=date(2026, 3, 13),
+            end_date=date(2026, 3, 14),
+            price=5.0,
+        )
+    ]
+
+    for entry in coord.today_total_price_array():
+        assert entry["energy"] == 5.0
+        assert entry["price"] == 8.0
+
+
+async def test_tomorrow_total_price_array_covers_fixed_period_without_spot_data(
+    hass, options, mock_utcnow
+):
+    """A fixed period covering tomorrow yields a full array before spot data arrives."""
+    from datetime import date
+
+    from kilowahti.models import FixedPeriod
+
+    coord = await _setup_with(
+        hass,
+        options,
+        {CONF_EXPOSE_TOTAL_PRICE_ARRAYS: True, CONF_TRANSFER_GROUPS: [_TRANSFER_GROUP]},
+    )
+    coord._storage._periods = [
+        FixedPeriod(
+            id="fp1",
+            label="Fixed",
+            start_date=date(2026, 3, 13),
+            end_date=date(2026, 3, 14),
+            price=5.0,
+        )
+    ]
+
+    arr = coord.tomorrow_total_price_array()
+    assert arr is not None
+    assert len(arr) == 24
+    assert arr[0]["time"] == "2026-03-14T00:00:00+00:00"
+    for entry in arr:
+        assert entry["energy"] == 5.0
+        assert entry["transfer"] == 3.0
+        assert entry["price"] == 8.0
+
+
 async def test_tomorrow_arrays_are_none_before_tomorrow_is_fetched(hass, options, mock_utcnow):
     """Both tomorrow arrays stay unset until tomorrow's prices arrive."""
     coord = await _setup_with(
