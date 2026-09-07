@@ -118,13 +118,15 @@
         "description": "Nastavte, ako sa hodnoty senzorov zobrazujú v Home Assistante.",
         "data": {
           "expose_price_arrays": "Zverejniť cenové polia ako atribúty senzora (zväčšuje databázu)",
+          "expose_total_price_arrays": "Zverejniť polia celkovej ceny ako atribúty senzora (zväčšuje databázu)",
           "high_precision": "Režim vysokej presnosti",
           "show_rolling_averages": "Zobraziť priemerné ceny na nasledujúcich 30 min, 1 h a 2 h",
           "generation_enabled": "Povoliť funkcie výroby a výkupu"
         },
         "data_description": {
           "expose_price_arrays": "Zapisuje polia today_prices a tomorrow_prices do atribútov senzora spot_price, ktoré sa potom ukladajú do databázy. Uľahčuje tvorbu grafov na dashboarde, ale na ich zobrazenie nie je potrebné a zbytočne zaťažuje databázu.",
-          "high_precision": "Pri zapnutí zobrazujú cenové senzory viac desatinných miest. Atribúty a výpočty vždy používajú plnú presnosť.",
+          "expose_total_price_arrays": "Zapisuje polia today_prices a tomorrow_prices do atribútov senzora celkovej ceny, kde každá položka obsahuje rozpis na energiu a distribúciu. Zaťažuje databázu rovnako ako polia spotovej ceny.",
+          "high_precision": "Pri zapnutí zobrazujú cenové senzory a atribúty cenových polí viac desatinných miest. Vnútorné výpočty vždy používajú plnú presnosť.",
           "show_rolling_averages": "Pridá senzory priemernej ceny na nasledujúcich 30, 60 a 120 minút.",
           "generation_enabled": "Povolí senzory a služby výkupnej ceny, batérie a arbitráže. Nastavenia výroby nájdete v ponuke Výroba a výkup."
         }
@@ -242,6 +244,7 @@
         "title": "Rozšírené možnosti",
         "data": {
           "expose_price_arrays": "Zverejniť cenové polia ako atribúty senzora (zväčšuje databázu)",
+          "expose_total_price_arrays": "Zverejniť polia celkovej ceny ako atribúty senzora (zväčšuje databázu)",
           "high_precision": "Režim vysokej presnosti",
           "show_rolling_averages": "Zobraziť priemerné ceny na nasledujúcich 30 min, 1 h a 2 h",
           "generation_enabled": "Povoliť funkcie výroby a výkupu"

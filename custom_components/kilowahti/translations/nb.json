@@ -119,13 +119,15 @@
         "description": "Konfigurer hvordan sensorverdier vises i Hjemmeassistent.",
         "data": {
           "expose_price_arrays": "Eksponere prismatriser som sensorattributter (øker DB-størrelsen)",
+          "expose_total_price_arrays": "Eksponere totalprismatriser som sensorattributter (øker DB-størrelsen)",
           "high_precision": "Modus med høy presisjon",
           "show_rolling_averages": "Vis neste gjennomsnittspriser på 30 min, 1 t og 2 t",
           "generation_enabled": "Aktiver generasjons- og eksportfunksjoner"
         },
         "data_description": {
           "expose_price_arrays": "Skriver today_prices og tomorrow_prices-arrays til spot_price sensorattributtene, som deretter lagres i databasen. Gjør dashbordgrafer enklere å bygge, men er ikke nødvendig for å vise dem og legger til unødvendig DB-belastning.",
-          "high_precision": "Når den er på, viser prissensorer flere desimaler. Attributter og beregninger bruker alltid full presisjon.",
+          "expose_total_price_arrays": "Skriver today_prices og tomorrow_prices-arrays til totalpris-sensorattributtene, der hver oppføring inneholder fordelingen på energi og nettleie. Belaster databasen like mye som spotprisarrayene.",
+          "high_precision": "Når den er på, viser prissensorer og prisarray-attributter flere desimaler. Interne beregninger bruker alltid full presisjon.",
           "show_rolling_averages": "Legger til sensorer for gjennomsnittspris i løpet av de neste 30, 60 og 120 minuttene.",
           "generation_enabled": "Aktiverer eksportpris-, batteri- og arbitrasjesensorer og -tjenester. Konfigurer generasjonsinnstillinger i menyen Generering og eksport innstillinger."
         }
@@ -244,6 +246,7 @@
         "title": "Avanserte alternativer",
         "data": {
           "expose_price_arrays": "Eksponere prismatriser som sensorattributter (øker DB-størrelsen)",
+          "expose_total_price_arrays": "Eksponere totalprismatriser som sensorattributter (øker DB-størrelsen)",
           "high_precision": "Modus med høy presisjon",
           "show_rolling_averages": "Vis neste gjennomsnittspriser på 30 min, 1 t og 2 t",
           "generation_enabled": "Aktiver generasjons- og eksportfunksjoner"

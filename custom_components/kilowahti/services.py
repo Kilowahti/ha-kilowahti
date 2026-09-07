@@ -158,12 +158,7 @@ def _fmt(coordinator: KilowahtiCoordinator, price: float | None, formatted: bool
         return None
     if not formatted:
         return price
-    converted = coordinator.format_price(price)
-    if converted is None:
-        return None
-    base = 5 if coordinator._high_precision else 2
-    extra = 2 if coordinator.display_in_major else 0
-    return round(converted, base + extra)
+    return coordinator.display_price(price)
 
 
 # ---------------------------------------------------------------------------

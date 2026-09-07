@@ -30,6 +30,7 @@ from .const import (
     CONF_EXPORT_PRICE_THRESHOLD,
     CONF_EXPORT_PRICING_MODE,
     CONF_EXPOSE_PRICE_ARRAYS,
+    CONF_EXPOSE_TOTAL_PRICE_ARRAYS,
     CONF_FIXED_EXPORT_RATE,
     CONF_FORWARD_AVG_HOURS,
     CONF_FX_MODE,
@@ -66,6 +67,7 @@ from .const import (
     DEFAULT_EXPORT_PRICE_THRESHOLD,
     DEFAULT_EXPORT_PRICING_MODE,
     DEFAULT_EXPOSE_PRICE_ARRAYS,
+    DEFAULT_EXPOSE_TOTAL_PRICE_ARRAYS,
     DEFAULT_FIXED_EXPORT_RATE,
     DEFAULT_FORWARD_AVG_HOURS,
     DEFAULT_GENERATION_ENABLED,
@@ -319,6 +321,10 @@ def _advanced_options_schema(defaults: dict) -> vol.Schema:
         vol.Required(
             CONF_EXPOSE_PRICE_ARRAYS,
             default=defaults.get(CONF_EXPOSE_PRICE_ARRAYS, DEFAULT_EXPOSE_PRICE_ARRAYS),
+        ): selector.BooleanSelector(),
+        vol.Required(
+            CONF_EXPOSE_TOTAL_PRICE_ARRAYS,
+            default=defaults.get(CONF_EXPOSE_TOTAL_PRICE_ARRAYS, DEFAULT_EXPOSE_TOTAL_PRICE_ARRAYS),
         ): selector.BooleanSelector(),
         vol.Required(
             CONF_HIGH_PRECISION,
@@ -726,6 +732,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
     async def async_step_advanced_options(self, user_input: dict | None = None):
         if user_input is not None:
             self._data[CONF_EXPOSE_PRICE_ARRAYS] = user_input[CONF_EXPOSE_PRICE_ARRAYS]
+            self._data[CONF_EXPOSE_TOTAL_PRICE_ARRAYS] = user_input[CONF_EXPOSE_TOTAL_PRICE_ARRAYS]
             self._data[CONF_HIGH_PRECISION] = user_input[CONF_HIGH_PRECISION]
             self._data[CONF_SHOW_ROLLING_AVERAGES] = user_input.get(
                 CONF_SHOW_ROLLING_AVERAGES, False
@@ -1092,6 +1099,9 @@ class KilowahtiOptionsFlow(OptionsFlow):
     async def async_step_advanced_options(self, user_input: dict | None = None):
         if user_input is not None:
             self._options[CONF_EXPOSE_PRICE_ARRAYS] = user_input[CONF_EXPOSE_PRICE_ARRAYS]
+            self._options[CONF_EXPOSE_TOTAL_PRICE_ARRAYS] = user_input[
+                CONF_EXPOSE_TOTAL_PRICE_ARRAYS
+            ]
             self._options[CONF_HIGH_PRECISION] = user_input[CONF_HIGH_PRECISION]
             self._options[CONF_SHOW_ROLLING_AVERAGES] = user_input.get(
                 CONF_SHOW_ROLLING_AVERAGES, False

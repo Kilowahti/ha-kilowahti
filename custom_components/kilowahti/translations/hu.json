@@ -118,13 +118,15 @@
         "description": "Állítsd be, hogyan jelenjenek meg a szenzorértékek a Home Assistantban.",
         "data": {
           "expose_price_arrays": "Ártömbök közzététele szenzorattribútumként (növeli az adatbázis méretét)",
+          "expose_total_price_arrays": "Teljes ár tömbök közzététele szenzorattribútumként (növeli az adatbázis méretét)",
           "high_precision": "Nagy pontosságú mód",
           "show_rolling_averages": "A következő 30 perc, 1 óra és 2 óra átlagárainak megjelenítése",
           "generation_enabled": "Termelési és betáplálási funkciók engedélyezése"
         },
         "data_description": {
           "expose_price_arrays": "A today_prices és tomorrow_prices tömböket a spot_price szenzor attribútumaiba írja, amelyek az adatbázisba kerülnek. Megkönnyíti az irányítópulti grafikonok készítését, de a megjelenítésükhöz nem szükséges, és feleslegesen terheli az adatbázist.",
-          "high_precision": "Bekapcsolva az árszenzorok több tizedesjegyet mutatnak. Az attribútumok és a számítások mindig teljes pontossággal működnek.",
+          "expose_total_price_arrays": "A today_prices és tomorrow_prices tömböket a teljes ár szenzor attribútumaiba írja, ahol minden bejegyzés tartalmazza az energia és a hálózati díj bontását. Ugyanannyira terheli az adatbázist, mint a tőzsdei ár tömbjei.",
+          "high_precision": "Bekapcsolva az árszenzorok és az ártömbök attribútumai több tizedesjegyet mutatnak. A belső számítások mindig teljes pontossággal működnek.",
           "show_rolling_averages": "Szenzorokat ad hozzá a következő 30, 60 és 120 perc átlagárához.",
           "generation_enabled": "Engedélyezi a betáplálási ár, az akkumulátor és az arbitrázs szenzorait és szolgáltatásait. A termelési beállításokat a Termelés és betáplálás menüben találod."
         }
@@ -242,6 +244,7 @@
         "title": "Speciális beállítások",
         "data": {
           "expose_price_arrays": "Ártömbök közzététele szenzorattribútumként (növeli az adatbázis méretét)",
+          "expose_total_price_arrays": "Teljes ár tömbök közzététele szenzorattribútumként (növeli az adatbázis méretét)",
           "high_precision": "Nagy pontosságú mód",
           "show_rolling_averages": "A következő 30 perc, 1 óra és 2 óra átlagárainak megjelenítése",
           "generation_enabled": "Termelési és betáplálási funkciók engedélyezése"

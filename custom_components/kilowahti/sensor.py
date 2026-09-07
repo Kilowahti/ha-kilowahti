@@ -405,6 +405,8 @@ async def async_setup_entry(
             continue
         if key == SENSOR_SPOT_PRICE:
             entities.append(KilowahtiSpotPriceSensor(coordinator, entry, description))
+        elif key == SENSOR_TOTAL_PRICE:
+            entities.append(KilowahtiTotalPriceSensor(coordinator, entry, description))
         elif key == SENSOR_PRICE_DATA_SOURCE:
             entities.append(KilowahtiPriceDataSourceSensor(coordinator, entry, description))
         elif key == SENSOR_CONTROL_FACTOR_TRANSFER:
@@ -526,6 +528,24 @@ class KilowahtiSpotPriceSensor(KilowahtiSensor):
         if today_arr is not None:
             attrs["today_prices"] = today_arr
         tomorrow_arr = self.coordinator.tomorrow_price_array()
+        if tomorrow_arr is not None:
+            attrs["tomorrow_prices"] = tomorrow_arr
+        return attrs
+
+
+# ---------------------------------------------------------------------------
+# Total price sensor (with optional price array attributes)
+# ---------------------------------------------------------------------------
+
+
+class KilowahtiTotalPriceSensor(KilowahtiSensor):
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        attrs: dict[str, Any] = {}
+        today_arr = self.coordinator.today_total_price_array()
+        if today_arr is not None:
+            attrs["today_prices"] = today_arr
+        tomorrow_arr = self.coordinator.tomorrow_total_price_array()
         if tomorrow_arr is not None:
             attrs["tomorrow_prices"] = tomorrow_arr
         return attrs

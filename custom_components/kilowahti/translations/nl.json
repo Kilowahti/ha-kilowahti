@@ -118,13 +118,15 @@
         "description": "Configureer hoe sensorwaarden in Home Assistant worden weergegeven.",
         "data": {
           "expose_price_arrays": "Prijsarrays als sensorattributen tonen (vergroot de database)",
+          "expose_total_price_arrays": "Totaalprijsarrays als sensorattributen tonen (vergroot de database)",
           "high_precision": "Hogeprecisiemodus",
           "show_rolling_averages": "Gemiddelde prijzen van komende 30 min, 1 u en 2 u tonen",
           "generation_enabled": "Opwekkings- en terugleverfuncties inschakelen"
         },
         "data_description": {
           "expose_price_arrays": "Schrijft de arrays today_prices en tomorrow_prices naar de attributen van de spot_price-sensor, die vervolgens in de database worden opgeslagen. Maakt het bouwen van dashboardgrafieken makkelijker, maar is voor de weergave niet nodig en zorgt voor onnodige databasebelasting.",
-          "high_precision": "Indien ingeschakeld tonen prijssensoren meer decimalen. Attributen en berekeningen gebruiken altijd de volledige precisie.",
+          "expose_total_price_arrays": "Schrijft de arrays today_prices en tomorrow_prices naar de attributen van de totaalprijs-sensor, waarbij elk item de opsplitsing in energie en nettarief bevat. Belast de database evenveel als de spotprijsarrays.",
+          "high_precision": "Indien ingeschakeld tonen prijssensoren en de prijsarray-attributen meer decimalen. Interne berekeningen gebruiken altijd de volledige precisie.",
           "show_rolling_averages": "Voegt sensoren toe voor de gemiddelde prijs over de komende 30, 60 en 120 minuten.",
           "generation_enabled": "Schakelt sensoren en diensten in voor terugleverprijs, batterij en arbitrage. Configureer de opwekkingsinstellingen in het menu Opwekking & teruglevering."
         }
@@ -242,6 +244,7 @@
         "title": "Geavanceerde opties",
         "data": {
           "expose_price_arrays": "Prijsarrays als sensorattributen tonen (vergroot de database)",
+          "expose_total_price_arrays": "Totaalprijsarrays als sensorattributen tonen (vergroot de database)",
           "high_precision": "Hogeprecisiemodus",
           "show_rolling_averages": "Gemiddelde prijzen van komende 30 min, 1 u en 2 u tonen",
           "generation_enabled": "Opwekkings- en terugleverfuncties inschakelen"

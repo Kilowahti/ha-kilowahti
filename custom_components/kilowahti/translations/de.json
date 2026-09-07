@@ -118,13 +118,15 @@
         "description": "Konfiguriere, wie Sensorwerte in Home Assistant angezeigt werden.",
         "data": {
           "expose_price_arrays": "Preis-Arrays als Sensorattribute bereitstellen (vergrößert die Datenbank)",
+          "expose_total_price_arrays": "Gesamtpreis-Arrays als Sensorattribute bereitstellen (vergrößert die Datenbank)",
           "high_precision": "Hochpräzisionsmodus",
           "show_rolling_averages": "Durchschnittspreise der nächsten 30 min, 1 h und 2 h anzeigen",
           "generation_enabled": "Erzeugungs- und Einspeisefunktionen aktivieren"
         },
         "data_description": {
           "expose_price_arrays": "Schreibt die Arrays today_prices und tomorrow_prices in die Attribute des spot_price-Sensors, die dann in der Datenbank gespeichert werden. Erleichtert das Erstellen von Dashboard-Diagrammen, ist für deren Anzeige aber nicht erforderlich und erzeugt unnötige Datenbanklast.",
-          "high_precision": "Wenn aktiviert, zeigen Preissensoren mehr Dezimalstellen. Attribute und Berechnungen verwenden immer die volle Genauigkeit.",
+          "expose_total_price_arrays": "Schreibt die Arrays today_prices und tomorrow_prices in die Attribute des Gesamtpreis-Sensors, wobei jeder Eintrag die Aufteilung in Energie und Netzentgelt enthält. Belastet die Datenbank genauso stark wie die Spotpreis-Arrays.",
+          "high_precision": "Wenn aktiviert, zeigen Preissensoren und die Preis-Array-Attribute mehr Dezimalstellen. Interne Berechnungen verwenden immer die volle Genauigkeit.",
           "show_rolling_averages": "Fügt Sensoren für den Durchschnittspreis der nächsten 30, 60 und 120 Minuten hinzu.",
           "generation_enabled": "Aktiviert Sensoren und Dienste für Einspeisepreis, Batterie und Arbitrage. Konfiguriere die Erzeugungseinstellungen im Menü Erzeugung & Einspeisung."
         }
@@ -242,6 +244,7 @@
         "title": "Erweiterte Optionen",
         "data": {
           "expose_price_arrays": "Preis-Arrays als Sensorattribute bereitstellen (vergrößert die Datenbank)",
+          "expose_total_price_arrays": "Gesamtpreis-Arrays als Sensorattribute bereitstellen (vergrößert die Datenbank)",
           "high_precision": "Hochpräzisionsmodus",
           "show_rolling_averages": "Durchschnittspreise der nächsten 30 min, 1 h und 2 h anzeigen",
           "generation_enabled": "Erzeugungs- und Einspeisefunktionen aktivieren"

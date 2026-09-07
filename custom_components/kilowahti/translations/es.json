@@ -106,13 +106,15 @@
         "description": "Configura cómo se muestran los valores de los sensores en Home Assistant.",
         "data": {
           "expose_price_arrays": "Exponer las matrices de precios como atributos del sensor (aumenta el tamaño de la base de datos)",
+          "expose_total_price_arrays": "Exponer las matrices de precio total como atributos del sensor (aumenta el tamaño de la base de datos)",
           "high_precision": "Modo de alta precisión",
           "show_rolling_averages": "Mostrar precios medios de los próximos 30 min, 1 h y 2 h",
           "generation_enabled": "Activar funciones de generación y excedentes"
         },
         "data_description": {
           "expose_price_arrays": "Escribe las matrices today_prices y tomorrow_prices en los atributos del sensor spot_price, que luego se guardan en la base de datos. Facilita crear gráficos en el panel, pero no es necesario para mostrarlos y añade carga innecesaria a la base de datos.",
-          "high_precision": "Si está activado, los sensores de precio muestran más decimales. Los atributos y cálculos siempre usan la precisión completa.",
+          "expose_total_price_arrays": "Escribe las matrices today_prices y tomorrow_prices en los atributos del sensor precio total, con el desglose de energía y peaje en cada entrada. Carga la base de datos igual que las matrices de precio spot.",
+          "high_precision": "Si está activado, los sensores de precio y los atributos de las matrices de precios muestran más decimales. Los cálculos internos siempre usan la precisión completa.",
           "show_rolling_averages": "Añade sensores del precio medio de los próximos 30, 60 y 120 minutos.",
           "generation_enabled": "Activa los sensores y servicios de precio de excedentes, batería y arbitraje. Configura los ajustes de generación en el menú Generación y excedentes."
         }
@@ -242,6 +244,7 @@
         "title": "Opciones avanzadas",
         "data": {
           "expose_price_arrays": "Exponer las matrices de precios como atributos del sensor (aumenta el tamaño de la base de datos)",
+          "expose_total_price_arrays": "Exponer las matrices de precio total como atributos del sensor (aumenta el tamaño de la base de datos)",
           "high_precision": "Modo de alta precisión",
           "show_rolling_averages": "Mostrar precios medios de los próximos 30 min, 1 h y 2 h",
           "generation_enabled": "Activar funciones de generación y excedentes"

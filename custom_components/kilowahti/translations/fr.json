@@ -118,13 +118,15 @@
         "description": "Configurez l'affichage des valeurs des capteurs dans Home Assistant.",
         "data": {
           "expose_price_arrays": "Exposer les tableaux de prix comme attributs de capteur (augmente la taille de la base de données)",
+          "expose_total_price_arrays": "Exposer les tableaux de prix total comme attributs de capteur (augmente la taille de la base de données)",
           "high_precision": "Mode haute précision",
           "show_rolling_averages": "Afficher les prix moyens des 30 min, 1 h et 2 h à venir",
           "generation_enabled": "Activer les fonctions de production et de revente"
         },
         "data_description": {
           "expose_price_arrays": "Écrit les tableaux today_prices et tomorrow_prices dans les attributs du capteur spot_price, qui sont ensuite stockés dans la base de données. Facilite la création de graphiques de tableau de bord, mais n'est pas nécessaire à leur affichage et ajoute une charge inutile à la base de données.",
-          "high_precision": "Si activé, les capteurs de prix affichent plus de décimales. Les attributs et les calculs utilisent toujours la précision complète.",
+          "expose_total_price_arrays": "Écrit les tableaux today_prices et tomorrow_prices dans les attributs du capteur prix total, chaque entrée détaillant l'énergie et l'acheminement. Charge la base de données autant que les tableaux de prix spot.",
+          "high_precision": "Si activé, les capteurs de prix et les attributs des tableaux de prix affichent plus de décimales. Les calculs internes utilisent toujours la précision complète.",
           "show_rolling_averages": "Ajoute des capteurs pour le prix moyen des 30, 60 et 120 prochaines minutes.",
           "generation_enabled": "Active les capteurs et services de prix de revente, de batterie et d'arbitrage. Configurez les paramètres de production dans le menu Production et revente."
         }
@@ -242,6 +244,7 @@
         "title": "Options avancées",
         "data": {
           "expose_price_arrays": "Exposer les tableaux de prix comme attributs de capteur (augmente la taille de la base de données)",
+          "expose_total_price_arrays": "Exposer les tableaux de prix total comme attributs de capteur (augmente la taille de la base de données)",
           "high_precision": "Mode haute précision",
           "show_rolling_averages": "Afficher les prix moyens des 30 min, 1 h et 2 h à venir",
           "generation_enabled": "Activer les fonctions de production et de revente"
