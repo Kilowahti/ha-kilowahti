@@ -837,6 +837,14 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
                 return tier.label
         return None
 
+    def active_transfer_tariff(self) -> str | None:
+        """Group and tier the current transfer price comes from, e.g. "Group, Tier"."""
+        group = self.active_transfer_group_label()
+        if group is None:
+            return None
+        tier = self.active_transfer_tier_label()
+        return f"{group}, {tier}" if tier else group
+
     def transfer_rank_info(self) -> tuple[int, int] | None:
         """Return (rank, tier_count) for the current transfer price among today's unique tiers.
 

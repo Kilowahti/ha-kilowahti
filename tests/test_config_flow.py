@@ -783,3 +783,73 @@ async def test_tier_edit_round_trips_major_scale(hass, options, mock_utcnow):
         await hass.async_block_till_done()
 
     assert entry.options[CONF_TRANSFER_GROUPS][0]["tiers"][0]["price"] == 500.0
+
+
+async def test_editing_a_tier_updates_sensors_without_reload(hass, options, mock_utcnow):
+    """Editing a tier price refreshes entities immediately.
+
+    The options flow must hand Home Assistant genuinely new option data;
+    mutating the stored group dicts in place leaves entry.options comparing
+    equal, so no update listener fires and entities keep the old price until
+    some unrelated event refreshes them.
+    """
+    from custom_components.kilowahti.const import CONF_TRANSFER_GROUPS, SENSOR_TRANSFER_PRICE
+    from homeassistant.helpers import entity_registry as er
+
+    flat_tier = {
+        "label": "Flat",
+        "price": 3.0,
+        "months": list(range(1, 13)),
+        "weekdays": list(range(7)),
+        "hour_start": 0,
+        "hour_end": 24,
+        "priority": 10,
+    }
+    await hass.config.async_set_time_zone("UTC")
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        title="Test Home",
+        options={**options, CONF_TRANSFER_GROUPS: [{**_GROUP, "tiers": [flat_tier]}]},
+    )
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    ent_reg = er.async_get(hass)
+    entity_id = ent_reg.async_get_entity_id(
+        "sensor", DOMAIN, f"{entry.entry_id}_{SENSOR_TRANSFER_PRICE}"
+    )
+    assert float(hass.states.get(entity_id).state) == 3.0
+
+    result = await _open_group_detail(hass, entry)
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], user_input={"action": "edit_tier_0"}
+    )
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"],
+        user_input={
+            "label": "Flat",
+            "price": 6.0,
+            "months": [str(m2) for m2 in range(1, 13)],
+            "weekdays": [str(w) for w in range(7)],
+            "hour_start": 0,
+            "hour_end": 24,
+            "priority": 10,
+            "delete": False,
+        },
+    )
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        result = await hass.config_entries.options.async_configure(
+            result["flow_id"], user_input={"action": "back"}
+        )
+        await hass.config_entries.options.async_configure(
+            result["flow_id"], user_input={"action": "save"}
+        )
+        await hass.async_block_till_done()
+
+    assert float(hass.states.get(entity_id).state) == 6.0

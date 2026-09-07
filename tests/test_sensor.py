@@ -300,3 +300,64 @@ async def test_monthly_fixed_cost_unit_follows_currency(hass, options, mock_utcn
     entity_id = _entity_id(hass, "sensor", entry.entry_id, SENSOR_MONTHLY_FIXED_COST_TODAY)
     state = hass.states.get(entity_id)
     assert state.attributes["unit_of_measurement"] == "kr"
+
+
+async def test_transfer_price_sensor_labels_group_and_tier(hass, options, mock_utcnow):
+    """The transfer price sensor names the group and tier it is currently priced from."""
+    from custom_components.kilowahti.const import CONF_TRANSFER_GROUPS
+
+    from .conftest import TODAY_PAYLOAD, TODAY_URL_RE, TOMORROW_URL_RE
+
+    group = {
+        "id": "g1",
+        "label": "Kausisiirto",
+        "active": True,
+        "tiers": [
+            {
+                "label": "Talviarkipäivä",
+                "price": 7.0,
+                "months": [12, 1, 2],
+                "weekdays": [0, 1, 2, 3, 4],
+                "hour_start": 7,
+                "hour_end": 22,
+                "priority": 1,
+            },
+            {
+                "label": "Muu aika",
+                "price": 3.0,
+                "months": list(range(1, 13)),
+                "weekdays": list(range(7)),
+                "hour_start": 0,
+                "hour_end": 24,
+                "priority": 2,
+            },
+        ],
+        "monthly_fixed_cost": 0.0,
+    }
+    await hass.config.async_set_time_zone("UTC")
+    entry = MockConfigEntry(
+        domain=DOMAIN, title="Test Home", options={**options, CONF_TRANSFER_GROUPS: [group]}
+    )
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    entity_id = _entity_id(hass, "sensor", entry.entry_id, SENSOR_TRANSFER_PRICE)
+    state = hass.states.get(entity_id)
+    # Frozen at 00:30 on a Friday in March — the catch-all tier is the match
+    assert float(state.state) == 3.0
+    assert state.attributes["tariff"] == "Kausisiirto, Muu aika"
+    assert state.attributes["group"] == "Kausisiirto"
+    assert state.attributes["tier"] == "Muu aika"
+
+
+async def test_transfer_price_sensor_label_without_group(hass, setup_integration, mock_utcnow):
+    """With no transfer group configured every naming attribute is None."""
+    entity_id = _entity_id(hass, "sensor", setup_integration.entry_id, SENSOR_TRANSFER_PRICE)
+    state = hass.states.get(entity_id)
+    assert state.attributes["tariff"] is None
+    assert state.attributes["group"] is None
+    assert state.attributes["tier"] is None
