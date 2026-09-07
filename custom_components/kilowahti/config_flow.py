@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import uuid
+from copy import deepcopy
 from datetime import date
 from typing import Any, NamedTuple
 
@@ -929,7 +930,11 @@ class KilowahtiOptionsFlow(OptionsFlow):
     def __init__(self, config_entry: ConfigEntry) -> None:
         self._entry = config_entry
         self._options: dict[str, Any] = dict(config_entry.options)
-        self._groups: list[dict] = list(self._options.get(CONF_TRANSFER_GROUPS, []))
+        # Deep copy: editing a group or tier must not mutate the entry's own
+        # option data. Home Assistant detects option changes by equality, so an
+        # in-place edit leaves the new options comparing equal to the stored
+        # ones, no update listener fires, and entities keep the old values.
+        self._groups: list[dict] = deepcopy(list(self._options.get(CONF_TRANSFER_GROUPS, [])))
         self._current_group_idx: int = 0
         self._current_tier_idx: int = 0
         self._current_profile_idx: int = 0
@@ -1031,7 +1036,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
                 self._options[key] = round(value * factor, 5)
                 _LOGGER.info("Currency flip: %s %s → %s", key, value, self._options[key])
 
-        groups = self._options.get(CONF_TRANSFER_GROUPS) or []
+        groups = deepcopy(self._options.get(CONF_TRANSFER_GROUPS) or [])
         for group in groups:
             if group.get("monthly_fixed_cost"):
                 group["monthly_fixed_cost"] = round(group["monthly_fixed_cost"] * factor, 5)
