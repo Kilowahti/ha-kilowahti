@@ -33,9 +33,9 @@
         "description": "Pré-preenchido com base na sua zona. Ajuste se necessário. Todos os preços (escalões de rede, períodos de preço fixo) são introduzidos com IVA incluído.",
         "data": {
           "vat_rate_pct": "Taxa de IVA (%)",
-          "electricity_tax": "Imposto sobre a eletricidade (c/kWh)",
-          "spot_commission": "Margem sobre o preço spot (c/kWh)",
-          "monthly_fixed_cost": "Custo fixo do contrato de eletricidade (€/mês)"
+          "electricity_tax": "Imposto sobre a eletricidade",
+          "spot_commission": "Margem sobre o preço spot",
+          "monthly_fixed_cost": "Custo fixo do contrato de eletricidade"
         },
         "data_description": {
           "electricity_tax": "Imposto fixo por kWh adicionado ao preço spot/fixo.",
@@ -54,7 +54,7 @@
         "title": "Adicionar grupo",
         "data": {
           "label": "Nome do grupo",
-          "monthly_fixed_cost": "Custo fixo mensal (€/mês)"
+          "monthly_fixed_cost": "Custo fixo mensal"
         },
         "data_description": {
           "monthly_fixed_cost": "Ligação à rede + quota fixa do contrato. Valor bruto (com IVA)."
@@ -64,7 +64,7 @@
         "title": "Editar definições do grupo",
         "data": {
           "label": "Nome do grupo",
-          "monthly_fixed_cost": "Custo fixo mensal (€/mês)"
+          "monthly_fixed_cost": "Custo fixo mensal"
         },
         "data_description": {
           "monthly_fixed_cost": "Ligação à rede + quota fixa do contrato. Valor bruto (com IVA)."
@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Editar grupo",
-        "description": "{group_label} — Adicione ou remova escalões, ou defina este grupo como ativo.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelecione um escalão para ver e alterar as suas definições, adicione um novo ou defina este grupo como ativo.",
         "data": {
           "action": "Ação"
         }
@@ -82,7 +82,7 @@
         "description": "Avaliados por ordem de prioridade; ganha a primeira correspondência. Adicione uma tarifa base com a prioridade mais baixa e sem restrições horárias.",
         "data": {
           "label": "Nome do escalão",
-          "price": "Preço (c/kWh)",
+          "price": "Preço",
           "months": "Meses ativos",
           "weekdays": "Dias ativos",
           "hour_start": "Hora de início (inclusive)",
@@ -90,10 +90,24 @@
           "priority": "Prioridade (menor = primeiro)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Editar tarifa de rede",
+        "description": "Altere os campos que quiser, ou marque a remoção para eliminar este escalão.",
+        "data": {
+          "label": "Nome do escalão",
+          "price": "Preço",
+          "months": "Meses ativos",
+          "weekdays": "Dias ativos",
+          "hour_start": "Hora de início (inclusive)",
+          "hour_end": "Hora de fim (exclusive)",
+          "priority": "Prioridade (menor = primeiro)",
+          "delete": "Remover este escalão"
+        }
+      },
       "thresholds": {
         "title": "Limiares e controlo",
         "data": {
-          "max_price": "Preço máximo de controlo (c/kWh)",
+          "max_price": "Preço máximo de controlo",
           "price_threshold_includes_transfer": "O preço máximo inclui a rede",
           "max_rank": "Posição máxima de controlo",
           "forward_avg_hours": "Comprimento da janela de média futura (horas)",
@@ -170,9 +184,9 @@
           "price_resolution": "Resolução de preços",
           "display_unit": "Unidade de apresentação",
           "vat_rate_pct": "Taxa de IVA (%)",
-          "electricity_tax": "Imposto sobre a eletricidade (c/kWh)",
-          "spot_commission": "Margem sobre o preço spot (c/kWh)",
-          "monthly_fixed_cost": "Custo fixo do contrato de eletricidade (€/mês)",
+          "electricity_tax": "Imposto sobre a eletricidade",
+          "spot_commission": "Margem sobre o preço spot",
+          "monthly_fixed_cost": "Custo fixo do contrato de eletricidade",
           "currency_mode": "Moeda de apresentação",
           "fx_mode": "Fonte da taxa de câmbio",
           "fx_rate": "Taxa de câmbio manual (moeda local por EUR)"
@@ -191,7 +205,7 @@
         "title": "Adicionar grupo",
         "data": {
           "label": "Nome do grupo",
-          "monthly_fixed_cost": "Custo fixo mensal (€/mês)"
+          "monthly_fixed_cost": "Custo fixo mensal"
         },
         "data_description": {
           "monthly_fixed_cost": "Ligação à rede + quota fixa do contrato. Valor bruto (com IVA)."
@@ -201,7 +215,7 @@
         "title": "Editar definições do grupo",
         "data": {
           "label": "Nome do grupo",
-          "monthly_fixed_cost": "Custo fixo mensal (€/mês)"
+          "monthly_fixed_cost": "Custo fixo mensal"
         },
         "data_description": {
           "monthly_fixed_cost": "Ligação à rede + quota fixa do contrato. Valor bruto (com IVA)."
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Editar grupo",
-        "description": "{group_label} — Adicione ou remova escalões, ou defina este grupo como ativo.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelecione um escalão para ver e alterar as suas definições, adicione um novo ou defina este grupo como ativo.",
         "data": {
           "action": "Ação"
         }
@@ -218,7 +232,7 @@
         "title": "Adicionar tarifa de rede",
         "data": {
           "label": "Nome do escalão (p. ex. Dia útil de inverno)",
-          "price": "Preço (c/kWh)",
+          "price": "Preço",
           "months": "Meses ativos",
           "weekdays": "Dias ativos",
           "hour_start": "Hora de início (inclusive)",
@@ -226,10 +240,24 @@
           "priority": "Prioridade (menor = primeiro)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Editar tarifa de rede",
+        "description": "Altere os campos que quiser, ou marque a remoção para eliminar este escalão.",
+        "data": {
+          "label": "Nome do escalão (p. ex. Dia útil de inverno)",
+          "price": "Preço",
+          "months": "Meses ativos",
+          "weekdays": "Dias ativos",
+          "hour_start": "Hora de início (inclusive)",
+          "hour_end": "Hora de fim (exclusive)",
+          "priority": "Prioridade (menor = primeiro)",
+          "delete": "Remover este escalão"
+        }
+      },
       "thresholds": {
         "title": "Limiares e controlo",
         "data": {
-          "max_price": "Preço máximo de controlo (c/kWh)",
+          "max_price": "Preço máximo de controlo",
           "price_threshold_includes_transfer": "O preço máximo inclui a rede",
           "max_rank": "Posição máxima de controlo",
           "forward_avg_hours": "Comprimento da janela de média futura (horas)",
@@ -299,13 +327,13 @@
         "description": "Configure os preços dos excedentes e as definições da bateria. Defina a capacidade da bateria como 0 para desativar os sensores de bateria.",
         "data": {
           "export_pricing_mode": "Modo de preço dos excedentes",
-          "export_commission": "Margem dos excedentes (c/kWh, deduzida do spot)",
-          "fixed_export_rate": "Tarifa fixa dos excedentes (c/kWh)",
-          "export_price_threshold": "Limiar do preço dos excedentes (c/kWh)",
+          "export_commission": "Margem dos excedentes (deduzida do spot)",
+          "fixed_export_rate": "Tarifa fixa dos excedentes",
+          "export_price_threshold": "Limiar do preço dos excedentes",
           "solar_window_start": "Hora de início da janela solar",
           "solar_window_end": "Hora de fim da janela solar",
-          "battery_capacity_kwh": "Capacidade da bateria (kWh, 0 = desativado)",
-          "battery_charge_power_kw": "Potência de carga da bateria (kW)"
+          "battery_capacity_kwh": "Capacidade da bateria (0 = desativado)",
+          "battery_charge_power_kw": "Potência de carga da bateria"
         },
         "data_description": {
           "export_commission": "Apenas no modo ligado ao spot. Margem do comprador deduzida do preço spot da API (sem IVA). Os pequenos produtores normalmente não cobram IVA sobre os excedentes.",
@@ -320,7 +348,7 @@
           "label": "Nome do período",
           "start_date": "Data de início",
           "end_date": "Data de fim (inclusive)",
-          "price": "Preço (c/kWh, com IVA)"
+          "price": "Preço (com IVA)"
         },
         "data_description": {
           "price": "Introduza o preço com IVA incluído. Este preço é usado tal como está — não é adicionado IVA."

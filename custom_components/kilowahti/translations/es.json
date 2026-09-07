@@ -21,9 +21,9 @@
         "description": "Precargado según tu región. Ajusta si es necesario. Todos los precios (tramos de peaje, periodos de precio fijo) se introducen con IVA incluido.",
         "data": {
           "vat_rate_pct": "Tipo de IVA (%)",
-          "electricity_tax": "Impuesto eléctrico (c/kWh)",
-          "spot_commission": "Margen sobre el precio spot (c/kWh)",
-          "monthly_fixed_cost": "Coste fijo del contrato eléctrico (€/mes)"
+          "electricity_tax": "Impuesto eléctrico",
+          "spot_commission": "Margen sobre el precio spot",
+          "monthly_fixed_cost": "Coste fijo del contrato eléctrico"
         },
         "data_description": {
           "electricity_tax": "Impuesto eléctrico fijo por kWh que se añade al precio spot/fijo.",
@@ -42,7 +42,7 @@
         "title": "Añadir grupo",
         "data": {
           "label": "Nombre del grupo",
-          "monthly_fixed_cost": "Coste fijo mensual (€/mes)"
+          "monthly_fixed_cost": "Coste fijo mensual"
         },
         "data_description": {
           "monthly_fixed_cost": "Conexión a la red + cuota fija del contrato. Importe bruto (IVA incluido)."
@@ -52,7 +52,7 @@
         "title": "Editar ajustes del grupo",
         "data": {
           "label": "Nombre del grupo",
-          "monthly_fixed_cost": "Coste fijo mensual (€/mes)"
+          "monthly_fixed_cost": "Coste fijo mensual"
         },
         "data_description": {
           "monthly_fixed_cost": "Conexión a la red + cuota fija del contrato. Importe bruto (IVA incluido)."
@@ -60,7 +60,7 @@
       },
       "transfer_group_detail": {
         "title": "Editar grupo",
-        "description": "{group_label} — Añade o elimina tramos, o establece este grupo como activo.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelecciona un tramo para ver y cambiar sus ajustes, añade uno nuevo o establece este grupo como activo.",
         "data": {
           "action": "Acción"
         }
@@ -70,7 +70,7 @@
         "description": "Se evalúa por orden de prioridad; gana la primera coincidencia. Añade una tarifa base con la prioridad más baja y sin restricciones horarias.",
         "data": {
           "label": "Nombre del tramo",
-          "price": "Precio (c/kWh)",
+          "price": "Precio",
           "months": "Meses activos",
           "weekdays": "Días activos",
           "hour_start": "Hora de inicio (incluida)",
@@ -78,10 +78,24 @@
           "priority": "Prioridad (menor = primero)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Editar peaje",
+        "description": "Cambia los campos que quieras, o marca la eliminación para borrar este tramo.",
+        "data": {
+          "label": "Nombre del tramo",
+          "price": "Precio",
+          "months": "Meses activos",
+          "weekdays": "Días activos",
+          "hour_start": "Hora de inicio (incluida)",
+          "hour_end": "Hora de fin (excluida)",
+          "priority": "Prioridad (menor = primero)",
+          "delete": "Eliminar este tramo"
+        }
+      },
       "thresholds": {
         "title": "Umbrales y control",
         "data": {
-          "max_price": "Precio máximo de control (c/kWh)",
+          "max_price": "Precio máximo de control",
           "price_threshold_includes_transfer": "El precio máximo incluye el peaje",
           "max_rank": "Posición máxima de control",
           "forward_avg_hours": "Longitud de la ventana de media futura (horas)",
@@ -170,9 +184,9 @@
           "price_resolution": "Resolución de precios",
           "display_unit": "Unidad de visualización",
           "vat_rate_pct": "Tipo de IVA (%)",
-          "electricity_tax": "Impuesto eléctrico (c/kWh)",
-          "spot_commission": "Margen sobre el precio spot (c/kWh)",
-          "monthly_fixed_cost": "Coste fijo del contrato eléctrico (€/mes)",
+          "electricity_tax": "Impuesto eléctrico",
+          "spot_commission": "Margen sobre el precio spot",
+          "monthly_fixed_cost": "Coste fijo del contrato eléctrico",
           "currency_mode": "Moneda de visualización",
           "fx_mode": "Fuente del tipo de cambio",
           "fx_rate": "Tipo de cambio manual (moneda local por EUR)"
@@ -191,7 +205,7 @@
         "title": "Añadir grupo",
         "data": {
           "label": "Nombre del grupo",
-          "monthly_fixed_cost": "Coste fijo mensual (€/mes)"
+          "monthly_fixed_cost": "Coste fijo mensual"
         },
         "data_description": {
           "monthly_fixed_cost": "Conexión a la red + cuota fija del contrato. Importe bruto (IVA incluido)."
@@ -201,7 +215,7 @@
         "title": "Editar ajustes del grupo",
         "data": {
           "label": "Nombre del grupo",
-          "monthly_fixed_cost": "Coste fijo mensual (€/mes)"
+          "monthly_fixed_cost": "Coste fijo mensual"
         },
         "data_description": {
           "monthly_fixed_cost": "Conexión a la red + cuota fija del contrato. Importe bruto (IVA incluido)."
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Editar grupo",
-        "description": "{group_label} — Añade o elimina tramos, o establece este grupo como activo.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelecciona un tramo para ver y cambiar sus ajustes, añade uno nuevo o establece este grupo como activo.",
         "data": {
           "action": "Acción"
         }
@@ -218,7 +232,7 @@
         "title": "Añadir peaje",
         "data": {
           "label": "Nombre del tramo (p. ej. Laborable de invierno)",
-          "price": "Precio (c/kWh)",
+          "price": "Precio",
           "months": "Meses activos",
           "weekdays": "Días activos",
           "hour_start": "Hora de inicio (incluida)",
@@ -226,10 +240,24 @@
           "priority": "Prioridad (menor = primero)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Editar peaje",
+        "description": "Cambia los campos que quieras, o marca la eliminación para borrar este tramo.",
+        "data": {
+          "label": "Nombre del tramo (p. ej. Laborable de invierno)",
+          "price": "Precio",
+          "months": "Meses activos",
+          "weekdays": "Días activos",
+          "hour_start": "Hora de inicio (incluida)",
+          "hour_end": "Hora de fin (excluida)",
+          "priority": "Prioridad (menor = primero)",
+          "delete": "Eliminar este tramo"
+        }
+      },
       "thresholds": {
         "title": "Umbrales y control",
         "data": {
-          "max_price": "Precio máximo de control (c/kWh)",
+          "max_price": "Precio máximo de control",
           "price_threshold_includes_transfer": "El precio máximo incluye el peaje",
           "max_rank": "Posición máxima de control",
           "forward_avg_hours": "Longitud de la ventana de media futura (horas)",
@@ -299,13 +327,13 @@
         "description": "Configura los precios de excedentes y los ajustes de la batería. Pon la capacidad de la batería a 0 para desactivar los sensores de batería.",
         "data": {
           "export_pricing_mode": "Modo de precio de excedentes",
-          "export_commission": "Margen de excedentes (c/kWh, deducido del spot)",
-          "fixed_export_rate": "Precio fijo de excedentes (c/kWh)",
-          "export_price_threshold": "Umbral de precio de excedentes (c/kWh)",
+          "export_commission": "Margen de excedentes (deducido del spot)",
+          "fixed_export_rate": "Precio fijo de excedentes",
+          "export_price_threshold": "Umbral de precio de excedentes",
           "solar_window_start": "Hora de inicio de la ventana solar",
           "solar_window_end": "Hora de fin de la ventana solar",
-          "battery_capacity_kwh": "Capacidad de la batería (kWh, 0 = desactivado)",
-          "battery_charge_power_kw": "Potencia de carga de la batería (kW)"
+          "battery_capacity_kwh": "Capacidad de la batería (0 = desactivado)",
+          "battery_charge_power_kw": "Potencia de carga de la batería"
         },
         "data_description": {
           "export_commission": "Solo en modo vinculado al spot. Margen del comprador que se deduce del precio spot de la API (sin IVA). Los pequeños productores normalmente no repercuten IVA en los excedentes.",
@@ -320,7 +348,7 @@
           "label": "Nombre del periodo",
           "start_date": "Fecha de inicio",
           "end_date": "Fecha de fin (incluida)",
-          "price": "Precio (c/kWh, IVA incluido)"
+          "price": "Precio (IVA incluido)"
         },
         "data_description": {
           "price": "Introduce el precio con IVA incluido. Este precio se usa tal cual — no se añade IVA."

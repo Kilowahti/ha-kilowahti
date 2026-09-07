@@ -33,9 +33,9 @@
         "description": "Prérempli selon votre région. Ajustez si nécessaire. Tous les prix (paliers d'acheminement, périodes à prix fixe) sont saisis TTC (TVA incluse).",
         "data": {
           "vat_rate_pct": "Taux de TVA (%)",
-          "electricity_tax": "Taxe sur l'électricité (c/kWh)",
-          "spot_commission": "Commission sur le prix spot (c/kWh)",
-          "monthly_fixed_cost": "Coût fixe du contrat d'électricité (€/mois)"
+          "electricity_tax": "Taxe sur l'électricité",
+          "spot_commission": "Commission sur le prix spot",
+          "monthly_fixed_cost": "Coût fixe du contrat d'électricité"
         },
         "data_description": {
           "electricity_tax": "Taxe fixe par kWh ajoutée au prix spot/fixe.",
@@ -54,7 +54,7 @@
         "title": "Ajouter un groupe",
         "data": {
           "label": "Nom du groupe",
-          "monthly_fixed_cost": "Coût fixe mensuel (€/mois)"
+          "monthly_fixed_cost": "Coût fixe mensuel"
         },
         "data_description": {
           "monthly_fixed_cost": "Raccordement au réseau + abonnement du contrat. Montant TTC (TVA incluse)."
@@ -64,7 +64,7 @@
         "title": "Modifier les paramètres du groupe",
         "data": {
           "label": "Nom du groupe",
-          "monthly_fixed_cost": "Coût fixe mensuel (€/mois)"
+          "monthly_fixed_cost": "Coût fixe mensuel"
         },
         "data_description": {
           "monthly_fixed_cost": "Raccordement au réseau + abonnement du contrat. Montant TTC (TVA incluse)."
@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Modifier le groupe",
-        "description": "{group_label} — Ajoutez ou supprimez des paliers, ou définissez ce groupe comme actif.",
+        "description": "{group_label}\n\n{tier_list}\n\nSélectionnez un palier pour voir et modifier ses réglages, ajoutez-en un nouveau, ou définissez ce groupe comme actif.",
         "data": {
           "action": "Action"
         }
@@ -82,7 +82,7 @@
         "description": "Évalué par ordre de priorité ; la première correspondance l'emporte. Ajoutez un tarif de base en priorité la plus basse, sans contraintes horaires.",
         "data": {
           "label": "Nom du palier",
-          "price": "Prix (c/kWh)",
+          "price": "Prix",
           "months": "Mois actifs",
           "weekdays": "Jours actifs",
           "hour_start": "Heure de début (incluse)",
@@ -90,10 +90,24 @@
           "priority": "Priorité (plus bas = premier)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Modifier le tarif d'acheminement",
+        "description": "Modifiez les champs souhaités, ou cochez la suppression pour supprimer ce palier.",
+        "data": {
+          "label": "Nom du palier",
+          "price": "Prix",
+          "months": "Mois actifs",
+          "weekdays": "Jours actifs",
+          "hour_start": "Heure de début (incluse)",
+          "hour_end": "Heure de fin (exclue)",
+          "priority": "Priorité (plus bas = premier)",
+          "delete": "Supprimer ce palier"
+        }
+      },
       "thresholds": {
         "title": "Seuils et pilotage",
         "data": {
-          "max_price": "Prix maximal de pilotage (c/kWh)",
+          "max_price": "Prix maximal de pilotage",
           "price_threshold_includes_transfer": "Le prix maximal inclut l'acheminement",
           "max_rank": "Rang maximal de pilotage",
           "forward_avg_hours": "Longueur de la fenêtre de moyenne à venir (heures)",
@@ -170,9 +184,9 @@
           "price_resolution": "Résolution des prix",
           "display_unit": "Unité d'affichage",
           "vat_rate_pct": "Taux de TVA (%)",
-          "electricity_tax": "Taxe sur l'électricité (c/kWh)",
-          "spot_commission": "Commission sur le prix spot (c/kWh)",
-          "monthly_fixed_cost": "Coût fixe du contrat d'électricité (€/mois)",
+          "electricity_tax": "Taxe sur l'électricité",
+          "spot_commission": "Commission sur le prix spot",
+          "monthly_fixed_cost": "Coût fixe du contrat d'électricité",
           "currency_mode": "Devise d'affichage",
           "fx_mode": "Source du taux de change",
           "fx_rate": "Taux de change manuel (devise locale pour 1 EUR)"
@@ -191,7 +205,7 @@
         "title": "Ajouter un groupe",
         "data": {
           "label": "Nom du groupe",
-          "monthly_fixed_cost": "Coût fixe mensuel (€/mois)"
+          "monthly_fixed_cost": "Coût fixe mensuel"
         },
         "data_description": {
           "monthly_fixed_cost": "Raccordement au réseau + abonnement du contrat. Montant TTC (TVA incluse)."
@@ -201,7 +215,7 @@
         "title": "Modifier les paramètres du groupe",
         "data": {
           "label": "Nom du groupe",
-          "monthly_fixed_cost": "Coût fixe mensuel (€/mois)"
+          "monthly_fixed_cost": "Coût fixe mensuel"
         },
         "data_description": {
           "monthly_fixed_cost": "Raccordement au réseau + abonnement du contrat. Montant TTC (TVA incluse)."
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Modifier le groupe",
-        "description": "{group_label} — Ajoutez ou supprimez des paliers, ou définissez ce groupe comme actif.",
+        "description": "{group_label}\n\n{tier_list}\n\nSélectionnez un palier pour voir et modifier ses réglages, ajoutez-en un nouveau, ou définissez ce groupe comme actif.",
         "data": {
           "action": "Action"
         }
@@ -218,7 +232,7 @@
         "title": "Ajouter un tarif d'acheminement",
         "data": {
           "label": "Nom du palier (p. ex. Hiver jour ouvré)",
-          "price": "Prix (c/kWh)",
+          "price": "Prix",
           "months": "Mois actifs",
           "weekdays": "Jours actifs",
           "hour_start": "Heure de début (incluse)",
@@ -226,10 +240,24 @@
           "priority": "Priorité (plus bas = premier)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Modifier le tarif d'acheminement",
+        "description": "Modifiez les champs souhaités, ou cochez la suppression pour supprimer ce palier.",
+        "data": {
+          "label": "Nom du palier (p. ex. Hiver jour ouvré)",
+          "price": "Prix",
+          "months": "Mois actifs",
+          "weekdays": "Jours actifs",
+          "hour_start": "Heure de début (incluse)",
+          "hour_end": "Heure de fin (exclue)",
+          "priority": "Priorité (plus bas = premier)",
+          "delete": "Supprimer ce palier"
+        }
+      },
       "thresholds": {
         "title": "Seuils et pilotage",
         "data": {
-          "max_price": "Prix maximal de pilotage (c/kWh)",
+          "max_price": "Prix maximal de pilotage",
           "price_threshold_includes_transfer": "Le prix maximal inclut l'acheminement",
           "max_rank": "Rang maximal de pilotage",
           "forward_avg_hours": "Longueur de la fenêtre de moyenne à venir (heures)",
@@ -299,13 +327,13 @@
         "description": "Configurez les prix de revente et les paramètres de batterie. Réglez la capacité de la batterie sur 0 pour désactiver les capteurs de batterie.",
         "data": {
           "export_pricing_mode": "Mode de tarification de la revente",
-          "export_commission": "Marge de revente (c/kWh, déduite du spot)",
-          "fixed_export_rate": "Tarif de revente fixe (c/kWh)",
-          "export_price_threshold": "Seuil de prix de revente (c/kWh)",
+          "export_commission": "Marge de revente (déduite du spot)",
+          "fixed_export_rate": "Tarif de revente fixe",
+          "export_price_threshold": "Seuil de prix de revente",
           "solar_window_start": "Heure de début de la fenêtre solaire",
           "solar_window_end": "Heure de fin de la fenêtre solaire",
-          "battery_capacity_kwh": "Capacité de la batterie (kWh, 0 = désactivé)",
-          "battery_charge_power_kw": "Puissance de charge de la batterie (kW)"
+          "battery_capacity_kwh": "Capacité de la batterie (0 = désactivé)",
+          "battery_charge_power_kw": "Puissance de charge de la batterie"
         },
         "data_description": {
           "export_commission": "Mode indexé sur le spot uniquement. Marge de l'acheteur déduite du prix spot de l'API (hors TVA). Les petits producteurs ne facturent généralement pas de TVA sur la revente.",
@@ -320,7 +348,7 @@
           "label": "Nom de la période",
           "start_date": "Date de début",
           "end_date": "Date de fin (incluse)",
-          "price": "Prix (c/kWh, TVA incluse)"
+          "price": "Prix (TVA incluse)"
         },
         "data_description": {
           "price": "Saisissez le prix TVA incluse. Ce prix est utilisé tel quel — aucune TVA n'est ajoutée."

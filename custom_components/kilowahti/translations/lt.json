@@ -33,9 +33,9 @@
         "description": "Užpildyta iš anksto pagal jūsų regioną. Jei reikia, pakoreguokite. Visos kainos (persiuntimo pakopos, fiksuotos kainos laikotarpiai) įvedamos su PVM.",
         "data": {
           "vat_rate_pct": "PVM tarifas (%)",
-          "electricity_tax": "Elektros akcizas (c/kWh)",
-          "spot_commission": "Biržos kainos antkainis (c/kWh)",
-          "monthly_fixed_cost": "Elektros sutarties fiksuotas mokestis (€/mėn.)"
+          "electricity_tax": "Elektros akcizas",
+          "spot_commission": "Biržos kainos antkainis",
+          "monthly_fixed_cost": "Elektros sutarties fiksuotas mokestis"
         },
         "data_description": {
           "electricity_tax": "Fiksuotas elektros akcizas už kWh, pridedamas prie biržos/fiksuotos kainos.",
@@ -54,7 +54,7 @@
         "title": "Pridėti grupę",
         "data": {
           "label": "Grupės pavadinimas",
-          "monthly_fixed_cost": "Mėnesinis fiksuotas mokestis (€/mėn.)"
+          "monthly_fixed_cost": "Mėnesinis fiksuotas mokestis"
         },
         "data_description": {
           "monthly_fixed_cost": "Prijungimo mokestis + sutarties bazinis mokestis. Bruto suma (su PVM)."
@@ -64,7 +64,7 @@
         "title": "Redaguoti grupės nustatymus",
         "data": {
           "label": "Grupės pavadinimas",
-          "monthly_fixed_cost": "Mėnesinis fiksuotas mokestis (€/mėn.)"
+          "monthly_fixed_cost": "Mėnesinis fiksuotas mokestis"
         },
         "data_description": {
           "monthly_fixed_cost": "Prijungimo mokestis + sutarties bazinis mokestis. Bruto suma (su PVM)."
@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Redaguoti grupę",
-        "description": "{group_label} — pridėkite arba pašalinkite pakopas, arba nustatykite šią grupę kaip aktyvią.",
+        "description": "{group_label}\n\n{tier_list}\n\nPasirinkite pakopą, kad matytumėte ir keistumėte jos nustatymus, pridėkite naują arba nustatykite šią grupę kaip aktyvią.",
         "data": {
           "action": "Veiksmas"
         }
@@ -82,7 +82,7 @@
         "description": "Vertinama prioriteto tvarka; galioja pirmasis atitikmuo. Pridėkite bazinį tarifą kaip žemiausią prioritetą be laiko apribojimų.",
         "data": {
           "label": "Pakopos pavadinimas",
-          "price": "Kaina (c/kWh)",
+          "price": "Kaina",
           "months": "Aktyvūs mėnesiai",
           "weekdays": "Aktyvios savaitės dienos",
           "hour_start": "Pradžios laikas (imtinai)",
@@ -90,10 +90,24 @@
           "priority": "Prioritetas (mažesnis = pirmas)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Redaguoti persiuntimo kainą",
+        "description": "Pakeiskite norimus laukus arba pažymėkite pašalinimą, kad pakopą ištrintumėte.",
+        "data": {
+          "label": "Pakopos pavadinimas",
+          "price": "Kaina",
+          "months": "Aktyvūs mėnesiai",
+          "weekdays": "Aktyvios savaitės dienos",
+          "hour_start": "Pradžios laikas (imtinai)",
+          "hour_end": "Pabaigos laikas (neimtinai)",
+          "priority": "Prioritetas (mažesnis = pirmas)",
+          "delete": "Pašalinti šią pakopą"
+        }
+      },
       "thresholds": {
         "title": "Slenksčiai ir valdymas",
         "data": {
-          "max_price": "Valdymo maksimali kaina (c/kWh)",
+          "max_price": "Valdymo maksimali kaina",
           "price_threshold_includes_transfer": "Maksimali kaina apima persiuntimą",
           "max_rank": "Valdymo maksimalus rangas",
           "forward_avg_hours": "Ateities vidurkio lango trukmė (valandos)",
@@ -170,9 +184,9 @@
           "price_resolution": "Kainų raiška",
           "display_unit": "Rodymo vienetas",
           "vat_rate_pct": "PVM tarifas (%)",
-          "electricity_tax": "Elektros akcizas (c/kWh)",
-          "spot_commission": "Biržos kainos antkainis (c/kWh)",
-          "monthly_fixed_cost": "Elektros sutarties fiksuotas mokestis (€/mėn.)",
+          "electricity_tax": "Elektros akcizas",
+          "spot_commission": "Biržos kainos antkainis",
+          "monthly_fixed_cost": "Elektros sutarties fiksuotas mokestis",
           "currency_mode": "Rodymo valiuta",
           "fx_mode": "Valiutos kurso šaltinis",
           "fx_rate": "Rankinis valiutos kursas (vietos valiuta už 1 EUR)"
@@ -191,7 +205,7 @@
         "title": "Pridėti grupę",
         "data": {
           "label": "Grupės pavadinimas",
-          "monthly_fixed_cost": "Mėnesinis fiksuotas mokestis (€/mėn.)"
+          "monthly_fixed_cost": "Mėnesinis fiksuotas mokestis"
         },
         "data_description": {
           "monthly_fixed_cost": "Prijungimo mokestis + sutarties bazinis mokestis. Bruto suma (su PVM)."
@@ -201,7 +215,7 @@
         "title": "Redaguoti grupės nustatymus",
         "data": {
           "label": "Grupės pavadinimas",
-          "monthly_fixed_cost": "Mėnesinis fiksuotas mokestis (€/mėn.)"
+          "monthly_fixed_cost": "Mėnesinis fiksuotas mokestis"
         },
         "data_description": {
           "monthly_fixed_cost": "Prijungimo mokestis + sutarties bazinis mokestis. Bruto suma (su PVM)."
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Redaguoti grupę",
-        "description": "{group_label} — pridėkite arba pašalinkite pakopas, arba nustatykite šią grupę kaip aktyvią.",
+        "description": "{group_label}\n\n{tier_list}\n\nPasirinkite pakopą, kad matytumėte ir keistumėte jos nustatymus, pridėkite naują arba nustatykite šią grupę kaip aktyvią.",
         "data": {
           "action": "Veiksmas"
         }
@@ -218,7 +232,7 @@
         "title": "Pridėti persiuntimo kainą",
         "data": {
           "label": "Pakopos pavadinimas (pvz., Žiemos darbo diena)",
-          "price": "Kaina (c/kWh)",
+          "price": "Kaina",
           "months": "Aktyvūs mėnesiai",
           "weekdays": "Aktyvios savaitės dienos",
           "hour_start": "Pradžios laikas (imtinai)",
@@ -226,10 +240,24 @@
           "priority": "Prioritetas (mažesnis = pirmas)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Redaguoti persiuntimo kainą",
+        "description": "Pakeiskite norimus laukus arba pažymėkite pašalinimą, kad pakopą ištrintumėte.",
+        "data": {
+          "label": "Pakopos pavadinimas (pvz., Žiemos darbo diena)",
+          "price": "Kaina",
+          "months": "Aktyvūs mėnesiai",
+          "weekdays": "Aktyvios savaitės dienos",
+          "hour_start": "Pradžios laikas (imtinai)",
+          "hour_end": "Pabaigos laikas (neimtinai)",
+          "priority": "Prioritetas (mažesnis = pirmas)",
+          "delete": "Pašalinti šią pakopą"
+        }
+      },
       "thresholds": {
         "title": "Slenksčiai ir valdymas",
         "data": {
-          "max_price": "Valdymo maksimali kaina (c/kWh)",
+          "max_price": "Valdymo maksimali kaina",
           "price_threshold_includes_transfer": "Maksimali kaina apima persiuntimą",
           "max_rank": "Valdymo maksimalus rangas",
           "forward_avg_hours": "Ateities vidurkio lango trukmė (valandos)",
@@ -299,13 +327,13 @@
         "description": "Sukonfigūruokite eksporto kainas ir akumuliatoriaus nustatymus. Nustatykite akumuliatoriaus talpą į 0, kad išjungtumėte akumuliatoriaus jutiklius.",
         "data": {
           "export_pricing_mode": "Eksporto kainodaros režimas",
-          "export_commission": "Eksporto marža (c/kWh, atimama iš biržos kainos)",
-          "fixed_export_rate": "Fiksuota eksporto kaina (c/kWh)",
-          "export_price_threshold": "Eksporto kainos slenkstis (c/kWh)",
+          "export_commission": "Eksporto marža (atimama iš biržos kainos)",
+          "fixed_export_rate": "Fiksuota eksporto kaina",
+          "export_price_threshold": "Eksporto kainos slenkstis",
           "solar_window_start": "Saulės lango pradžios valanda",
           "solar_window_end": "Saulės lango pabaigos valanda",
-          "battery_capacity_kwh": "Akumuliatoriaus talpa (kWh, 0 = išjungta)",
-          "battery_charge_power_kw": "Akumuliatoriaus įkrovimo galia (kW)"
+          "battery_capacity_kwh": "Akumuliatoriaus talpa (0 = išjungta)",
+          "battery_charge_power_kw": "Akumuliatoriaus įkrovimo galia"
         },
         "data_description": {
           "export_commission": "Tik su birža susietame režime. Pardavėjo marža, atimama iš biržos API kainos (be PVM). Smulkieji gamintojai už eksportą PVM paprastai neima.",
@@ -320,7 +348,7 @@
           "label": "Laikotarpio pavadinimas",
           "start_date": "Pradžios data",
           "end_date": "Pabaigos data (imtinai)",
-          "price": "Kaina (c/kWh, su PVM)"
+          "price": "Kaina (su PVM)"
         },
         "data_description": {
           "price": "Įveskite kainą su PVM. Ši kaina naudojama be pakeitimų — PVM nepridedamas."

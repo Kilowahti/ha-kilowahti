@@ -33,9 +33,9 @@
         "description": "Precompilato in base alla tua zona. Modifica se necessario. Tutti i prezzi (fasce di trasporto, periodi a prezzo fisso) vanno inseriti IVA inclusa.",
         "data": {
           "vat_rate_pct": "Aliquota IVA (%)",
-          "electricity_tax": "Accisa (c/kWh)",
-          "spot_commission": "Margine sul prezzo spot (c/kWh)",
-          "monthly_fixed_cost": "Costo fisso del contratto elettrico (€/mese)"
+          "electricity_tax": "Accisa",
+          "spot_commission": "Margine sul prezzo spot",
+          "monthly_fixed_cost": "Costo fisso del contratto elettrico"
         },
         "data_description": {
           "electricity_tax": "Accisa fissa per kWh aggiunta al prezzo spot/fisso.",
@@ -54,7 +54,7 @@
         "title": "Aggiungi gruppo",
         "data": {
           "label": "Nome del gruppo",
-          "monthly_fixed_cost": "Costo fisso mensile (€/mese)"
+          "monthly_fixed_cost": "Costo fisso mensile"
         },
         "data_description": {
           "monthly_fixed_cost": "Connessione alla rete + quota fissa del contratto. Importo lordo (IVA inclusa)."
@@ -64,7 +64,7 @@
         "title": "Modifica impostazioni del gruppo",
         "data": {
           "label": "Nome del gruppo",
-          "monthly_fixed_cost": "Costo fisso mensile (€/mese)"
+          "monthly_fixed_cost": "Costo fisso mensile"
         },
         "data_description": {
           "monthly_fixed_cost": "Connessione alla rete + quota fissa del contratto. Importo lordo (IVA inclusa)."
@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Modifica gruppo",
-        "description": "{group_label} — Aggiungi o rimuovi fasce, oppure imposta questo gruppo come attivo.",
+        "description": "{group_label}\n\n{tier_list}\n\nSeleziona una fascia per vedere e modificare le sue impostazioni, aggiungine una nuova oppure imposta questo gruppo come attivo.",
         "data": {
           "action": "Azione"
         }
@@ -82,7 +82,7 @@
         "description": "Valutate in ordine di priorità; vince la prima corrispondenza. Aggiungi una tariffa base con la priorità più bassa e senza vincoli di orario.",
         "data": {
           "label": "Nome della fascia",
-          "price": "Prezzo (c/kWh)",
+          "price": "Prezzo",
           "months": "Mesi attivi",
           "weekdays": "Giorni attivi",
           "hour_start": "Ora di inizio (inclusa)",
@@ -90,10 +90,24 @@
           "priority": "Priorità (minore = prima)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Modifica prezzo di trasporto",
+        "description": "Modifica i campi desiderati, oppure spunta la rimozione per eliminare la fascia.",
+        "data": {
+          "label": "Nome della fascia",
+          "price": "Prezzo",
+          "months": "Mesi attivi",
+          "weekdays": "Giorni attivi",
+          "hour_start": "Ora di inizio (inclusa)",
+          "hour_end": "Ora di fine (esclusa)",
+          "priority": "Priorità (minore = prima)",
+          "delete": "Rimuovi questa fascia"
+        }
+      },
       "thresholds": {
         "title": "Soglie e controllo",
         "data": {
-          "max_price": "Prezzo massimo di controllo (c/kWh)",
+          "max_price": "Prezzo massimo di controllo",
           "price_threshold_includes_transfer": "Il prezzo massimo include il trasporto",
           "max_rank": "Posizione massima di controllo",
           "forward_avg_hours": "Lunghezza della finestra di media futura (ore)",
@@ -170,9 +184,9 @@
           "price_resolution": "Risoluzione dei prezzi",
           "display_unit": "Unità di visualizzazione",
           "vat_rate_pct": "Aliquota IVA (%)",
-          "electricity_tax": "Accisa (c/kWh)",
-          "spot_commission": "Margine sul prezzo spot (c/kWh)",
-          "monthly_fixed_cost": "Costo fisso del contratto elettrico (€/mese)",
+          "electricity_tax": "Accisa",
+          "spot_commission": "Margine sul prezzo spot",
+          "monthly_fixed_cost": "Costo fisso del contratto elettrico",
           "currency_mode": "Valuta di visualizzazione",
           "fx_mode": "Fonte del tasso di cambio",
           "fx_rate": "Tasso di cambio manuale (valuta locale per EUR)"
@@ -191,7 +205,7 @@
         "title": "Aggiungi gruppo",
         "data": {
           "label": "Nome del gruppo",
-          "monthly_fixed_cost": "Costo fisso mensile (€/mese)"
+          "monthly_fixed_cost": "Costo fisso mensile"
         },
         "data_description": {
           "monthly_fixed_cost": "Connessione alla rete + quota fissa del contratto. Importo lordo (IVA inclusa)."
@@ -201,7 +215,7 @@
         "title": "Modifica impostazioni del gruppo",
         "data": {
           "label": "Nome del gruppo",
-          "monthly_fixed_cost": "Costo fisso mensile (€/mese)"
+          "monthly_fixed_cost": "Costo fisso mensile"
         },
         "data_description": {
           "monthly_fixed_cost": "Connessione alla rete + quota fissa del contratto. Importo lordo (IVA inclusa)."
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Modifica gruppo",
-        "description": "{group_label} — Aggiungi o rimuovi fasce, oppure imposta questo gruppo come attivo.",
+        "description": "{group_label}\n\n{tier_list}\n\nSeleziona una fascia per vedere e modificare le sue impostazioni, aggiungine una nuova oppure imposta questo gruppo come attivo.",
         "data": {
           "action": "Azione"
         }
@@ -218,7 +232,7 @@
         "title": "Aggiungi prezzo di trasporto",
         "data": {
           "label": "Nome della fascia (ad es. Feriale invernale)",
-          "price": "Prezzo (c/kWh)",
+          "price": "Prezzo",
           "months": "Mesi attivi",
           "weekdays": "Giorni attivi",
           "hour_start": "Ora di inizio (inclusa)",
@@ -226,10 +240,24 @@
           "priority": "Priorità (minore = prima)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Modifica prezzo di trasporto",
+        "description": "Modifica i campi desiderati, oppure spunta la rimozione per eliminare la fascia.",
+        "data": {
+          "label": "Nome della fascia (ad es. Feriale invernale)",
+          "price": "Prezzo",
+          "months": "Mesi attivi",
+          "weekdays": "Giorni attivi",
+          "hour_start": "Ora di inizio (inclusa)",
+          "hour_end": "Ora di fine (esclusa)",
+          "priority": "Priorità (minore = prima)",
+          "delete": "Rimuovi questa fascia"
+        }
+      },
       "thresholds": {
         "title": "Soglie e controllo",
         "data": {
-          "max_price": "Prezzo massimo di controllo (c/kWh)",
+          "max_price": "Prezzo massimo di controllo",
           "price_threshold_includes_transfer": "Il prezzo massimo include il trasporto",
           "max_rank": "Posizione massima di controllo",
           "forward_avg_hours": "Lunghezza della finestra di media futura (ore)",
@@ -299,13 +327,13 @@
         "description": "Configura i prezzi di immissione e le impostazioni della batteria. Imposta la capacità della batteria a 0 per disattivare i sensori della batteria.",
         "data": {
           "export_pricing_mode": "Modalità di prezzo di immissione",
-          "export_commission": "Margine di immissione (c/kWh, detratto dallo spot)",
-          "fixed_export_rate": "Tariffa fissa di immissione (c/kWh)",
-          "export_price_threshold": "Soglia del prezzo di immissione (c/kWh)",
+          "export_commission": "Margine di immissione (detratto dallo spot)",
+          "fixed_export_rate": "Tariffa fissa di immissione",
+          "export_price_threshold": "Soglia del prezzo di immissione",
           "solar_window_start": "Ora di inizio della finestra solare",
           "solar_window_end": "Ora di fine della finestra solare",
-          "battery_capacity_kwh": "Capacità della batteria (kWh, 0 = disattivato)",
-          "battery_charge_power_kw": "Potenza di carica della batteria (kW)"
+          "battery_capacity_kwh": "Capacità della batteria (0 = disattivato)",
+          "battery_charge_power_kw": "Potenza di carica della batteria"
         },
         "data_description": {
           "export_commission": "Solo in modalità legata allo spot. Margine dell'acquirente detratto dal prezzo spot dell'API (IVA esclusa). I piccoli produttori di norma non applicano l'IVA sull'energia immessa.",
@@ -320,7 +348,7 @@
           "label": "Nome del periodo",
           "start_date": "Data di inizio",
           "end_date": "Data di fine (inclusa)",
-          "price": "Prezzo (c/kWh, IVA inclusa)"
+          "price": "Prezzo (IVA inclusa)"
         },
         "data_description": {
           "price": "Inserisci il prezzo IVA inclusa. Questo prezzo viene usato così com'è — non viene aggiunta l'IVA."

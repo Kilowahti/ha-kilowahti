@@ -33,9 +33,9 @@
         "description": "Precompletat pe baza zonei tale. Ajustează dacă este nevoie. Toate prețurile (treptele de distribuție, perioadele cu preț fix) se introduc cu TVA inclus.",
         "data": {
           "vat_rate_pct": "Cota TVA (%)",
-          "electricity_tax": "Acciză (c/kWh)",
-          "spot_commission": "Marjă la prețul spot (c/kWh)",
-          "monthly_fixed_cost": "Cost fix al contractului de energie (€/lună)"
+          "electricity_tax": "Acciză",
+          "spot_commission": "Marjă la prețul spot",
+          "monthly_fixed_cost": "Cost fix al contractului de energie"
         },
         "data_description": {
           "electricity_tax": "Acciză fixă pe kWh adăugată peste prețul spot/fix.",
@@ -54,7 +54,7 @@
         "title": "Adaugă grup",
         "data": {
           "label": "Numele grupului",
-          "monthly_fixed_cost": "Cost fix lunar (€/lună)"
+          "monthly_fixed_cost": "Cost fix lunar"
         },
         "data_description": {
           "monthly_fixed_cost": "Racordare la rețea + abonamentul contractului. Valoare brută (cu TVA inclus)."
@@ -64,7 +64,7 @@
         "title": "Editează setările grupului",
         "data": {
           "label": "Numele grupului",
-          "monthly_fixed_cost": "Cost fix lunar (€/lună)"
+          "monthly_fixed_cost": "Cost fix lunar"
         },
         "data_description": {
           "monthly_fixed_cost": "Racordare la rețea + abonamentul contractului. Valoare brută (cu TVA inclus)."
@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Editează grupul",
-        "description": "{group_label} — Adaugă sau elimină trepte, ori setează acest grup ca activ.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelectează o treaptă pentru a-i vedea și modifica setările, adaugă una nouă ori setează acest grup ca activ.",
         "data": {
           "action": "Acțiune"
         }
@@ -82,7 +82,7 @@
         "description": "Evaluate în ordinea priorității; prima potrivire câștigă. Adaugă un tarif de bază cu prioritatea cea mai mică și fără restricții de timp.",
         "data": {
           "label": "Numele treptei",
-          "price": "Preț (c/kWh)",
+          "price": "Preț",
           "months": "Luni active",
           "weekdays": "Zile active",
           "hour_start": "Ora de început (inclusiv)",
@@ -90,10 +90,24 @@
           "priority": "Prioritate (mai mic = primul)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Editează prețul de distribuție",
+        "description": "Modifică orice câmp sau bifează eliminarea pentru a șterge această treaptă.",
+        "data": {
+          "label": "Numele treptei",
+          "price": "Preț",
+          "months": "Luni active",
+          "weekdays": "Zile active",
+          "hour_start": "Ora de început (inclusiv)",
+          "hour_end": "Ora de sfârșit (exclusiv)",
+          "priority": "Prioritate (mai mic = primul)",
+          "delete": "Elimină această treaptă"
+        }
+      },
       "thresholds": {
         "title": "Praguri și control",
         "data": {
-          "max_price": "Preț maxim de control (c/kWh)",
+          "max_price": "Preț maxim de control",
           "price_threshold_includes_transfer": "Prețul maxim include distribuția",
           "max_rank": "Rang maxim de control",
           "forward_avg_hours": "Lungimea ferestrei de medie viitoare (ore)",
@@ -170,9 +184,9 @@
           "price_resolution": "Rezoluția prețurilor",
           "display_unit": "Unitate de afișare",
           "vat_rate_pct": "Cota TVA (%)",
-          "electricity_tax": "Acciză (c/kWh)",
-          "spot_commission": "Marjă la prețul spot (c/kWh)",
-          "monthly_fixed_cost": "Cost fix al contractului de energie (€/lună)",
+          "electricity_tax": "Acciză",
+          "spot_commission": "Marjă la prețul spot",
+          "monthly_fixed_cost": "Cost fix al contractului de energie",
           "currency_mode": "Moneda de afișare",
           "fx_mode": "Sursa cursului de schimb",
           "fx_rate": "Curs de schimb manual (monedă locală per EUR)"
@@ -191,7 +205,7 @@
         "title": "Adaugă grup",
         "data": {
           "label": "Numele grupului",
-          "monthly_fixed_cost": "Cost fix lunar (€/lună)"
+          "monthly_fixed_cost": "Cost fix lunar"
         },
         "data_description": {
           "monthly_fixed_cost": "Racordare la rețea + abonamentul contractului. Valoare brută (cu TVA inclus)."
@@ -201,7 +215,7 @@
         "title": "Editează setările grupului",
         "data": {
           "label": "Numele grupului",
-          "monthly_fixed_cost": "Cost fix lunar (€/lună)"
+          "monthly_fixed_cost": "Cost fix lunar"
         },
         "data_description": {
           "monthly_fixed_cost": "Racordare la rețea + abonamentul contractului. Valoare brută (cu TVA inclus)."
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Editează grupul",
-        "description": "{group_label} — Adaugă sau elimină trepte, ori setează acest grup ca activ.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelectează o treaptă pentru a-i vedea și modifica setările, adaugă una nouă ori setează acest grup ca activ.",
         "data": {
           "action": "Acțiune"
         }
@@ -218,7 +232,7 @@
         "title": "Adaugă preț de distribuție",
         "data": {
           "label": "Numele treptei (de ex. Zi lucrătoare de iarnă)",
-          "price": "Preț (c/kWh)",
+          "price": "Preț",
           "months": "Luni active",
           "weekdays": "Zile active",
           "hour_start": "Ora de început (inclusiv)",
@@ -226,10 +240,24 @@
           "priority": "Prioritate (mai mic = primul)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Editează prețul de distribuție",
+        "description": "Modifică orice câmp sau bifează eliminarea pentru a șterge această treaptă.",
+        "data": {
+          "label": "Numele treptei (de ex. Zi lucrătoare de iarnă)",
+          "price": "Preț",
+          "months": "Luni active",
+          "weekdays": "Zile active",
+          "hour_start": "Ora de început (inclusiv)",
+          "hour_end": "Ora de sfârșit (exclusiv)",
+          "priority": "Prioritate (mai mic = primul)",
+          "delete": "Elimină această treaptă"
+        }
+      },
       "thresholds": {
         "title": "Praguri și control",
         "data": {
-          "max_price": "Preț maxim de control (c/kWh)",
+          "max_price": "Preț maxim de control",
           "price_threshold_includes_transfer": "Prețul maxim include distribuția",
           "max_rank": "Rang maxim de control",
           "forward_avg_hours": "Lungimea ferestrei de medie viitoare (ore)",
@@ -299,13 +327,13 @@
         "description": "Configurează prețurile de livrare și setările bateriei. Setează capacitatea bateriei la 0 pentru a dezactiva senzorii bateriei.",
         "data": {
           "export_pricing_mode": "Mod de preț pentru livrare",
-          "export_commission": "Marjă de livrare (c/kWh, scăzută din spot)",
-          "fixed_export_rate": "Tarif fix de livrare (c/kWh)",
-          "export_price_threshold": "Prag al prețului de livrare (c/kWh)",
+          "export_commission": "Marjă de livrare (scăzută din spot)",
+          "fixed_export_rate": "Tarif fix de livrare",
+          "export_price_threshold": "Prag al prețului de livrare",
           "solar_window_start": "Ora de început a ferestrei solare",
           "solar_window_end": "Ora de sfârșit a ferestrei solare",
-          "battery_capacity_kwh": "Capacitatea bateriei (kWh, 0 = dezactivat)",
-          "battery_charge_power_kw": "Puterea de încărcare a bateriei (kW)"
+          "battery_capacity_kwh": "Capacitatea bateriei (0 = dezactivat)",
+          "battery_charge_power_kw": "Puterea de încărcare a bateriei"
         },
         "data_description": {
           "export_commission": "Doar în modul legat de spot. Marja cumpărătorului scăzută din prețul spot al API-ului (fără TVA). Micii producători de regulă nu colectează TVA pentru energia livrată.",
@@ -320,7 +348,7 @@
           "label": "Numele perioadei",
           "start_date": "Data de început",
           "end_date": "Data de sfârșit (inclusiv)",
-          "price": "Preț (c/kWh, cu TVA inclus)"
+          "price": "Preț (cu TVA inclus)"
         },
         "data_description": {
           "price": "Introdu prețul cu TVA inclus. Acest preț este folosit ca atare — nu se adaugă TVA."

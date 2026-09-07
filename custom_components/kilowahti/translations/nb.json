@@ -33,9 +33,9 @@
         "description": "Forhåndsfylt fra din region. Juster om nødvendig. Alle priser (overføringsnivåer, faste perioder) er oppgitt inkl. mva.",
         "data": {
           "vat_rate_pct": "Momssats (%)",
-          "electricity_tax": "Strømskatt (c/kWh)",
-          "spot_commission": "Spotprisprovisjon (c/kWh)",
-          "monthly_fixed_cost": "Strømkontrakt fast kostnad (€/måned)"
+          "electricity_tax": "Strømskatt",
+          "spot_commission": "Spotprisprovisjon",
+          "monthly_fixed_cost": "Strømkontrakt fast kostnad"
         },
         "data_description": {
           "electricity_tax": "Flat elektrisitetsavgift per kWh lagt på toppen av spot/fast pris.",
@@ -54,7 +54,7 @@
         "title": "Legg til gruppe",
         "data": {
           "label": "Gruppenavn",
-          "monthly_fixed_cost": "Månedlig fast kostnad (€/måned)"
+          "monthly_fixed_cost": "Månedlig fast kostnad"
         },
         "data_description": {
           "monthly_fixed_cost": "Nettforbindelse + kontraktsbasisavgift. Bruttobeløp (inkludert mva)."
@@ -64,7 +64,7 @@
         "title": "Rediger gruppeinnstillinger",
         "data": {
           "label": "Gruppenavn",
-          "monthly_fixed_cost": "Månedlig fast kostnad (€/måned)"
+          "monthly_fixed_cost": "Månedlig fast kostnad"
         },
         "data_description": {
           "monthly_fixed_cost": "Nettforbindelse + kontraktsbasisavgift. Bruttobeløp (inkludert mva)."
@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Rediger gruppe",
-        "description": "{group_label} — Legg til eller fjern nivåer, eller angi denne gruppen som aktiv.",
+        "description": "{group_label}\n\n{tier_list}\n\nVelg et nivå for å se og endre innstillingene, legg til et nytt, eller angi denne gruppen som aktiv.",
         "data": {
           "action": "Handling"
         }
@@ -82,7 +82,7 @@
         "description": "Evaluert i prioritert rekkefølge; første treff gjelder. Legg til en basissats som laveste prioritet uten tidsbegrensninger.",
         "data": {
           "label": "Nivåetikett",
-          "price": "Pris (c/kWh)",
+          "price": "Pris",
           "months": "Måneder aktive",
           "weekdays": "Ukedager aktive",
           "hour_start": "Starttid (inkludert)",
@@ -90,10 +90,24 @@
           "priority": "Prioritet (lavere = første)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Rediger overføringspris",
+        "description": "Endre feltene du vil, eller kryss av for fjerning for å slette nivået.",
+        "data": {
+          "label": "Nivåetikett",
+          "price": "Pris",
+          "months": "Måneder aktive",
+          "weekdays": "Ukedager aktive",
+          "hour_start": "Starttid (inkludert)",
+          "hour_end": "Sluttid (eksklusiv)",
+          "priority": "Prioritet (lavere = første)",
+          "delete": "Fjern dette nivået"
+        }
+      },
       "thresholds": {
         "title": "Terskler og kontroll",
         "data": {
-          "max_price": "Kontroller maks pris (c/kWh)",
+          "max_price": "Kontroller maks pris",
           "price_threshold_includes_transfer": "Maks pris inkluderer overføring",
           "max_rank": "Kontroller maks rangering",
           "forward_avg_hours": "Gjennomsnittlig vinduslengde fremover (timer)",
@@ -171,9 +185,9 @@
           "price_resolution": "Prisoppløsning",
           "display_unit": "Displayenhet",
           "vat_rate_pct": "Momssats (%)",
-          "electricity_tax": "Strømskatt (c/kWh)",
-          "spot_commission": "Spotprisprovisjon (c/kWh)",
-          "monthly_fixed_cost": "Strømkontrakt fast kostnad (€/måned)",
+          "electricity_tax": "Strømskatt",
+          "spot_commission": "Spotprisprovisjon",
+          "monthly_fixed_cost": "Strømkontrakt fast kostnad",
           "currency_mode": "Visningsvaluta",
           "fx_mode": "Valutakurskilde",
           "fx_rate": "Manuell valutakurs (lokal valuta per EUR)"
@@ -192,7 +206,7 @@
         "title": "Legg til gruppe",
         "data": {
           "label": "Gruppenavn",
-          "monthly_fixed_cost": "Månedlig fast kostnad (€/måned)"
+          "monthly_fixed_cost": "Månedlig fast kostnad"
         },
         "data_description": {
           "monthly_fixed_cost": "Nettforbindelse + kontraktsbasisavgift. Bruttobeløp (inkludert mva)."
@@ -202,7 +216,7 @@
         "title": "Rediger gruppeinnstillinger",
         "data": {
           "label": "Gruppenavn",
-          "monthly_fixed_cost": "Månedlig fast kostnad (€/måned)"
+          "monthly_fixed_cost": "Månedlig fast kostnad"
         },
         "data_description": {
           "monthly_fixed_cost": "Nettforbindelse + kontraktsbasisavgift. Bruttobeløp (inkludert mva)."
@@ -210,7 +224,7 @@
       },
       "transfer_group_detail": {
         "title": "Rediger gruppe",
-        "description": "{group_label} — Legg til eller fjern nivåer, eller angi denne gruppen som aktiv.",
+        "description": "{group_label}\n\n{tier_list}\n\nVelg et nivå for å se og endre innstillingene, legg til et nytt, eller angi denne gruppen som aktiv.",
         "data": {
           "action": "Handling"
         }
@@ -219,7 +233,7 @@
         "title": "Legg til overføringspris",
         "data": {
           "label": "Nivånavn (f.eks. Vinterukedag)",
-          "price": "Pris (c/kWh)",
+          "price": "Pris",
           "months": "Måneder aktive",
           "weekdays": "Ukedager aktive",
           "hour_start": "Starttid (inkludert)",
@@ -227,10 +241,24 @@
           "priority": "Prioritet (lavere = første)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Rediger overføringspris",
+        "description": "Endre feltene du vil, eller kryss av for fjerning for å slette nivået.",
+        "data": {
+          "label": "Nivånavn (f.eks. Vinterukedag)",
+          "price": "Pris",
+          "months": "Måneder aktive",
+          "weekdays": "Ukedager aktive",
+          "hour_start": "Starttid (inkludert)",
+          "hour_end": "Sluttid (eksklusiv)",
+          "priority": "Prioritet (lavere = første)",
+          "delete": "Fjern dette nivået"
+        }
+      },
       "thresholds": {
         "title": "Terskler og kontroll",
         "data": {
-          "max_price": "Kontroller maks pris (c/kWh)",
+          "max_price": "Kontroller maks pris",
           "price_threshold_includes_transfer": "Maks pris inkluderer overføring",
           "max_rank": "Kontroller maks rangering",
           "forward_avg_hours": "Gjennomsnittlig vinduslengde fremover (timer)",
@@ -301,13 +329,13 @@
         "description": "Konfigurer eksportpriser og batteriinnstillinger. Sett batterikapasiteten til 0 for å deaktivere batterisensorer.",
         "data": {
           "export_pricing_mode": "Eksportprismodus",
-          "export_commission": "Eksportprovisjon (c/kWh trukket fra spot)",
-          "fixed_export_rate": "Fast eksportrate (c/kWh)",
-          "export_price_threshold": "Eksportprisgrense (c/kWh)",
+          "export_commission": "Eksportprovisjon (trukket fra spot)",
+          "fixed_export_rate": "Fast eksportrate",
+          "export_price_threshold": "Eksportprisgrense",
           "solar_window_start": "Starttime for solvindu",
           "solar_window_end": "Slutttid for solvindu",
-          "battery_capacity_kwh": "Batterikapasitet (kWh, 0 = deaktivert)",
-          "battery_charge_power_kw": "Batteriladningskraft (kW)"
+          "battery_capacity_kwh": "Batterikapasitet (0 = deaktivert)",
+          "battery_charge_power_kw": "Batteriladningskraft"
         },
         "data_description": {
           "export_commission": "Bare spotkoblet modus. Selgers margin trukket fra spot-API-prisen (ekskl. MVA). Små produsenter krever vanligvis ikke moms på eksport.",
@@ -322,7 +350,7 @@
           "label": "Periodeetikett",
           "start_date": "Startdato",
           "end_date": "Sluttdato (inkludert)",
-          "price": "Pris (c/kWh, inkl mva)"
+          "price": "Pris (inkl mva)"
         },
         "data_description": {
           "price": "Angi pris inkl. mva. Denne prisen brukes som den er - ingen moms legges til."

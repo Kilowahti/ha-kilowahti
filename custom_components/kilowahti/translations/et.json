@@ -33,9 +33,9 @@
         "description": "Eeltäidetud piirkonna järgi. Muuda vajadusel. Kõik hinnad (võrgutasu tasemed, fikseeritud perioodid) sisestatakse koos käibemaksuga.",
         "data": {
           "vat_rate_pct": "Käibemaksumäär (%)",
-          "electricity_tax": "Elektriaktsiis (c/kWh)",
-          "spot_commission": "Marginaal (c/kWh)",
-          "monthly_fixed_cost": "Elektrilepingu püsitasu (€/kuus)"
+          "electricity_tax": "Elektriaktsiis",
+          "spot_commission": "Marginaal",
+          "monthly_fixed_cost": "Elektrilepingu püsitasu"
         },
         "data_description": {
           "electricity_tax": "Kindel elektriaktsiis kWh kohta, lisatakse spot-/fikseeritud hinnale.",
@@ -54,7 +54,7 @@
         "title": "Lisa grupp",
         "data": {
           "label": "Grupi nimi",
-          "monthly_fixed_cost": "Püsiv kuutasu (€/kuus)"
+          "monthly_fixed_cost": "Püsiv kuutasu"
         },
         "data_description": {
           "monthly_fixed_cost": "Võrguühendus + lepingu põhitasu. Koos käibemaksuga."
@@ -64,7 +64,7 @@
         "title": "Muuda grupi seadeid",
         "data": {
           "label": "Grupi nimi",
-          "monthly_fixed_cost": "Püsiv kuutasu (€/kuus)"
+          "monthly_fixed_cost": "Püsiv kuutasu"
         },
         "data_description": {
           "monthly_fixed_cost": "Võrguühendus + lepingu põhitasu. Koos käibemaksuga."
@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Muuda gruppi",
-        "description": "{group_label} — Lisa või eemalda tasemeid või määra grupp aktiivseks.",
+        "description": "{group_label}\n\n{tier_list}\n\nVali tase, et näha ja muuta selle seadeid, lisa uus või määra grupp aktiivseks.",
         "data": {
           "action": "Toiming"
         }
@@ -82,7 +82,7 @@
         "description": "Hinnatakse prioriteedi järjekorras; esimene sobivus võidab. Lisa põhitariif madalaima prioriteediga ilma ajapiiranguteta.",
         "data": {
           "label": "Taseme nimi",
-          "price": "Hind (c/kWh)",
+          "price": "Hind",
           "months": "Aktiivsed kuud",
           "weekdays": "Aktiivsed nädalapäevad",
           "hour_start": "Algusaeg (kaasa arvatud)",
@@ -90,10 +90,24 @@
           "priority": "Prioriteet (madalam = esimene)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Muuda võrgutasu",
+        "description": "Muuda soovitud välju või märgi eemaldamine, et tase kustutada.",
+        "data": {
+          "label": "Taseme nimi",
+          "price": "Hind",
+          "months": "Aktiivsed kuud",
+          "weekdays": "Aktiivsed nädalapäevad",
+          "hour_start": "Algusaeg (kaasa arvatud)",
+          "hour_end": "Lõppaeg (välja arvatud)",
+          "priority": "Prioriteet (madalam = esimene)",
+          "delete": "Eemalda see tase"
+        }
+      },
       "thresholds": {
         "title": "Läved ja juhtimine",
         "data": {
-          "max_price": "Juhtimise maksimumhind (c/kWh)",
+          "max_price": "Juhtimise maksimumhind",
           "price_threshold_includes_transfer": "Maksimumhind sisaldab võrgutasu",
           "max_rank": "Juhtimise maksimumjärjekoht",
           "forward_avg_hours": "Etteulatuva keskmise akna pikkus (tundi)",
@@ -171,9 +185,9 @@
           "price_resolution": "Hinna resolutsioon",
           "display_unit": "Kuvamisühik",
           "vat_rate_pct": "Käibemaksumäär (%)",
-          "electricity_tax": "Elektriaktsiis (c/kWh)",
-          "spot_commission": "Marginaal (c/kWh)",
-          "monthly_fixed_cost": "Elektrilepingu püsitasu (€/kuus)",
+          "electricity_tax": "Elektriaktsiis",
+          "spot_commission": "Marginaal",
+          "monthly_fixed_cost": "Elektrilepingu püsitasu",
           "currency_mode": "Kuvamisvaluuta",
           "fx_mode": "Vahetuskursi allikas",
           "fx_rate": "Käsitsi määratud vahetuskurss (kohalik valuuta euro kohta)"
@@ -192,7 +206,7 @@
         "title": "Lisa grupp",
         "data": {
           "label": "Grupi nimi",
-          "monthly_fixed_cost": "Püsiv kuutasu (€/kuus)"
+          "monthly_fixed_cost": "Püsiv kuutasu"
         },
         "data_description": {
           "monthly_fixed_cost": "Võrguühendus + lepingu põhitasu. Koos käibemaksuga."
@@ -202,7 +216,7 @@
         "title": "Muuda grupi seadeid",
         "data": {
           "label": "Grupi nimi",
-          "monthly_fixed_cost": "Püsiv kuutasu (€/kuus)"
+          "monthly_fixed_cost": "Püsiv kuutasu"
         },
         "data_description": {
           "monthly_fixed_cost": "Võrguühendus + lepingu põhitasu. Koos käibemaksuga."
@@ -210,7 +224,7 @@
       },
       "transfer_group_detail": {
         "title": "Muuda gruppi",
-        "description": "{group_label} — Lisa või eemalda tasemeid või määra grupp aktiivseks.",
+        "description": "{group_label}\n\n{tier_list}\n\nVali tase, et näha ja muuta selle seadeid, lisa uus või määra grupp aktiivseks.",
         "data": {
           "action": "Toiming"
         }
@@ -219,7 +233,7 @@
         "title": "Lisa võrgutasu",
         "data": {
           "label": "Taseme nimi (nt Talvine tööpäev)",
-          "price": "Hind (c/kWh)",
+          "price": "Hind",
           "months": "Aktiivsed kuud",
           "weekdays": "Aktiivsed nädalapäevad",
           "hour_start": "Algusaeg (kaasa arvatud)",
@@ -227,10 +241,24 @@
           "priority": "Prioriteet (madalam = esimene)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Muuda võrgutasu",
+        "description": "Muuda soovitud välju või märgi eemaldamine, et tase kustutada.",
+        "data": {
+          "label": "Taseme nimi (nt Talvine tööpäev)",
+          "price": "Hind",
+          "months": "Aktiivsed kuud",
+          "weekdays": "Aktiivsed nädalapäevad",
+          "hour_start": "Algusaeg (kaasa arvatud)",
+          "hour_end": "Lõppaeg (välja arvatud)",
+          "priority": "Prioriteet (madalam = esimene)",
+          "delete": "Eemalda see tase"
+        }
+      },
       "thresholds": {
         "title": "Läved ja juhtimine",
         "data": {
-          "max_price": "Juhtimise maksimumhind (c/kWh)",
+          "max_price": "Juhtimise maksimumhind",
           "price_threshold_includes_transfer": "Maksimumhind sisaldab võrgutasu",
           "max_rank": "Juhtimise maksimumjärjekoht",
           "forward_avg_hours": "Etteulatuva keskmise akna pikkus (tundi)",
@@ -301,13 +329,13 @@
         "description": "Määra müügihind ja aku seaded. Sea aku mahtuvus 0-le, et keelata akuandurid.",
         "data": {
           "export_pricing_mode": "Müügihinna arvutusviis",
-          "export_commission": "Müügimarginaal (c/kWh lahutatakse spot-hinnast)",
-          "fixed_export_rate": "Fikseeritud müügihind (c/kWh)",
-          "export_price_threshold": "Müügihinna lävi (c/kWh)",
+          "export_commission": "Müügimarginaal (lahutatakse spot-hinnast)",
+          "fixed_export_rate": "Fikseeritud müügihind",
+          "export_price_threshold": "Müügihinna lävi",
           "solar_window_start": "Päikeseakna algustund",
           "solar_window_end": "Päikeseakna lõputund",
-          "battery_capacity_kwh": "Aku mahtuvus (kWh, 0 = keelatud)",
-          "battery_charge_power_kw": "Aku laadimisvõimsus (kW)"
+          "battery_capacity_kwh": "Aku mahtuvus (0 = keelatud)",
+          "battery_charge_power_kw": "Aku laadimisvõimsus"
         },
         "data_description": {
           "export_commission": "Ainult spot-seotud režiim. Müüja marginaal lahutatakse spot-API hinnast (ilma käibemaksuta). Väiketootjad tavaliselt ei lisa müüdud elektrile käibemaksu.",
@@ -322,7 +350,7 @@
           "label": "Perioodi nimi",
           "start_date": "Alguskuupäev",
           "end_date": "Lõppkuupäev (kaasa arvatud)",
-          "price": "Hind (c/kWh, koos käibemaksuga)"
+          "price": "Hind (koos käibemaksuga)"
         },
         "data_description": {
           "price": "Sisesta hind koos käibemaksuga. Seda hinda kasutatakse muutmata — käibemaksu ei lisata."

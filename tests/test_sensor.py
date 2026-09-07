@@ -260,3 +260,43 @@ async def test_total_price_sensor_has_no_arrays_by_default(hass, setup_integrati
     state = hass.states.get(entity_id)
     assert "today_prices" not in state.attributes
     assert "tomorrow_prices" not in state.attributes
+
+
+async def test_monthly_fixed_cost_unit_follows_currency(hass, options, mock_utcnow):
+    """The monthly fixed cost sensor reports the configured currency, not €."""
+    import re as _re2
+
+    from custom_components.kilowahti.const import (
+        CONF_CURRENCY_MODE,
+        CONF_FX_MODE,
+        CONF_FX_RATE,
+        CONF_MONTHLY_FIXED_COST,
+        CONF_REGION,
+        SENSOR_MONTHLY_FIXED_COST_TODAY,
+    )
+
+    from .conftest import CDN_PAYLOAD
+
+    await hass.config.async_set_time_zone("UTC")
+    opts = {
+        **options,
+        CONF_REGION: "SE1",
+        CONF_CURRENCY_MODE: "local",
+        CONF_FX_MODE: "manual",
+        CONF_FX_RATE: 11.0,
+        CONF_MONTHLY_FIXED_COST: 250.0,
+    }
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=opts)
+    with aioresponses() as m:
+        m.get(
+            _re2.compile(r"https://cdn\.kilowahti\.fi/v1/se1/latest\.json"),
+            payload=CDN_PAYLOAD,
+            repeat=True,
+        )
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    entity_id = _entity_id(hass, "sensor", entry.entry_id, SENSOR_MONTHLY_FIXED_COST_TODAY)
+    state = hass.states.get(entity_id)
+    assert state.attributes["unit_of_measurement"] == "kr"
