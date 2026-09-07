@@ -131,15 +131,15 @@
         "title": "Rozšírené možnosti",
         "description": "Nastavte, ako sa hodnoty senzorov zobrazujú v Home Assistante.",
         "data": {
-          "expose_price_arrays": "Zverejniť polia spotovej ceny ako atribúty senzora (zväčšuje databázu)",
-          "expose_total_price_arrays": "Zverejniť polia celkovej ceny ako atribúty senzora (zväčšuje databázu)",
+          "expose_price_arrays": "Zverejniť polia spotovej ceny ako atribúty senzora",
+          "expose_total_price_arrays": "Zverejniť polia celkovej ceny ako atribúty senzora",
           "high_precision": "Režim vysokej presnosti",
           "show_rolling_averages": "Zobraziť priemerné ceny na nasledujúcich 30 min, 1 h a 2 h",
           "generation_enabled": "Povoliť funkcie výroby a výkupu"
         },
         "data_description": {
-          "expose_price_arrays": "Zapisuje polia today_prices a tomorrow_prices do atribútov senzora spot_price, ktoré sa potom ukladajú do databázy. Uľahčuje tvorbu grafov na dashboarde, ale na ich zobrazenie nie je potrebné a zbytočne zaťažuje databázu.",
-          "expose_total_price_arrays": "Zapisuje polia today_prices a tomorrow_prices do atribútov senzora celkovej ceny, kde každá položka obsahuje rozpis na energiu a distribúciu. Zaťažuje databázu rovnako ako polia spotovej ceny.",
+          "expose_price_arrays": "Zapisuje polia today_prices a tomorrow_prices do atribútov senzora spot_price. Uľahčuje tvorbu grafov na dashboarde, ale na ich zobrazenie nie je potrebné. Polia sa neukladajú do databázy; iba zväčšujú aktuálny stav senzora.",
+          "expose_total_price_arrays": "Zapisuje polia today_prices a tomorrow_prices do atribútov senzora celkovej ceny, kde každá položka obsahuje rozpis na energiu a distribúciu. Rovnako ako polia spotovej ceny sa neukladajú do databázy.",
           "high_precision": "Pri zapnutí zobrazujú cenové senzory a atribúty cenových polí viac desatinných miest. Vnútorné výpočty vždy používajú plnú presnosť.",
           "show_rolling_averages": "Pridá senzory priemernej ceny na nasledujúcich 30, 60 a 120 minút.",
           "generation_enabled": "Povolí senzory a služby výkupnej ceny, batérie a arbitráže. Nastavenia výroby nájdete v ponuke Výroba a výkup."
@@ -271,8 +271,8 @@
       "advanced_options": {
         "title": "Rozšírené možnosti",
         "data": {
-          "expose_price_arrays": "Zverejniť polia spotovej ceny ako atribúty senzora (zväčšuje databázu)",
-          "expose_total_price_arrays": "Zverejniť polia celkovej ceny ako atribúty senzora (zväčšuje databázu)",
+          "expose_price_arrays": "Zverejniť polia spotovej ceny ako atribúty senzora",
+          "expose_total_price_arrays": "Zverejniť polia celkovej ceny ako atribúty senzora",
           "high_precision": "Režim vysokej presnosti",
           "show_rolling_averages": "Zobraziť priemerné ceny na nasledujúcich 30 min, 1 h a 2 h",
           "generation_enabled": "Povoliť funkcie výroby a výkupu"

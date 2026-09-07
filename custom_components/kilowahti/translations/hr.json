@@ -131,15 +131,15 @@
         "title": "Napredne opcije",
         "description": "Postavite kako se vrijednosti senzora prikazuju u Home Assistantu.",
         "data": {
-          "expose_price_arrays": "Izloži nizove burzovne cijene kao atribute senzora (povećava veličinu baze podataka)",
-          "expose_total_price_arrays": "Izloži nizove ukupne cijene kao atribute senzora (povećava veličinu baze podataka)",
+          "expose_price_arrays": "Izloži nizove burzovne cijene kao atribute senzora",
+          "expose_total_price_arrays": "Izloži nizove ukupne cijene kao atribute senzora",
           "high_precision": "Način visoke preciznosti",
           "show_rolling_averages": "Prikaži prosječne cijene za sljedećih 30 min, 1 h i 2 h",
           "generation_enabled": "Omogući funkcije proizvodnje i predaje"
         },
         "data_description": {
-          "expose_price_arrays": "Zapisuje nizove today_prices i tomorrow_prices u atribute senzora spot_price, koji se zatim pohranjuju u bazu podataka. Olakšava izradu grafikona na nadzornoj ploči, ali nije potrebno za njihov prikaz i nepotrebno opterećuje bazu podataka.",
-          "expose_total_price_arrays": "Zapisuje nizove today_prices i tomorrow_prices u atribute senzora ukupne cijene, pri čemu svaki unos sadrži razdiobu na energiju i mrežarinu. Opterećuje bazu podataka jednako kao nizovi burzovne cijene.",
+          "expose_price_arrays": "Zapisuje nizove today_prices i tomorrow_prices u atribute senzora spot_price. Olakšava izradu grafikona na nadzornoj ploči, ali nije potrebno za njihov prikaz. Nizovi se ne pohranjuju u bazu podataka; samo povećavaju veličinu trenutnog stanja senzora.",
+          "expose_total_price_arrays": "Zapisuje nizove today_prices i tomorrow_prices u atribute senzora ukupne cijene, pri čemu svaki unos sadrži razdiobu na energiju i mrežarinu. Ne pohranjuju se u bazu podataka, kao ni nizovi burzovne cijene.",
           "high_precision": "Kada je uključeno, senzori cijena i atributi nizova cijena prikazuju više decimala. Interni izračuni uvijek koriste punu preciznost.",
           "show_rolling_averages": "Dodaje senzore prosječne cijene za sljedećih 30, 60 i 120 minuta.",
           "generation_enabled": "Omogućuje senzore i servise cijene predaje, baterije i arbitraže. Postavke proizvodnje nalaze se u izborniku Proizvodnja i predaja."
@@ -271,8 +271,8 @@
       "advanced_options": {
         "title": "Napredne opcije",
         "data": {
-          "expose_price_arrays": "Izloži nizove burzovne cijene kao atribute senzora (povećava veličinu baze podataka)",
-          "expose_total_price_arrays": "Izloži nizove ukupne cijene kao atribute senzora (povećava veličinu baze podataka)",
+          "expose_price_arrays": "Izloži nizove burzovne cijene kao atribute senzora",
+          "expose_total_price_arrays": "Izloži nizove ukupne cijene kao atribute senzora",
           "high_precision": "Način visoke preciznosti",
           "show_rolling_averages": "Prikaži prosječne cijene za sljedećih 30 min, 1 h i 2 h",
           "generation_enabled": "Omogući funkcije proizvodnje i predaje"

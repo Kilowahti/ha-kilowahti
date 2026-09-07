@@ -131,15 +131,15 @@
         "title": "Opcje zaawansowane",
         "description": "Skonfiguruj sposób wyświetlania wartości sensorów w Home Assistant.",
         "data": {
-          "expose_price_arrays": "Udostępniaj tablice ceny giełdowej jako atrybuty sensora (zwiększa rozmiar bazy danych)",
-          "expose_total_price_arrays": "Udostępniaj tablice ceny całkowitej jako atrybuty sensora (zwiększa rozmiar bazy danych)",
+          "expose_price_arrays": "Udostępniaj tablice ceny giełdowej jako atrybuty sensora",
+          "expose_total_price_arrays": "Udostępniaj tablice ceny całkowitej jako atrybuty sensora",
           "high_precision": "Tryb wysokiej precyzji",
           "show_rolling_averages": "Pokaż średnie ceny na najbliższe 30 min, 1 h i 2 h",
           "generation_enabled": "Włącz funkcje produkcji i sprzedaży"
         },
         "data_description": {
-          "expose_price_arrays": "Zapisuje tablice today_prices i tomorrow_prices w atrybutach sensora spot_price, które trafiają następnie do bazy danych. Ułatwia budowanie wykresów na dashboardzie, ale nie jest do ich wyświetlania wymagane i niepotrzebnie obciąża bazę.",
-          "expose_total_price_arrays": "Zapisuje tablice today_prices i tomorrow_prices w atrybutach sensora ceny całkowitej; każdy wpis zawiera podział na energię i dystrybucję. Obciąża bazę tak samo jak tablice ceny giełdowej.",
+          "expose_price_arrays": "Zapisuje tablice today_prices i tomorrow_prices w atrybutach sensora spot_price. Ułatwia budowanie wykresów na dashboardzie, ale nie jest do ich wyświetlania wymagane. Tablice nie trafiają do bazy danych; zwiększają jedynie rozmiar bieżącego stanu sensora.",
+          "expose_total_price_arrays": "Zapisuje tablice today_prices i tomorrow_prices w atrybutach sensora ceny całkowitej; każdy wpis zawiera podział na energię i dystrybucję. Podobnie jak tablice ceny giełdowej nie trafiają do bazy danych.",
           "high_precision": "Po włączeniu sensory cen i atrybuty tablic cen pokazują więcej miejsc po przecinku. Obliczenia wewnętrzne zawsze używają pełnej precyzji.",
           "show_rolling_averages": "Dodaje sensory średniej ceny na najbliższe 30, 60 i 120 minut.",
           "generation_enabled": "Włącza sensory i usługi ceny sprzedaży, akumulatora i arbitrażu. Ustawienia produkcji skonfigurujesz w menu Produkcja i sprzedaż."
@@ -271,8 +271,8 @@
       "advanced_options": {
         "title": "Opcje zaawansowane",
         "data": {
-          "expose_price_arrays": "Udostępniaj tablice ceny giełdowej jako atrybuty sensora (zwiększa rozmiar bazy danych)",
-          "expose_total_price_arrays": "Udostępniaj tablice ceny całkowitej jako atrybuty sensora (zwiększa rozmiar bazy danych)",
+          "expose_price_arrays": "Udostępniaj tablice ceny giełdowej jako atrybuty sensora",
+          "expose_total_price_arrays": "Udostępniaj tablice ceny całkowitej jako atrybuty sensora",
           "high_precision": "Tryb wysokiej precyzji",
           "show_rolling_averages": "Pokaż średnie ceny na najbliższe 30 min, 1 h i 2 h",
           "generation_enabled": "Włącz funkcje produkcji i sprzedaży"

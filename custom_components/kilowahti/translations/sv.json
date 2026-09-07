@@ -132,15 +132,15 @@
         "title": "Avancerade inställningar",
         "description": "Konfigurera hur sensorvärden visas i Home Assistant.",
         "data": {
-          "expose_price_arrays": "Exponera spotprisarrayer som sensorattribut (ökar databasstorleken)",
-          "expose_total_price_arrays": "Exponera totalprisarrayer som sensorattribut (ökar databasstorleken)",
+          "expose_price_arrays": "Exponera spotprisarrayer som sensorattribut",
+          "expose_total_price_arrays": "Exponera totalprisarrayer som sensorattribut",
           "high_precision": "Hög precision",
           "show_rolling_averages": "Visa medelpriser för kommande 30 min, 1 h och 2 h",
           "generation_enabled": "Aktivera produktions- och försäljningsfunktioner"
         },
         "data_description": {
-          "expose_price_arrays": "Skriver arrayerna today_prices och tomorrow_prices till attributen på sensorn spot_price, som sedan lagras i databasen. Gör det enklare att bygga grafer på instrumentpaneler, men krävs inte för att visa dem och belastar databasen i onödan.",
-          "expose_total_price_arrays": "Skriver arrayerna today_prices och tomorrow_prices till attributen på sensorn totalpris, där varje post innehåller uppdelningen i energi och överföring. Belastar databasen lika mycket som spotprisarrayerna.",
+          "expose_price_arrays": "Skriver arrayerna today_prices och tomorrow_prices till attributen på sensorn spot_price. Gör det enklare att bygga grafer på instrumentpaneler, men krävs inte för att visa dem. Arrayerna lagras inte i databasen; de ökar bara storleken på sensorns aktuella tillstånd.",
+          "expose_total_price_arrays": "Skriver arrayerna today_prices och tomorrow_prices till attributen på sensorn totalpris, där varje post innehåller uppdelningen i energi och överföring. Lagras inte i databasen, lika lite som spotprisarrayerna.",
           "high_precision": "När aktiverad visar prissensorer och prisarrayernas attribut fler decimaler. Interna beräkningar använder alltid full precision.",
           "show_rolling_averages": "Lägger till sensorer för medelpris de kommande 30, 60 och 120 minuterna.",
           "generation_enabled": "Aktiverar sensorer och tjänster för försäljningspris, batteri och arbitrage. Konfigurera produktionsinställningar i menyn Produktion och försäljning."
@@ -273,8 +273,8 @@
       "advanced_options": {
         "title": "Avancerade inställningar",
         "data": {
-          "expose_price_arrays": "Exponera spotprisarrayer som sensorattribut (ökar databasstorleken)",
-          "expose_total_price_arrays": "Exponera totalprisarrayer som sensorattribut (ökar databasstorleken)",
+          "expose_price_arrays": "Exponera spotprisarrayer som sensorattribut",
+          "expose_total_price_arrays": "Exponera totalprisarrayer som sensorattribut",
           "high_precision": "Hög precision",
           "show_rolling_averages": "Visa medelpriser för kommande 30 min, 1 h och 2 h",
           "generation_enabled": "Aktivera produktions- och försäljningsfunktioner"

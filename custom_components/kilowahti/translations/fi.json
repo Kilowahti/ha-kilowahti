@@ -119,15 +119,15 @@
         "title": "Lisäasetukset",
         "description": "Määritä, miten anturien arvot näytetään Home Assistantissa.",
         "data": {
-          "expose_price_arrays": "Näytä spot-hintataulukot anturin attribuutteina (kasvattaa tietokannan kokoa)",
-          "expose_total_price_arrays": "Näytä kokonaishintataulukot anturin attribuutteina (kasvattaa tietokannan kokoa)",
+          "expose_price_arrays": "Näytä spot-hintataulukot anturin attribuutteina",
+          "expose_total_price_arrays": "Näytä kokonaishintataulukot anturin attribuutteina",
           "high_precision": "Suuri tarkkuus",
           "show_rolling_averages": "Näytä seuraavan 30 min, 1h ja 2h keskihinnat",
           "generation_enabled": "Ota tuotanto- ja myyntiominaisuudet käyttöön"
         },
         "data_description": {
-          "expose_price_arrays": "Kirjoittaa today_prices- ja tomorrow_prices-taulukot spot_price-anturin attribuutteihin, jotka puolestaan tallentuvat tietokantaan. Helpottaa dashboard-graafien tekemistä, mutta ei ole pakollinen niiden näyttämiseksi ja kuormittaa turhaan tietokantaa.",
-          "expose_total_price_arrays": "Kirjoittaa today_prices- ja tomorrow_prices-taulukot kokonaishinta-anturin attribuutteihin; jokaisessa rivissä on energian ja siirron erittely. Kuormittaa tietokantaa yhtä paljon kuin spot-hintataulukot.",
+          "expose_price_arrays": "Kirjoittaa today_prices- ja tomorrow_prices-taulukot spot_price-anturin attribuutteihin. Helpottaa dashboard-graafien tekemistä, mutta ei ole pakollinen niiden näyttämiseksi. Taulukoita ei tallenneta tietokantaan; ne vain kasvattavat anturin tilan kokoa.",
+          "expose_total_price_arrays": "Kirjoittaa today_prices- ja tomorrow_prices-taulukot kokonaishinta-anturin attribuutteihin; jokaisessa rivissä on energian ja siirron erittely. Ei tallenneta tietokantaan, kuten eivät spot-hintataulukotkaan.",
           "high_precision": "Kun päällä, hinta-anturit ja hintataulukoiden attribuutit näyttävät enemmän desimaaleja. Sisäiset laskelmat käyttävät aina täyttä tarkkuutta.",
           "show_rolling_averages": "Lisää anturit seuraavan 30, 60 ja 120 minuutin keskihinnoille.",
           "generation_enabled": "Ottaa käyttöön myyntihinnan, akun ja arbitraasianturit sekä palvelut. Määritä tuotantoasetukset Tuotanto ja myynti -valikosta."
@@ -271,8 +271,8 @@
       "advanced_options": {
         "title": "Lisäasetukset",
         "data": {
-          "expose_price_arrays": "Näytä spot-hintataulukot anturin attribuutteina (kasvattaa tietokannan kokoa)",
-          "expose_total_price_arrays": "Näytä kokonaishintataulukot anturin attribuutteina (kasvattaa tietokannan kokoa)",
+          "expose_price_arrays": "Näytä spot-hintataulukot anturin attribuutteina",
+          "expose_total_price_arrays": "Näytä kokonaishintataulukot anturin attribuutteina",
           "high_precision": "Suuri tarkkuus",
           "show_rolling_averages": "Näytä seuraavan 30 min, 1h ja 2h keskihinnat",
           "generation_enabled": "Ota tuotanto- ja myyntiominaisuudet käyttöön"
