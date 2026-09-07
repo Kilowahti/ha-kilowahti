@@ -21,9 +21,9 @@
         "description": "Arvot on esitäytetty valitun alueen mukaan, voit muuttaa niitä tarvittaessa. Kaikki hinnat (siirtohinnat, kiinteät jaksot) syötetään verollisina.",
         "data": {
           "vat_rate_pct": "ALV-prosentti (%)",
-          "electricity_tax": "Sähkövero (c/kWh)",
-          "spot_commission": "Marginaali (c/kWh)",
-          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu (€/kk)"
+          "electricity_tax": "Sähkövero",
+          "spot_commission": "Marginaali",
+          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu"
         },
         "data_description": {
           "electricity_tax": "Sähkövero per kWh, lisätään spot/kiinteään hintaan.",
@@ -42,7 +42,7 @@
         "title": "Lisää ryhmä",
         "data": {
           "label": "Ryhmän nimi",
-          "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus (€/kk)"
+          "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus"
         },
         "data_description": {
           "monthly_fixed_cost": "Sähkönsiirron sopimuksen kk-maksu (sis. ALV)."
@@ -52,7 +52,7 @@
         "title": "Muokkaa ryhmän asetuksia",
         "data": {
           "label": "Ryhmän nimi",
-          "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus (€/kk)"
+          "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus"
         },
         "data_description": {
           "monthly_fixed_cost": "Sähkönsiirron sopimuksen kk-maksu (sis. ALV)."
@@ -70,7 +70,7 @@
         "description": "Käytetty siirtohinta valitaan prioriteettijärjestyksessä; ensimmäinen osuma voittaa. Lisää ns. perushinta alimmaksi ilman ehtoja.",
         "data": {
           "label": "Tason nimi",
-          "price": "Hinta (c/kWh)",
+          "price": "Hinta",
           "months": "Voimassa kuukausina",
           "weekdays": "Voimassa viikonpäivinä",
           "hour_start": "Alkamisaika (mukaan lukien)",
@@ -83,7 +83,7 @@
         "description": "Muuta haluamiasi kenttiä tai valitse poisto poistaaksesi hinnan.",
         "data": {
           "label": "Tason nimi",
-          "price": "Hinta (c/kWh)",
+          "price": "Hinta",
           "months": "Voimassa kuukausina",
           "weekdays": "Voimassa viikonpäivinä",
           "hour_start": "Alkamisaika (mukaan lukien)",
@@ -95,7 +95,7 @@
       "thresholds": {
         "title": "Kynnysarvot ja ohjaus",
         "data": {
-          "max_price": "Ohjauksen maksimihinta (c/kWh)",
+          "max_price": "Ohjauksen maksimihinta",
           "price_threshold_includes_transfer": "Maksimihinta sisältää myös siirron",
           "max_rank": "Ohjauksen maksimisijaluku",
           "forward_avg_hours": "Tulevan keskiarvoikkunan pituus (tuntia)",
@@ -184,9 +184,9 @@
           "price_resolution": "Hintaresoluutio",
           "display_unit": "Näyttöyksikkö",
           "vat_rate_pct": "ALV-prosentti (%)",
-          "electricity_tax": "Sähkövero (c/kWh)",
-          "spot_commission": "Marginaali (c/kWh)",
-          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu (€/kk)",
+          "electricity_tax": "Sähkövero",
+          "spot_commission": "Marginaali",
+          "monthly_fixed_cost": "Sähkösopimuksen kiinteä kuukausimaksu",
           "currency_mode": "Näyttövaluutta",
           "fx_mode": "Valuuttakurssien lähde",
           "fx_rate": "Manuaalinen vaihtokurssi (paikallinen valuutta euroa kohti)"
@@ -205,7 +205,7 @@
         "title": "Lisää ryhmä",
         "data": {
           "label": "Ryhmän nimi",
-          "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus (€/kk)"
+          "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus"
         },
         "data_description": {
           "monthly_fixed_cost": "Sähkönsiirron sopimuksen kk-maksu (sis. ALV)."
@@ -215,7 +215,7 @@
         "title": "Muokkaa ryhmän asetuksia",
         "data": {
           "label": "Ryhmän nimi",
-          "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus (€/kk)"
+          "monthly_fixed_cost": "Kuukausittainen kiinteä kustannus"
         },
         "data_description": {
           "monthly_fixed_cost": "Sähkönsiirron sopimuksen kk-maksu (sis. ALV)."
@@ -232,7 +232,7 @@
         "title": "Lisää siirtohinta",
         "data": {
           "label": "Tason nimi (esim. Talviarkipäivä)",
-          "price": "Hinta (c/kWh)",
+          "price": "Hinta",
           "months": "Voimassaolokuukaudet",
           "weekdays": "Voimassaoloviikonpäivät",
           "hour_start": "Alkamistunti (mukaan lukien)",
@@ -245,7 +245,7 @@
         "description": "Muuta haluamiasi kenttiä tai valitse poisto poistaaksesi hinnan.",
         "data": {
           "label": "Tason nimi (esim. Talviarkipäivä)",
-          "price": "Hinta (c/kWh)",
+          "price": "Hinta",
           "months": "Voimassaolokuukaudet",
           "weekdays": "Voimassaoloviikonpäivät",
           "hour_start": "Alkamistunti (mukaan lukien)",
@@ -257,7 +257,7 @@
       "thresholds": {
         "title": "Kynnysarvot ja ohjaus",
         "data": {
-          "max_price": "Ohjauksen maksimihinta (c/kWh)",
+          "max_price": "Ohjauksen maksimihinta",
           "price_threshold_includes_transfer": "Maksimihinta sisältää myös siirron",
           "max_rank": "Ohjauksen maksimisijaluku",
           "forward_avg_hours": "Tulevan keskiarvoikkunan pituus (tuntia)",
@@ -327,13 +327,13 @@
         "description": "Määritä sähkön myyntihinta ja akkuasetukset. Aseta akun kapasiteetti nollaksi poistaaksesi akkuanturit käytöstä.",
         "data": {
           "export_pricing_mode": "Myyntihinnan laskentatapa",
-          "export_commission": "Myyntimarginaali (c/kWh vähennetään spot-hinnasta)",
-          "fixed_export_rate": "Kiinteä myyntihinta (c/kWh)",
-          "export_price_threshold": "Myyntihinnan kynnysarvo (c/kWh)",
+          "export_commission": "Myyntimarginaali (vähennetään spot-hinnasta)",
+          "fixed_export_rate": "Kiinteä myyntihinta",
+          "export_price_threshold": "Myyntihinnan kynnysarvo",
           "solar_window_start": "Aurinkotuotantoikkunan alkutunti",
           "solar_window_end": "Aurinkotuotantoikkunan lopputunti",
-          "battery_capacity_kwh": "Akun kapasiteetti (kWh, 0 = poistettu käytöstä)",
-          "battery_charge_power_kw": "Akun latausteho (kW)"
+          "battery_capacity_kwh": "Akun kapasiteetti (0 = poistettu käytöstä)",
+          "battery_charge_power_kw": "Akun latausteho"
         },
         "data_description": {
           "export_commission": "Vain spot-linkitetty tila. Myyjän marginaali vähennetään spot-API:n hinnasta (ALV 0 %). Pienet tuottajat eivät yleensä peri arvonlisäveroa myydystä sähköstä.",
@@ -348,7 +348,7 @@
           "label": "Jakson nimi",
           "start_date": "Alkamispäivä",
           "end_date": "Päättymispäivä (mukaan lukien)",
-          "price": "Hinta (c/kWh, sis. ALV)"
+          "price": "Hinta (sis. ALV)"
         },
         "data_description": {
           "price": "Syötä tämä hinta verollisena. Tätä hintaa käytetään sellaisenaan — ALV:ta ei lisätä erikseen."

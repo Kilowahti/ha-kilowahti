@@ -33,9 +33,9 @@
         "description": "Vooraf ingevuld op basis van je regio. Pas aan indien nodig. Alle prijzen (nettariefniveaus, vasteprijsperiodes) worden incl. btw ingevoerd.",
         "data": {
           "vat_rate_pct": "Btw-tarief (%)",
-          "electricity_tax": "Energiebelasting (c/kWh)",
-          "spot_commission": "Opslag op spotprijs (c/kWh)",
-          "monthly_fixed_cost": "Vaste kosten energiecontract (€/maand)"
+          "electricity_tax": "Energiebelasting",
+          "spot_commission": "Opslag op spotprijs",
+          "monthly_fixed_cost": "Vaste kosten energiecontract"
         },
         "data_description": {
           "electricity_tax": "Vaste energiebelasting per kWh, bovenop de spot-/vaste prijs.",
@@ -54,7 +54,7 @@
         "title": "Groep toevoegen",
         "data": {
           "label": "Groepsnaam",
-          "monthly_fixed_cost": "Maandelijkse vaste kosten (€/maand)"
+          "monthly_fixed_cost": "Maandelijkse vaste kosten"
         },
         "data_description": {
           "monthly_fixed_cost": "Netaansluiting + vastrecht van het contract. Brutobedrag (incl. btw)."
@@ -64,7 +64,7 @@
         "title": "Groepsinstellingen bewerken",
         "data": {
           "label": "Groepsnaam",
-          "monthly_fixed_cost": "Maandelijkse vaste kosten (€/maand)"
+          "monthly_fixed_cost": "Maandelijkse vaste kosten"
         },
         "data_description": {
           "monthly_fixed_cost": "Netaansluiting + vastrecht van het contract. Brutobedrag (incl. btw)."
@@ -82,7 +82,7 @@
         "description": "Wordt geëvalueerd op prioriteitsvolgorde; de eerste match geldt. Voeg een basistarief toe als laagste prioriteit zonder tijdsbeperkingen.",
         "data": {
           "label": "Niveaunaam",
-          "price": "Prijs (c/kWh)",
+          "price": "Prijs",
           "months": "Actieve maanden",
           "weekdays": "Actieve weekdagen",
           "hour_start": "Starttijd (inclusief)",
@@ -95,7 +95,7 @@
         "description": "Wijzig de gewenste velden of vink verwijderen aan om dit niveau te verwijderen.",
         "data": {
           "label": "Niveaunaam",
-          "price": "Prijs (c/kWh)",
+          "price": "Prijs",
           "months": "Actieve maanden",
           "weekdays": "Actieve weekdagen",
           "hour_start": "Starttijd (inclusief)",
@@ -107,7 +107,7 @@
       "thresholds": {
         "title": "Drempels & sturing",
         "data": {
-          "max_price": "Maximale stuurprijs (c/kWh)",
+          "max_price": "Maximale stuurprijs",
           "price_threshold_includes_transfer": "Maximumprijs inclusief nettarief",
           "max_rank": "Maximale stuurrang",
           "forward_avg_hours": "Lengte vooruitblik-gemiddeldevenster (uren)",
@@ -184,9 +184,9 @@
           "price_resolution": "Prijsresolutie",
           "display_unit": "Weergave-eenheid",
           "vat_rate_pct": "Btw-tarief (%)",
-          "electricity_tax": "Energiebelasting (c/kWh)",
-          "spot_commission": "Opslag op spotprijs (c/kWh)",
-          "monthly_fixed_cost": "Vaste kosten energiecontract (€/maand)",
+          "electricity_tax": "Energiebelasting",
+          "spot_commission": "Opslag op spotprijs",
+          "monthly_fixed_cost": "Vaste kosten energiecontract",
           "currency_mode": "Weergavevaluta",
           "fx_mode": "Wisselkoersbron",
           "fx_rate": "Handmatige wisselkoers (lokale valuta per EUR)"
@@ -205,7 +205,7 @@
         "title": "Groep toevoegen",
         "data": {
           "label": "Groepsnaam",
-          "monthly_fixed_cost": "Maandelijkse vaste kosten (€/maand)"
+          "monthly_fixed_cost": "Maandelijkse vaste kosten"
         },
         "data_description": {
           "monthly_fixed_cost": "Netaansluiting + vastrecht van het contract. Brutobedrag (incl. btw)."
@@ -215,7 +215,7 @@
         "title": "Groepsinstellingen bewerken",
         "data": {
           "label": "Groepsnaam",
-          "monthly_fixed_cost": "Maandelijkse vaste kosten (€/maand)"
+          "monthly_fixed_cost": "Maandelijkse vaste kosten"
         },
         "data_description": {
           "monthly_fixed_cost": "Netaansluiting + vastrecht van het contract. Brutobedrag (incl. btw)."
@@ -232,7 +232,7 @@
         "title": "Nettarief toevoegen",
         "data": {
           "label": "Niveaunaam (bijv. Winterwerkdag)",
-          "price": "Prijs (c/kWh)",
+          "price": "Prijs",
           "months": "Actieve maanden",
           "weekdays": "Actieve weekdagen",
           "hour_start": "Starttijd (inclusief)",
@@ -245,7 +245,7 @@
         "description": "Wijzig de gewenste velden of vink verwijderen aan om dit niveau te verwijderen.",
         "data": {
           "label": "Niveaunaam (bijv. Winterwerkdag)",
-          "price": "Prijs (c/kWh)",
+          "price": "Prijs",
           "months": "Actieve maanden",
           "weekdays": "Actieve weekdagen",
           "hour_start": "Starttijd (inclusief)",
@@ -257,7 +257,7 @@
       "thresholds": {
         "title": "Drempels & sturing",
         "data": {
-          "max_price": "Maximale stuurprijs (c/kWh)",
+          "max_price": "Maximale stuurprijs",
           "price_threshold_includes_transfer": "Maximumprijs inclusief nettarief",
           "max_rank": "Maximale stuurrang",
           "forward_avg_hours": "Lengte vooruitblik-gemiddeldevenster (uren)",
@@ -327,13 +327,13 @@
         "description": "Configureer terugleverprijzen en batterij-instellingen. Zet de batterijcapaciteit op 0 om batterijsensoren uit te schakelen.",
         "data": {
           "export_pricing_mode": "Terugleverprijsmodus",
-          "export_commission": "Terugleveringsmarge (c/kWh, afgetrokken van spot)",
-          "fixed_export_rate": "Vast terugleveringstarief (c/kWh)",
-          "export_price_threshold": "Terugleverprijsdrempel (c/kWh)",
+          "export_commission": "Terugleveringsmarge (afgetrokken van spot)",
+          "fixed_export_rate": "Vast terugleveringstarief",
+          "export_price_threshold": "Terugleverprijsdrempel",
           "solar_window_start": "Startuur zonnevenster",
           "solar_window_end": "Einduur zonnevenster",
-          "battery_capacity_kwh": "Batterijcapaciteit (kWh, 0 = uitgeschakeld)",
-          "battery_charge_power_kw": "Laadvermogen batterij (kW)"
+          "battery_capacity_kwh": "Batterijcapaciteit (0 = uitgeschakeld)",
+          "battery_charge_power_kw": "Laadvermogen batterij"
         },
         "data_description": {
           "export_commission": "Alleen in spotgekoppelde modus. Marge van de afnemer die van de spot-API-prijs wordt afgetrokken (excl. btw). Kleine producenten rekenen doorgaans geen btw over teruglevering.",
@@ -348,7 +348,7 @@
           "label": "Periodenaam",
           "start_date": "Startdatum",
           "end_date": "Einddatum (inclusief)",
-          "price": "Prijs (c/kWh, incl. btw)"
+          "price": "Prijs (incl. btw)"
         },
         "data_description": {
           "price": "Voer de prijs incl. btw in. Deze prijs wordt ongewijzigd gebruikt — er wordt geen btw toegevoegd."

@@ -376,7 +376,7 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         key=SENSOR_MONTHLY_FIXED_COST_TODAY,
         translation_key=SENSOR_MONTHLY_FIXED_COST_TODAY,
         state_class=SensorStateClass.MEASUREMENT,
-        native_unit_of_measurement="€",
+        # native_unit_of_measurement is dynamic (currency symbol from coordinator)
         value_fn=lambda c: c.monthly_fixed_cost_today(),
     ),
 )
@@ -483,6 +483,8 @@ class KilowahtiSensorBase(CoordinatorEntity[KilowahtiCoordinator], SensorEntity)
         # Price sensors inherit dynamic unit from coordinator
         if self.entity_description.key in _PRICE_SENSOR_KEYS:
             return self.coordinator.native_unit
+        if self.entity_description.key == SENSOR_MONTHLY_FIXED_COST_TODAY:
+            return self.coordinator.currency_symbol
         return self.entity_description.native_unit_of_measurement
 
     @property

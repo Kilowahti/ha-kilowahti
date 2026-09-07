@@ -33,9 +33,9 @@
         "description": "Anhand deiner Region vorausgefüllt. Bei Bedarf anpassen. Alle Preise (Netzentgeltstufen, Festpreiszeiträume) werden inkl. MwSt. eingegeben.",
         "data": {
           "vat_rate_pct": "MwSt.-Satz (%)",
-          "electricity_tax": "Stromsteuer (c/kWh)",
-          "spot_commission": "Spotpreis-Aufschlag (c/kWh)",
-          "monthly_fixed_cost": "Fixkosten des Stromvertrags (€/Monat)"
+          "electricity_tax": "Stromsteuer",
+          "spot_commission": "Spotpreis-Aufschlag",
+          "monthly_fixed_cost": "Fixkosten des Stromvertrags"
         },
         "data_description": {
           "electricity_tax": "Feste Stromsteuer pro kWh, die auf den Spot-/Festpreis aufgeschlagen wird.",
@@ -54,7 +54,7 @@
         "title": "Gruppe hinzufügen",
         "data": {
           "label": "Gruppenname",
-          "monthly_fixed_cost": "Monatliche Fixkosten (€/Monat)"
+          "monthly_fixed_cost": "Monatliche Fixkosten"
         },
         "data_description": {
           "monthly_fixed_cost": "Netzanschluss + Grundgebühr des Vertrags. Bruttobetrag (inkl. MwSt.)."
@@ -64,7 +64,7 @@
         "title": "Gruppeneinstellungen bearbeiten",
         "data": {
           "label": "Gruppenname",
-          "monthly_fixed_cost": "Monatliche Fixkosten (€/Monat)"
+          "monthly_fixed_cost": "Monatliche Fixkosten"
         },
         "data_description": {
           "monthly_fixed_cost": "Netzanschluss + Grundgebühr des Vertrags. Bruttobetrag (inkl. MwSt.)."
@@ -82,7 +82,7 @@
         "description": "Auswertung in Prioritätsreihenfolge; der erste Treffer gilt. Füge einen Basistarif als niedrigste Priorität ohne Zeiteinschränkungen hinzu.",
         "data": {
           "label": "Stufenbezeichnung",
-          "price": "Preis (c/kWh)",
+          "price": "Preis",
           "months": "Aktive Monate",
           "weekdays": "Aktive Wochentage",
           "hour_start": "Startzeit (einschließlich)",
@@ -95,7 +95,7 @@
         "description": "Ändere beliebige Felder oder setze das Häkchen zum Entfernen, um die Stufe zu löschen.",
         "data": {
           "label": "Stufenbezeichnung",
-          "price": "Preis (c/kWh)",
+          "price": "Preis",
           "months": "Aktive Monate",
           "weekdays": "Aktive Wochentage",
           "hour_start": "Startzeit (einschließlich)",
@@ -107,7 +107,7 @@
       "thresholds": {
         "title": "Schwellenwerte & Steuerung",
         "data": {
-          "max_price": "Maximaler Steuerpreis (c/kWh)",
+          "max_price": "Maximaler Steuerpreis",
           "price_threshold_includes_transfer": "Maximalpreis inklusive Netzentgelt",
           "max_rank": "Maximaler Steuerrang",
           "forward_avg_hours": "Länge des Vorausschau-Durchschnittsfensters (Stunden)",
@@ -184,9 +184,9 @@
           "price_resolution": "Preisauflösung",
           "display_unit": "Anzeigeeinheit",
           "vat_rate_pct": "MwSt.-Satz (%)",
-          "electricity_tax": "Stromsteuer (c/kWh)",
-          "spot_commission": "Spotpreis-Aufschlag (c/kWh)",
-          "monthly_fixed_cost": "Fixkosten des Stromvertrags (€/Monat)",
+          "electricity_tax": "Stromsteuer",
+          "spot_commission": "Spotpreis-Aufschlag",
+          "monthly_fixed_cost": "Fixkosten des Stromvertrags",
           "currency_mode": "Anzeigewährung",
           "fx_mode": "Wechselkursquelle",
           "fx_rate": "Manueller Wechselkurs (Landeswährung pro EUR)"
@@ -205,7 +205,7 @@
         "title": "Gruppe hinzufügen",
         "data": {
           "label": "Gruppenname",
-          "monthly_fixed_cost": "Monatliche Fixkosten (€/Monat)"
+          "monthly_fixed_cost": "Monatliche Fixkosten"
         },
         "data_description": {
           "monthly_fixed_cost": "Netzanschluss + Grundgebühr des Vertrags. Bruttobetrag (inkl. MwSt.)."
@@ -215,7 +215,7 @@
         "title": "Gruppeneinstellungen bearbeiten",
         "data": {
           "label": "Gruppenname",
-          "monthly_fixed_cost": "Monatliche Fixkosten (€/Monat)"
+          "monthly_fixed_cost": "Monatliche Fixkosten"
         },
         "data_description": {
           "monthly_fixed_cost": "Netzanschluss + Grundgebühr des Vertrags. Bruttobetrag (inkl. MwSt.)."
@@ -232,7 +232,7 @@
         "title": "Netzentgelt hinzufügen",
         "data": {
           "label": "Stufenname (z. B. Winter-Werktag)",
-          "price": "Preis (c/kWh)",
+          "price": "Preis",
           "months": "Aktive Monate",
           "weekdays": "Aktive Wochentage",
           "hour_start": "Startzeit (einschließlich)",
@@ -245,7 +245,7 @@
         "description": "Ändere beliebige Felder oder setze das Häkchen zum Entfernen, um die Stufe zu löschen.",
         "data": {
           "label": "Stufenname (z. B. Winter-Werktag)",
-          "price": "Preis (c/kWh)",
+          "price": "Preis",
           "months": "Aktive Monate",
           "weekdays": "Aktive Wochentage",
           "hour_start": "Startzeit (einschließlich)",
@@ -257,7 +257,7 @@
       "thresholds": {
         "title": "Schwellenwerte & Steuerung",
         "data": {
-          "max_price": "Maximaler Steuerpreis (c/kWh)",
+          "max_price": "Maximaler Steuerpreis",
           "price_threshold_includes_transfer": "Maximalpreis inklusive Netzentgelt",
           "max_rank": "Maximaler Steuerrang",
           "forward_avg_hours": "Länge des Vorausschau-Durchschnittsfensters (Stunden)",
@@ -327,13 +327,13 @@
         "description": "Konfiguriere Einspeisepreise und Batterieeinstellungen. Setze die Batteriekapazität auf 0, um Batteriesensoren zu deaktivieren.",
         "data": {
           "export_pricing_mode": "Einspeisepreismodus",
-          "export_commission": "Einspeisemarge (c/kWh, vom Spotpreis abgezogen)",
-          "fixed_export_rate": "Fester Einspeisetarif (c/kWh)",
-          "export_price_threshold": "Einspeisepreis-Schwelle (c/kWh)",
+          "export_commission": "Einspeisemarge (vom Spotpreis abgezogen)",
+          "fixed_export_rate": "Fester Einspeisetarif",
+          "export_price_threshold": "Einspeisepreis-Schwelle",
           "solar_window_start": "Startstunde des Solarfensters",
           "solar_window_end": "Endstunde des Solarfensters",
-          "battery_capacity_kwh": "Batteriekapazität (kWh, 0 = deaktiviert)",
-          "battery_charge_power_kw": "Batterieladeleistung (kW)"
+          "battery_capacity_kwh": "Batteriekapazität (0 = deaktiviert)",
+          "battery_charge_power_kw": "Batterieladeleistung"
         },
         "data_description": {
           "export_commission": "Nur im spotgebundenen Modus. Vom Spot-API-Preis abgezogene Händlermarge (exkl. MwSt.). Kleinerzeuger berechnen auf Einspeisung in der Regel keine MwSt.",
@@ -348,7 +348,7 @@
           "label": "Zeitraumbezeichnung",
           "start_date": "Startdatum",
           "end_date": "Enddatum (einschließlich)",
-          "price": "Preis (c/kWh, inkl. MwSt.)"
+          "price": "Preis (inkl. MwSt.)"
         },
         "data_description": {
           "price": "Preis inkl. MwSt. eingeben. Dieser Preis wird unverändert verwendet — es wird keine MwSt. aufgeschlagen."

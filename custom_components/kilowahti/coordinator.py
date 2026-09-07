@@ -972,6 +972,22 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return major if self.display_in_major else minor
 
     @property
+    def currency_symbol(self) -> str:
+        """Symbol of the active display currency, without the per-kWh part."""
+        _minor, major = self._unit_pair
+        return major.split("/")[0]
+
+    @property
+    def minor_unit(self) -> str:
+        """Unit of the minor-scale values used by storage and service calls.
+
+        Currencies whose minor unit is out of use have no label of their own,
+        so those are described relative to the major unit.
+        """
+        minor, major = self._unit_pair
+        return minor or f"1/100 {major}"
+
+    @property
     def price_source_name(self) -> str:
         """Source currently serving the price data."""
         return self._active_source_name

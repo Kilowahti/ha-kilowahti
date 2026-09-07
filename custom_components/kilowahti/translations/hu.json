@@ -33,9 +33,9 @@
         "description": "A zónád alapján előre kitöltve. Szükség esetén módosítsd. Minden árat (hálózati díjsávok, fix áras időszakok) áfával együtt kell megadni.",
         "data": {
           "vat_rate_pct": "Áfakulcs (%)",
-          "electricity_tax": "Energiaadó (c/kWh)",
-          "spot_commission": "Árrés a tőzsdei áron felül (c/kWh)",
-          "monthly_fixed_cost": "Villamosenergia-szerződés fix költsége (€/hó)"
+          "electricity_tax": "Energiaadó",
+          "spot_commission": "Árrés a tőzsdei áron felül",
+          "monthly_fixed_cost": "Villamosenergia-szerződés fix költsége"
         },
         "data_description": {
           "electricity_tax": "Fix, kWh-nkénti energiaadó, amely a tőzsdei/fix ár tetejére kerül.",
@@ -54,7 +54,7 @@
         "title": "Csoport hozzáadása",
         "data": {
           "label": "Csoport neve",
-          "monthly_fixed_cost": "Havi fix költség (€/hó)"
+          "monthly_fixed_cost": "Havi fix költség"
         },
         "data_description": {
           "monthly_fixed_cost": "Hálózati csatlakozás + a szerződés alapdíja. Bruttó összeg (áfával)."
@@ -64,7 +64,7 @@
         "title": "Csoportbeállítások szerkesztése",
         "data": {
           "label": "Csoport neve",
-          "monthly_fixed_cost": "Havi fix költség (€/hó)"
+          "monthly_fixed_cost": "Havi fix költség"
         },
         "data_description": {
           "monthly_fixed_cost": "Hálózati csatlakozás + a szerződés alapdíja. Bruttó összeg (áfával)."
@@ -82,7 +82,7 @@
         "description": "Kiértékelés prioritási sorrendben; az első találat nyer. Adj hozzá egy alapdíjat a legalacsonyabb prioritással, időbeli korlátozás nélkül.",
         "data": {
           "label": "Sáv neve",
-          "price": "Ár (c/kWh)",
+          "price": "Ár",
           "months": "Aktív hónapok",
           "weekdays": "Aktív napok",
           "hour_start": "Kezdő időpont (beleértve)",
@@ -95,7 +95,7 @@
         "description": "Módosítsd a kívánt mezőket, vagy jelöld be az eltávolítást a sáv törléséhez.",
         "data": {
           "label": "Sáv neve",
-          "price": "Ár (c/kWh)",
+          "price": "Ár",
           "months": "Aktív hónapok",
           "weekdays": "Aktív napok",
           "hour_start": "Kezdő időpont (beleértve)",
@@ -107,7 +107,7 @@
       "thresholds": {
         "title": "Küszöbök és vezérlés",
         "data": {
-          "max_price": "Vezérlési maximumár (c/kWh)",
+          "max_price": "Vezérlési maximumár",
           "price_threshold_includes_transfer": "A maximumár tartalmazza a hálózati díjat",
           "max_rank": "Vezérlési maximum helyezés",
           "forward_avg_hours": "Előretekintő átlagablak hossza (óra)",
@@ -184,9 +184,9 @@
           "price_resolution": "Árfelbontás",
           "display_unit": "Megjelenítési egység",
           "vat_rate_pct": "Áfakulcs (%)",
-          "electricity_tax": "Energiaadó (c/kWh)",
-          "spot_commission": "Árrés a tőzsdei áron felül (c/kWh)",
-          "monthly_fixed_cost": "Villamosenergia-szerződés fix költsége (€/hó)",
+          "electricity_tax": "Energiaadó",
+          "spot_commission": "Árrés a tőzsdei áron felül",
+          "monthly_fixed_cost": "Villamosenergia-szerződés fix költsége",
           "currency_mode": "Megjelenítési pénznem",
           "fx_mode": "Árfolyam forrása",
           "fx_rate": "Kézi árfolyam (helyi pénznem / EUR)"
@@ -205,7 +205,7 @@
         "title": "Csoport hozzáadása",
         "data": {
           "label": "Csoport neve",
-          "monthly_fixed_cost": "Havi fix költség (€/hó)"
+          "monthly_fixed_cost": "Havi fix költség"
         },
         "data_description": {
           "monthly_fixed_cost": "Hálózati csatlakozás + a szerződés alapdíja. Bruttó összeg (áfával)."
@@ -215,7 +215,7 @@
         "title": "Csoportbeállítások szerkesztése",
         "data": {
           "label": "Csoport neve",
-          "monthly_fixed_cost": "Havi fix költség (€/hó)"
+          "monthly_fixed_cost": "Havi fix költség"
         },
         "data_description": {
           "monthly_fixed_cost": "Hálózati csatlakozás + a szerződés alapdíja. Bruttó összeg (áfával)."
@@ -232,7 +232,7 @@
         "title": "Hálózati díj hozzáadása",
         "data": {
           "label": "Sáv neve (pl. Téli hétköznap)",
-          "price": "Ár (c/kWh)",
+          "price": "Ár",
           "months": "Aktív hónapok",
           "weekdays": "Aktív napok",
           "hour_start": "Kezdő időpont (beleértve)",
@@ -245,7 +245,7 @@
         "description": "Módosítsd a kívánt mezőket, vagy jelöld be az eltávolítást a sáv törléséhez.",
         "data": {
           "label": "Sáv neve (pl. Téli hétköznap)",
-          "price": "Ár (c/kWh)",
+          "price": "Ár",
           "months": "Aktív hónapok",
           "weekdays": "Aktív napok",
           "hour_start": "Kezdő időpont (beleértve)",
@@ -257,7 +257,7 @@
       "thresholds": {
         "title": "Küszöbök és vezérlés",
         "data": {
-          "max_price": "Vezérlési maximumár (c/kWh)",
+          "max_price": "Vezérlési maximumár",
           "price_threshold_includes_transfer": "A maximumár tartalmazza a hálózati díjat",
           "max_rank": "Vezérlési maximum helyezés",
           "forward_avg_hours": "Előretekintő átlagablak hossza (óra)",
@@ -327,13 +327,13 @@
         "description": "Állítsd be a betáplálási árakat és az akkumulátor paramétereit. Az akkumulátor kapacitását 0-ra állítva kikapcsolod az akkumulátorszenzorokat.",
         "data": {
           "export_pricing_mode": "Betáplálási ár módja",
-          "export_commission": "Betáplálási árrés (c/kWh, a tőzsdei árból levonva)",
-          "fixed_export_rate": "Fix betáplálási ár (c/kWh)",
-          "export_price_threshold": "Betáplálási árküszöb (c/kWh)",
+          "export_commission": "Betáplálási árrés (a tőzsdei árból levonva)",
+          "fixed_export_rate": "Fix betáplálási ár",
+          "export_price_threshold": "Betáplálási árküszöb",
           "solar_window_start": "Napelemes ablak kezdő órája",
           "solar_window_end": "Napelemes ablak záró órája",
-          "battery_capacity_kwh": "Akkumulátor kapacitása (kWh, 0 = kikapcsolva)",
-          "battery_charge_power_kw": "Akkumulátor töltési teljesítménye (kW)"
+          "battery_capacity_kwh": "Akkumulátor kapacitása (0 = kikapcsolva)",
+          "battery_charge_power_kw": "Akkumulátor töltési teljesítménye"
         },
         "data_description": {
           "export_commission": "Csak tőzsdei árhoz kötött módban. A vevő árrése, amely az API tőzsdei árából kerül levonásra (áfa nélkül). A kistermelők általában nem számítanak fel áfát a betáplálásra.",
@@ -348,7 +348,7 @@
           "label": "Időszak neve",
           "start_date": "Kezdő dátum",
           "end_date": "Záró dátum (beleértve)",
-          "price": "Ár (c/kWh, áfával)"
+          "price": "Ár (áfával)"
         },
         "data_description": {
           "price": "Az árat áfával együtt add meg. Ez az ár változtatás nélkül kerül felhasználásra — áfa nem adódik hozzá."

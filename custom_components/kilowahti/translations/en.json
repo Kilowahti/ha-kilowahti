@@ -33,9 +33,9 @@
         "description": "Pre-filled from your region. Adjust if needed. All prices (transfer tiers, fixed periods) are entered incl. VAT.",
         "data": {
           "vat_rate_pct": "VAT rate (%)",
-          "electricity_tax": "Electricity tax (c/kWh)",
-          "spot_commission": "Spot price commission (c/kWh)",
-          "monthly_fixed_cost": "Electricity contract fixed cost (€/month)"
+          "electricity_tax": "Electricity tax",
+          "spot_commission": "Spot price commission",
+          "monthly_fixed_cost": "Electricity contract fixed cost"
         },
         "data_description": {
           "electricity_tax": "Flat per-kWh electricity tax added on top of spot/fixed price.",
@@ -54,7 +54,7 @@
         "title": "Add group",
         "data": {
           "label": "Group name",
-          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+          "monthly_fixed_cost": "Monthly fixed cost"
         },
         "data_description": {
           "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
@@ -64,7 +64,7 @@
         "title": "Edit group settings",
         "data": {
           "label": "Group name",
-          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+          "monthly_fixed_cost": "Monthly fixed cost"
         },
         "data_description": {
           "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
@@ -82,7 +82,7 @@
         "description": "Evaluated in priority order; first match wins. Add a base rate as the lowest priority with no time constraints.",
         "data": {
           "label": "Tier label",
-          "price": "Price (c/kWh)",
+          "price": "Price",
           "months": "Months active",
           "weekdays": "Weekdays active",
           "hour_start": "Start time (inclusive)",
@@ -95,7 +95,7 @@
         "description": "Change any field, or tick removal to delete this tier.",
         "data": {
           "label": "Tier label",
-          "price": "Price (c/kWh)",
+          "price": "Price",
           "months": "Months active",
           "weekdays": "Weekdays active",
           "hour_start": "Start time (inclusive)",
@@ -107,7 +107,7 @@
       "thresholds": {
         "title": "Thresholds & control",
         "data": {
-          "max_price": "Control max price (c/kWh)",
+          "max_price": "Control max price",
           "price_threshold_includes_transfer": "Max price includes transfer",
           "max_rank": "Control max rank",
           "forward_avg_hours": "Forward average window length (hours)",
@@ -185,9 +185,9 @@
           "price_resolution": "Price resolution",
           "display_unit": "Display unit",
           "vat_rate_pct": "VAT rate (%)",
-          "electricity_tax": "Electricity tax (c/kWh)",
-          "spot_commission": "Spot price commission (c/kWh)",
-          "monthly_fixed_cost": "Electricity contract fixed cost (€/month)",
+          "electricity_tax": "Electricity tax",
+          "spot_commission": "Spot price commission",
+          "monthly_fixed_cost": "Electricity contract fixed cost",
           "currency_mode": "Display currency",
           "fx_mode": "Exchange rate source",
           "fx_rate": "Manual exchange rate (local currency per EUR)"
@@ -206,7 +206,7 @@
         "title": "Add group",
         "data": {
           "label": "Group name",
-          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+          "monthly_fixed_cost": "Monthly fixed cost"
         },
         "data_description": {
           "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
@@ -216,7 +216,7 @@
         "title": "Edit group settings",
         "data": {
           "label": "Group name",
-          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+          "monthly_fixed_cost": "Monthly fixed cost"
         },
         "data_description": {
           "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
@@ -233,7 +233,7 @@
         "title": "Add transfer price",
         "data": {
           "label": "Tier name (e.g. Winter weekday)",
-          "price": "Price (c/kWh)",
+          "price": "Price",
           "months": "Months active",
           "weekdays": "Weekdays active",
           "hour_start": "Start time (inclusive)",
@@ -246,7 +246,7 @@
         "description": "Change any field, or tick removal to delete this tier.",
         "data": {
           "label": "Tier name (e.g. Winter weekday)",
-          "price": "Price (c/kWh)",
+          "price": "Price",
           "months": "Months active",
           "weekdays": "Weekdays active",
           "hour_start": "Start time (inclusive)",
@@ -258,7 +258,7 @@
       "thresholds": {
         "title": "Thresholds & control",
         "data": {
-          "max_price": "Control max price (c/kWh)",
+          "max_price": "Control max price",
           "price_threshold_includes_transfer": "Max price includes transfer",
           "max_rank": "Control max rank",
           "forward_avg_hours": "Forward average window length (hours)",
@@ -329,13 +329,13 @@
         "description": "Configure export pricing and battery settings. Set battery capacity to 0 to disable battery sensors.",
         "data": {
           "export_pricing_mode": "Export pricing mode",
-          "export_commission": "Export commission (c/kWh deducted from spot)",
-          "fixed_export_rate": "Fixed export rate (c/kWh)",
-          "export_price_threshold": "Export price threshold (c/kWh)",
+          "export_commission": "Export commission (deducted from spot)",
+          "fixed_export_rate": "Fixed export rate",
+          "export_price_threshold": "Export price threshold",
           "solar_window_start": "Solar window start hour",
           "solar_window_end": "Solar window end hour",
-          "battery_capacity_kwh": "Battery capacity (kWh, 0 = disabled)",
-          "battery_charge_power_kw": "Battery charge power (kW)"
+          "battery_capacity_kwh": "Battery capacity (0 = disabled)",
+          "battery_charge_power_kw": "Battery charge power"
         },
         "data_description": {
           "export_commission": "Spot-linked mode only. Seller's margin deducted from the spot API price (excl. VAT). Small producers typically don't collect VAT on exports.",
@@ -350,7 +350,7 @@
           "label": "Period label",
           "start_date": "Start date",
           "end_date": "End date (inclusive)",
-          "price": "Price (c/kWh, incl. VAT)"
+          "price": "Price (incl. VAT)"
         },
         "data_description": {
           "price": "Enter price incl. VAT. This price is used as-is — no VAT is added."

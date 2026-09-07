@@ -33,9 +33,9 @@
         "description": "Vnaprej izpolnjeno glede na vaše območje. Po potrebi prilagodite. Vse cene (stopnje omrežnine, obdobja fiksne cene) se vnašajo z vključenim DDV.",
         "data": {
           "vat_rate_pct": "Stopnja DDV (%)",
-          "electricity_tax": "Trošarina (c/kWh)",
-          "spot_commission": "Marža na borzno ceno (c/kWh)",
-          "monthly_fixed_cost": "Fiksni strošek pogodbe o dobavi (€/mesec)"
+          "electricity_tax": "Trošarina",
+          "spot_commission": "Marža na borzno ceno",
+          "monthly_fixed_cost": "Fiksni strošek pogodbe o dobavi"
         },
         "data_description": {
           "electricity_tax": "Fiksna trošarina na kWh, ki se prišteje borzni/fiksni ceni.",
@@ -54,7 +54,7 @@
         "title": "Dodaj skupino",
         "data": {
           "label": "Ime skupine",
-          "monthly_fixed_cost": "Mesečni fiksni strošek (€/mesec)"
+          "monthly_fixed_cost": "Mesečni fiksni strošek"
         },
         "data_description": {
           "monthly_fixed_cost": "Omrežni priključek + fiksna dajatev pogodbe. Bruto znesek (z DDV)."
@@ -64,7 +64,7 @@
         "title": "Uredi nastavitve skupine",
         "data": {
           "label": "Ime skupine",
-          "monthly_fixed_cost": "Mesečni fiksni strošek (€/mesec)"
+          "monthly_fixed_cost": "Mesečni fiksni strošek"
         },
         "data_description": {
           "monthly_fixed_cost": "Omrežni priključek + fiksna dajatev pogodbe. Bruto znesek (z DDV)."
@@ -82,7 +82,7 @@
         "description": "Vrednotijo se po vrstnem redu prednosti; zmaga prvo ujemanje. Dodajte osnovno tarifo z najnižjo prednostjo in brez časovnih omejitev.",
         "data": {
           "label": "Ime stopnje",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktivni meseci",
           "weekdays": "Aktivni dnevi",
           "hour_start": "Čas začetka (vključno)",
@@ -95,7 +95,7 @@
         "description": "Spremenite poljubna polja ali označite odstranitev, da stopnjo izbrišete.",
         "data": {
           "label": "Ime stopnje",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktivni meseci",
           "weekdays": "Aktivni dnevi",
           "hour_start": "Čas začetka (vključno)",
@@ -107,7 +107,7 @@
       "thresholds": {
         "title": "Pragovi in krmiljenje",
         "data": {
-          "max_price": "Najvišja cena za krmiljenje (c/kWh)",
+          "max_price": "Najvišja cena za krmiljenje",
           "price_threshold_includes_transfer": "Najvišja cena vključuje omrežnino",
           "max_rank": "Najvišji rang za krmiljenje",
           "forward_avg_hours": "Dolžina okna prihodnjega povprečja (ure)",
@@ -184,9 +184,9 @@
           "price_resolution": "Ločljivost cen",
           "display_unit": "Enota prikaza",
           "vat_rate_pct": "Stopnja DDV (%)",
-          "electricity_tax": "Trošarina (c/kWh)",
-          "spot_commission": "Marža na borzno ceno (c/kWh)",
-          "monthly_fixed_cost": "Fiksni strošek pogodbe o dobavi (€/mesec)",
+          "electricity_tax": "Trošarina",
+          "spot_commission": "Marža na borzno ceno",
+          "monthly_fixed_cost": "Fiksni strošek pogodbe o dobavi",
           "currency_mode": "Valuta prikaza",
           "fx_mode": "Vir menjalnega tečaja",
           "fx_rate": "Ročni menjalni tečaj (lokalna valuta za 1 EUR)"
@@ -205,7 +205,7 @@
         "title": "Dodaj skupino",
         "data": {
           "label": "Ime skupine",
-          "monthly_fixed_cost": "Mesečni fiksni strošek (€/mesec)"
+          "monthly_fixed_cost": "Mesečni fiksni strošek"
         },
         "data_description": {
           "monthly_fixed_cost": "Omrežni priključek + fiksna dajatev pogodbe. Bruto znesek (z DDV)."
@@ -215,7 +215,7 @@
         "title": "Uredi nastavitve skupine",
         "data": {
           "label": "Ime skupine",
-          "monthly_fixed_cost": "Mesečni fiksni strošek (€/mesec)"
+          "monthly_fixed_cost": "Mesečni fiksni strošek"
         },
         "data_description": {
           "monthly_fixed_cost": "Omrežni priključek + fiksna dajatev pogodbe. Bruto znesek (z DDV)."
@@ -232,7 +232,7 @@
         "title": "Dodaj ceno omrežnine",
         "data": {
           "label": "Ime stopnje (npr. Zimski delovni dan)",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktivni meseci",
           "weekdays": "Aktivni dnevi",
           "hour_start": "Čas začetka (vključno)",
@@ -245,7 +245,7 @@
         "description": "Spremenite poljubna polja ali označite odstranitev, da stopnjo izbrišete.",
         "data": {
           "label": "Ime stopnje (npr. Zimski delovni dan)",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktivni meseci",
           "weekdays": "Aktivni dnevi",
           "hour_start": "Čas začetka (vključno)",
@@ -257,7 +257,7 @@
       "thresholds": {
         "title": "Pragovi in krmiljenje",
         "data": {
-          "max_price": "Najvišja cena za krmiljenje (c/kWh)",
+          "max_price": "Najvišja cena za krmiljenje",
           "price_threshold_includes_transfer": "Najvišja cena vključuje omrežnino",
           "max_rank": "Najvišji rang za krmiljenje",
           "forward_avg_hours": "Dolžina okna prihodnjega povprečja (ure)",
@@ -327,13 +327,13 @@
         "description": "Nastavite cene oddaje in parametre baterije. Nastavite kapaciteto baterije na 0, da izklopite senzorje baterije.",
         "data": {
           "export_pricing_mode": "Način cene oddaje",
-          "export_commission": "Marža oddaje (c/kWh, odšteta od borzne)",
-          "fixed_export_rate": "Fiksna cena oddaje (c/kWh)",
-          "export_price_threshold": "Prag cene oddaje (c/kWh)",
+          "export_commission": "Marža oddaje (odšteta od borzne)",
+          "fixed_export_rate": "Fiksna cena oddaje",
+          "export_price_threshold": "Prag cene oddaje",
           "solar_window_start": "Začetna ura sončnega okna",
           "solar_window_end": "Končna ura sončnega okna",
-          "battery_capacity_kwh": "Kapaciteta baterije (kWh, 0 = izklopljeno)",
-          "battery_charge_power_kw": "Moč polnjenja baterije (kW)"
+          "battery_capacity_kwh": "Kapaciteta baterije (0 = izklopljeno)",
+          "battery_charge_power_kw": "Moč polnjenja baterije"
         },
         "data_description": {
           "export_commission": "Samo v načinu, vezanem na borzno ceno. Marža odkupovalca, ki se odšteje od borzne cene iz API-ja (brez DDV). Mali proizvajalci na oddano energijo običajno ne obračunavajo DDV.",
@@ -348,7 +348,7 @@
           "label": "Ime obdobja",
           "start_date": "Datum začetka",
           "end_date": "Datum konca (vključno)",
-          "price": "Cena (c/kWh, z DDV)"
+          "price": "Cena (z DDV)"
         },
         "data_description": {
           "price": "Vnesite ceno z vključenim DDV. Ta cena se uporablja takšna, kot je — DDV se ne prišteje."

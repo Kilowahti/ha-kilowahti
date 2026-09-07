@@ -33,9 +33,9 @@
         "description": "Wstępnie wypełnione na podstawie regionu. W razie potrzeby dostosuj. Wszystkie ceny (stawki dystrybucyjne, okresy stałej ceny) podaje się z VAT.",
         "data": {
           "vat_rate_pct": "Stawka VAT (%)",
-          "electricity_tax": "Akcyza (c/kWh)",
-          "spot_commission": "Marża do ceny giełdowej (c/kWh)",
-          "monthly_fixed_cost": "Koszt stały umowy na energię (€/mies.)"
+          "electricity_tax": "Akcyza",
+          "spot_commission": "Marża do ceny giełdowej",
+          "monthly_fixed_cost": "Koszt stały umowy na energię"
         },
         "data_description": {
           "electricity_tax": "Stała akcyza za kWh doliczana do ceny giełdowej/stałej.",
@@ -54,7 +54,7 @@
         "title": "Dodaj grupę",
         "data": {
           "label": "Nazwa grupy",
-          "monthly_fixed_cost": "Miesięczny koszt stały (€/mies.)"
+          "monthly_fixed_cost": "Miesięczny koszt stały"
         },
         "data_description": {
           "monthly_fixed_cost": "Przyłącze sieciowe + opłata stała umowy. Kwota brutto (z VAT)."
@@ -64,7 +64,7 @@
         "title": "Edytuj ustawienia grupy",
         "data": {
           "label": "Nazwa grupy",
-          "monthly_fixed_cost": "Miesięczny koszt stały (€/mies.)"
+          "monthly_fixed_cost": "Miesięczny koszt stały"
         },
         "data_description": {
           "monthly_fixed_cost": "Przyłącze sieciowe + opłata stała umowy. Kwota brutto (z VAT)."
@@ -82,7 +82,7 @@
         "description": "Oceniane w kolejności priorytetów; wygrywa pierwsze dopasowanie. Dodaj stawkę podstawową z najniższym priorytetem, bez ograniczeń czasowych.",
         "data": {
           "label": "Nazwa stawki",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktywne miesiące",
           "weekdays": "Aktywne dni tygodnia",
           "hour_start": "Czas rozpoczęcia (włącznie)",
@@ -95,7 +95,7 @@
         "description": "Zmień dowolne pola albo zaznacz usunięcie, aby skasować tę stawkę.",
         "data": {
           "label": "Nazwa stawki",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktywne miesiące",
           "weekdays": "Aktywne dni tygodnia",
           "hour_start": "Czas rozpoczęcia (włącznie)",
@@ -107,7 +107,7 @@
       "thresholds": {
         "title": "Progi i sterowanie",
         "data": {
-          "max_price": "Maksymalna cena sterowania (c/kWh)",
+          "max_price": "Maksymalna cena sterowania",
           "price_threshold_includes_transfer": "Cena maksymalna obejmuje dystrybucję",
           "max_rank": "Maksymalna ranga sterowania",
           "forward_avg_hours": "Długość okna średniej przyszłej (godziny)",
@@ -184,9 +184,9 @@
           "price_resolution": "Rozdzielczość cen",
           "display_unit": "Jednostka wyświetlania",
           "vat_rate_pct": "Stawka VAT (%)",
-          "electricity_tax": "Akcyza (c/kWh)",
-          "spot_commission": "Marża do ceny giełdowej (c/kWh)",
-          "monthly_fixed_cost": "Koszt stały umowy na energię (€/mies.)",
+          "electricity_tax": "Akcyza",
+          "spot_commission": "Marża do ceny giełdowej",
+          "monthly_fixed_cost": "Koszt stały umowy na energię",
           "currency_mode": "Waluta wyświetlania",
           "fx_mode": "Źródło kursu wymiany",
           "fx_rate": "Ręczny kurs wymiany (waluta lokalna za EUR)"
@@ -205,7 +205,7 @@
         "title": "Dodaj grupę",
         "data": {
           "label": "Nazwa grupy",
-          "monthly_fixed_cost": "Miesięczny koszt stały (€/mies.)"
+          "monthly_fixed_cost": "Miesięczny koszt stały"
         },
         "data_description": {
           "monthly_fixed_cost": "Przyłącze sieciowe + opłata stała umowy. Kwota brutto (z VAT)."
@@ -215,7 +215,7 @@
         "title": "Edytuj ustawienia grupy",
         "data": {
           "label": "Nazwa grupy",
-          "monthly_fixed_cost": "Miesięczny koszt stały (€/mies.)"
+          "monthly_fixed_cost": "Miesięczny koszt stały"
         },
         "data_description": {
           "monthly_fixed_cost": "Przyłącze sieciowe + opłata stała umowy. Kwota brutto (z VAT)."
@@ -232,7 +232,7 @@
         "title": "Dodaj stawkę dystrybucyjną",
         "data": {
           "label": "Nazwa stawki (np. Zimowy dzień roboczy)",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktywne miesiące",
           "weekdays": "Aktywne dni tygodnia",
           "hour_start": "Czas rozpoczęcia (włącznie)",
@@ -245,7 +245,7 @@
         "description": "Zmień dowolne pola albo zaznacz usunięcie, aby skasować tę stawkę.",
         "data": {
           "label": "Nazwa stawki (np. Zimowy dzień roboczy)",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktywne miesiące",
           "weekdays": "Aktywne dni tygodnia",
           "hour_start": "Czas rozpoczęcia (włącznie)",
@@ -257,7 +257,7 @@
       "thresholds": {
         "title": "Progi i sterowanie",
         "data": {
-          "max_price": "Maksymalna cena sterowania (c/kWh)",
+          "max_price": "Maksymalna cena sterowania",
           "price_threshold_includes_transfer": "Cena maksymalna obejmuje dystrybucję",
           "max_rank": "Maksymalna ranga sterowania",
           "forward_avg_hours": "Długość okna średniej przyszłej (godziny)",
@@ -327,13 +327,13 @@
         "description": "Skonfiguruj ceny sprzedaży i ustawienia akumulatora. Ustaw pojemność akumulatora na 0, aby wyłączyć sensory akumulatora.",
         "data": {
           "export_pricing_mode": "Tryb ceny sprzedaży",
-          "export_commission": "Marża sprzedaży (c/kWh, odejmowana od ceny giełdowej)",
-          "fixed_export_rate": "Stała cena sprzedaży (c/kWh)",
-          "export_price_threshold": "Próg ceny sprzedaży (c/kWh)",
+          "export_commission": "Marża sprzedaży (odejmowana od ceny giełdowej)",
+          "fixed_export_rate": "Stała cena sprzedaży",
+          "export_price_threshold": "Próg ceny sprzedaży",
           "solar_window_start": "Godzina początku okna słonecznego",
           "solar_window_end": "Godzina końca okna słonecznego",
-          "battery_capacity_kwh": "Pojemność akumulatora (kWh, 0 = wyłączone)",
-          "battery_charge_power_kw": "Moc ładowania akumulatora (kW)"
+          "battery_capacity_kwh": "Pojemność akumulatora (0 = wyłączone)",
+          "battery_charge_power_kw": "Moc ładowania akumulatora"
         },
         "data_description": {
           "export_commission": "Tylko w trybie powiązanym z giełdą. Marża odbiorcy odejmowana od ceny giełdowej z API (bez VAT). Mali producenci zwykle nie naliczają VAT od sprzedaży.",
@@ -348,7 +348,7 @@
           "label": "Nazwa okresu",
           "start_date": "Data rozpoczęcia",
           "end_date": "Data zakończenia (włącznie)",
-          "price": "Cena (c/kWh, z VAT)"
+          "price": "Cena (z VAT)"
         },
         "data_description": {
           "price": "Podaj cenę z VAT. Ta cena jest używana bez zmian — VAT nie jest doliczany."

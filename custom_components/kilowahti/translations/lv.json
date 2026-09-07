@@ -33,9 +33,9 @@
         "description": "Aizpildīts iepriekš atbilstoši jūsu reģionam. Pielāgojiet, ja nepieciešams. Visas cenas (sadales tarifa līmeņi, fiksētas cenas periodi) tiek ievadītas ar PVN.",
         "data": {
           "vat_rate_pct": "PVN likme (%)",
-          "electricity_tax": "Elektroenerģijas nodoklis (c/kWh)",
-          "spot_commission": "Biržas cenas uzcenojums (c/kWh)",
-          "monthly_fixed_cost": "Elektroenerģijas līguma fiksētā maksa (€/mēnesī)"
+          "electricity_tax": "Elektroenerģijas nodoklis",
+          "spot_commission": "Biržas cenas uzcenojums",
+          "monthly_fixed_cost": "Elektroenerģijas līguma fiksētā maksa"
         },
         "data_description": {
           "electricity_tax": "Fiksēts elektroenerģijas nodoklis par kWh, ko pieskaita biržas/fiksētajai cenai.",
@@ -54,7 +54,7 @@
         "title": "Pievienot grupu",
         "data": {
           "label": "Grupas nosaukums",
-          "monthly_fixed_cost": "Ikmēneša fiksētā maksa (€/mēnesī)"
+          "monthly_fixed_cost": "Ikmēneša fiksētā maksa"
         },
         "data_description": {
           "monthly_fixed_cost": "Pieslēguma maksa + līguma pamatmaksa. Bruto summa (ar PVN)."
@@ -64,7 +64,7 @@
         "title": "Rediģēt grupas iestatījumus",
         "data": {
           "label": "Grupas nosaukums",
-          "monthly_fixed_cost": "Ikmēneša fiksētā maksa (€/mēnesī)"
+          "monthly_fixed_cost": "Ikmēneša fiksētā maksa"
         },
         "data_description": {
           "monthly_fixed_cost": "Pieslēguma maksa + līguma pamatmaksa. Bruto summa (ar PVN)."
@@ -82,7 +82,7 @@
         "description": "Tiek izvērtēts prioritātes secībā; spēkā ir pirmā atbilstība. Pievienojiet pamata tarifu kā zemāko prioritāti bez laika ierobežojumiem.",
         "data": {
           "label": "Līmeņa nosaukums",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktīvie mēneši",
           "weekdays": "Aktīvās nedēļas dienas",
           "hour_start": "Sākuma laiks (ieskaitot)",
@@ -95,7 +95,7 @@
         "description": "Mainiet vajadzīgos laukus vai atzīmējiet noņemšanu, lai līmeni dzēstu.",
         "data": {
           "label": "Līmeņa nosaukums",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktīvie mēneši",
           "weekdays": "Aktīvās nedēļas dienas",
           "hour_start": "Sākuma laiks (ieskaitot)",
@@ -107,7 +107,7 @@
       "thresholds": {
         "title": "Sliekšņi un vadība",
         "data": {
-          "max_price": "Vadības maksimālā cena (c/kWh)",
+          "max_price": "Vadības maksimālā cena",
           "price_threshold_includes_transfer": "Maksimālā cena ietver sadales tarifu",
           "max_rank": "Vadības maksimālais rangs",
           "forward_avg_hours": "Nākotnes vidējās vērtības loga garums (stundas)",
@@ -184,9 +184,9 @@
           "price_resolution": "Cenu izšķirtspēja",
           "display_unit": "Attēlošanas mērvienība",
           "vat_rate_pct": "PVN likme (%)",
-          "electricity_tax": "Elektroenerģijas nodoklis (c/kWh)",
-          "spot_commission": "Biržas cenas uzcenojums (c/kWh)",
-          "monthly_fixed_cost": "Elektroenerģijas līguma fiksētā maksa (€/mēnesī)",
+          "electricity_tax": "Elektroenerģijas nodoklis",
+          "spot_commission": "Biržas cenas uzcenojums",
+          "monthly_fixed_cost": "Elektroenerģijas līguma fiksētā maksa",
           "currency_mode": "Attēlošanas valūta",
           "fx_mode": "Valūtas kursa avots",
           "fx_rate": "Manuāls valūtas kurss (vietējā valūta par 1 EUR)"
@@ -205,7 +205,7 @@
         "title": "Pievienot grupu",
         "data": {
           "label": "Grupas nosaukums",
-          "monthly_fixed_cost": "Ikmēneša fiksētā maksa (€/mēnesī)"
+          "monthly_fixed_cost": "Ikmēneša fiksētā maksa"
         },
         "data_description": {
           "monthly_fixed_cost": "Pieslēguma maksa + līguma pamatmaksa. Bruto summa (ar PVN)."
@@ -215,7 +215,7 @@
         "title": "Rediģēt grupas iestatījumus",
         "data": {
           "label": "Grupas nosaukums",
-          "monthly_fixed_cost": "Ikmēneša fiksētā maksa (€/mēnesī)"
+          "monthly_fixed_cost": "Ikmēneša fiksētā maksa"
         },
         "data_description": {
           "monthly_fixed_cost": "Pieslēguma maksa + līguma pamatmaksa. Bruto summa (ar PVN)."
@@ -232,7 +232,7 @@
         "title": "Pievienot sadales tarifu",
         "data": {
           "label": "Līmeņa nosaukums (piem., Ziemas darbdiena)",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktīvie mēneši",
           "weekdays": "Aktīvās nedēļas dienas",
           "hour_start": "Sākuma laiks (ieskaitot)",
@@ -245,7 +245,7 @@
         "description": "Mainiet vajadzīgos laukus vai atzīmējiet noņemšanu, lai līmeni dzēstu.",
         "data": {
           "label": "Līmeņa nosaukums (piem., Ziemas darbdiena)",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktīvie mēneši",
           "weekdays": "Aktīvās nedēļas dienas",
           "hour_start": "Sākuma laiks (ieskaitot)",
@@ -257,7 +257,7 @@
       "thresholds": {
         "title": "Sliekšņi un vadība",
         "data": {
-          "max_price": "Vadības maksimālā cena (c/kWh)",
+          "max_price": "Vadības maksimālā cena",
           "price_threshold_includes_transfer": "Maksimālā cena ietver sadales tarifu",
           "max_rank": "Vadības maksimālais rangs",
           "forward_avg_hours": "Nākotnes vidējās vērtības loga garums (stundas)",
@@ -327,13 +327,13 @@
         "description": "Konfigurējiet eksporta cenas un akumulatora iestatījumus. Iestatiet akumulatora ietilpību uz 0, lai atspējotu akumulatora sensorus.",
         "data": {
           "export_pricing_mode": "Eksporta cenu režīms",
-          "export_commission": "Eksporta marža (c/kWh, ko atskaita no biržas cenas)",
-          "fixed_export_rate": "Fiksētā eksporta cena (c/kWh)",
-          "export_price_threshold": "Eksporta cenas slieksnis (c/kWh)",
+          "export_commission": "Eksporta marža (ko atskaita no biržas cenas)",
+          "fixed_export_rate": "Fiksētā eksporta cena",
+          "export_price_threshold": "Eksporta cenas slieksnis",
           "solar_window_start": "Saules loga sākuma stunda",
           "solar_window_end": "Saules loga beigu stunda",
-          "battery_capacity_kwh": "Akumulatora ietilpība (kWh, 0 = atspējots)",
-          "battery_charge_power_kw": "Akumulatora uzlādes jauda (kW)"
+          "battery_capacity_kwh": "Akumulatora ietilpība (0 = atspējots)",
+          "battery_charge_power_kw": "Akumulatora uzlādes jauda"
         },
         "data_description": {
           "export_commission": "Tikai biržai piesaistītajā režīmā. Pārdevēja marža, ko atskaita no biržas API cenas (bez PVN). Mazie ražotāji par eksportu PVN parasti neiekasē.",
@@ -348,7 +348,7 @@
           "label": "Perioda nosaukums",
           "start_date": "Sākuma datums",
           "end_date": "Beigu datums (ieskaitot)",
-          "price": "Cena (c/kWh, ar PVN)"
+          "price": "Cena (ar PVN)"
         },
         "data_description": {
           "price": "Ievadiet cenu ar PVN. Šī cena tiek izmantota bez izmaiņām — PVN netiek pieskaitīts."

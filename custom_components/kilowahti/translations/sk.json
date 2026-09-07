@@ -33,9 +33,9 @@
         "description": "Predvyplnené podľa vašej zóny. V prípade potreby upravte. Všetky ceny (distribučné pásma, obdobia fixnej ceny) sa zadávajú vrátane DPH.",
         "data": {
           "vat_rate_pct": "Sadzba DPH (%)",
-          "electricity_tax": "Daň z elektriny (c/kWh)",
-          "spot_commission": "Marža k spotovej cene (c/kWh)",
-          "monthly_fixed_cost": "Fixné náklady zmluvy o dodávke elektriny (€/mesiac)"
+          "electricity_tax": "Daň z elektriny",
+          "spot_commission": "Marža k spotovej cene",
+          "monthly_fixed_cost": "Fixné náklady zmluvy o dodávke elektriny"
         },
         "data_description": {
           "electricity_tax": "Pevná daň z elektriny za kWh pripočítavaná k spotovej/fixnej cene.",
@@ -54,7 +54,7 @@
         "title": "Pridať skupinu",
         "data": {
           "label": "Názov skupiny",
-          "monthly_fixed_cost": "Mesačné fixné náklady (€/mesiac)"
+          "monthly_fixed_cost": "Mesačné fixné náklady"
         },
         "data_description": {
           "monthly_fixed_cost": "Pripojenie k sieti + stála platba zmluvy. Hrubá suma (vrátane DPH)."
@@ -64,7 +64,7 @@
         "title": "Upraviť nastavenia skupiny",
         "data": {
           "label": "Názov skupiny",
-          "monthly_fixed_cost": "Mesačné fixné náklady (€/mesiac)"
+          "monthly_fixed_cost": "Mesačné fixné náklady"
         },
         "data_description": {
           "monthly_fixed_cost": "Pripojenie k sieti + stála platba zmluvy. Hrubá suma (vrátane DPH)."
@@ -82,7 +82,7 @@
         "description": "Vyhodnocujú sa v poradí priority; vyhráva prvá zhoda. Pridajte základnú sadzbu s najnižšou prioritou a bez časových obmedzení.",
         "data": {
           "label": "Názov pásma",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktívne mesiace",
           "weekdays": "Aktívne dni",
           "hour_start": "Čas začiatku (vrátane)",
@@ -95,7 +95,7 @@
         "description": "Zmeňte ľubovoľné polia, alebo zaškrtnite odstránenie a pásmo sa vymaže.",
         "data": {
           "label": "Názov pásma",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktívne mesiace",
           "weekdays": "Aktívne dni",
           "hour_start": "Čas začiatku (vrátane)",
@@ -107,7 +107,7 @@
       "thresholds": {
         "title": "Prahy a riadenie",
         "data": {
-          "max_price": "Maximálna cena pre riadenie (c/kWh)",
+          "max_price": "Maximálna cena pre riadenie",
           "price_threshold_includes_transfer": "Maximálna cena zahŕňa distribúciu",
           "max_rank": "Maximálne poradie pre riadenie",
           "forward_avg_hours": "Dĺžka okna budúceho priemeru (hodiny)",
@@ -184,9 +184,9 @@
           "price_resolution": "Rozlíšenie cien",
           "display_unit": "Jednotka zobrazenia",
           "vat_rate_pct": "Sadzba DPH (%)",
-          "electricity_tax": "Daň z elektriny (c/kWh)",
-          "spot_commission": "Marža k spotovej cene (c/kWh)",
-          "monthly_fixed_cost": "Fixné náklady zmluvy o dodávke elektriny (€/mesiac)",
+          "electricity_tax": "Daň z elektriny",
+          "spot_commission": "Marža k spotovej cene",
+          "monthly_fixed_cost": "Fixné náklady zmluvy o dodávke elektriny",
           "currency_mode": "Mena zobrazenia",
           "fx_mode": "Zdroj výmenného kurzu",
           "fx_rate": "Ručný výmenný kurz (miestna mena za EUR)"
@@ -205,7 +205,7 @@
         "title": "Pridať skupinu",
         "data": {
           "label": "Názov skupiny",
-          "monthly_fixed_cost": "Mesačné fixné náklady (€/mesiac)"
+          "monthly_fixed_cost": "Mesačné fixné náklady"
         },
         "data_description": {
           "monthly_fixed_cost": "Pripojenie k sieti + stála platba zmluvy. Hrubá suma (vrátane DPH)."
@@ -215,7 +215,7 @@
         "title": "Upraviť nastavenia skupiny",
         "data": {
           "label": "Názov skupiny",
-          "monthly_fixed_cost": "Mesačné fixné náklady (€/mesiac)"
+          "monthly_fixed_cost": "Mesačné fixné náklady"
         },
         "data_description": {
           "monthly_fixed_cost": "Pripojenie k sieti + stála platba zmluvy. Hrubá suma (vrátane DPH)."
@@ -232,7 +232,7 @@
         "title": "Pridať cenu distribúcie",
         "data": {
           "label": "Názov pásma (napr. Zimný pracovný deň)",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktívne mesiace",
           "weekdays": "Aktívne dni",
           "hour_start": "Čas začiatku (vrátane)",
@@ -245,7 +245,7 @@
         "description": "Zmeňte ľubovoľné polia, alebo zaškrtnite odstránenie a pásmo sa vymaže.",
         "data": {
           "label": "Názov pásma (napr. Zimný pracovný deň)",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktívne mesiace",
           "weekdays": "Aktívne dni",
           "hour_start": "Čas začiatku (vrátane)",
@@ -257,7 +257,7 @@
       "thresholds": {
         "title": "Prahy a riadenie",
         "data": {
-          "max_price": "Maximálna cena pre riadenie (c/kWh)",
+          "max_price": "Maximálna cena pre riadenie",
           "price_threshold_includes_transfer": "Maximálna cena zahŕňa distribúciu",
           "max_rank": "Maximálne poradie pre riadenie",
           "forward_avg_hours": "Dĺžka okna budúceho priemeru (hodiny)",
@@ -327,13 +327,13 @@
         "description": "Nastavte výkupné ceny a parametre batérie. Nastavením kapacity batérie na 0 vypnete senzory batérie.",
         "data": {
           "export_pricing_mode": "Režim výkupnej ceny",
-          "export_commission": "Výkupná marža (c/kWh, odpočítaná od spotu)",
-          "fixed_export_rate": "Pevná výkupná sadzba (c/kWh)",
-          "export_price_threshold": "Prah výkupnej ceny (c/kWh)",
+          "export_commission": "Výkupná marža (odpočítaná od spotu)",
+          "fixed_export_rate": "Pevná výkupná sadzba",
+          "export_price_threshold": "Prah výkupnej ceny",
           "solar_window_start": "Hodina začiatku solárneho okna",
           "solar_window_end": "Hodina konca solárneho okna",
-          "battery_capacity_kwh": "Kapacita batérie (kWh, 0 = vypnuté)",
-          "battery_charge_power_kw": "Nabíjací výkon batérie (kW)"
+          "battery_capacity_kwh": "Kapacita batérie (0 = vypnuté)",
+          "battery_charge_power_kw": "Nabíjací výkon batérie"
         },
         "data_description": {
           "export_commission": "Len v režime viazanom na spot. Marža odberateľa odpočítaná od spotovej ceny API (bez DPH). Malí výrobcovia zvyčajne z dodávok do siete DPH neúčtujú.",
@@ -348,7 +348,7 @@
           "label": "Názov obdobia",
           "start_date": "Dátum začiatku",
           "end_date": "Dátum konca (vrátane)",
-          "price": "Cena (c/kWh, vrátane DPH)"
+          "price": "Cena (vrátane DPH)"
         },
         "data_description": {
           "price": "Zadajte cenu vrátane DPH. Táto cena sa používa tak, ako je — DPH sa nepripočítava."

@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 import uuid
 from datetime import date
-from typing import Any
+from typing import Any, NamedTuple
 
 import voluptuous as vol
 
@@ -56,6 +56,7 @@ from .const import (
     CURRENCY_FOR_REGION,
     CURRENCY_MODE_EUR,
     CURRENCY_MODE_LOCAL,
+    CURRENCY_UNITS,
     DEFAULT_BATTERY_CAPACITY_KWH,
     DEFAULT_BATTERY_CHARGE_POWER_KW,
     DEFAULT_CONTROL_FACTOR_FUNCTION,
@@ -184,6 +185,43 @@ def _currency_schema(region: str, defaults: dict) -> vol.Schema:
     return vol.Schema(fields)
 
 
+class _Units(NamedTuple):
+    """Units for money fields in the flows, and the scale they are entered on.
+
+    Per-kWh values are stored on the minor scale (cents of the active
+    currency). Currencies whose minor unit is out of use (CZK, HUF, RSD, MKD)
+    have no minor label, so those fields are entered in the major unit and
+    converted at the flow boundary; storage keeps the minor scale either way.
+    Monthly costs are stored in major units and are never converted.
+    """
+
+    per_kwh: str
+    per_month: str
+    major_scale: bool
+
+
+def _units_for(source: dict) -> _Units:
+    """Money units implied by the region and currency mode in `source`."""
+    currency = "EUR"
+    if source.get(CONF_CURRENCY_MODE, CURRENCY_MODE_EUR) == CURRENCY_MODE_LOCAL:
+        currency = _region_currency(source.get(CONF_REGION, "FI"))
+    minor, major = CURRENCY_UNITS.get(currency, CURRENCY_UNITS["EUR"])
+    per_month = f"{major.split('/')[0]}/month"
+    if minor is None:
+        return _Units(major, per_month, True)
+    return _Units(minor, per_month, False)
+
+
+def _from_stored(value: float, units: _Units) -> float:
+    """Stored minor-scale value → the number shown in the form."""
+    return round(value / 100.0, 5) if units.major_scale else value
+
+
+def _to_stored(value: float, units: _Units) -> float:
+    """Number entered in the form → stored minor-scale value."""
+    return round(value * 100.0, 5) if units.major_scale else value
+
+
 def _store_currency_input(target: dict, region: str, user_input: dict) -> None:
     currency = _region_currency(region)
     target[CONF_CURRENCY_MODE] = user_input[CONF_CURRENCY_MODE]
@@ -233,7 +271,8 @@ def _user_schema(defaults: dict) -> vol.Schema:
     )
 
 
-def _vat_schema(defaults: dict) -> vol.Schema:
+def _vat_schema(defaults: dict, units: _Units | None = None) -> vol.Schema:
+    units = units or _units_for(defaults)
     return vol.Schema(
         {
             vol.Required(
@@ -243,34 +282,52 @@ def _vat_schema(defaults: dict) -> vol.Schema:
             ),
             vol.Required(
                 CONF_ELECTRICITY_TAX,
-                default=defaults.get(CONF_ELECTRICITY_TAX, DEFAULT_ELECTRICITY_TAX),
+                default=_from_stored(
+                    defaults.get(CONF_ELECTRICITY_TAX, DEFAULT_ELECTRICITY_TAX), units
+                ),
             ): selector.NumberSelector(
-                selector.NumberSelectorConfig(min=0, max=100, step=0.001, mode="box")
+                selector.NumberSelectorConfig(
+                    min=0, max=100, step=0.001, mode="box", unit_of_measurement=units.per_kwh
+                )
             ),
             vol.Required(
                 CONF_SPOT_COMMISSION,
-                default=defaults.get(CONF_SPOT_COMMISSION, DEFAULT_SPOT_COMMISSION),
+                default=_from_stored(
+                    defaults.get(CONF_SPOT_COMMISSION, DEFAULT_SPOT_COMMISSION), units
+                ),
             ): selector.NumberSelector(
-                selector.NumberSelectorConfig(min=0, max=20, step=0.01, mode="box")
+                selector.NumberSelectorConfig(
+                    min=0, max=20, step=0.01, mode="box", unit_of_measurement=units.per_kwh
+                )
             ),
             vol.Required(
                 CONF_MONTHLY_FIXED_COST,
                 default=defaults.get(CONF_MONTHLY_FIXED_COST, DEFAULT_MONTHLY_FIXED_COST),
             ): selector.NumberSelector(
-                selector.NumberSelectorConfig(min=0, max=500, step=0.01, mode="box")
+                selector.NumberSelectorConfig(
+                    min=0, max=500, step=0.01, mode="box", unit_of_measurement=units.per_month
+                )
             ),
         }
     )
 
 
-def _thresholds_schema(defaults: dict, resolution: int = DEFAULT_PRICE_RESOLUTION) -> vol.Schema:
+def _thresholds_schema(
+    defaults: dict,
+    resolution: int = DEFAULT_PRICE_RESOLUTION,
+    units: _Units | None = None,
+) -> vol.Schema:
     max_rank = 24 if resolution == 60 else 96
+    units = units or _units_for(defaults)
     return vol.Schema(
         {
             vol.Required(
-                CONF_MAX_PRICE, default=defaults.get(CONF_MAX_PRICE, DEFAULT_MAX_PRICE)
+                CONF_MAX_PRICE,
+                default=_from_stored(defaults.get(CONF_MAX_PRICE, DEFAULT_MAX_PRICE), units),
             ): selector.NumberSelector(
-                selector.NumberSelectorConfig(min=0, max=999, step=0.1, mode="box")
+                selector.NumberSelectorConfig(
+                    min=0, max=999, step=0.1, mode="box", unit_of_measurement=units.per_kwh
+                )
             ),
             vol.Required(
                 CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER,
@@ -347,7 +404,8 @@ def _advanced_options_schema(defaults: dict) -> vol.Schema:
     return vol.Schema(fields)
 
 
-def _generation_settings_schema(defaults: dict) -> vol.Schema:
+def _generation_settings_schema(defaults: dict, units: _Units | None = None) -> vol.Schema:
+    units = units or _units_for(defaults)
     return vol.Schema(
         {
             vol.Required(
@@ -363,21 +421,33 @@ def _generation_settings_schema(defaults: dict) -> vol.Schema:
             ),
             vol.Required(
                 CONF_EXPORT_COMMISSION,
-                default=defaults.get(CONF_EXPORT_COMMISSION, DEFAULT_EXPORT_COMMISSION),
+                default=_from_stored(
+                    defaults.get(CONF_EXPORT_COMMISSION, DEFAULT_EXPORT_COMMISSION), units
+                ),
             ): selector.NumberSelector(
-                selector.NumberSelectorConfig(min=0, max=10, step=0.01, mode="box")
+                selector.NumberSelectorConfig(
+                    min=0, max=10, step=0.01, mode="box", unit_of_measurement=units.per_kwh
+                )
             ),
             vol.Required(
                 CONF_FIXED_EXPORT_RATE,
-                default=defaults.get(CONF_FIXED_EXPORT_RATE, DEFAULT_FIXED_EXPORT_RATE),
+                default=_from_stored(
+                    defaults.get(CONF_FIXED_EXPORT_RATE, DEFAULT_FIXED_EXPORT_RATE), units
+                ),
             ): selector.NumberSelector(
-                selector.NumberSelectorConfig(min=0, max=100, step=0.01, mode="box")
+                selector.NumberSelectorConfig(
+                    min=0, max=100, step=0.01, mode="box", unit_of_measurement=units.per_kwh
+                )
             ),
             vol.Required(
                 CONF_EXPORT_PRICE_THRESHOLD,
-                default=defaults.get(CONF_EXPORT_PRICE_THRESHOLD, DEFAULT_EXPORT_PRICE_THRESHOLD),
+                default=_from_stored(
+                    defaults.get(CONF_EXPORT_PRICE_THRESHOLD, DEFAULT_EXPORT_PRICE_THRESHOLD), units
+                ),
             ): selector.NumberSelector(
-                selector.NumberSelectorConfig(min=0, max=100, step=0.1, mode="box")
+                selector.NumberSelectorConfig(
+                    min=0, max=100, step=0.1, mode="box", unit_of_measurement=units.per_kwh
+                )
             ),
             vol.Required(
                 CONF_SOLAR_WINDOW_START,
@@ -395,20 +465,25 @@ def _generation_settings_schema(defaults: dict) -> vol.Schema:
                 CONF_BATTERY_CAPACITY_KWH,
                 default=defaults.get(CONF_BATTERY_CAPACITY_KWH, DEFAULT_BATTERY_CAPACITY_KWH),
             ): selector.NumberSelector(
-                selector.NumberSelectorConfig(min=0, max=999, step=0.1, mode="box")
+                selector.NumberSelectorConfig(
+                    min=0, max=999, step=0.1, mode="box", unit_of_measurement="kWh"
+                )
             ),
             vol.Required(
                 CONF_BATTERY_CHARGE_POWER_KW,
                 default=defaults.get(CONF_BATTERY_CHARGE_POWER_KW, DEFAULT_BATTERY_CHARGE_POWER_KW),
             ): selector.NumberSelector(
-                selector.NumberSelectorConfig(min=0, max=99, step=0.1, mode="box")
+                selector.NumberSelectorConfig(
+                    min=0, max=99, step=0.1, mode="box", unit_of_measurement="kW"
+                )
             ),
         }
     )
 
 
-def _group_settings_schema(defaults: dict | None = None) -> vol.Schema:
+def _group_settings_schema(defaults: dict | None = None, units: _Units | None = None) -> vol.Schema:
     defaults = defaults or {}
+    units = units or _units_for(defaults)
     return vol.Schema(
         {
             vol.Required("label", default=defaults.get("label", "")): selector.TextSelector(),
@@ -416,23 +491,30 @@ def _group_settings_schema(defaults: dict | None = None) -> vol.Schema:
                 CONF_MONTHLY_FIXED_COST,
                 default=defaults.get(CONF_MONTHLY_FIXED_COST, DEFAULT_MONTHLY_FIXED_COST),
             ): selector.NumberSelector(
-                selector.NumberSelectorConfig(min=0, max=999, step=0.01, mode="box")
+                selector.NumberSelectorConfig(
+                    min=0, max=999, step=0.01, mode="box", unit_of_measurement=units.per_month
+                )
             ),
         }
     )
 
 
-def _add_group_schema() -> vol.Schema:
-    return _group_settings_schema()
+def _add_group_schema(units: _Units | None = None) -> vol.Schema:
+    return _group_settings_schema(units=units)
 
 
-def _add_tier_schema(defaults: dict | None = None) -> vol.Schema:
+def _add_tier_schema(defaults: dict | None = None, units: _Units | None = None) -> vol.Schema:
     defaults = defaults or {}
+    units = units or _units_for(defaults)
     return vol.Schema(
         {
             vol.Required("label", default=defaults.get("label", "")): selector.TextSelector(),
-            vol.Required("price", default=defaults.get("price", 5.0)): selector.NumberSelector(
-                selector.NumberSelectorConfig(min=0, max=999, step=0.01, mode="box")
+            vol.Required(
+                "price", default=_from_stored(defaults.get("price", 5.0), units)
+            ): selector.NumberSelector(
+                selector.NumberSelectorConfig(
+                    min=0, max=999, step=0.01, mode="box", unit_of_measurement=units.per_kwh
+                )
             ),
             vol.Required(
                 "months", default=defaults.get("months", [str(i) for i in range(1, 13)])
@@ -459,9 +541,9 @@ def _add_tier_schema(defaults: dict | None = None) -> vol.Schema:
     )
 
 
-def _edit_tier_schema(tier: dict) -> vol.Schema:
+def _edit_tier_schema(tier: dict, units: _Units | None = None) -> vol.Schema:
     """Add-tier fields pre-filled from `tier`, plus a removal checkbox."""
-    schema = _add_tier_schema(_tier_defaults(tier)).schema
+    schema = _add_tier_schema(_tier_defaults(tier), units=units).schema
     return vol.Schema({**schema, vol.Required("delete", default=False): selector.BooleanSelector()})
 
 
@@ -490,24 +572,24 @@ def _range_summary(values: list[int], options: list[dict], all_label: str) -> st
     return ", ".join(_label_for(v, options)[:3] for v in values)
 
 
-def _tier_summary(tier: dict) -> str:
+def _tier_summary(tier: dict, units: _Units) -> str:
     hours = f"{int(tier['hour_start']):02d}:00–{int(tier['hour_end']):02d}:00"
     if int(tier["hour_start"]) == 0 and int(tier["hour_end"]) == 24:
         hours = "All day"
     return (
-        f"- **{tier['label']}** — {tier['price']} c/kWh · "
+        f"- **{tier['label']}** — {_from_stored(tier['price'], units)} {units.per_kwh} · "
         f"{_range_summary(tier.get('months', []), _MONTH_OPTIONS, 'All year')} · "
         f"{_range_summary(tier.get('weekdays', []), _WEEKDAY_OPTIONS, 'All days')} · "
         f"{hours} · priority {tier['priority']}"
     )
 
 
-def _tier_list_markdown(tiers: list[dict]) -> str:
+def _tier_list_markdown(tiers: list[dict], units: _Units) -> str:
     """Tier overview for the group detail step, in evaluation order."""
     if not tiers:
         return "_No tiers yet._"
     ordered = sorted(tiers, key=lambda t: t.get("priority", 0))
-    return "\n".join(_tier_summary(t) for t in ordered)
+    return "\n".join(_tier_summary(t, units) for t in ordered)
 
 
 def _validate_tier(user_input: dict) -> str | None:
@@ -520,10 +602,10 @@ def _validate_tier(user_input: dict) -> str | None:
     return None
 
 
-def _tier_from_input(user_input: dict) -> dict:
+def _tier_from_input(user_input: dict, units: _Units) -> dict:
     return {
         "label": user_input["label"],
-        "price": _to_float(user_input["price"]),
+        "price": _to_stored(_to_float(user_input["price"]), units),
         "months": [int(m) for m in user_input["months"]],
         "weekdays": [int(w) for w in user_input["weekdays"]],
         "hour_start": int(user_input["hour_start"]),
@@ -583,9 +665,14 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
 
         if user_input is not None:
+            units = _units_for(self._data)
             self._data[CONF_VAT_RATE] = _to_float(user_input["vat_rate_pct"]) / 100.0
-            self._data[CONF_ELECTRICITY_TAX] = _to_float(user_input[CONF_ELECTRICITY_TAX])
-            self._data[CONF_SPOT_COMMISSION] = _to_float(user_input.get(CONF_SPOT_COMMISSION, 0.0))
+            self._data[CONF_ELECTRICITY_TAX] = _to_stored(
+                _to_float(user_input[CONF_ELECTRICITY_TAX]), units
+            )
+            self._data[CONF_SPOT_COMMISSION] = _to_stored(
+                _to_float(user_input.get(CONF_SPOT_COMMISSION, 0.0)), units
+            )
             self._data[CONF_MONTHLY_FIXED_COST] = _to_float(
                 user_input.get(CONF_MONTHLY_FIXED_COST, 0.0)
             )
@@ -656,7 +743,10 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
             self._current_group_idx = len(self._groups) - 1
             return await self.async_step_transfer_group_detail()
 
-        return self.async_show_form(step_id="add_transfer_group", data_schema=_add_group_schema())
+        return self.async_show_form(
+            step_id="add_transfer_group",
+            data_schema=_add_group_schema(_units_for(self._data)),
+        )
 
     async def async_step_transfer_group_detail(self, user_input: dict | None = None):
         if user_input is not None:
@@ -707,7 +797,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
             description_placeholders={
                 "group_label": group["label"],
                 "tier_count": str(len(group.get("tiers", []))),
-                "tier_list": _tier_list_markdown(group.get("tiers", [])),
+                "tier_list": _tier_list_markdown(group.get("tiers", []), _units_for(self._data)),
             },
         )
 
@@ -720,28 +810,32 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
 
         return self.async_show_form(
             step_id="edit_group_settings",
-            data_schema=_group_settings_schema(group),
+            data_schema=_group_settings_schema(group, _units_for(self._data)),
         )
 
     async def async_step_add_transfer_tier(self, user_input: dict | None = None):
         errors: dict[str, str] = {}
+        units = _units_for(self._data)
 
         if user_input is not None:
             err = _validate_tier(user_input)
             if err:
                 errors["base"] = err
             else:
-                self._groups[self._current_group_idx]["tiers"].append(_tier_from_input(user_input))
+                self._groups[self._current_group_idx]["tiers"].append(
+                    _tier_from_input(user_input, units)
+                )
                 return await self.async_step_transfer_group_detail()
 
         return self.async_show_form(
             step_id="add_transfer_tier",
-            data_schema=_add_tier_schema(),
+            data_schema=_add_tier_schema(units=_units_for(self._data)),
             errors=errors,
         )
 
     async def async_step_edit_transfer_tier(self, user_input: dict | None = None):
         errors: dict[str, str] = {}
+        units = _units_for(self._data)
         tiers = self._groups[self._current_group_idx]["tiers"]
 
         if user_input is not None:
@@ -752,12 +846,12 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
             if err:
                 errors["base"] = err
             else:
-                tiers[self._current_tier_idx] = _tier_from_input(user_input)
+                tiers[self._current_tier_idx] = _tier_from_input(user_input, units)
                 return await self.async_step_transfer_group_detail()
 
         return self.async_show_form(
             step_id="edit_transfer_tier",
-            data_schema=_edit_tier_schema(tiers[self._current_tier_idx]),
+            data_schema=_edit_tier_schema(tiers[self._current_tier_idx], _units_for(self._data)),
             errors=errors,
         )
 
@@ -765,7 +859,9 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
 
     async def async_step_thresholds(self, user_input: dict | None = None):
         if user_input is not None:
-            self._data[CONF_MAX_PRICE] = _to_float(user_input[CONF_MAX_PRICE])
+            self._data[CONF_MAX_PRICE] = _to_stored(
+                _to_float(user_input[CONF_MAX_PRICE]), _units_for(self._data)
+            )
             self._data[CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER] = user_input[
                 CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER
             ]
@@ -864,10 +960,13 @@ class KilowahtiOptionsFlow(OptionsFlow):
             self._options[CONF_REGION] = user_input[CONF_REGION]
             self._options[CONF_PRICE_RESOLUTION] = int(user_input[CONF_PRICE_RESOLUTION])
             self._options[CONF_DISPLAY_UNIT] = user_input[CONF_DISPLAY_UNIT]
+            old_units = _units_for(self._options)
             self._options[CONF_VAT_RATE] = _to_float(user_input["vat_rate_pct"]) / 100.0
-            self._options[CONF_ELECTRICITY_TAX] = _to_float(user_input[CONF_ELECTRICITY_TAX])
-            self._options[CONF_SPOT_COMMISSION] = _to_float(
-                user_input.get(CONF_SPOT_COMMISSION, 0.0)
+            self._options[CONF_ELECTRICITY_TAX] = _to_stored(
+                _to_float(user_input[CONF_ELECTRICITY_TAX]), old_units
+            )
+            self._options[CONF_SPOT_COMMISSION] = _to_stored(
+                _to_float(user_input.get(CONF_SPOT_COMMISSION, 0.0)), old_units
             )
             self._options[CONF_MONTHLY_FIXED_COST] = _to_float(
                 user_input.get(CONF_MONTHLY_FIXED_COST, 0.0)
@@ -1024,7 +1123,10 @@ class KilowahtiOptionsFlow(OptionsFlow):
             self._current_group_idx = len(self._groups) - 1
             return await self.async_step_transfer_group_detail()
 
-        return self.async_show_form(step_id="add_transfer_group", data_schema=_add_group_schema())
+        return self.async_show_form(
+            step_id="add_transfer_group",
+            data_schema=_add_group_schema(_units_for(self._options)),
+        )
 
     async def async_step_transfer_group_detail(self, user_input: dict | None = None):
         if user_input is not None:
@@ -1074,7 +1176,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
             description_placeholders={
                 "group_label": group["label"],
                 "tier_count": str(len(group.get("tiers", []))),
-                "tier_list": _tier_list_markdown(group.get("tiers", [])),
+                "tier_list": _tier_list_markdown(group.get("tiers", []), _units_for(self._options)),
             },
         )
 
@@ -1087,28 +1189,32 @@ class KilowahtiOptionsFlow(OptionsFlow):
 
         return self.async_show_form(
             step_id="edit_group_settings",
-            data_schema=_group_settings_schema(group),
+            data_schema=_group_settings_schema(group, _units_for(self._options)),
         )
 
     async def async_step_add_transfer_tier(self, user_input: dict | None = None):
         errors: dict[str, str] = {}
+        units = _units_for(self._options)
 
         if user_input is not None:
             err = _validate_tier(user_input)
             if err:
                 errors["base"] = err
             else:
-                self._groups[self._current_group_idx]["tiers"].append(_tier_from_input(user_input))
+                self._groups[self._current_group_idx]["tiers"].append(
+                    _tier_from_input(user_input, units)
+                )
                 return await self.async_step_transfer_group_detail()
 
         return self.async_show_form(
             step_id="add_transfer_tier",
-            data_schema=_add_tier_schema(),
+            data_schema=_add_tier_schema(units=_units_for(self._options)),
             errors=errors,
         )
 
     async def async_step_edit_transfer_tier(self, user_input: dict | None = None):
         errors: dict[str, str] = {}
+        units = _units_for(self._options)
         tiers = self._groups[self._current_group_idx]["tiers"]
 
         if user_input is not None:
@@ -1119,12 +1225,12 @@ class KilowahtiOptionsFlow(OptionsFlow):
             if err:
                 errors["base"] = err
             else:
-                tiers[self._current_tier_idx] = _tier_from_input(user_input)
+                tiers[self._current_tier_idx] = _tier_from_input(user_input, units)
                 return await self.async_step_transfer_group_detail()
 
         return self.async_show_form(
             step_id="edit_transfer_tier",
-            data_schema=_edit_tier_schema(tiers[self._current_tier_idx]),
+            data_schema=_edit_tier_schema(tiers[self._current_tier_idx], _units_for(self._options)),
             errors=errors,
         )
 
@@ -1132,7 +1238,9 @@ class KilowahtiOptionsFlow(OptionsFlow):
 
     async def async_step_thresholds(self, user_input: dict | None = None):
         if user_input is not None:
-            self._options[CONF_MAX_PRICE] = _to_float(user_input[CONF_MAX_PRICE])
+            self._options[CONF_MAX_PRICE] = _to_stored(
+                _to_float(user_input[CONF_MAX_PRICE]), _units_for(self._options)
+            )
             self._options[CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER] = user_input[
                 CONF_PRICE_THRESHOLD_INCLUDES_TRANSFER
             ]
@@ -1214,10 +1322,15 @@ class KilowahtiOptionsFlow(OptionsFlow):
     async def async_step_generation_settings(self, user_input: dict | None = None):
         if user_input is not None:
             self._options[CONF_EXPORT_PRICING_MODE] = user_input[CONF_EXPORT_PRICING_MODE]
-            self._options[CONF_EXPORT_COMMISSION] = _to_float(user_input[CONF_EXPORT_COMMISSION])
-            self._options[CONF_FIXED_EXPORT_RATE] = _to_float(user_input[CONF_FIXED_EXPORT_RATE])
-            self._options[CONF_EXPORT_PRICE_THRESHOLD] = _to_float(
-                user_input[CONF_EXPORT_PRICE_THRESHOLD]
+            units = _units_for(self._options)
+            self._options[CONF_EXPORT_COMMISSION] = _to_stored(
+                _to_float(user_input[CONF_EXPORT_COMMISSION]), units
+            )
+            self._options[CONF_FIXED_EXPORT_RATE] = _to_stored(
+                _to_float(user_input[CONF_FIXED_EXPORT_RATE]), units
+            )
+            self._options[CONF_EXPORT_PRICE_THRESHOLD] = _to_stored(
+                _to_float(user_input[CONF_EXPORT_PRICE_THRESHOLD]), units
             )
             self._options[CONF_SOLAR_WINDOW_START] = int(user_input[CONF_SOLAR_WINDOW_START])
             self._options[CONF_SOLAR_WINDOW_END] = int(user_input[CONF_SOLAR_WINDOW_END])
@@ -1392,12 +1505,14 @@ class KilowahtiOptionsFlow(OptionsFlow):
                 coordinator.async_update_listeners()
                 return await self.async_step_fixed_periods()
 
+        units = _units_for(self._options)
         period_options: list[dict] = []
         for p in periods:
+            price = f"{_from_stored(p.price, units)} {units.per_kwh}"
             period_options.append(
                 {
                     "value": f"remove_period_{p.id}",
-                    "label": f"✕ Remove: {p.label} ({p.start_date} – {p.end_date}, {p.price} c/kWh)",
+                    "label": f"✕ Remove: {p.label} ({p.start_date} – {p.end_date}, {price})",
                 }
             )
         period_options.append({"value": "add_period", "label": "➕ Add period"})
@@ -1418,6 +1533,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
         from .models import FixedPeriod
 
         errors: dict[str, str] = {}
+        units = _units_for(self._options)
 
         if user_input is not None:
             try:
@@ -1446,7 +1562,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
                             label=user_input["label"],
                             start_date=start,
                             end_date=end,
-                            price=_to_float(user_input["price"]),
+                            price=_to_stored(_to_float(user_input["price"]), units),
                         )
                         await storage.async_add_period(period)
                         coordinator.async_update_listeners()
@@ -1460,7 +1576,13 @@ class KilowahtiOptionsFlow(OptionsFlow):
                     vol.Required("start_date"): selector.DateSelector(),
                     vol.Required("end_date"): selector.DateSelector(),
                     vol.Required("price"): selector.NumberSelector(
-                        selector.NumberSelectorConfig(min=0, max=999, step=0.01, mode="box")
+                        selector.NumberSelectorConfig(
+                            min=0,
+                            max=999,
+                            step=0.01,
+                            mode="box",
+                            unit_of_measurement=units.per_kwh,
+                        )
                     ),
                 }
             ),

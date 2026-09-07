@@ -33,9 +33,9 @@
         "description": "Förifyllt utifrån ditt område. Justera vid behov. Alla priser (överföringsnivåer, fasta perioder) anges inkl. moms.",
         "data": {
           "vat_rate_pct": "Momssats (%)",
-          "electricity_tax": "Elskatt (c/kWh)",
-          "spot_commission": "Påslag (c/kWh)",
-          "monthly_fixed_cost": "Fast avgift för elavtal (€/mån)"
+          "electricity_tax": "Elskatt",
+          "spot_commission": "Påslag",
+          "monthly_fixed_cost": "Fast avgift för elavtal"
         },
         "data_description": {
           "electricity_tax": "Fast elskatt per kWh som läggs till spot-/fastpriset.",
@@ -54,7 +54,7 @@
         "title": "Lägg till grupp",
         "data": {
           "label": "Gruppnamn",
-          "monthly_fixed_cost": "Fast månadskostnad (€/mån)"
+          "monthly_fixed_cost": "Fast månadskostnad"
         },
         "data_description": {
           "monthly_fixed_cost": "Elnätsavgift + avtalets grundavgift. Ange inkl. moms."
@@ -64,7 +64,7 @@
         "title": "Redigera gruppinställningar",
         "data": {
           "label": "Gruppnamn",
-          "monthly_fixed_cost": "Fast månadskostnad (€/mån)"
+          "monthly_fixed_cost": "Fast månadskostnad"
         },
         "data_description": {
           "monthly_fixed_cost": "Elnätsavgift + avtalets grundavgift. Ange inkl. moms."
@@ -82,7 +82,7 @@
         "description": "Utvärderas i prioritetsordning; första träffen gäller. Lägg till en grundtaxa med lägst prioritet utan tidsvillkor.",
         "data": {
           "label": "Nivånamn",
-          "price": "Pris (c/kWh)",
+          "price": "Pris",
           "months": "Aktiva månader",
           "weekdays": "Aktiva veckodagar",
           "hour_start": "Starttid (inklusive)",
@@ -95,7 +95,7 @@
         "description": "Ändra valfritt fält, eller kryssa i borttagning för att ta bort nivån.",
         "data": {
           "label": "Nivånamn",
-          "price": "Pris (c/kWh)",
+          "price": "Pris",
           "months": "Aktiva månader",
           "weekdays": "Aktiva veckodagar",
           "hour_start": "Starttid (inklusive)",
@@ -107,7 +107,7 @@
       "thresholds": {
         "title": "Tröskelvärden och styrning",
         "data": {
-          "max_price": "Maxpris för styrning (c/kWh)",
+          "max_price": "Maxpris för styrning",
           "price_threshold_includes_transfer": "Maxpris inkluderar överföring",
           "max_rank": "Max rang för styrning",
           "forward_avg_hours": "Längd på framåtblickande medelfönster (timmar)",
@@ -185,9 +185,9 @@
           "price_resolution": "Prisupplösning",
           "display_unit": "Visningsenhet",
           "vat_rate_pct": "Momssats (%)",
-          "electricity_tax": "Elskatt (c/kWh)",
-          "spot_commission": "Påslag (c/kWh)",
-          "monthly_fixed_cost": "Fast avgift för elavtal (€/mån)",
+          "electricity_tax": "Elskatt",
+          "spot_commission": "Påslag",
+          "monthly_fixed_cost": "Fast avgift för elavtal",
           "currency_mode": "Visningsvaluta",
           "fx_mode": "Växelkurskälla",
           "fx_rate": "Manuell växelkurs (lokal valuta per EUR)"
@@ -206,7 +206,7 @@
         "title": "Lägg till grupp",
         "data": {
           "label": "Gruppnamn",
-          "monthly_fixed_cost": "Fast månadskostnad (€/mån)"
+          "monthly_fixed_cost": "Fast månadskostnad"
         },
         "data_description": {
           "monthly_fixed_cost": "Elnätsavgift + avtalets grundavgift. Ange inkl. moms."
@@ -216,7 +216,7 @@
         "title": "Redigera gruppinställningar",
         "data": {
           "label": "Gruppnamn",
-          "monthly_fixed_cost": "Fast månadskostnad (€/mån)"
+          "monthly_fixed_cost": "Fast månadskostnad"
         },
         "data_description": {
           "monthly_fixed_cost": "Elnätsavgift + avtalets grundavgift. Ange inkl. moms."
@@ -233,7 +233,7 @@
         "title": "Lägg till överföringspris",
         "data": {
           "label": "Nivånamn (t.ex. Vintervardag)",
-          "price": "Pris (c/kWh)",
+          "price": "Pris",
           "months": "Aktiva månader",
           "weekdays": "Aktiva veckodagar",
           "hour_start": "Starttid (inklusive)",
@@ -246,7 +246,7 @@
         "description": "Ändra valfritt fält, eller kryssa i borttagning för att ta bort nivån.",
         "data": {
           "label": "Nivånamn (t.ex. Vintervardag)",
-          "price": "Pris (c/kWh)",
+          "price": "Pris",
           "months": "Aktiva månader",
           "weekdays": "Aktiva veckodagar",
           "hour_start": "Starttid (inklusive)",
@@ -258,7 +258,7 @@
       "thresholds": {
         "title": "Tröskelvärden och styrning",
         "data": {
-          "max_price": "Maxpris för styrning (c/kWh)",
+          "max_price": "Maxpris för styrning",
           "price_threshold_includes_transfer": "Maxpris inkluderar överföring",
           "max_rank": "Max rang för styrning",
           "forward_avg_hours": "Längd på framåtblickande medelfönster (timmar)",
@@ -329,13 +329,13 @@
         "description": "Konfigurera försäljningspris och batteriinställningar. Sätt batterikapaciteten till 0 för att inaktivera batterisensorer.",
         "data": {
           "export_pricing_mode": "Prismodell för försäljning",
-          "export_commission": "Försäljningspåslag (c/kWh dras från spot)",
-          "fixed_export_rate": "Fast försäljningspris (c/kWh)",
-          "export_price_threshold": "Tröskel för försäljningspris (c/kWh)",
+          "export_commission": "Försäljningspåslag (dras från spot)",
+          "fixed_export_rate": "Fast försäljningspris",
+          "export_price_threshold": "Tröskel för försäljningspris",
           "solar_window_start": "Solfönstrets starttimme",
           "solar_window_end": "Solfönstrets sluttimme",
-          "battery_capacity_kwh": "Batterikapacitet (kWh, 0 = inaktiverad)",
-          "battery_charge_power_kw": "Batteriets laddningseffekt (kW)"
+          "battery_capacity_kwh": "Batterikapacitet (0 = inaktiverad)",
+          "battery_charge_power_kw": "Batteriets laddningseffekt"
         },
         "data_description": {
           "export_commission": "Endast spotkopplat läge. Säljarens påslag dras från spot-API:ets pris (exkl. moms). Små producenter tar vanligtvis inte ut moms på såld el.",
@@ -350,7 +350,7 @@
           "label": "Periodnamn",
           "start_date": "Startdatum",
           "end_date": "Slutdatum (inklusive)",
-          "price": "Pris (c/kWh, inkl. moms)"
+          "price": "Pris (inkl. moms)"
         },
         "data_description": {
           "price": "Ange priset inkl. moms. Priset används som det är — ingen moms läggs till."
