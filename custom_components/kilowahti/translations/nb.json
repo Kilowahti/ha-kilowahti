@@ -118,7 +118,7 @@
         "title": "Avanserte alternativer",
         "description": "Konfigurer hvordan sensorverdier vises i Hjemmeassistent.",
         "data": {
-          "expose_price_arrays": "Eksponere prismatriser som sensorattributter (øker DB-størrelsen)",
+          "expose_price_arrays": "Eksponere spotprismatriser som sensorattributter (øker DB-størrelsen)",
           "expose_total_price_arrays": "Eksponere totalprismatriser som sensorattributter (øker DB-størrelsen)",
           "high_precision": "Modus med høy presisjon",
           "show_rolling_averages": "Vis neste gjennomsnittspriser på 30 min, 1 t og 2 t",
@@ -245,7 +245,7 @@
       "advanced_options": {
         "title": "Avanserte alternativer",
         "data": {
-          "expose_price_arrays": "Eksponere prismatriser som sensorattributter (øker DB-størrelsen)",
+          "expose_price_arrays": "Eksponere spotprismatriser som sensorattributter (øker DB-størrelsen)",
           "expose_total_price_arrays": "Eksponere totalprismatriser som sensorattributter (øker DB-størrelsen)",
           "high_precision": "Modus med høy presisjon",
           "show_rolling_averages": "Vis neste gjennomsnittspriser på 30 min, 1 t og 2 t",

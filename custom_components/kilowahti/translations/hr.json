@@ -117,7 +117,7 @@
         "title": "Napredne opcije",
         "description": "Postavite kako se vrijednosti senzora prikazuju u Home Assistantu.",
         "data": {
-          "expose_price_arrays": "Izloži nizove cijena kao atribute senzora (povećava veličinu baze podataka)",
+          "expose_price_arrays": "Izloži nizove burzovne cijene kao atribute senzora (povećava veličinu baze podataka)",
           "expose_total_price_arrays": "Izloži nizove ukupne cijene kao atribute senzora (povećava veličinu baze podataka)",
           "high_precision": "Način visoke preciznosti",
           "show_rolling_averages": "Prikaži prosječne cijene za sljedećih 30 min, 1 h i 2 h",
@@ -243,7 +243,7 @@
       "advanced_options": {
         "title": "Napredne opcije",
         "data": {
-          "expose_price_arrays": "Izloži nizove cijena kao atribute senzora (povećava veličinu baze podataka)",
+          "expose_price_arrays": "Izloži nizove burzovne cijene kao atribute senzora (povećava veličinu baze podataka)",
           "expose_total_price_arrays": "Izloži nizove ukupne cijene kao atribute senzora (povećava veličinu baze podataka)",
           "high_precision": "Način visoke preciznosti",
           "show_rolling_averages": "Prikaži prosječne cijene za sljedećih 30 min, 1 h i 2 h",

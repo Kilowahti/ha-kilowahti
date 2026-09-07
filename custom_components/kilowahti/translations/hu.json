@@ -117,7 +117,7 @@
         "title": "Speciális beállítások",
         "description": "Állítsd be, hogyan jelenjenek meg a szenzorértékek a Home Assistantban.",
         "data": {
-          "expose_price_arrays": "Ártömbök közzététele szenzorattribútumként (növeli az adatbázis méretét)",
+          "expose_price_arrays": "Tőzsdei ár tömbök közzététele szenzorattribútumként (növeli az adatbázis méretét)",
           "expose_total_price_arrays": "Teljes ár tömbök közzététele szenzorattribútumként (növeli az adatbázis méretét)",
           "high_precision": "Nagy pontosságú mód",
           "show_rolling_averages": "A következő 30 perc, 1 óra és 2 óra átlagárainak megjelenítése",
@@ -243,7 +243,7 @@
       "advanced_options": {
         "title": "Speciális beállítások",
         "data": {
-          "expose_price_arrays": "Ártömbök közzététele szenzorattribútumként (növeli az adatbázis méretét)",
+          "expose_price_arrays": "Tőzsdei ár tömbök közzététele szenzorattribútumként (növeli az adatbázis méretét)",
           "expose_total_price_arrays": "Teljes ár tömbök közzététele szenzorattribútumként (növeli az adatbázis méretét)",
           "high_precision": "Nagy pontosságú mód",
           "show_rolling_averages": "A következő 30 perc, 1 óra és 2 óra átlagárainak megjelenítése",

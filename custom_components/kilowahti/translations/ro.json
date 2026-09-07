@@ -117,7 +117,7 @@
         "title": "Opțiuni avansate",
         "description": "Configurează cum sunt afișate valorile senzorilor în Home Assistant.",
         "data": {
-          "expose_price_arrays": "Expune șirurile de prețuri ca atribute ale senzorului (crește dimensiunea bazei de date)",
+          "expose_price_arrays": "Expune șirurile de preț spot ca atribute ale senzorului (crește dimensiunea bazei de date)",
           "expose_total_price_arrays": "Expune șirurile de preț total ca atribute ale senzorului (crește dimensiunea bazei de date)",
           "high_precision": "Mod de precizie ridicată",
           "show_rolling_averages": "Arată prețurile medii pentru următoarele 30 min, 1 h și 2 h",
@@ -243,7 +243,7 @@
       "advanced_options": {
         "title": "Opțiuni avansate",
         "data": {
-          "expose_price_arrays": "Expune șirurile de prețuri ca atribute ale senzorului (crește dimensiunea bazei de date)",
+          "expose_price_arrays": "Expune șirurile de preț spot ca atribute ale senzorului (crește dimensiunea bazei de date)",
           "expose_total_price_arrays": "Expune șirurile de preț total ca atribute ale senzorului (crește dimensiunea bazei de date)",
           "high_precision": "Mod de precizie ridicată",
           "show_rolling_averages": "Arată prețurile medii pentru următoarele 30 min, 1 h și 2 h",

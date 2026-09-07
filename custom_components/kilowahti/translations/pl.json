@@ -117,7 +117,7 @@
         "title": "Opcje zaawansowane",
         "description": "Skonfiguruj sposób wyświetlania wartości sensorów w Home Assistant.",
         "data": {
-          "expose_price_arrays": "Udostępniaj tablice cen jako atrybuty sensora (zwiększa rozmiar bazy danych)",
+          "expose_price_arrays": "Udostępniaj tablice ceny giełdowej jako atrybuty sensora (zwiększa rozmiar bazy danych)",
           "expose_total_price_arrays": "Udostępniaj tablice ceny całkowitej jako atrybuty sensora (zwiększa rozmiar bazy danych)",
           "high_precision": "Tryb wysokiej precyzji",
           "show_rolling_averages": "Pokaż średnie ceny na najbliższe 30 min, 1 h i 2 h",
@@ -243,7 +243,7 @@
       "advanced_options": {
         "title": "Opcje zaawansowane",
         "data": {
-          "expose_price_arrays": "Udostępniaj tablice cen jako atrybuty sensora (zwiększa rozmiar bazy danych)",
+          "expose_price_arrays": "Udostępniaj tablice ceny giełdowej jako atrybuty sensora (zwiększa rozmiar bazy danych)",
           "expose_total_price_arrays": "Udostępniaj tablice ceny całkowitej jako atrybuty sensora (zwiększa rozmiar bazy danych)",
           "high_precision": "Tryb wysokiej precyzji",
           "show_rolling_averages": "Pokaż średnie ceny na najbliższe 30 min, 1 h i 2 h",

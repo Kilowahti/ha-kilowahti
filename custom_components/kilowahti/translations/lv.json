@@ -117,7 +117,7 @@
         "title": "Papildu iestatījumi",
         "description": "Konfigurējiet, kā sensoru vērtības tiek attēlotas Home Assistant.",
         "data": {
-          "expose_price_arrays": "Rādīt cenu masīvus kā sensora atribūtus (palielina DB izmēru)",
+          "expose_price_arrays": "Rādīt biržas cenas masīvus kā sensora atribūtus (palielina DB izmēru)",
           "expose_total_price_arrays": "Rādīt kopējās cenas masīvus kā sensora atribūtus (palielina DB izmēru)",
           "high_precision": "Augstas precizitātes režīms",
           "show_rolling_averages": "Rādīt nākamo 30 min, 1 h un 2 h vidējās cenas",
@@ -243,7 +243,7 @@
       "advanced_options": {
         "title": "Papildu iestatījumi",
         "data": {
-          "expose_price_arrays": "Rādīt cenu masīvus kā sensora atribūtus (palielina DB izmēru)",
+          "expose_price_arrays": "Rādīt biržas cenas masīvus kā sensora atribūtus (palielina DB izmēru)",
           "expose_total_price_arrays": "Rādīt kopējās cenas masīvus kā sensora atribūtus (palielina DB izmēru)",
           "high_precision": "Augstas precizitātes režīms",
           "show_rolling_averages": "Rādīt nākamo 30 min, 1 h un 2 h vidējās cenas",

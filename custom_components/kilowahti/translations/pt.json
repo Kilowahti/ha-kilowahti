@@ -117,7 +117,7 @@
         "title": "Opções avançadas",
         "description": "Configure como os valores dos sensores são apresentados no Home Assistant.",
         "data": {
-          "expose_price_arrays": "Expor as listas de preços como atributos do sensor (aumenta o tamanho da base de dados)",
+          "expose_price_arrays": "Expor as listas de preço spot como atributos do sensor (aumenta o tamanho da base de dados)",
           "expose_total_price_arrays": "Expor as listas de preço total como atributos do sensor (aumenta o tamanho da base de dados)",
           "high_precision": "Modo de alta precisão",
           "show_rolling_averages": "Mostrar preços médios dos próximos 30 min, 1 h e 2 h",
@@ -243,7 +243,7 @@
       "advanced_options": {
         "title": "Opções avançadas",
         "data": {
-          "expose_price_arrays": "Expor as listas de preços como atributos do sensor (aumenta o tamanho da base de dados)",
+          "expose_price_arrays": "Expor as listas de preço spot como atributos do sensor (aumenta o tamanho da base de dados)",
           "expose_total_price_arrays": "Expor as listas de preço total como atributos do sensor (aumenta o tamanho da base de dados)",
           "high_precision": "Modo de alta precisão",
           "show_rolling_averages": "Mostrar preços médios dos próximos 30 min, 1 h e 2 h",

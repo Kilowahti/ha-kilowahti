@@ -117,7 +117,7 @@
         "title": "Išplėstinės parinktys",
         "description": "Sukonfigūruokite, kaip jutiklių reikšmės rodomos Home Assistant.",
         "data": {
-          "expose_price_arrays": "Rodyti kainų masyvus kaip jutiklio atributus (didina DB dydį)",
+          "expose_price_arrays": "Rodyti biržos kainos masyvus kaip jutiklio atributus (didina DB dydį)",
           "expose_total_price_arrays": "Rodyti bendros kainos masyvus kaip jutiklio atributus (didina DB dydį)",
           "high_precision": "Didelio tikslumo režimas",
           "show_rolling_averages": "Rodyti ateinančių 30 min, 1 val. ir 2 val. vidutines kainas",
@@ -243,7 +243,7 @@
       "advanced_options": {
         "title": "Išplėstinės parinktys",
         "data": {
-          "expose_price_arrays": "Rodyti kainų masyvus kaip jutiklio atributus (didina DB dydį)",
+          "expose_price_arrays": "Rodyti biržos kainos masyvus kaip jutiklio atributus (didina DB dydį)",
           "expose_total_price_arrays": "Rodyti bendros kainos masyvus kaip jutiklio atributus (didina DB dydį)",
           "high_precision": "Didelio tikslumo režimas",
           "show_rolling_averages": "Rodyti ateinančių 30 min, 1 val. ir 2 val. vidutines kainas",

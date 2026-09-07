@@ -117,7 +117,7 @@
         "title": "Options avancées",
         "description": "Configurez l'affichage des valeurs des capteurs dans Home Assistant.",
         "data": {
-          "expose_price_arrays": "Exposer les tableaux de prix comme attributs de capteur (augmente la taille de la base de données)",
+          "expose_price_arrays": "Exposer les tableaux de prix spot comme attributs de capteur (augmente la taille de la base de données)",
           "expose_total_price_arrays": "Exposer les tableaux de prix total comme attributs de capteur (augmente la taille de la base de données)",
           "high_precision": "Mode haute précision",
           "show_rolling_averages": "Afficher les prix moyens des 30 min, 1 h et 2 h à venir",
@@ -243,7 +243,7 @@
       "advanced_options": {
         "title": "Options avancées",
         "data": {
-          "expose_price_arrays": "Exposer les tableaux de prix comme attributs de capteur (augmente la taille de la base de données)",
+          "expose_price_arrays": "Exposer les tableaux de prix spot comme attributs de capteur (augmente la taille de la base de données)",
           "expose_total_price_arrays": "Exposer les tableaux de prix total comme attributs de capteur (augmente la taille de la base de données)",
           "high_precision": "Mode haute précision",
           "show_rolling_averages": "Afficher les prix moyens des 30 min, 1 h et 2 h à venir",

@@ -117,7 +117,7 @@
         "title": "Erweiterte Optionen",
         "description": "Konfiguriere, wie Sensorwerte in Home Assistant angezeigt werden.",
         "data": {
-          "expose_price_arrays": "Preis-Arrays als Sensorattribute bereitstellen (vergrößert die Datenbank)",
+          "expose_price_arrays": "Spotpreis-Arrays als Sensorattribute bereitstellen (vergrößert die Datenbank)",
           "expose_total_price_arrays": "Gesamtpreis-Arrays als Sensorattribute bereitstellen (vergrößert die Datenbank)",
           "high_precision": "Hochpräzisionsmodus",
           "show_rolling_averages": "Durchschnittspreise der nächsten 30 min, 1 h und 2 h anzeigen",
@@ -243,7 +243,7 @@
       "advanced_options": {
         "title": "Erweiterte Optionen",
         "data": {
-          "expose_price_arrays": "Preis-Arrays als Sensorattribute bereitstellen (vergrößert die Datenbank)",
+          "expose_price_arrays": "Spotpreis-Arrays als Sensorattribute bereitstellen (vergrößert die Datenbank)",
           "expose_total_price_arrays": "Gesamtpreis-Arrays als Sensorattribute bereitstellen (vergrößert die Datenbank)",
           "high_precision": "Hochpräzisionsmodus",
           "show_rolling_averages": "Durchschnittspreise der nächsten 30 min, 1 h und 2 h anzeigen",

@@ -118,7 +118,7 @@
         "title": "Avancerade inställningar",
         "description": "Konfigurera hur sensorvärden visas i Home Assistant.",
         "data": {
-          "expose_price_arrays": "Exponera prisarrayer som sensorattribut (ökar databasstorleken)",
+          "expose_price_arrays": "Exponera spotprisarrayer som sensorattribut (ökar databasstorleken)",
           "expose_total_price_arrays": "Exponera totalprisarrayer som sensorattribut (ökar databasstorleken)",
           "high_precision": "Hög precision",
           "show_rolling_averages": "Visa medelpriser för kommande 30 min, 1 h och 2 h",
@@ -245,7 +245,7 @@
       "advanced_options": {
         "title": "Avancerade inställningar",
         "data": {
-          "expose_price_arrays": "Exponera prisarrayer som sensorattribut (ökar databasstorleken)",
+          "expose_price_arrays": "Exponera spotprisarrayer som sensorattribut (ökar databasstorleken)",
           "expose_total_price_arrays": "Exponera totalprisarrayer som sensorattribut (ökar databasstorleken)",
           "high_precision": "Hög precision",
           "show_rolling_averages": "Visa medelpriser för kommande 30 min, 1 h och 2 h",

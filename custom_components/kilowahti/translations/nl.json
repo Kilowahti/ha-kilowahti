@@ -117,7 +117,7 @@
         "title": "Geavanceerde opties",
         "description": "Configureer hoe sensorwaarden in Home Assistant worden weergegeven.",
         "data": {
-          "expose_price_arrays": "Prijsarrays als sensorattributen tonen (vergroot de database)",
+          "expose_price_arrays": "Spotprijsarrays als sensorattributen tonen (vergroot de database)",
           "expose_total_price_arrays": "Totaalprijsarrays als sensorattributen tonen (vergroot de database)",
           "high_precision": "Hogeprecisiemodus",
           "show_rolling_averages": "Gemiddelde prijzen van komende 30 min, 1 u en 2 u tonen",
@@ -243,7 +243,7 @@
       "advanced_options": {
         "title": "Geavanceerde opties",
         "data": {
-          "expose_price_arrays": "Prijsarrays als sensorattributen tonen (vergroot de database)",
+          "expose_price_arrays": "Spotprijsarrays als sensorattributen tonen (vergroot de database)",
           "expose_total_price_arrays": "Totaalprijsarrays als sensorattributen tonen (vergroot de database)",
           "high_precision": "Hogeprecisiemodus",
           "show_rolling_averages": "Gemiddelde prijzen van komende 30 min, 1 u en 2 u tonen",

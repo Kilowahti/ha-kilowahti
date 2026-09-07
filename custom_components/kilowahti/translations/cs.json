@@ -117,7 +117,7 @@
         "title": "Pokročilé možnosti",
         "description": "Nastavte, jak se hodnoty senzorů zobrazují v Home Assistantu.",
         "data": {
-          "expose_price_arrays": "Zveřejnit cenová pole jako atributy senzoru (zvětšuje databázi)",
+          "expose_price_arrays": "Zveřejnit pole spotové ceny jako atributy senzoru (zvětšuje databázi)",
           "expose_total_price_arrays": "Zveřejnit pole celkové ceny jako atributy senzoru (zvětšuje databázi)",
           "high_precision": "Režim vysoké přesnosti",
           "show_rolling_averages": "Zobrazit průměrné ceny na příštích 30 min, 1 h a 2 h",
@@ -243,7 +243,7 @@
       "advanced_options": {
         "title": "Pokročilé možnosti",
         "data": {
-          "expose_price_arrays": "Zveřejnit cenová pole jako atributy senzoru (zvětšuje databázi)",
+          "expose_price_arrays": "Zveřejnit pole spotové ceny jako atributy senzoru (zvětšuje databázi)",
           "expose_total_price_arrays": "Zveřejnit pole celkové ceny jako atributy senzoru (zvětšuje databázi)",
           "high_precision": "Režim vysoké přesnosti",
           "show_rolling_averages": "Zobrazit průměrné ceny na příštích 30 min, 1 h a 2 h",

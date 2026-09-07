@@ -118,7 +118,7 @@
         "title": "Advanced options",
         "description": "Configure how sensor values are displayed in Home Assistant.",
         "data": {
-          "expose_price_arrays": "Expose price arrays as sensor attributes (increases DB size)",
+          "expose_price_arrays": "Expose spot price arrays as sensor attributes (increases DB size)",
           "expose_total_price_arrays": "Expose total price arrays as sensor attributes (increases DB size)",
           "high_precision": "High precision mode",
           "show_rolling_averages": "Show next 30min, 1h and 2h average prices",
@@ -245,7 +245,7 @@
       "advanced_options": {
         "title": "Advanced options",
         "data": {
-          "expose_price_arrays": "Expose price arrays as sensor attributes (increases DB size)",
+          "expose_price_arrays": "Expose spot price arrays as sensor attributes (increases DB size)",
           "expose_total_price_arrays": "Expose total price arrays as sensor attributes (increases DB size)",
           "high_precision": "High precision mode",
           "show_rolling_averages": "Show next 30min, 1h and 2h average prices",

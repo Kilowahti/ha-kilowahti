@@ -118,7 +118,7 @@
         "title": "Täpsemad seaded",
         "description": "Määra, kuidas andurite väärtusi Home Assistantis kuvatakse.",
         "data": {
-          "expose_price_arrays": "Kuva hinnamassiivid anduri atribuutidena (suurendab andmebaasi mahtu)",
+          "expose_price_arrays": "Kuva spot-hinna massiivid anduri atribuutidena (suurendab andmebaasi mahtu)",
           "expose_total_price_arrays": "Kuva koguhinna massiivid anduri atribuutidena (suurendab andmebaasi mahtu)",
           "high_precision": "Kõrge täpsus",
           "show_rolling_averages": "Kuva järgmise 30 min, 1 h ja 2 h keskmised hinnad",
@@ -245,7 +245,7 @@
       "advanced_options": {
         "title": "Täpsemad seaded",
         "data": {
-          "expose_price_arrays": "Kuva hinnamassiivid anduri atribuutidena (suurendab andmebaasi mahtu)",
+          "expose_price_arrays": "Kuva spot-hinna massiivid anduri atribuutidena (suurendab andmebaasi mahtu)",
           "expose_total_price_arrays": "Kuva koguhinna massiivid anduri atribuutidena (suurendab andmebaasi mahtu)",
           "high_precision": "Kõrge täpsus",
           "show_rolling_averages": "Kuva järgmise 30 min, 1 h ja 2 h keskmised hinnad",
