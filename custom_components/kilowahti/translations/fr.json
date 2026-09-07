@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Modifier le groupe",
-        "description": "{group_label} — Ajoutez ou supprimez des paliers, ou définissez ce groupe comme actif.",
+        "description": "{group_label}\n\n{tier_list}\n\nSélectionnez un palier pour voir et modifier ses réglages, ajoutez-en un nouveau, ou définissez ce groupe comme actif.",
         "data": {
           "action": "Action"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Heure de début (incluse)",
           "hour_end": "Heure de fin (exclue)",
           "priority": "Priorité (plus bas = premier)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Modifier le tarif d'acheminement",
+        "description": "Modifiez les champs souhaités, ou cochez la suppression pour supprimer ce palier.",
+        "data": {
+          "label": "Nom du palier",
+          "price": "Prix (c/kWh)",
+          "months": "Mois actifs",
+          "weekdays": "Jours actifs",
+          "hour_start": "Heure de début (incluse)",
+          "hour_end": "Heure de fin (exclue)",
+          "priority": "Priorité (plus bas = premier)",
+          "delete": "Supprimer ce palier"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Modifier le groupe",
-        "description": "{group_label} — Ajoutez ou supprimez des paliers, ou définissez ce groupe comme actif.",
+        "description": "{group_label}\n\n{tier_list}\n\nSélectionnez un palier pour voir et modifier ses réglages, ajoutez-en un nouveau, ou définissez ce groupe comme actif.",
         "data": {
           "action": "Action"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Heure de début (incluse)",
           "hour_end": "Heure de fin (exclue)",
           "priority": "Priorité (plus bas = premier)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Modifier le tarif d'acheminement",
+        "description": "Modifiez les champs souhaités, ou cochez la suppression pour supprimer ce palier.",
+        "data": {
+          "label": "Nom du palier (p. ex. Hiver jour ouvré)",
+          "price": "Prix (c/kWh)",
+          "months": "Mois actifs",
+          "weekdays": "Jours actifs",
+          "hour_start": "Heure de début (incluse)",
+          "hour_end": "Heure de fin (exclue)",
+          "priority": "Priorité (plus bas = premier)",
+          "delete": "Supprimer ce palier"
         }
       },
       "thresholds": {

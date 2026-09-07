@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 
+import pytest
 from aioresponses import aioresponses
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
@@ -453,3 +454,197 @@ async def test_options_flow_enables_total_price_arrays(hass, setup_integration, 
     coord = hass.data[DOMAIN][entry.entry_id]
     assert coord.today_total_price_array() is not None
     assert coord.today_price_array() is None
+
+
+# ---------------------------------------------------------------------------
+# Transfer tier editing
+# ---------------------------------------------------------------------------
+
+_TIER = {
+    "label": "Winter weekday",
+    "price": 5.2,
+    "months": [12, 1, 2],
+    "weekdays": [0, 1, 2, 3, 4],
+    "hour_start": 7,
+    "hour_end": 22,
+    "priority": 10,
+}
+
+_GROUP = {
+    "id": "g1",
+    "label": "Time-of-use",
+    "active": True,
+    "tiers": [_TIER],
+    "monthly_fixed_cost": 0.0,
+}
+
+
+async def _open_group_detail(hass, entry):
+    """Walk the options flow to the detail step of the first transfer group."""
+    from custom_components.kilowahti.const import CONF_TRANSFER_GROUPS
+
+    result = await hass.config_entries.options.async_init(entry.entry_id)
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], user_input={"next_step_id": "transfer_groups"}
+    )
+    assert result["step_id"] == "transfer_groups"
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], user_input={"action": "manage_0"}
+    )
+    assert result["step_id"] == "transfer_group_detail"
+    assert CONF_TRANSFER_GROUPS  # imported for readability of the caller's asserts
+    return result
+
+
+@pytest.fixture
+async def entry_with_tier(hass, options, mock_utcnow):
+    """An entry whose active transfer group already holds one tier."""
+    from custom_components.kilowahti.const import CONF_TRANSFER_GROUPS
+
+    await hass.config.async_set_time_zone("UTC")
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        title="Test Home",
+        options={**options, CONF_TRANSFER_GROUPS: [{**_GROUP, "tiers": [dict(_TIER)]}]},
+    )
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+    return entry
+
+
+async def test_group_detail_lists_tier_settings(hass, entry_with_tier):
+    """The detail step shows each tier's price and schedule, not just its name."""
+    result = await _open_group_detail(hass, entry_with_tier)
+
+    tier_list = result["description_placeholders"]["tier_list"]
+    assert "Winter weekday" in tier_list
+    assert "5.2" in tier_list
+    assert "07:00" in tier_list
+    assert "22:00" in tier_list
+
+
+async def test_edit_tier_form_is_prefilled(hass, entry_with_tier):
+    """Opening a tier for editing pre-fills every field from the stored tier."""
+    result = await _open_group_detail(hass, entry_with_tier)
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], user_input={"action": "edit_tier_0"}
+    )
+    assert result["step_id"] == "edit_transfer_tier"
+
+    defaults = {str(key): key.default() for key in result["data_schema"].schema}
+    assert defaults["label"] == "Winter weekday"
+    assert defaults["price"] == 5.2
+    assert defaults["hour_start"] == 7
+    assert defaults["hour_end"] == 22
+    assert defaults["priority"] == 10
+    # Multi-selects round-trip as strings
+    assert defaults["months"] == ["12", "1", "2"]
+    assert defaults["weekdays"] == ["0", "1", "2", "3", "4"]
+
+
+async def test_edit_tier_saves_changes(hass, entry_with_tier):
+    """Editing a tier updates it in place rather than appending a new one."""
+    from custom_components.kilowahti.const import CONF_TRANSFER_GROUPS
+
+    entry = entry_with_tier
+    result = await _open_group_detail(hass, entry)
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], user_input={"action": "edit_tier_0"}
+    )
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"],
+        user_input={
+            "label": "Winter weekday",
+            "price": 6.5,
+            "months": ["12", "1", "2"],
+            "weekdays": ["0", "1", "2", "3", "4"],
+            "hour_start": 7,
+            "hour_end": 21,
+            "priority": 10,
+            "delete": False,
+        },
+    )
+    assert result["step_id"] == "transfer_group_detail"
+
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        result = await hass.config_entries.options.async_configure(
+            result["flow_id"], user_input={"action": "back"}
+        )
+        result = await hass.config_entries.options.async_configure(
+            result["flow_id"], user_input={"action": "save"}
+        )
+        await hass.async_block_till_done()
+
+    tiers = entry.options[CONF_TRANSFER_GROUPS][0]["tiers"]
+    assert len(tiers) == 1
+    assert tiers[0]["price"] == 6.5
+    assert tiers[0]["hour_end"] == 21
+    assert tiers[0]["months"] == [12, 1, 2]
+
+
+async def test_edit_tier_delete_removes_it(hass, entry_with_tier):
+    """Ticking delete in the edit form removes the tier."""
+    from custom_components.kilowahti.const import CONF_TRANSFER_GROUPS
+
+    entry = entry_with_tier
+    result = await _open_group_detail(hass, entry)
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], user_input={"action": "edit_tier_0"}
+    )
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"],
+        user_input={
+            "label": "Winter weekday",
+            "price": 5.2,
+            "months": ["12", "1", "2"],
+            "weekdays": ["0", "1", "2", "3", "4"],
+            "hour_start": 7,
+            "hour_end": 22,
+            "priority": 10,
+            "delete": True,
+        },
+    )
+    assert result["step_id"] == "transfer_group_detail"
+    assert result["description_placeholders"]["tier_list"] != ""
+
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        result = await hass.config_entries.options.async_configure(
+            result["flow_id"], user_input={"action": "back"}
+        )
+        result = await hass.config_entries.options.async_configure(
+            result["flow_id"], user_input={"action": "save"}
+        )
+        await hass.async_block_till_done()
+
+    assert entry.options[CONF_TRANSFER_GROUPS][0]["tiers"] == []
+
+
+async def test_edit_tier_rejects_invalid_hours(hass, entry_with_tier):
+    """The edit form validates the hour range like the add form does."""
+    result = await _open_group_detail(hass, entry_with_tier)
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], user_input={"action": "edit_tier_0"}
+    )
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"],
+        user_input={
+            "label": "Winter weekday",
+            "price": 5.2,
+            "months": ["12"],
+            "weekdays": ["0"],
+            "hour_start": 20,
+            "hour_end": 20,
+            "priority": 10,
+            "delete": False,
+        },
+    )
+    assert result["step_id"] == "edit_transfer_tier"
+    assert result["errors"]["base"] == "tier_hour_range"

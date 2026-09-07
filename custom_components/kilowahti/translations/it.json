@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Modifica gruppo",
-        "description": "{group_label} — Aggiungi o rimuovi fasce, oppure imposta questo gruppo come attivo.",
+        "description": "{group_label}\n\n{tier_list}\n\nSeleziona una fascia per vedere e modificare le sue impostazioni, aggiungine una nuova oppure imposta questo gruppo come attivo.",
         "data": {
           "action": "Azione"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Ora di inizio (inclusa)",
           "hour_end": "Ora di fine (esclusa)",
           "priority": "Priorità (minore = prima)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Modifica prezzo di trasporto",
+        "description": "Modifica i campi desiderati, oppure spunta la rimozione per eliminare la fascia.",
+        "data": {
+          "label": "Nome della fascia",
+          "price": "Prezzo (c/kWh)",
+          "months": "Mesi attivi",
+          "weekdays": "Giorni attivi",
+          "hour_start": "Ora di inizio (inclusa)",
+          "hour_end": "Ora di fine (esclusa)",
+          "priority": "Priorità (minore = prima)",
+          "delete": "Rimuovi questa fascia"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Modifica gruppo",
-        "description": "{group_label} — Aggiungi o rimuovi fasce, oppure imposta questo gruppo come attivo.",
+        "description": "{group_label}\n\n{tier_list}\n\nSeleziona una fascia per vedere e modificare le sue impostazioni, aggiungine una nuova oppure imposta questo gruppo come attivo.",
         "data": {
           "action": "Azione"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Ora di inizio (inclusa)",
           "hour_end": "Ora di fine (esclusa)",
           "priority": "Priorità (minore = prima)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Modifica prezzo di trasporto",
+        "description": "Modifica i campi desiderati, oppure spunta la rimozione per eliminare la fascia.",
+        "data": {
+          "label": "Nome della fascia (ad es. Feriale invernale)",
+          "price": "Prezzo (c/kWh)",
+          "months": "Mesi attivi",
+          "weekdays": "Giorni attivi",
+          "hour_start": "Ora di inizio (inclusa)",
+          "hour_end": "Ora di fine (esclusa)",
+          "priority": "Priorità (minore = prima)",
+          "delete": "Rimuovi questa fascia"
         }
       },
       "thresholds": {

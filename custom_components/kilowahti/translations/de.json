@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Gruppe bearbeiten",
-        "description": "{group_label} — Stufen hinzufügen oder entfernen, oder diese Gruppe als aktiv festlegen.",
+        "description": "{group_label}\n\n{tier_list}\n\nWähle eine Stufe, um ihre Einstellungen anzusehen und zu ändern, füge eine neue hinzu oder lege diese Gruppe als aktiv fest.",
         "data": {
           "action": "Aktion"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Startzeit (einschließlich)",
           "hour_end": "Endzeit (ausschließlich)",
           "priority": "Priorität (niedriger = zuerst)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Netzentgelt bearbeiten",
+        "description": "Ändere beliebige Felder oder setze das Häkchen zum Entfernen, um die Stufe zu löschen.",
+        "data": {
+          "label": "Stufenbezeichnung",
+          "price": "Preis (c/kWh)",
+          "months": "Aktive Monate",
+          "weekdays": "Aktive Wochentage",
+          "hour_start": "Startzeit (einschließlich)",
+          "hour_end": "Endzeit (ausschließlich)",
+          "priority": "Priorität (niedriger = zuerst)",
+          "delete": "Diese Stufe entfernen"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Gruppe bearbeiten",
-        "description": "{group_label} — Stufen hinzufügen oder entfernen, oder diese Gruppe als aktiv festlegen.",
+        "description": "{group_label}\n\n{tier_list}\n\nWähle eine Stufe, um ihre Einstellungen anzusehen und zu ändern, füge eine neue hinzu oder lege diese Gruppe als aktiv fest.",
         "data": {
           "action": "Aktion"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Startzeit (einschließlich)",
           "hour_end": "Endzeit (ausschließlich)",
           "priority": "Priorität (niedriger = zuerst)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Netzentgelt bearbeiten",
+        "description": "Ändere beliebige Felder oder setze das Häkchen zum Entfernen, um die Stufe zu löschen.",
+        "data": {
+          "label": "Stufenname (z. B. Winter-Werktag)",
+          "price": "Preis (c/kWh)",
+          "months": "Aktive Monate",
+          "weekdays": "Aktive Wochentage",
+          "hour_start": "Startzeit (einschließlich)",
+          "hour_end": "Endzeit (ausschließlich)",
+          "priority": "Priorität (niedriger = zuerst)",
+          "delete": "Diese Stufe entfernen"
         }
       },
       "thresholds": {

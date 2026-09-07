@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Uredi skupino",
-        "description": "{group_label} — Dodajte ali odstranite stopnje ali nastavite to skupino kot aktivno.",
+        "description": "{group_label}\n\n{tier_list}\n\nIzberite stopnjo, da vidite in spremenite njene nastavitve, dodajte novo ali nastavite to skupino kot aktivno.",
         "data": {
           "action": "Dejanje"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Čas začetka (vključno)",
           "hour_end": "Čas konca (izključno)",
           "priority": "Prednost (manjša = prva)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Uredi ceno omrežnine",
+        "description": "Spremenite poljubna polja ali označite odstranitev, da stopnjo izbrišete.",
+        "data": {
+          "label": "Ime stopnje",
+          "price": "Cena (c/kWh)",
+          "months": "Aktivni meseci",
+          "weekdays": "Aktivni dnevi",
+          "hour_start": "Čas začetka (vključno)",
+          "hour_end": "Čas konca (izključno)",
+          "priority": "Prednost (manjša = prva)",
+          "delete": "Odstrani to stopnjo"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Uredi skupino",
-        "description": "{group_label} — Dodajte ali odstranite stopnje ali nastavite to skupino kot aktivno.",
+        "description": "{group_label}\n\n{tier_list}\n\nIzberite stopnjo, da vidite in spremenite njene nastavitve, dodajte novo ali nastavite to skupino kot aktivno.",
         "data": {
           "action": "Dejanje"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Čas začetka (vključno)",
           "hour_end": "Čas konca (izključno)",
           "priority": "Prednost (manjša = prva)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Uredi ceno omrežnine",
+        "description": "Spremenite poljubna polja ali označite odstranitev, da stopnjo izbrišete.",
+        "data": {
+          "label": "Ime stopnje (npr. Zimski delovni dan)",
+          "price": "Cena (c/kWh)",
+          "months": "Aktivni meseci",
+          "weekdays": "Aktivni dnevi",
+          "hour_start": "Čas začetka (vključno)",
+          "hour_end": "Čas konca (izključno)",
+          "priority": "Prednost (manjša = prva)",
+          "delete": "Odstrani to stopnjo"
         }
       },
       "thresholds": {

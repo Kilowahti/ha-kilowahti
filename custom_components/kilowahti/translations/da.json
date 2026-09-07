@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Redigér gruppe",
-        "description": "{group_label} — Tilføj eller fjern trin, eller sæt denne gruppe som aktiv.",
+        "description": "{group_label}\n\n{tier_list}\n\nVælg et trin for at se og ændre dets indstillinger, tilføj et nyt, eller sæt denne gruppe som aktiv.",
         "data": {
           "action": "Handling"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Starttidspunkt (inklusive)",
           "hour_end": "Sluttidspunkt (eksklusive)",
           "priority": "Prioritet (lavere = først)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Rediger nettarif",
+        "description": "Ret de ønskede felter, eller sæt flueben i fjernelse for at slette trinnet.",
+        "data": {
+          "label": "Trinetiket",
+          "price": "Pris (c/kWh)",
+          "months": "Aktive måneder",
+          "weekdays": "Aktive ugedage",
+          "hour_start": "Starttidspunkt (inklusive)",
+          "hour_end": "Sluttidspunkt (eksklusive)",
+          "priority": "Prioritet (lavere = først)",
+          "delete": "Fjern dette trin"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Redigér gruppe",
-        "description": "{group_label} — Tilføj eller fjern trin, eller sæt denne gruppe som aktiv.",
+        "description": "{group_label}\n\n{tier_list}\n\nVælg et trin for at se og ændre dets indstillinger, tilføj et nyt, eller sæt denne gruppe som aktiv.",
         "data": {
           "action": "Handling"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Starttidspunkt (inklusive)",
           "hour_end": "Sluttidspunkt (eksklusive)",
           "priority": "Prioritet (lavere = først)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Rediger nettarif",
+        "description": "Ret de ønskede felter, eller sæt flueben i fjernelse for at slette trinnet.",
+        "data": {
+          "label": "Trinnavn (f.eks. Vinterhverdag)",
+          "price": "Pris (c/kWh)",
+          "months": "Aktive måneder",
+          "weekdays": "Aktive ugedage",
+          "hour_start": "Starttidspunkt (inklusive)",
+          "hour_end": "Sluttidspunkt (eksklusive)",
+          "priority": "Prioritet (lavere = først)",
+          "delete": "Fjern dette trin"
         }
       },
       "thresholds": {

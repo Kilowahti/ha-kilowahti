@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Redigera grupp",
-        "description": "{group_label} — Lägg till eller ta bort nivåer, eller ange gruppen som aktiv.",
+        "description": "{group_label}\n\n{tier_list}\n\nVälj en nivå för att se och ändra dess inställningar, lägg till en ny eller ange gruppen som aktiv.",
         "data": {
           "action": "Åtgärd"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Starttid (inklusive)",
           "hour_end": "Sluttid (exklusive)",
           "priority": "Prioritet (lägre = först)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Ändra överföringspris",
+        "description": "Ändra valfritt fält, eller kryssa i borttagning för att ta bort nivån.",
+        "data": {
+          "label": "Nivånamn",
+          "price": "Pris (c/kWh)",
+          "months": "Aktiva månader",
+          "weekdays": "Aktiva veckodagar",
+          "hour_start": "Starttid (inklusive)",
+          "hour_end": "Sluttid (exklusive)",
+          "priority": "Prioritet (lägre = först)",
+          "delete": "Ta bort denna nivå"
         }
       },
       "thresholds": {
@@ -210,7 +224,7 @@
       },
       "transfer_group_detail": {
         "title": "Redigera grupp",
-        "description": "{group_label} — Lägg till eller ta bort nivåer, eller ange gruppen som aktiv.",
+        "description": "{group_label}\n\n{tier_list}\n\nVälj en nivå för att se och ändra dess inställningar, lägg till en ny eller ange gruppen som aktiv.",
         "data": {
           "action": "Åtgärd"
         }
@@ -225,6 +239,20 @@
           "hour_start": "Starttid (inklusive)",
           "hour_end": "Sluttid (exklusive)",
           "priority": "Prioritet (lägre = först)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Ändra överföringspris",
+        "description": "Ändra valfritt fält, eller kryssa i borttagning för att ta bort nivån.",
+        "data": {
+          "label": "Nivånamn (t.ex. Vintervardag)",
+          "price": "Pris (c/kWh)",
+          "months": "Aktiva månader",
+          "weekdays": "Aktiva veckodagar",
+          "hour_start": "Starttid (inklusive)",
+          "hour_end": "Sluttid (exklusive)",
+          "priority": "Prioritet (lägre = först)",
+          "delete": "Ta bort denna nivå"
         }
       },
       "thresholds": {

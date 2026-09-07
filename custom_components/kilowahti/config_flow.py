@@ -459,6 +459,57 @@ def _add_tier_schema(defaults: dict | None = None) -> vol.Schema:
     )
 
 
+def _edit_tier_schema(tier: dict) -> vol.Schema:
+    """Add-tier fields pre-filled from `tier`, plus a removal checkbox."""
+    schema = _add_tier_schema(_tier_defaults(tier)).schema
+    return vol.Schema({**schema, vol.Required("delete", default=False): selector.BooleanSelector()})
+
+
+def _tier_defaults(tier: dict) -> dict:
+    """Stored tier → schema defaults. The multi-selects work in strings."""
+    return {
+        **tier,
+        "months": [str(m) for m in tier.get("months", [])],
+        "weekdays": [str(w) for w in tier.get("weekdays", [])],
+    }
+
+
+def _label_for(value: int, options: list[dict]) -> str:
+    for option in options:
+        if option["value"] == str(value):
+            return option["label"]
+    return str(value)
+
+
+def _range_summary(values: list[int], options: list[dict], all_label: str) -> str:
+    """Compact rendering of a month or weekday selection."""
+    if not values:
+        return "—"
+    if len(values) == len(options):
+        return all_label
+    return ", ".join(_label_for(v, options)[:3] for v in values)
+
+
+def _tier_summary(tier: dict) -> str:
+    hours = f"{int(tier['hour_start']):02d}:00–{int(tier['hour_end']):02d}:00"
+    if int(tier["hour_start"]) == 0 and int(tier["hour_end"]) == 24:
+        hours = "All day"
+    return (
+        f"- **{tier['label']}** — {tier['price']} c/kWh · "
+        f"{_range_summary(tier.get('months', []), _MONTH_OPTIONS, 'All year')} · "
+        f"{_range_summary(tier.get('weekdays', []), _WEEKDAY_OPTIONS, 'All days')} · "
+        f"{hours} · priority {tier['priority']}"
+    )
+
+
+def _tier_list_markdown(tiers: list[dict]) -> str:
+    """Tier overview for the group detail step, in evaluation order."""
+    if not tiers:
+        return "_No tiers yet._"
+    ordered = sorted(tiers, key=lambda t: t.get("priority", 0))
+    return "\n".join(_tier_summary(t) for t in ordered)
+
+
 def _validate_tier(user_input: dict) -> str | None:
     if not user_input.get("months"):
         return "tier_no_months"
@@ -493,6 +544,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
         self._data: dict[str, Any] = {}
         self._groups: list[dict] = []
         self._current_group_idx: int = 0
+        self._current_tier_idx: int = 0
 
     # ------ Step 1: basic --------------------------------------------------
 
@@ -625,10 +677,9 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
                 if self._groups and not any(g["active"] for g in self._groups):
                     self._groups[0]["active"] = True
                 return await self.async_step_transfer_groups()
-            if action.startswith("remove_tier_"):
-                tier_idx = int(action.split("_", 2)[2])
-                self._groups[self._current_group_idx]["tiers"].pop(tier_idx)
-                return await self.async_step_transfer_group_detail()
+            if action.startswith("edit_tier_"):
+                self._current_tier_idx = int(action.split("_", 2)[2])
+                return await self.async_step_edit_transfer_tier()
 
         group = self._groups[self._current_group_idx]
         action_options: list[dict] = [
@@ -639,7 +690,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
             action_options.append({"value": "set_active", "label": "★ Set as active group"})
         for i, tier in enumerate(group.get("tiers", [])):
             action_options.append(
-                {"value": f"remove_tier_{i}", "label": f"✕ Remove tier: {tier['label']}"}
+                {"value": f"edit_tier_{i}", "label": f"✎ Edit tier: {tier['label']}"}
             )
         action_options.append({"value": "remove_group", "label": "✕ Remove this group"})
         action_options.append({"value": "back", "label": "← Back to groups"})
@@ -656,6 +707,7 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
             description_placeholders={
                 "group_label": group["label"],
                 "tier_count": str(len(group.get("tiers", []))),
+                "tier_list": _tier_list_markdown(group.get("tiers", [])),
             },
         )
 
@@ -685,6 +737,27 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="add_transfer_tier",
             data_schema=_add_tier_schema(),
+            errors=errors,
+        )
+
+    async def async_step_edit_transfer_tier(self, user_input: dict | None = None):
+        errors: dict[str, str] = {}
+        tiers = self._groups[self._current_group_idx]["tiers"]
+
+        if user_input is not None:
+            if user_input.get("delete"):
+                tiers.pop(self._current_tier_idx)
+                return await self.async_step_transfer_group_detail()
+            err = _validate_tier(user_input)
+            if err:
+                errors["base"] = err
+            else:
+                tiers[self._current_tier_idx] = _tier_from_input(user_input)
+                return await self.async_step_transfer_group_detail()
+
+        return self.async_show_form(
+            step_id="edit_transfer_tier",
+            data_schema=_edit_tier_schema(tiers[self._current_tier_idx]),
             errors=errors,
         )
 
@@ -762,6 +835,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
         self._options: dict[str, Any] = dict(config_entry.options)
         self._groups: list[dict] = list(self._options.get(CONF_TRANSFER_GROUPS, []))
         self._current_group_idx: int = 0
+        self._current_tier_idx: int = 0
         self._current_profile_idx: int = 0
 
     # ------ Top-level menu ------------------------------------------------
@@ -970,10 +1044,9 @@ class KilowahtiOptionsFlow(OptionsFlow):
                 if self._groups and not any(g["active"] for g in self._groups):
                     self._groups[0]["active"] = True
                 return await self.async_step_transfer_groups()
-            if action.startswith("remove_tier_"):
-                tier_idx = int(action.split("_", 2)[2])
-                self._groups[self._current_group_idx]["tiers"].pop(tier_idx)
-                return await self.async_step_transfer_group_detail()
+            if action.startswith("edit_tier_"):
+                self._current_tier_idx = int(action.split("_", 2)[2])
+                return await self.async_step_edit_transfer_tier()
 
         group = self._groups[self._current_group_idx]
         action_options: list[dict] = [
@@ -984,7 +1057,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
             action_options.append({"value": "set_active", "label": "★ Set as active group"})
         for i, tier in enumerate(group.get("tiers", [])):
             action_options.append(
-                {"value": f"remove_tier_{i}", "label": f"✕ Remove tier: {tier['label']}"}
+                {"value": f"edit_tier_{i}", "label": f"✎ Edit tier: {tier['label']}"}
             )
         action_options.append({"value": "remove_group", "label": "✕ Remove this group"})
         action_options.append({"value": "back", "label": "← Back to groups"})
@@ -1001,6 +1074,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
             description_placeholders={
                 "group_label": group["label"],
                 "tier_count": str(len(group.get("tiers", []))),
+                "tier_list": _tier_list_markdown(group.get("tiers", [])),
             },
         )
 
@@ -1030,6 +1104,27 @@ class KilowahtiOptionsFlow(OptionsFlow):
         return self.async_show_form(
             step_id="add_transfer_tier",
             data_schema=_add_tier_schema(),
+            errors=errors,
+        )
+
+    async def async_step_edit_transfer_tier(self, user_input: dict | None = None):
+        errors: dict[str, str] = {}
+        tiers = self._groups[self._current_group_idx]["tiers"]
+
+        if user_input is not None:
+            if user_input.get("delete"):
+                tiers.pop(self._current_tier_idx)
+                return await self.async_step_transfer_group_detail()
+            err = _validate_tier(user_input)
+            if err:
+                errors["base"] = err
+            else:
+                tiers[self._current_tier_idx] = _tier_from_input(user_input)
+                return await self.async_step_transfer_group_detail()
+
+        return self.async_show_form(
+            step_id="edit_transfer_tier",
+            data_schema=_edit_tier_schema(tiers[self._current_tier_idx]),
             errors=errors,
         )
 

@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Edit group",
-        "description": "{group_label} — Add or remove tiers, or set this group as active.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelect a tier to view and edit its settings, add a new one, or set this group as active.",
         "data": {
           "action": "Action"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Start time (inclusive)",
           "hour_end": "End time (exclusive)",
           "priority": "Priority (lower = first)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Edit transfer price",
+        "description": "Change any field, or tick removal to delete this tier.",
+        "data": {
+          "label": "Tier label",
+          "price": "Price (c/kWh)",
+          "months": "Months active",
+          "weekdays": "Weekdays active",
+          "hour_start": "Start time (inclusive)",
+          "hour_end": "End time (exclusive)",
+          "priority": "Priority (lower = first)",
+          "delete": "Remove this tier"
         }
       },
       "thresholds": {
@@ -210,7 +224,7 @@
       },
       "transfer_group_detail": {
         "title": "Edit group",
-        "description": "{group_label} — Add or remove tiers, or set this group as active.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelect a tier to view and edit its settings, add a new one, or set this group as active.",
         "data": {
           "action": "Action"
         }
@@ -225,6 +239,20 @@
           "hour_start": "Start time (inclusive)",
           "hour_end": "End time (exclusive)",
           "priority": "Priority (lower = first)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Edit transfer price",
+        "description": "Change any field, or tick removal to delete this tier.",
+        "data": {
+          "label": "Tier name (e.g. Winter weekday)",
+          "price": "Price (c/kWh)",
+          "months": "Months active",
+          "weekdays": "Weekdays active",
+          "hour_start": "Start time (inclusive)",
+          "hour_end": "End time (exclusive)",
+          "priority": "Priority (lower = first)",
+          "delete": "Remove this tier"
         }
       },
       "thresholds": {

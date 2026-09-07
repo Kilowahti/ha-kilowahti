@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Editar grupo",
-        "description": "{group_label} — Adicione ou remova escalões, ou defina este grupo como ativo.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelecione um escalão para ver e alterar as suas definições, adicione um novo ou defina este grupo como ativo.",
         "data": {
           "action": "Ação"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Hora de início (inclusive)",
           "hour_end": "Hora de fim (exclusive)",
           "priority": "Prioridade (menor = primeiro)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Editar tarifa de rede",
+        "description": "Altere os campos que quiser, ou marque a remoção para eliminar este escalão.",
+        "data": {
+          "label": "Nome do escalão",
+          "price": "Preço (c/kWh)",
+          "months": "Meses ativos",
+          "weekdays": "Dias ativos",
+          "hour_start": "Hora de início (inclusive)",
+          "hour_end": "Hora de fim (exclusive)",
+          "priority": "Prioridade (menor = primeiro)",
+          "delete": "Remover este escalão"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Editar grupo",
-        "description": "{group_label} — Adicione ou remova escalões, ou defina este grupo como ativo.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelecione um escalão para ver e alterar as suas definições, adicione um novo ou defina este grupo como ativo.",
         "data": {
           "action": "Ação"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Hora de início (inclusive)",
           "hour_end": "Hora de fim (exclusive)",
           "priority": "Prioridade (menor = primeiro)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Editar tarifa de rede",
+        "description": "Altere os campos que quiser, ou marque a remoção para eliminar este escalão.",
+        "data": {
+          "label": "Nome do escalão (p. ex. Dia útil de inverno)",
+          "price": "Preço (c/kWh)",
+          "months": "Meses ativos",
+          "weekdays": "Dias ativos",
+          "hour_start": "Hora de início (inclusive)",
+          "hour_end": "Hora de fim (exclusive)",
+          "priority": "Prioridade (menor = primeiro)",
+          "delete": "Remover este escalão"
         }
       },
       "thresholds": {

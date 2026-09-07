@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Editează grupul",
-        "description": "{group_label} — Adaugă sau elimină trepte, ori setează acest grup ca activ.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelectează o treaptă pentru a-i vedea și modifica setările, adaugă una nouă ori setează acest grup ca activ.",
         "data": {
           "action": "Acțiune"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Ora de început (inclusiv)",
           "hour_end": "Ora de sfârșit (exclusiv)",
           "priority": "Prioritate (mai mic = primul)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Editează prețul de distribuție",
+        "description": "Modifică orice câmp sau bifează eliminarea pentru a șterge această treaptă.",
+        "data": {
+          "label": "Numele treptei",
+          "price": "Preț (c/kWh)",
+          "months": "Luni active",
+          "weekdays": "Zile active",
+          "hour_start": "Ora de început (inclusiv)",
+          "hour_end": "Ora de sfârșit (exclusiv)",
+          "priority": "Prioritate (mai mic = primul)",
+          "delete": "Elimină această treaptă"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Editează grupul",
-        "description": "{group_label} — Adaugă sau elimină trepte, ori setează acest grup ca activ.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelectează o treaptă pentru a-i vedea și modifica setările, adaugă una nouă ori setează acest grup ca activ.",
         "data": {
           "action": "Acțiune"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Ora de început (inclusiv)",
           "hour_end": "Ora de sfârșit (exclusiv)",
           "priority": "Prioritate (mai mic = primul)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Editează prețul de distribuție",
+        "description": "Modifică orice câmp sau bifează eliminarea pentru a șterge această treaptă.",
+        "data": {
+          "label": "Numele treptei (de ex. Zi lucrătoare de iarnă)",
+          "price": "Preț (c/kWh)",
+          "months": "Luni active",
+          "weekdays": "Zile active",
+          "hour_start": "Ora de început (inclusiv)",
+          "hour_end": "Ora de sfârșit (exclusiv)",
+          "priority": "Prioritate (mai mic = primul)",
+          "delete": "Elimină această treaptă"
         }
       },
       "thresholds": {

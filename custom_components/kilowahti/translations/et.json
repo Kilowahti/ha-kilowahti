@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Muuda gruppi",
-        "description": "{group_label} — Lisa või eemalda tasemeid või määra grupp aktiivseks.",
+        "description": "{group_label}\n\n{tier_list}\n\nVali tase, et näha ja muuta selle seadeid, lisa uus või määra grupp aktiivseks.",
         "data": {
           "action": "Toiming"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Algusaeg (kaasa arvatud)",
           "hour_end": "Lõppaeg (välja arvatud)",
           "priority": "Prioriteet (madalam = esimene)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Muuda võrgutasu",
+        "description": "Muuda soovitud välju või märgi eemaldamine, et tase kustutada.",
+        "data": {
+          "label": "Taseme nimi",
+          "price": "Hind (c/kWh)",
+          "months": "Aktiivsed kuud",
+          "weekdays": "Aktiivsed nädalapäevad",
+          "hour_start": "Algusaeg (kaasa arvatud)",
+          "hour_end": "Lõppaeg (välja arvatud)",
+          "priority": "Prioriteet (madalam = esimene)",
+          "delete": "Eemalda see tase"
         }
       },
       "thresholds": {
@@ -210,7 +224,7 @@
       },
       "transfer_group_detail": {
         "title": "Muuda gruppi",
-        "description": "{group_label} — Lisa või eemalda tasemeid või määra grupp aktiivseks.",
+        "description": "{group_label}\n\n{tier_list}\n\nVali tase, et näha ja muuta selle seadeid, lisa uus või määra grupp aktiivseks.",
         "data": {
           "action": "Toiming"
         }
@@ -225,6 +239,20 @@
           "hour_start": "Algusaeg (kaasa arvatud)",
           "hour_end": "Lõppaeg (välja arvatud)",
           "priority": "Prioriteet (madalam = esimene)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Muuda võrgutasu",
+        "description": "Muuda soovitud välju või märgi eemaldamine, et tase kustutada.",
+        "data": {
+          "label": "Taseme nimi (nt Talvine tööpäev)",
+          "price": "Hind (c/kWh)",
+          "months": "Aktiivsed kuud",
+          "weekdays": "Aktiivsed nädalapäevad",
+          "hour_start": "Algusaeg (kaasa arvatud)",
+          "hour_end": "Lõppaeg (välja arvatud)",
+          "priority": "Prioriteet (madalam = esimene)",
+          "delete": "Eemalda see tase"
         }
       },
       "thresholds": {

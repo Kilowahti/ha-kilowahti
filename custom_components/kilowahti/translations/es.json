@@ -60,7 +60,7 @@
       },
       "transfer_group_detail": {
         "title": "Editar grupo",
-        "description": "{group_label} — Añade o elimina tramos, o establece este grupo como activo.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelecciona un tramo para ver y cambiar sus ajustes, añade uno nuevo o establece este grupo como activo.",
         "data": {
           "action": "Acción"
         }
@@ -76,6 +76,20 @@
           "hour_start": "Hora de inicio (incluida)",
           "hour_end": "Hora de fin (excluida)",
           "priority": "Prioridad (menor = primero)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Editar peaje",
+        "description": "Cambia los campos que quieras, o marca la eliminación para borrar este tramo.",
+        "data": {
+          "label": "Nombre del tramo",
+          "price": "Precio (c/kWh)",
+          "months": "Meses activos",
+          "weekdays": "Días activos",
+          "hour_start": "Hora de inicio (incluida)",
+          "hour_end": "Hora de fin (excluida)",
+          "priority": "Prioridad (menor = primero)",
+          "delete": "Eliminar este tramo"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Editar grupo",
-        "description": "{group_label} — Añade o elimina tramos, o establece este grupo como activo.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelecciona un tramo para ver y cambiar sus ajustes, añade uno nuevo o establece este grupo como activo.",
         "data": {
           "action": "Acción"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Hora de inicio (incluida)",
           "hour_end": "Hora de fin (excluida)",
           "priority": "Prioridad (menor = primero)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Editar peaje",
+        "description": "Cambia los campos que quieras, o marca la eliminación para borrar este tramo.",
+        "data": {
+          "label": "Nombre del tramo (p. ej. Laborable de invierno)",
+          "price": "Precio (c/kWh)",
+          "months": "Meses activos",
+          "weekdays": "Días activos",
+          "hour_start": "Hora de inicio (incluida)",
+          "hour_end": "Hora de fin (excluida)",
+          "priority": "Prioridad (menor = primero)",
+          "delete": "Eliminar este tramo"
         }
       },
       "thresholds": {

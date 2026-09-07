@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Edytuj grupę",
-        "description": "{group_label} — Dodaj lub usuń stawki albo ustaw tę grupę jako aktywną.",
+        "description": "{group_label}\n\n{tier_list}\n\nWybierz stawkę, aby zobaczyć i zmienić jej ustawienia, dodaj nową albo ustaw tę grupę jako aktywną.",
         "data": {
           "action": "Akcja"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Czas rozpoczęcia (włącznie)",
           "hour_end": "Czas zakończenia (wyłącznie)",
           "priority": "Priorytet (niższy = pierwszy)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Edytuj stawkę dystrybucyjną",
+        "description": "Zmień dowolne pola albo zaznacz usunięcie, aby skasować tę stawkę.",
+        "data": {
+          "label": "Nazwa stawki",
+          "price": "Cena (c/kWh)",
+          "months": "Aktywne miesiące",
+          "weekdays": "Aktywne dni tygodnia",
+          "hour_start": "Czas rozpoczęcia (włącznie)",
+          "hour_end": "Czas zakończenia (wyłącznie)",
+          "priority": "Priorytet (niższy = pierwszy)",
+          "delete": "Usuń tę stawkę"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Edytuj grupę",
-        "description": "{group_label} — Dodaj lub usuń stawki albo ustaw tę grupę jako aktywną.",
+        "description": "{group_label}\n\n{tier_list}\n\nWybierz stawkę, aby zobaczyć i zmienić jej ustawienia, dodaj nową albo ustaw tę grupę jako aktywną.",
         "data": {
           "action": "Akcja"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Czas rozpoczęcia (włącznie)",
           "hour_end": "Czas zakończenia (wyłącznie)",
           "priority": "Priorytet (niższy = pierwszy)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Edytuj stawkę dystrybucyjną",
+        "description": "Zmień dowolne pola albo zaznacz usunięcie, aby skasować tę stawkę.",
+        "data": {
+          "label": "Nazwa stawki (np. Zimowy dzień roboczy)",
+          "price": "Cena (c/kWh)",
+          "months": "Aktywne miesiące",
+          "weekdays": "Aktywne dni tygodnia",
+          "hour_start": "Czas rozpoczęcia (włącznie)",
+          "hour_end": "Czas zakończenia (wyłącznie)",
+          "priority": "Priorytet (niższy = pierwszy)",
+          "delete": "Usuń tę stawkę"
         }
       },
       "thresholds": {

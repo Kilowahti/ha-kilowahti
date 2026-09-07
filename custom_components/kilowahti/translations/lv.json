@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Rediģēt grupu",
-        "description": "{group_label} — pievienojiet vai noņemiet līmeņus, vai iestatiet šo grupu kā aktīvo.",
+        "description": "{group_label}\n\n{tier_list}\n\nIzvēlieties līmeni, lai apskatītu un mainītu tā iestatījumus, pievienojiet jaunu vai iestatiet šo grupu kā aktīvo.",
         "data": {
           "action": "Darbība"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Sākuma laiks (ieskaitot)",
           "hour_end": "Beigu laiks (neieskaitot)",
           "priority": "Prioritāte (mazāka = pirmā)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Rediģēt sadales tarifu",
+        "description": "Mainiet vajadzīgos laukus vai atzīmējiet noņemšanu, lai līmeni dzēstu.",
+        "data": {
+          "label": "Līmeņa nosaukums",
+          "price": "Cena (c/kWh)",
+          "months": "Aktīvie mēneši",
+          "weekdays": "Aktīvās nedēļas dienas",
+          "hour_start": "Sākuma laiks (ieskaitot)",
+          "hour_end": "Beigu laiks (neieskaitot)",
+          "priority": "Prioritāte (mazāka = pirmā)",
+          "delete": "Noņemt šo līmeni"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Rediģēt grupu",
-        "description": "{group_label} — pievienojiet vai noņemiet līmeņus, vai iestatiet šo grupu kā aktīvo.",
+        "description": "{group_label}\n\n{tier_list}\n\nIzvēlieties līmeni, lai apskatītu un mainītu tā iestatījumus, pievienojiet jaunu vai iestatiet šo grupu kā aktīvo.",
         "data": {
           "action": "Darbība"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Sākuma laiks (ieskaitot)",
           "hour_end": "Beigu laiks (neieskaitot)",
           "priority": "Prioritāte (mazāka = pirmā)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Rediģēt sadales tarifu",
+        "description": "Mainiet vajadzīgos laukus vai atzīmējiet noņemšanu, lai līmeni dzēstu.",
+        "data": {
+          "label": "Līmeņa nosaukums (piem., Ziemas darbdiena)",
+          "price": "Cena (c/kWh)",
+          "months": "Aktīvie mēneši",
+          "weekdays": "Aktīvās nedēļas dienas",
+          "hour_start": "Sākuma laiks (ieskaitot)",
+          "hour_end": "Beigu laiks (neieskaitot)",
+          "priority": "Prioritāte (mazāka = pirmā)",
+          "delete": "Noņemt šo līmeni"
         }
       },
       "thresholds": {

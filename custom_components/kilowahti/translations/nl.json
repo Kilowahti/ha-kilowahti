@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Groep bewerken",
-        "description": "{group_label} — Voeg niveaus toe of verwijder ze, of stel deze groep in als actief.",
+        "description": "{group_label}\n\n{tier_list}\n\nKies een niveau om de instellingen te bekijken en te wijzigen, voeg een nieuw niveau toe of stel deze groep in als actief.",
         "data": {
           "action": "Actie"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Starttijd (inclusief)",
           "hour_end": "Eindtijd (exclusief)",
           "priority": "Prioriteit (lager = eerst)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Nettarief bewerken",
+        "description": "Wijzig de gewenste velden of vink verwijderen aan om dit niveau te verwijderen.",
+        "data": {
+          "label": "Niveaunaam",
+          "price": "Prijs (c/kWh)",
+          "months": "Actieve maanden",
+          "weekdays": "Actieve weekdagen",
+          "hour_start": "Starttijd (inclusief)",
+          "hour_end": "Eindtijd (exclusief)",
+          "priority": "Prioriteit (lager = eerst)",
+          "delete": "Dit niveau verwijderen"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Groep bewerken",
-        "description": "{group_label} — Voeg niveaus toe of verwijder ze, of stel deze groep in als actief.",
+        "description": "{group_label}\n\n{tier_list}\n\nKies een niveau om de instellingen te bekijken en te wijzigen, voeg een nieuw niveau toe of stel deze groep in als actief.",
         "data": {
           "action": "Actie"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Starttijd (inclusief)",
           "hour_end": "Eindtijd (exclusief)",
           "priority": "Prioriteit (lager = eerst)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Nettarief bewerken",
+        "description": "Wijzig de gewenste velden of vink verwijderen aan om dit niveau te verwijderen.",
+        "data": {
+          "label": "Niveaunaam (bijv. Winterwerkdag)",
+          "price": "Prijs (c/kWh)",
+          "months": "Actieve maanden",
+          "weekdays": "Actieve weekdagen",
+          "hour_start": "Starttijd (inclusief)",
+          "hour_end": "Eindtijd (exclusief)",
+          "priority": "Prioriteit (lager = eerst)",
+          "delete": "Dit niveau verwijderen"
         }
       },
       "thresholds": {

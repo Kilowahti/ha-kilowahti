@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Uredi grupu",
-        "description": "{group_label} — Dodajte ili uklonite stupnjeve, ili postavite ovu grupu kao aktivnu.",
+        "description": "{group_label}\n\n{tier_list}\n\nOdaberite stupanj da biste vidjeli i promijenili njegove postavke, dodajte novi ili postavite ovu grupu kao aktivnu.",
         "data": {
           "action": "Radnja"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Vrijeme početka (uključivo)",
           "hour_end": "Vrijeme kraja (isključivo)",
           "priority": "Prioritet (manji = prvi)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Uredi cijenu mrežarine",
+        "description": "Promijenite željena polja ili označite uklanjanje da biste obrisali ovaj stupanj.",
+        "data": {
+          "label": "Naziv stupnja",
+          "price": "Cijena (c/kWh)",
+          "months": "Aktivni mjeseci",
+          "weekdays": "Aktivni dani",
+          "hour_start": "Vrijeme početka (uključivo)",
+          "hour_end": "Vrijeme kraja (isključivo)",
+          "priority": "Prioritet (manji = prvi)",
+          "delete": "Ukloni ovaj stupanj"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Uredi grupu",
-        "description": "{group_label} — Dodajte ili uklonite stupnjeve, ili postavite ovu grupu kao aktivnu.",
+        "description": "{group_label}\n\n{tier_list}\n\nOdaberite stupanj da biste vidjeli i promijenili njegove postavke, dodajte novi ili postavite ovu grupu kao aktivnu.",
         "data": {
           "action": "Radnja"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Vrijeme početka (uključivo)",
           "hour_end": "Vrijeme kraja (isključivo)",
           "priority": "Prioritet (manji = prvi)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Uredi cijenu mrežarine",
+        "description": "Promijenite željena polja ili označite uklanjanje da biste obrisali ovaj stupanj.",
+        "data": {
+          "label": "Naziv stupnja (npr. Zimski radni dan)",
+          "price": "Cijena (c/kWh)",
+          "months": "Aktivni mjeseci",
+          "weekdays": "Aktivni dani",
+          "hour_start": "Vrijeme početka (uključivo)",
+          "hour_end": "Vrijeme kraja (isključivo)",
+          "priority": "Prioritet (manji = prvi)",
+          "delete": "Ukloni ovaj stupanj"
         }
       },
       "thresholds": {

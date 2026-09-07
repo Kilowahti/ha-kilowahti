@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Upravit skupinu",
-        "description": "{group_label} — Přidejte nebo odeberte pásma, nebo nastavte tuto skupinu jako aktivní.",
+        "description": "{group_label}\n\n{tier_list}\n\nVyberte pásmo, abyste zobrazili a upravili jeho nastavení, přidejte nové, nebo nastavte tuto skupinu jako aktivní.",
         "data": {
           "action": "Akce"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Čas začátku (včetně)",
           "hour_end": "Čas konce (mimo)",
           "priority": "Priorita (nižší = dříve)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Upravit cenu distribuce",
+        "description": "Změňte libovolná pole, nebo zaškrtněte odstranění a pásmo se smaže.",
+        "data": {
+          "label": "Název pásma",
+          "price": "Cena (c/kWh)",
+          "months": "Aktivní měsíce",
+          "weekdays": "Aktivní dny",
+          "hour_start": "Čas začátku (včetně)",
+          "hour_end": "Čas konce (mimo)",
+          "priority": "Priorita (nižší = dříve)",
+          "delete": "Odstranit toto pásmo"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Upravit skupinu",
-        "description": "{group_label} — Přidejte nebo odeberte pásma, nebo nastavte tuto skupinu jako aktivní.",
+        "description": "{group_label}\n\n{tier_list}\n\nVyberte pásmo, abyste zobrazili a upravili jeho nastavení, přidejte nové, nebo nastavte tuto skupinu jako aktivní.",
         "data": {
           "action": "Akce"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Čas začátku (včetně)",
           "hour_end": "Čas konce (mimo)",
           "priority": "Priorita (nižší = dříve)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Upravit cenu distribuce",
+        "description": "Změňte libovolná pole, nebo zaškrtněte odstranění a pásmo se smaže.",
+        "data": {
+          "label": "Název pásma (např. Zimní všední den)",
+          "price": "Cena (c/kWh)",
+          "months": "Aktivní měsíce",
+          "weekdays": "Aktivní dny",
+          "hour_start": "Čas začátku (včetně)",
+          "hour_end": "Čas konce (mimo)",
+          "priority": "Priorita (nižší = dříve)",
+          "delete": "Odstranit toto pásmo"
         }
       },
       "thresholds": {

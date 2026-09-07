@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Csoport szerkesztése",
-        "description": "{group_label} — Adj hozzá vagy távolíts el sávokat, vagy állítsd be ezt a csoportot aktívnak.",
+        "description": "{group_label}\n\n{tier_list}\n\nVálassz egy sávot a beállításai megtekintéséhez és módosításához, adj hozzá újat, vagy állítsd be ezt a csoportot aktívnak.",
         "data": {
           "action": "Művelet"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Kezdő időpont (beleértve)",
           "hour_end": "Záró időpont (nem beleértve)",
           "priority": "Prioritás (kisebb = előbb)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Hálózati díj szerkesztése",
+        "description": "Módosítsd a kívánt mezőket, vagy jelöld be az eltávolítást a sáv törléséhez.",
+        "data": {
+          "label": "Sáv neve",
+          "price": "Ár (c/kWh)",
+          "months": "Aktív hónapok",
+          "weekdays": "Aktív napok",
+          "hour_start": "Kezdő időpont (beleértve)",
+          "hour_end": "Záró időpont (nem beleértve)",
+          "priority": "Prioritás (kisebb = előbb)",
+          "delete": "Sáv eltávolítása"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Csoport szerkesztése",
-        "description": "{group_label} — Adj hozzá vagy távolíts el sávokat, vagy állítsd be ezt a csoportot aktívnak.",
+        "description": "{group_label}\n\n{tier_list}\n\nVálassz egy sávot a beállításai megtekintéséhez és módosításához, adj hozzá újat, vagy állítsd be ezt a csoportot aktívnak.",
         "data": {
           "action": "Művelet"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Kezdő időpont (beleértve)",
           "hour_end": "Záró időpont (nem beleértve)",
           "priority": "Prioritás (kisebb = előbb)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Hálózati díj szerkesztése",
+        "description": "Módosítsd a kívánt mezőket, vagy jelöld be az eltávolítást a sáv törléséhez.",
+        "data": {
+          "label": "Sáv neve (pl. Téli hétköznap)",
+          "price": "Ár (c/kWh)",
+          "months": "Aktív hónapok",
+          "weekdays": "Aktív napok",
+          "hour_start": "Kezdő időpont (beleértve)",
+          "hour_end": "Záró időpont (nem beleértve)",
+          "priority": "Prioritás (kisebb = előbb)",
+          "delete": "Sáv eltávolítása"
         }
       },
       "thresholds": {

@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Redaguoti grupę",
-        "description": "{group_label} — pridėkite arba pašalinkite pakopas, arba nustatykite šią grupę kaip aktyvią.",
+        "description": "{group_label}\n\n{tier_list}\n\nPasirinkite pakopą, kad matytumėte ir keistumėte jos nustatymus, pridėkite naują arba nustatykite šią grupę kaip aktyvią.",
         "data": {
           "action": "Veiksmas"
         }
@@ -88,6 +88,20 @@
           "hour_start": "Pradžios laikas (imtinai)",
           "hour_end": "Pabaigos laikas (neimtinai)",
           "priority": "Prioritetas (mažesnis = pirmas)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Redaguoti persiuntimo kainą",
+        "description": "Pakeiskite norimus laukus arba pažymėkite pašalinimą, kad pakopą ištrintumėte.",
+        "data": {
+          "label": "Pakopos pavadinimas",
+          "price": "Kaina (c/kWh)",
+          "months": "Aktyvūs mėnesiai",
+          "weekdays": "Aktyvios savaitės dienos",
+          "hour_start": "Pradžios laikas (imtinai)",
+          "hour_end": "Pabaigos laikas (neimtinai)",
+          "priority": "Prioritetas (mažesnis = pirmas)",
+          "delete": "Pašalinti šią pakopą"
         }
       },
       "thresholds": {
@@ -209,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Redaguoti grupę",
-        "description": "{group_label} — pridėkite arba pašalinkite pakopas, arba nustatykite šią grupę kaip aktyvią.",
+        "description": "{group_label}\n\n{tier_list}\n\nPasirinkite pakopą, kad matytumėte ir keistumėte jos nustatymus, pridėkite naują arba nustatykite šią grupę kaip aktyvią.",
         "data": {
           "action": "Veiksmas"
         }
@@ -224,6 +238,20 @@
           "hour_start": "Pradžios laikas (imtinai)",
           "hour_end": "Pabaigos laikas (neimtinai)",
           "priority": "Prioritetas (mažesnis = pirmas)"
+        }
+      },
+      "edit_transfer_tier": {
+        "title": "Redaguoti persiuntimo kainą",
+        "description": "Pakeiskite norimus laukus arba pažymėkite pašalinimą, kad pakopą ištrintumėte.",
+        "data": {
+          "label": "Pakopos pavadinimas (pvz., Žiemos darbo diena)",
+          "price": "Kaina (c/kWh)",
+          "months": "Aktyvūs mėnesiai",
+          "weekdays": "Aktyvios savaitės dienos",
+          "hour_start": "Pradžios laikas (imtinai)",
+          "hour_end": "Pabaigos laikas (neimtinai)",
+          "priority": "Prioritetas (mažesnis = pirmas)",
+          "delete": "Pašalinti šią pakopą"
         }
       },
       "thresholds": {
