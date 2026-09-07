@@ -252,6 +252,16 @@ async def test_total_price_sensor_exposes_arrays_when_enabled(hass, options, moc
     assert "tomorrow_prices" not in state.attributes
 
 
+async def test_price_arrays_are_excluded_from_recording(hass, setup_integration, mock_utcnow):
+    """Both array-carrying sensors keep their arrays out of the recorder."""
+    from custom_components.kilowahti.const import SENSOR_TOTAL_PRICE
+
+    for key in (SENSOR_SPOT_PRICE, SENSOR_TOTAL_PRICE):
+        entity_id = _entity_id(hass, "sensor", setup_integration.entry_id, key)
+        state = hass.states.get(entity_id)
+        assert {"today_prices", "tomorrow_prices"} <= state.state_info["unrecorded_attributes"]
+
+
 async def test_total_price_sensor_has_no_arrays_by_default(hass, setup_integration, mock_utcnow):
     """The option is off by default, so total_price carries no array attributes."""
     from custom_components.kilowahti.const import SENSOR_TOTAL_PRICE

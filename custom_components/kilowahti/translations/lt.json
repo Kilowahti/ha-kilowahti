@@ -131,15 +131,15 @@
         "title": "Išplėstinės parinktys",
         "description": "Sukonfigūruokite, kaip jutiklių reikšmės rodomos Home Assistant.",
         "data": {
-          "expose_price_arrays": "Rodyti biržos kainos masyvus kaip jutiklio atributus (didina DB dydį)",
-          "expose_total_price_arrays": "Rodyti bendros kainos masyvus kaip jutiklio atributus (didina DB dydį)",
+          "expose_price_arrays": "Rodyti biržos kainos masyvus kaip jutiklio atributus",
+          "expose_total_price_arrays": "Rodyti bendros kainos masyvus kaip jutiklio atributus",
           "high_precision": "Didelio tikslumo režimas",
           "show_rolling_averages": "Rodyti ateinančių 30 min, 1 val. ir 2 val. vidutines kainas",
           "generation_enabled": "Įjungti gamybos ir eksporto funkcijas"
         },
         "data_description": {
-          "expose_price_arrays": "Įrašo today_prices ir tomorrow_prices masyvus į spot_price jutiklio atributus, kurie vėliau saugomi duomenų bazėje. Palengvina skydelio grafikų kūrimą, tačiau jiems rodyti nebūtinas ir sukuria nereikalingą DB apkrovą.",
-          "expose_total_price_arrays": "Įrašo today_prices ir tomorrow_prices masyvus į bendros kainos jutiklio atributus; kiekviename įraše pateikiamas energijos ir persiuntimo kainos skaidymas. DB apkrova tokia pat kaip biržos kainos masyvų.",
+          "expose_price_arrays": "Įrašo today_prices ir tomorrow_prices masyvus į spot_price jutiklio atributus. Palengvina skydelio grafikų kūrimą, tačiau jiems rodyti nebūtinas. Masyvai nesaugomi duomenų bazėje; jie tik padidina dabartinės jutiklio būsenos dydį.",
+          "expose_total_price_arrays": "Įrašo today_prices ir tomorrow_prices masyvus į bendros kainos jutiklio atributus; kiekviename įraše pateikiamas energijos ir persiuntimo kainos skaidymas. Duomenų bazėje nesaugomi, kaip ir biržos kainos masyvai.",
           "high_precision": "Kai įjungta, kainų jutikliai ir kainų masyvų atributai rodo daugiau skaitmenų po kablelio. Vidiniai skaičiavimai visada naudoja visą tikslumą.",
           "show_rolling_averages": "Prideda jutiklius vidutinei kainai per ateinančias 30, 60 ir 120 minučių.",
           "generation_enabled": "Įjungia eksporto kainos, akumuliatoriaus ir arbitražo jutiklius bei paslaugas. Gamybos nustatymus konfigūruokite meniu Gamyba ir eksportas."
@@ -271,8 +271,8 @@
       "advanced_options": {
         "title": "Išplėstinės parinktys",
         "data": {
-          "expose_price_arrays": "Rodyti biržos kainos masyvus kaip jutiklio atributus (didina DB dydį)",
-          "expose_total_price_arrays": "Rodyti bendros kainos masyvus kaip jutiklio atributus (didina DB dydį)",
+          "expose_price_arrays": "Rodyti biržos kainos masyvus kaip jutiklio atributus",
+          "expose_total_price_arrays": "Rodyti bendros kainos masyvus kaip jutiklio atributus",
           "high_precision": "Didelio tikslumo režimas",
           "show_rolling_averages": "Rodyti ateinančių 30 min, 1 val. ir 2 val. vidutines kainas",
           "generation_enabled": "Įjungti gamybos ir eksporto funkcijas"

@@ -131,15 +131,15 @@
         "title": "Opțiuni avansate",
         "description": "Configurează cum sunt afișate valorile senzorilor în Home Assistant.",
         "data": {
-          "expose_price_arrays": "Expune șirurile de preț spot ca atribute ale senzorului (crește dimensiunea bazei de date)",
-          "expose_total_price_arrays": "Expune șirurile de preț total ca atribute ale senzorului (crește dimensiunea bazei de date)",
+          "expose_price_arrays": "Expune șirurile de preț spot ca atribute ale senzorului",
+          "expose_total_price_arrays": "Expune șirurile de preț total ca atribute ale senzorului",
           "high_precision": "Mod de precizie ridicată",
           "show_rolling_averages": "Arată prețurile medii pentru următoarele 30 min, 1 h și 2 h",
           "generation_enabled": "Activează funcțiile de producție și livrare"
         },
         "data_description": {
-          "expose_price_arrays": "Scrie șirurile today_prices și tomorrow_prices în atributele senzorului spot_price, care sunt apoi stocate în baza de date. Ușurează crearea graficelor pe dashboard, dar nu este necesar pentru afișarea lor și adaugă încărcare inutilă bazei de date.",
-          "expose_total_price_arrays": "Scrie șirurile today_prices și tomorrow_prices în atributele senzorului preț total, fiecare intrare având defalcarea pe energie și distribuție. Încarcă baza de date la fel ca șirurile de preț spot.",
+          "expose_price_arrays": "Scrie șirurile today_prices și tomorrow_prices în atributele senzorului spot_price. Ușurează crearea graficelor pe dashboard, dar nu este necesar pentru afișarea lor. Șirurile nu sunt stocate în baza de date; măresc doar dimensiunea stării curente a senzorului.",
+          "expose_total_price_arrays": "Scrie șirurile today_prices și tomorrow_prices în atributele senzorului preț total, fiecare intrare având defalcarea pe energie și distribuție. Nu sunt stocate în baza de date, la fel ca șirurile de preț spot.",
           "high_precision": "Când este activ, senzorii de preț și atributele șirurilor de prețuri afișează mai multe zecimale. Calculele interne folosesc întotdeauna precizia completă.",
           "show_rolling_averages": "Adaugă senzori pentru prețul mediu al următoarelor 30, 60 și 120 de minute.",
           "generation_enabled": "Activează senzorii și serviciile pentru prețul de livrare, baterie și arbitraj. Configurează setările de producție în meniul Producție și livrare."
@@ -271,8 +271,8 @@
       "advanced_options": {
         "title": "Opțiuni avansate",
         "data": {
-          "expose_price_arrays": "Expune șirurile de preț spot ca atribute ale senzorului (crește dimensiunea bazei de date)",
-          "expose_total_price_arrays": "Expune șirurile de preț total ca atribute ale senzorului (crește dimensiunea bazei de date)",
+          "expose_price_arrays": "Expune șirurile de preț spot ca atribute ale senzorului",
+          "expose_total_price_arrays": "Expune șirurile de preț total ca atribute ale senzorului",
           "high_precision": "Mod de precizie ridicată",
           "show_rolling_averages": "Arată prețurile medii pentru următoarele 30 min, 1 h și 2 h",
           "generation_enabled": "Activează funcțiile de producție și livrare"

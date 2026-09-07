@@ -525,6 +525,10 @@ class KilowahtiSensor(KilowahtiSensorBase):
 
 
 class KilowahtiSpotPriceSensor(KilowahtiSensor):
+    # Live data only: recording the arrays adds no history value and can exceed
+    # the recorder's per-state attribute size limit at 15-minute resolution.
+    _unrecorded_attributes = frozenset({"today_prices", "tomorrow_prices"})
+
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         attrs: dict[str, Any] = {"price_source": self.coordinator.price_source_name}
@@ -558,6 +562,8 @@ class KilowahtiTransferPriceSensor(KilowahtiSensor):
 
 
 class KilowahtiTotalPriceSensor(KilowahtiSensor):
+    _unrecorded_attributes = frozenset({"today_prices", "tomorrow_prices"})
+
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         attrs: dict[str, Any] = {}

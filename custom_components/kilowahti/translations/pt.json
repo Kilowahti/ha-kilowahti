@@ -131,15 +131,15 @@
         "title": "Opções avançadas",
         "description": "Configure como os valores dos sensores são apresentados no Home Assistant.",
         "data": {
-          "expose_price_arrays": "Expor as listas de preço spot como atributos do sensor (aumenta o tamanho da base de dados)",
-          "expose_total_price_arrays": "Expor as listas de preço total como atributos do sensor (aumenta o tamanho da base de dados)",
+          "expose_price_arrays": "Expor as listas de preço spot como atributos do sensor",
+          "expose_total_price_arrays": "Expor as listas de preço total como atributos do sensor",
           "high_precision": "Modo de alta precisão",
           "show_rolling_averages": "Mostrar preços médios dos próximos 30 min, 1 h e 2 h",
           "generation_enabled": "Ativar funções de produção e excedentes"
         },
         "data_description": {
-          "expose_price_arrays": "Escreve as listas today_prices e tomorrow_prices nos atributos do sensor spot_price, que depois são guardadas na base de dados. Facilita a criação de gráficos no painel, mas não é necessário para os apresentar e adiciona carga desnecessária à base de dados.",
-          "expose_total_price_arrays": "Escreve as listas today_prices e tomorrow_prices nos atributos do sensor preço total, com a repartição entre energia e tarifa de rede em cada entrada. Carrega a base de dados tanto como as listas de preço spot.",
+          "expose_price_arrays": "Escreve as listas today_prices e tomorrow_prices nos atributos do sensor spot_price. Facilita a criação de gráficos no painel, mas não é necessário para os apresentar. As listas não são guardadas na base de dados; apenas aumentam o tamanho do estado atual do sensor.",
+          "expose_total_price_arrays": "Escreve as listas today_prices e tomorrow_prices nos atributos do sensor preço total, com a repartição entre energia e tarifa de rede em cada entrada. Não são guardadas na base de dados, tal como as listas de preço spot.",
           "high_precision": "Quando ativo, os sensores de preço e os atributos das listas de preços mostram mais casas decimais. Os cálculos internos usam sempre a precisão completa.",
           "show_rolling_averages": "Adiciona sensores do preço médio dos próximos 30, 60 e 120 minutos.",
           "generation_enabled": "Ativa os sensores e serviços de preço dos excedentes, bateria e arbitragem. Configure as definições de produção no menu Produção e excedentes."
@@ -271,8 +271,8 @@
       "advanced_options": {
         "title": "Opções avançadas",
         "data": {
-          "expose_price_arrays": "Expor as listas de preço spot como atributos do sensor (aumenta o tamanho da base de dados)",
-          "expose_total_price_arrays": "Expor as listas de preço total como atributos do sensor (aumenta o tamanho da base de dados)",
+          "expose_price_arrays": "Expor as listas de preço spot como atributos do sensor",
+          "expose_total_price_arrays": "Expor as listas de preço total como atributos do sensor",
           "high_precision": "Modo de alta precisão",
           "show_rolling_averages": "Mostrar preços médios dos próximos 30 min, 1 h e 2 h",
           "generation_enabled": "Ativar funções de produção e excedentes"

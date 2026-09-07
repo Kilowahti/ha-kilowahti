@@ -131,15 +131,15 @@
         "title": "Avancerede indstillinger",
         "description": "Konfigurér, hvordan sensorværdier vises i Home Assistant.",
         "data": {
-          "expose_price_arrays": "Vis spotprisarrays som sensorattributter (øger databasens størrelse)",
-          "expose_total_price_arrays": "Vis totalprisarrays som sensorattributter (øger databasens størrelse)",
+          "expose_price_arrays": "Vis spotprisarrays som sensorattributter",
+          "expose_total_price_arrays": "Vis totalprisarrays som sensorattributter",
           "high_precision": "Høj præcision",
           "show_rolling_averages": "Vis gennemsnitspriser for de næste 30 min, 1 t og 2 t",
           "generation_enabled": "Aktivér produktions- og eksportfunktioner"
         },
         "data_description": {
-          "expose_price_arrays": "Skriver arrays med today_prices og tomorrow_prices til spot_price-sensorens attributter, som derefter gemmes i databasen. Gør det nemmere at bygge dashboard-grafer, men er ikke nødvendigt for at vise dem og giver unødvendig databasebelastning.",
-          "expose_total_price_arrays": "Skriver arrays med today_prices og tomorrow_prices til totalpris-sensorens attributter, hvor hver post indeholder opdelingen i energi og nettarif. Belaster databasen lige så meget som spotprisarrays.",
+          "expose_price_arrays": "Skriver arrays med today_prices og tomorrow_prices til spot_price-sensorens attributter. Gør det nemmere at bygge dashboard-grafer, men er ikke nødvendigt for at vise dem. Arrays gemmes ikke i databasen; de øger kun størrelsen på sensorens aktuelle tilstand.",
+          "expose_total_price_arrays": "Skriver arrays med today_prices og tomorrow_prices til totalpris-sensorens attributter, hvor hver post indeholder opdelingen i energi og nettarif. Gemmes ikke i databasen, ligesom spotprisarrays.",
           "high_precision": "Når slået til, viser prissensorer og prisarray-attributter flere decimaler. Interne beregninger bruger altid fuld præcision.",
           "show_rolling_averages": "Tilføjer sensorer for gennemsnitsprisen over de næste 30, 60 og 120 minutter.",
           "generation_enabled": "Aktiverer sensorer og tjenester for eksportpris, batteri og arbitrage. Konfigurér produktionsindstillinger i menuen Produktion og eksport."
@@ -271,8 +271,8 @@
       "advanced_options": {
         "title": "Avancerede indstillinger",
         "data": {
-          "expose_price_arrays": "Vis spotprisarrays som sensorattributter (øger databasens størrelse)",
-          "expose_total_price_arrays": "Vis totalprisarrays som sensorattributter (øger databasens størrelse)",
+          "expose_price_arrays": "Vis spotprisarrays som sensorattributter",
+          "expose_total_price_arrays": "Vis totalprisarrays som sensorattributter",
           "high_precision": "Høj præcision",
           "show_rolling_averages": "Vis gennemsnitspriser for de næste 30 min, 1 t og 2 t",
           "generation_enabled": "Aktivér produktions- og eksportfunktioner"
