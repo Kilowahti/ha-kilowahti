@@ -223,6 +223,18 @@ def _to_stored(value: float, units: _Units) -> float:
     return round(value * 100.0, 5) if units.major_scale else value
 
 
+def _format_price(value: float, units: _Units) -> str:
+    """Stored price as display text, padded to two decimals.
+
+    Keeps more decimals when two would round the value away, which only
+    happens for legacy values finer than the form's own 0.01 step.
+    """
+    shown = _from_stored(value, units)
+    if round(shown, 2) != round(shown, 5):
+        return f"{shown:.5f}".rstrip("0")
+    return f"{shown:.2f}"
+
+
 def _store_currency_input(target: dict, region: str, user_input: dict) -> None:
     currency = _region_currency(region)
     target[CONF_CURRENCY_MODE] = user_input[CONF_CURRENCY_MODE]
@@ -578,7 +590,7 @@ def _tier_summary(tier: dict, units: _Units) -> str:
     if int(tier["hour_start"]) == 0 and int(tier["hour_end"]) == 24:
         hours = "All day"
     return (
-        f"- **{tier['label']}** — {_from_stored(tier['price'], units)} {units.per_kwh} · "
+        f"- **{tier['label']}** — {_format_price(tier['price'], units)} {units.per_kwh} · "
         f"{_range_summary(tier.get('months', []), _MONTH_OPTIONS, 'All year')} · "
         f"{_range_summary(tier.get('weekdays', []), _WEEKDAY_OPTIONS, 'All days')} · "
         f"{hours} · priority {tier['priority']}"
@@ -1513,7 +1525,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
         units = _units_for(self._options)
         period_options: list[dict] = []
         for p in periods:
-            price = f"{_from_stored(p.price, units)} {units.per_kwh}"
+            price = f"{_format_price(p.price, units)} {units.per_kwh}"
             period_options.append(
                 {
                     "value": f"remove_period_{p.id}",
