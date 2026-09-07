@@ -118,13 +118,15 @@
         "description": "Konfigurējiet, kā sensoru vērtības tiek attēlotas Home Assistant.",
         "data": {
           "expose_price_arrays": "Rādīt cenu masīvus kā sensora atribūtus (palielina DB izmēru)",
+          "expose_total_price_arrays": "Rādīt kopējās cenas masīvus kā sensora atribūtus (palielina DB izmēru)",
           "high_precision": "Augstas precizitātes režīms",
           "show_rolling_averages": "Rādīt nākamo 30 min, 1 h un 2 h vidējās cenas",
           "generation_enabled": "Iespējot ražošanas un eksporta funkcijas"
         },
         "data_description": {
           "expose_price_arrays": "Ieraksta today_prices un tomorrow_prices masīvus spot_price sensora atribūtos, kas pēc tam tiek saglabāti datubāzē. Atvieglo paneļa grafiku veidošanu, taču to attēlošanai tas nav nepieciešams un rada lieku DB slodzi.",
-          "high_precision": "Kad ieslēgts, cenu sensori rāda vairāk decimālzīmju. Atribūti un aprēķini vienmēr izmanto pilnu precizitāti.",
+          "expose_total_price_arrays": "Ieraksta today_prices un tomorrow_prices masīvus kopējās cenas sensora atribūtos, katrā ierakstā norādot enerģijas un sadales tarifa sadalījumu. Noslogo datubāzi tikpat daudz kā biržas cenas masīvi.",
+          "high_precision": "Kad ieslēgts, cenu sensori un cenu masīvu atribūti rāda vairāk decimālzīmju. Iekšējie aprēķini vienmēr izmanto pilnu precizitāti.",
           "show_rolling_averages": "Pievieno sensorus vidējai cenai nākamajās 30, 60 un 120 minūtēs.",
           "generation_enabled": "Iespējo eksporta cenas, akumulatora un arbitrāžas sensorus un pakalpojumus. Ražošanas iestatījumus konfigurējiet izvēlnē Ražošana un eksports."
         }
@@ -242,6 +244,7 @@
         "title": "Papildu iestatījumi",
         "data": {
           "expose_price_arrays": "Rādīt cenu masīvus kā sensora atribūtus (palielina DB izmēru)",
+          "expose_total_price_arrays": "Rādīt kopējās cenas masīvus kā sensora atribūtus (palielina DB izmēru)",
           "high_precision": "Augstas precizitātes režīms",
           "show_rolling_averages": "Rādīt nākamo 30 min, 1 h un 2 h vidējās cenas",
           "generation_enabled": "Iespējot ražošanas un eksporta funkcijas"

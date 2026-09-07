@@ -118,13 +118,15 @@
         "description": "Nastavte, jak se hodnoty senzorů zobrazují v Home Assistantu.",
         "data": {
           "expose_price_arrays": "Zveřejnit cenová pole jako atributy senzoru (zvětšuje databázi)",
+          "expose_total_price_arrays": "Zveřejnit pole celkové ceny jako atributy senzoru (zvětšuje databázi)",
           "high_precision": "Režim vysoké přesnosti",
           "show_rolling_averages": "Zobrazit průměrné ceny na příštích 30 min, 1 h a 2 h",
           "generation_enabled": "Povolit funkce výroby a výkupu"
         },
         "data_description": {
           "expose_price_arrays": "Zapisuje pole today_prices a tomorrow_prices do atributů senzoru spot_price, která se pak ukládají do databáze. Usnadňuje tvorbu grafů na dashboardu, ale pro jejich zobrazení není nutné a zbytečně zatěžuje databázi.",
-          "high_precision": "Při zapnutí zobrazují cenové senzory více desetinných míst. Atributy a výpočty vždy používají plnou přesnost.",
+          "expose_total_price_arrays": "Zapisuje pole today_prices a tomorrow_prices do atributů senzoru celkové ceny, kde každá položka obsahuje rozpad na energii a distribuci. Zatěžuje databázi stejně jako pole spotové ceny.",
+          "high_precision": "Při zapnutí zobrazují cenové senzory a atributy cenových polí více desetinných míst. Vnitřní výpočty vždy používají plnou přesnost.",
           "show_rolling_averages": "Přidá senzory průměrné ceny na příštích 30, 60 a 120 minut.",
           "generation_enabled": "Povolí senzory a služby výkupní ceny, baterie a arbitráže. Nastavení výroby najdete v nabídce Výroba a výkup."
         }
@@ -242,6 +244,7 @@
         "title": "Pokročilé možnosti",
         "data": {
           "expose_price_arrays": "Zveřejnit cenová pole jako atributy senzoru (zvětšuje databázi)",
+          "expose_total_price_arrays": "Zveřejnit pole celkové ceny jako atributy senzoru (zvětšuje databázi)",
           "high_precision": "Režim vysoké přesnosti",
           "show_rolling_averages": "Zobrazit průměrné ceny na příštích 30 min, 1 h a 2 h",
           "generation_enabled": "Povolit funkce výroby a výkupu"

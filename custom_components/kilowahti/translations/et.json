@@ -119,13 +119,15 @@
         "description": "Määra, kuidas andurite väärtusi Home Assistantis kuvatakse.",
         "data": {
           "expose_price_arrays": "Kuva hinnamassiivid anduri atribuutidena (suurendab andmebaasi mahtu)",
+          "expose_total_price_arrays": "Kuva koguhinna massiivid anduri atribuutidena (suurendab andmebaasi mahtu)",
           "high_precision": "Kõrge täpsus",
           "show_rolling_averages": "Kuva järgmise 30 min, 1 h ja 2 h keskmised hinnad",
           "generation_enabled": "Luba tootmise ja müügi funktsioonid"
         },
         "data_description": {
           "expose_price_arrays": "Kirjutab massiivid today_prices ja tomorrow_prices anduri spot_price atribuutidesse, mis seejärel salvestatakse andmebaasi. Lihtsustab graafikute tegemist töölaudadel, kuid pole nende kuvamiseks vajalik ja koormab andmebaasi asjatult.",
-          "high_precision": "Sisselülitatuna kuvavad hinnaandurid rohkem kümnendkohti. Atribuudid ja arvutused kasutavad alati täistäpsust.",
+          "expose_total_price_arrays": "Kirjutab massiivid today_prices ja tomorrow_prices koguhinna anduri atribuutidesse, kus iga kirje sisaldab energia ja võrgutasu jaotust. Koormab andmebaasi sama palju kui spot-hinna massiivid.",
+          "high_precision": "Sisselülitatuna kuvavad hinnaandurid ja hinnamassiivide atribuudid rohkem kümnendkohti. Sisemised arvutused kasutavad alati täistäpsust.",
           "show_rolling_averages": "Lisab andurid järgmise 30, 60 ja 120 minuti keskmise hinna jaoks.",
           "generation_enabled": "Lubab müügihinna, aku ja arbitraaži andurid ning teenused. Määra tootmisseaded menüüs Tootmine ja müük."
         }
@@ -244,6 +246,7 @@
         "title": "Täpsemad seaded",
         "data": {
           "expose_price_arrays": "Kuva hinnamassiivid anduri atribuutidena (suurendab andmebaasi mahtu)",
+          "expose_total_price_arrays": "Kuva koguhinna massiivid anduri atribuutidena (suurendab andmebaasi mahtu)",
           "high_precision": "Kõrge täpsus",
           "show_rolling_averages": "Kuva järgmise 30 min, 1 h ja 2 h keskmised hinnad",
           "generation_enabled": "Luba tootmise ja müügi funktsioonid"

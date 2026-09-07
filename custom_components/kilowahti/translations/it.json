@@ -118,13 +118,15 @@
         "description": "Configura come vengono visualizzati i valori dei sensori in Home Assistant.",
         "data": {
           "expose_price_arrays": "Esponi gli array dei prezzi come attributi del sensore (aumenta la dimensione del database)",
+          "expose_total_price_arrays": "Esponi gli array del prezzo totale come attributi del sensore (aumenta la dimensione del database)",
           "high_precision": "Modalità ad alta precisione",
           "show_rolling_averages": "Mostra i prezzi medi dei prossimi 30 min, 1 h e 2 h",
           "generation_enabled": "Attiva le funzioni di produzione e immissione"
         },
         "data_description": {
           "expose_price_arrays": "Scrive gli array today_prices e tomorrow_prices negli attributi del sensore spot_price, che vengono poi salvati nel database. Facilita la creazione di grafici nella dashboard, ma non è necessario per visualizzarli e aggiunge carico inutile al database.",
-          "high_precision": "Se attivo, i sensori di prezzo mostrano più decimali. Gli attributi e i calcoli usano sempre la precisione completa.",
+          "expose_total_price_arrays": "Scrive gli array today_prices e tomorrow_prices negli attributi del sensore prezzo totale, con la ripartizione tra energia e trasporto in ogni voce. Carica il database quanto gli array del prezzo spot.",
+          "high_precision": "Se attivo, i sensori di prezzo e gli attributi degli array dei prezzi mostrano più decimali. I calcoli interni usano sempre la precisione completa.",
           "show_rolling_averages": "Aggiunge sensori del prezzo medio dei prossimi 30, 60 e 120 minuti.",
           "generation_enabled": "Attiva i sensori e i servizi di prezzo di immissione, batteria e arbitraggio. Configura le impostazioni di produzione nel menu Produzione e immissione."
         }
@@ -242,6 +244,7 @@
         "title": "Opzioni avanzate",
         "data": {
           "expose_price_arrays": "Esponi gli array dei prezzi come attributi del sensore (aumenta la dimensione del database)",
+          "expose_total_price_arrays": "Esponi gli array del prezzo totale come attributi del sensore (aumenta la dimensione del database)",
           "high_precision": "Modalità ad alta precisione",
           "show_rolling_averages": "Mostra i prezzi medi dei prossimi 30 min, 1 h e 2 h",
           "generation_enabled": "Attiva le funzioni di produzione e immissione"

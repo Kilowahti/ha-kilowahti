@@ -214,3 +214,49 @@ async def test_exchange_rate_sensor_only_in_local_mode(hass, options, mock_utcno
     assert float(state.state) == 11.0
     assert state.attributes["fx_mode"] == "manual"
     assert state.attributes["unit_of_measurement"] == "SEK/EUR"
+
+
+async def test_total_price_sensor_exposes_arrays_when_enabled(hass, options, mock_utcnow):
+    """With the option on, total_price carries today_prices with the breakdown."""
+    from custom_components.kilowahti.const import (
+        CONF_EXPOSE_TOTAL_PRICE_ARRAYS,
+        SENSOR_TOTAL_PRICE,
+    )
+
+    from .conftest import TODAY_PAYLOAD, TODAY_URL_RE, TOMORROW_URL_RE
+
+    await hass.config.async_set_time_zone("UTC")
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        title="Test Home",
+        options={**options, CONF_EXPOSE_TOTAL_PRICE_ARRAYS: True},
+    )
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    entity_id = _entity_id(hass, "sensor", entry.entry_id, SENSOR_TOTAL_PRICE)
+    state = hass.states.get(entity_id)
+    assert "today_prices" in state.attributes
+    assert set(state.attributes["today_prices"][0]) == {
+        "time",
+        "energy",
+        "transfer",
+        "price",
+        "rank",
+    }
+    # Tomorrow has not been fetched yet
+    assert "tomorrow_prices" not in state.attributes
+
+
+async def test_total_price_sensor_has_no_arrays_by_default(hass, setup_integration, mock_utcnow):
+    """The option is off by default, so total_price carries no array attributes."""
+    from custom_components.kilowahti.const import SENSOR_TOTAL_PRICE
+
+    entity_id = _entity_id(hass, "sensor", setup_integration.entry_id, SENSOR_TOTAL_PRICE)
+    state = hass.states.get(entity_id)
+    assert "today_prices" not in state.attributes
+    assert "tomorrow_prices" not in state.attributes

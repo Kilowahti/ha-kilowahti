@@ -39,6 +39,7 @@ from .const import (
     CONF_EXPORT_PRICE_THRESHOLD,
     CONF_EXPORT_PRICING_MODE,
     CONF_EXPOSE_PRICE_ARRAYS,
+    CONF_EXPOSE_TOTAL_PRICE_ARRAYS,
     CONF_FIXED_EXPORT_RATE,
     CONF_FORWARD_AVG_HOURS,
     CONF_FX_MODE,
@@ -73,6 +74,7 @@ from .const import (
     DEFAULT_EXPORT_PRICE_THRESHOLD,
     DEFAULT_EXPORT_PRICING_MODE,
     DEFAULT_EXPOSE_PRICE_ARRAYS,
+    DEFAULT_EXPOSE_TOTAL_PRICE_ARRAYS,
     DEFAULT_FIXED_EXPORT_RATE,
     DEFAULT_FORWARD_AVG_HOURS,
     DEFAULT_GENERATION_ENABLED,
@@ -243,6 +245,10 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     @property
     def _expose_price_arrays(self) -> bool:
         return self._opts.get(CONF_EXPOSE_PRICE_ARRAYS, DEFAULT_EXPOSE_PRICE_ARRAYS)
+
+    @property
+    def _expose_total_price_arrays(self) -> bool:
+        return self._opts.get(CONF_EXPOSE_TOTAL_PRICE_ARRAYS, DEFAULT_EXPOSE_TOTAL_PRICE_ARRAYS)
 
     @property
     def _high_precision(self) -> bool:
@@ -948,6 +954,19 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return price_snt
 
     @property
+    def display_decimals(self) -> int:
+        """Decimal places for displayed prices, in the active display unit."""
+        base = 5 if self._high_precision else 2
+        return base + (2 if self.display_in_major else 0)
+
+    def display_price(self, price_snt: float | None) -> float | None:
+        """Convert an internal minor-unit price and round it for display."""
+        converted = self.format_price(price_snt)
+        if converted is None:
+            return None
+        return round(converted, self.display_decimals)
+
+    @property
     def native_unit(self) -> str:
         minor, major = self._unit_pair
         return major if self.display_in_major else minor
@@ -1389,29 +1408,66 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     # Price arrays (for optional attribute exposure)
     # ------------------------------------------------------------------
 
-    def today_price_array(self) -> list[dict] | None:
-        if not self._expose_price_arrays:
-            return None
+    def _spot_price_array(self, slots: list[PriceSlot]) -> list[dict]:
         return [
             {
                 "time": dt_util.as_local(s.dt_utc).isoformat(),
-                "price": self.format_price(self._spot_effective(s)),
+                "price": self.display_price(self._spot_effective(s)),
                 "rank": s.rank,
             }
-            for s in self._today_slots
+            for s in slots
         ]
+
+    def _total_price_array(self, slots: list[PriceSlot]) -> list[dict]:
+        """Build total-price entries with the energy/transfer breakdown.
+
+        Ranks come from the same tier normalization as the total_price_rank
+        sensor, computed among `slots` only, so each day ranks within itself.
+        `price` is the sum of the rounded parts, keeping the breakdown exact.
+        """
+        totals = {
+            s.dt_utc: self._energy_price_for_slot(s) + (self.transfer_price_for_slot(s) or 0.0)
+            for s in slots
+        }
+        entries: list[dict] = []
+        for slot in slots:
+            energy = self.display_price(self._energy_price_for_slot(slot))
+            transfer = self.display_price(self.transfer_price_for_slot(slot) or 0.0)
+            entries.append(
+                {
+                    "time": dt_util.as_local(slot.dt_utc).isoformat(),
+                    "energy": energy,
+                    "transfer": transfer,
+                    "price": round(energy + transfer, self.display_decimals),
+                    "rank": calc.normalized_total_price_rank(
+                        slot,
+                        slots,
+                        lambda s: totals[s.dt_utc],
+                        self._resolution.slots_per_day,
+                    ),
+                }
+            )
+        return entries
+
+    def today_price_array(self) -> list[dict] | None:
+        if not self._expose_price_arrays:
+            return None
+        return self._spot_price_array(self._today_slots)
 
     def tomorrow_price_array(self) -> list[dict] | None:
         if not self._expose_price_arrays or not self._tomorrow_slots:
             return None
-        return [
-            {
-                "time": dt_util.as_local(s.dt_utc).isoformat(),
-                "price": self.format_price(self._spot_effective(s)),
-                "rank": s.rank,
-            }
-            for s in self._tomorrow_slots
-        ]
+        return self._spot_price_array(self._tomorrow_slots)
+
+    def today_total_price_array(self) -> list[dict] | None:
+        if not self._expose_total_price_arrays:
+            return None
+        return self._total_price_array(self._today_slots)
+
+    def tomorrow_total_price_array(self) -> list[dict] | None:
+        if not self._expose_total_price_arrays or not self._tomorrow_slots:
+            return None
+        return self._total_price_array(self._tomorrow_slots)
 
     # ------------------------------------------------------------------
     # Optimization scores

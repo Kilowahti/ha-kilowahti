@@ -18,18 +18,24 @@ from custom_components.kilowahti.const import (
     CONF_BATTERY_CAPACITY_KWH,
     CONF_BATTERY_CHARGE_POWER_KW,
     CONF_CURRENCY_MODE,
+    CONF_DISPLAY_UNIT,
+    CONF_EXPOSE_PRICE_ARRAYS,
+    CONF_EXPOSE_TOTAL_PRICE_ARRAYS,
     CONF_FX_MODE,
     CONF_FX_RATE,
+    CONF_HIGH_PRECISION,
     CONF_MAX_PRICE,
     CONF_MAX_RANK,
     CONF_MONTHLY_FIXED_COST,
     CONF_PRICE_RESOLUTION,
     CONF_REGION,
     CONF_SCORE_PROFILES,
+    CONF_TRANSFER_GROUPS,
     CONF_VAT_RATE,
     DOMAIN,
     PRICE_SOURCE_KILOWAHTI_CDN,
     PRICE_SOURCE_SPOT_HINTA,
+    UNIT_EUROKWH,
 )
 from homeassistant.config_entries import ConfigEntryState
 
@@ -987,3 +993,187 @@ async def test_fx_major_only_currency_forces_major_unit(hass, options, mock_utcn
     assert coord.display_in_major is True
     # format_price converts internal minor scale to major
     assert coord.format_price(100.0) == 1.0
+
+
+# ---------------------------------------------------------------------------
+# Price array attributes
+# ---------------------------------------------------------------------------
+
+_TRANSFER_GROUP = {
+    "id": "g1",
+    "label": "Flat",
+    "active": True,
+    "tiers": [
+        {
+            "label": "All hours",
+            "price": 3.0,
+            "months": list(range(1, 13)),
+            "weekdays": list(range(0, 7)),
+            "hour_start": 0,
+            "hour_end": 24,
+            "priority": 1,
+        }
+    ],
+    "monthly_fixed_cost": 0.0,
+}
+
+
+async def _setup_with(hass, options, extra):
+    """Set up an entry with `extra` merged into `options` and return its coordinator."""
+    await hass.config.async_set_time_zone("UTC")
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options={**options, **extra})
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+    return hass.data[DOMAIN][entry.entry_id]
+
+
+async def test_price_arrays_are_none_when_options_disabled(hass, options, mock_utcnow):
+    """Both array pairs stay unset while their options are off."""
+    coord = await _setup_with(hass, options, {})
+
+    assert coord.today_price_array() is None
+    assert coord.tomorrow_price_array() is None
+    assert coord.today_total_price_array() is None
+    assert coord.tomorrow_total_price_array() is None
+
+
+async def test_options_gate_the_two_array_pairs_independently(hass, options, mock_utcnow):
+    """The total-price option does not switch on the spot arrays, or the reverse."""
+    coord = await _setup_with(hass, options, {CONF_EXPOSE_TOTAL_PRICE_ARRAYS: True})
+    assert coord.today_price_array() is None
+    assert coord.today_total_price_array() is not None
+
+    coord = await _setup_with(hass, options, {CONF_EXPOSE_PRICE_ARRAYS: True})
+    assert coord.today_price_array() is not None
+    assert coord.today_total_price_array() is None
+
+
+async def test_total_price_array_entry_shape(hass, options, mock_utcnow):
+    """Entries carry time, the energy/transfer breakdown, their sum, and a rank."""
+    coord = await _setup_with(
+        hass,
+        options,
+        {CONF_EXPOSE_TOTAL_PRICE_ARRAYS: True, CONF_TRANSFER_GROUPS: [_TRANSFER_GROUP]},
+    )
+
+    arr = coord.today_total_price_array()
+    assert len(arr) == 3
+    assert set(arr[0]) == {"time", "energy", "transfer", "price", "rank"}
+    assert arr[0]["time"] == "2026-03-13T00:00:00+00:00"
+    # Cheapest slot: 0.03 €/kWh = 3.0 c/kWh, +25.5% VAT = 3.765, transfer 3.0
+    assert arr[0]["energy"] == pytest.approx(3.77, abs=0.011)
+    assert arr[0]["transfer"] == 3.0
+
+
+async def test_total_price_equals_sum_of_rounded_components(hass, options, mock_utcnow):
+    """price is derived from the rounded parts, so the breakdown always adds up."""
+    coord = await _setup_with(
+        hass,
+        options,
+        {CONF_EXPOSE_TOTAL_PRICE_ARRAYS: True, CONF_TRANSFER_GROUPS: [_TRANSFER_GROUP]},
+    )
+
+    for entry in coord.today_total_price_array():
+        assert entry["price"] == pytest.approx(entry["energy"] + entry["transfer"])
+
+
+async def test_total_price_array_transfer_is_zero_without_group(hass, options, mock_utcnow):
+    """With no transfer group configured the field reports 0.0, never None."""
+    coord = await _setup_with(hass, options, {CONF_EXPOSE_TOTAL_PRICE_ARRAYS: True})
+
+    for entry in coord.today_total_price_array():
+        assert entry["transfer"] == 0.0
+        assert entry["price"] == entry["energy"]
+
+
+async def test_total_price_array_ranks_by_total_price(hass, options, mock_utcnow):
+    """Ranks are tier-normalized across the day: cheapest 1, dearest slots_per_day."""
+    coord = await _setup_with(
+        hass,
+        options,
+        {CONF_EXPOSE_TOTAL_PRICE_ARRAYS: True, CONF_TRANSFER_GROUPS: [_TRANSFER_GROUP]},
+    )
+
+    ranks = [e["rank"] for e in coord.today_total_price_array()]
+    assert ranks[0] == 1
+    assert ranks[-1] == 24  # HOUR resolution → 24 slots/day
+    assert ranks == sorted(ranks)
+
+
+async def test_tomorrow_total_price_array_ranks_within_its_own_day(hass, options, mock_utcnow):
+    """Tomorrow's entries are ranked among tomorrow's slots, not today's."""
+    coord = await _setup_with(
+        hass,
+        options,
+        {CONF_EXPOSE_TOTAL_PRICE_ARRAYS: True, CONF_TRANSFER_GROUPS: [_TRANSFER_GROUP]},
+    )
+
+    eager_time = datetime(2026, 3, 13, 15, 0, 0, tzinfo=timezone.utc)
+    with patch("homeassistant.util.dt.utcnow", return_value=eager_time):
+        with aioresponses() as m:
+            m.get(TOMORROW_URL_RE, payload=TOMORROW_PAYLOAD)
+            await coord._async_eager_poll()
+
+    arr = coord.tomorrow_total_price_array()
+    assert arr is not None
+    assert min(e["rank"] for e in arr) == 1
+
+
+async def test_tomorrow_arrays_are_none_before_tomorrow_is_fetched(hass, options, mock_utcnow):
+    """Both tomorrow arrays stay unset until tomorrow's prices arrive."""
+    coord = await _setup_with(
+        hass,
+        options,
+        {CONF_EXPOSE_PRICE_ARRAYS: True, CONF_EXPOSE_TOTAL_PRICE_ARRAYS: True},
+    )
+
+    assert coord.tomorrow_price_array() is None
+    assert coord.tomorrow_total_price_array() is None
+
+
+async def test_array_prices_are_rounded_to_display_precision(hass, options, mock_utcnow):
+    """Both array types round to 2 decimals in the minor unit."""
+    coord = await _setup_with(
+        hass,
+        options,
+        {
+            CONF_EXPOSE_PRICE_ARRAYS: True,
+            CONF_EXPOSE_TOTAL_PRICE_ARRAYS: True,
+            CONF_TRANSFER_GROUPS: [_TRANSFER_GROUP],
+        },
+    )
+
+    for entry in coord.today_price_array():
+        assert entry["price"] == round(entry["price"], 2)
+    for entry in coord.today_total_price_array():
+        assert entry["energy"] == round(entry["energy"], 2)
+        assert entry["transfer"] == round(entry["transfer"], 2)
+
+
+async def test_array_prices_follow_high_precision_option(hass, options, mock_utcnow):
+    """High precision widens array rounding to 5 decimals."""
+    coord = await _setup_with(
+        hass,
+        options,
+        {CONF_EXPOSE_PRICE_ARRAYS: True, CONF_HIGH_PRECISION: True},
+    )
+
+    prices = [e["price"] for e in coord.today_price_array()]
+    assert prices[0] == pytest.approx(3.765)
+
+
+async def test_array_prices_gain_two_decimals_in_major_unit(hass, options, mock_utcnow):
+    """€/kWh display shifts the scale, so arrays round to 4 decimals instead of 2."""
+    coord = await _setup_with(
+        hass,
+        options,
+        {CONF_EXPOSE_PRICE_ARRAYS: True, CONF_DISPLAY_UNIT: UNIT_EUROKWH},
+    )
+
+    prices = [e["price"] for e in coord.today_price_array()]
+    assert prices[0] == pytest.approx(0.0377, abs=0.00011)
+    assert prices[0] == round(prices[0], 4)

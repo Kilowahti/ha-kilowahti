@@ -419,3 +419,37 @@ async def test_options_flow_currency_flip_converts_values(hass, options, mock_ut
     group = entry.options["transfer_groups"][0]
     assert group["monthly_fixed_cost"] == 40.0
     assert group["tiers"][0]["price"] == 30.0
+
+
+async def test_options_flow_enables_total_price_arrays(hass, setup_integration, mock_utcnow):
+    """The advanced options step stores the total-price array toggle."""
+    from custom_components.kilowahti.const import CONF_EXPOSE_TOTAL_PRICE_ARRAYS
+
+    entry = setup_integration
+
+    result = await hass.config_entries.options.async_init(entry.entry_id)
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], user_input={"next_step_id": "advanced_options"}
+    )
+    assert result["step_id"] == "advanced_options"
+
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        result = await hass.config_entries.options.async_configure(
+            result["flow_id"],
+            user_input={
+                CONF_EXPOSE_PRICE_ARRAYS: False,
+                CONF_EXPOSE_TOTAL_PRICE_ARRAYS: True,
+                CONF_GENERATION_ENABLED: DEFAULT_GENERATION_ENABLED,
+                CONF_HIGH_PRECISION: DEFAULT_HIGH_PRECISION,
+            },
+        )
+        await hass.async_block_till_done()
+
+    assert result["type"] == FlowResultType.CREATE_ENTRY
+    assert entry.options[CONF_EXPOSE_TOTAL_PRICE_ARRAYS] is True
+
+    coord = hass.data[DOMAIN][entry.entry_id]
+    assert coord.today_total_price_array() is not None
+    assert coord.today_price_array() is None

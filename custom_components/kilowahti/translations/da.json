@@ -118,13 +118,15 @@
         "description": "Konfigurér, hvordan sensorværdier vises i Home Assistant.",
         "data": {
           "expose_price_arrays": "Vis prisarrays som sensorattributter (øger databasens størrelse)",
+          "expose_total_price_arrays": "Vis totalprisarrays som sensorattributter (øger databasens størrelse)",
           "high_precision": "Høj præcision",
           "show_rolling_averages": "Vis gennemsnitspriser for de næste 30 min, 1 t og 2 t",
           "generation_enabled": "Aktivér produktions- og eksportfunktioner"
         },
         "data_description": {
           "expose_price_arrays": "Skriver arrays med today_prices og tomorrow_prices til spot_price-sensorens attributter, som derefter gemmes i databasen. Gør det nemmere at bygge dashboard-grafer, men er ikke nødvendigt for at vise dem og giver unødvendig databasebelastning.",
-          "high_precision": "Når slået til, viser prissensorer flere decimaler. Attributter og beregninger bruger altid fuld præcision.",
+          "expose_total_price_arrays": "Skriver arrays med today_prices og tomorrow_prices til totalpris-sensorens attributter, hvor hver post indeholder opdelingen i energi og nettarif. Belaster databasen lige så meget som spotprisarrays.",
+          "high_precision": "Når slået til, viser prissensorer og prisarray-attributter flere decimaler. Interne beregninger bruger altid fuld præcision.",
           "show_rolling_averages": "Tilføjer sensorer for gennemsnitsprisen over de næste 30, 60 og 120 minutter.",
           "generation_enabled": "Aktiverer sensorer og tjenester for eksportpris, batteri og arbitrage. Konfigurér produktionsindstillinger i menuen Produktion og eksport."
         }
@@ -242,6 +244,7 @@
         "title": "Avancerede indstillinger",
         "data": {
           "expose_price_arrays": "Vis prisarrays som sensorattributter (øger databasens størrelse)",
+          "expose_total_price_arrays": "Vis totalprisarrays som sensorattributter (øger databasens størrelse)",
           "high_precision": "Høj præcision",
           "show_rolling_averages": "Vis gennemsnitspriser for de næste 30 min, 1 t og 2 t",
           "generation_enabled": "Aktivér produktions- og eksportfunktioner"
