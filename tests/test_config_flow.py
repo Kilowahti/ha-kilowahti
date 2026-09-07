@@ -522,7 +522,7 @@ async def test_group_detail_lists_tier_settings(hass, entry_with_tier):
 
     tier_list = result["description_placeholders"]["tier_list"]
     assert "Winter weekday" in tier_list
-    assert "5.2" in tier_list
+    assert "5.20 c/kWh" in tier_list
     assert "07:00" in tier_list
     assert "22:00" in tier_list
 
@@ -751,7 +751,7 @@ async def test_tier_edit_round_trips_major_scale(hass, options, mock_utcnow):
         await hass.async_block_till_done()
 
     result = await _open_group_detail(hass, entry)
-    assert "4.5 Kč/kWh" in result["description_placeholders"]["tier_list"]
+    assert "4.50 Kč/kWh" in result["description_placeholders"]["tier_list"]
 
     result = await hass.config_entries.options.async_configure(
         result["flow_id"], user_input={"action": "edit_tier_0"}
@@ -853,3 +853,20 @@ async def test_editing_a_tier_updates_sensors_without_reload(hass, options, mock
         await hass.async_block_till_done()
 
     assert float(hass.states.get(entity_id).state) == 6.0
+
+
+def test_tier_summary_pads_price_to_two_decimals():
+    """Prices in the tier list are padded so the column reads consistently."""
+    from custom_components.kilowahti.config_flow import _tier_list_markdown, _units_for
+
+    tier = {
+        "label": "Muu aika",
+        "price": 1.9,
+        "months": list(range(1, 13)),
+        "weekdays": list(range(7)),
+        "hour_start": 0,
+        "hour_end": 24,
+        "priority": 10,
+    }
+    summary = _tier_list_markdown([tier], _units_for({CONF_REGION: "FI"}))
+    assert summary == ("- **Muu aika** — 1.90 c/kWh · All year · All days · All day · priority 10")
