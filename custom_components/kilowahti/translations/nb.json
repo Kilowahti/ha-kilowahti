@@ -404,7 +404,7 @@
         "name": "Kontrollfaktor totalpris (bipolar)"
       },
       "control_factor_transfer": {
-        "name": "Overføring av kontrollfaktor"
+        "name": "Kontrollfaktor nettleie"
       },
       "control_factor_transfer_bipolar": {
         "name": "Kontrollfaktor nettleie (bipolar)"
