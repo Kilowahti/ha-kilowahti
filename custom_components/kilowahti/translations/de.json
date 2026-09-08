@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Steuerfaktor Preis (bipolar)"
       },
+      "control_factor_total": {
+        "name": "Steuerfaktor Gesamtpreis"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Steuerfaktor Gesamtpreis (bipolar)"
+      },
       "control_factor_transfer": {
         "name": "Steuerfaktor Netzentgelt"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Steuerfaktor Netzentgelt (bipolar)"
       },
       "effective_price": {
         "name": "Aktiver Preis"

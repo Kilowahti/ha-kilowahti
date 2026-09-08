@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Riadiaci faktor ceny (bipolárny)"
       },
+      "control_factor_total": {
+        "name": "Riadiaci faktor celkovej ceny"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Riadiaci faktor celkovej ceny (bipolárny)"
+      },
       "control_factor_transfer": {
         "name": "Riadiaci faktor distribúcie"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Riadiaci faktor distribúcie (bipolárny)"
       },
       "effective_price": {
         "name": "Aktívna cena"

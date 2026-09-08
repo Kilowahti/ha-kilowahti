@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Faktor upravljanja cijenom (bipolarni)"
       },
+      "control_factor_total": {
+        "name": "Faktor upravljanja ukupnom cijenom"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Faktor upravljanja ukupnom cijenom (bipolarni)"
+      },
       "control_factor_transfer": {
         "name": "Faktor upravljanja mrežarinom"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Faktor upravljanja mrežarinom (bipolarni)"
       },
       "effective_price": {
         "name": "Aktivna cijena"

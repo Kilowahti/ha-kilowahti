@@ -1236,3 +1236,172 @@ async def test_array_prices_gain_two_decimals_in_major_unit(hass, options, mock_
     prices = [e["price"] for e in coord.today_price_array()]
     assert prices[0] == pytest.approx(0.0377, abs=0.00011)
     assert prices[0] == round(prices[0], 4)
+
+
+# ---------------------------------------------------------------------------
+# Control factors
+# ---------------------------------------------------------------------------
+
+_TIERED_TRANSFER_GROUP = {
+    "id": "g2",
+    "label": "Day/night",
+    "active": True,
+    "tiers": [
+        {
+            "label": "Night",
+            "price": 2.0,
+            "months": list(range(1, 13)),
+            "weekdays": list(range(0, 7)),
+            "hour_start": 0,
+            "hour_end": 7,
+            "priority": 1,
+        },
+        {
+            "label": "Day",
+            "price": 5.0,
+            "months": list(range(1, 13)),
+            "weekdays": list(range(0, 7)),
+            "hour_start": 7,
+            "hour_end": 24,
+            "priority": 2,
+        },
+    ],
+    "monthly_fixed_cost": 0.0,
+}
+
+
+def _fixed_period_today():
+    from datetime import date
+
+    from kilowahti.models import FixedPeriod
+
+    return FixedPeriod(
+        id="fp1",
+        label="Fixed",
+        start_date=date(2026, 3, 13),
+        end_date=date(2026, 3, 13),
+        price=5.0,
+    )
+
+
+async def test_current_rank_uses_fixed_period_price(hass, options, mock_utcnow):
+    """The price rank follows the energy price actually paid, not the spot order."""
+    coord = await _setup_with(hass, options, {})
+
+    coord._today_slots = [
+        PriceSlot(
+            dt_utc=datetime(2026, 3, 13, 0, 0, tzinfo=timezone.utc), price_no_tax=10.0, rank=3
+        ),
+        PriceSlot(
+            dt_utc=datetime(2026, 3, 13, 1, 0, tzinfo=timezone.utc), price_no_tax=5.0, rank=2
+        ),
+        PriceSlot(
+            dt_utc=datetime(2026, 3, 13, 2, 0, tzinfo=timezone.utc), price_no_tax=3.0, rank=1
+        ),
+    ]
+
+    # Current slot (00:00) is the most expensive of the three by spot price
+    assert coord.current_rank() == 24
+
+    coord._storage._periods = [_fixed_period_today()]
+
+    # A fixed period flattens the day: every slot ties at the cheapest tier
+    assert coord.current_rank() == 1
+
+
+async def test_control_factor_is_one_during_a_fixed_period(hass, options, mock_utcnow):
+    """A flat energy price gives no reason to prefer any hour."""
+    coord = await _setup_with(hass, options, {})
+    coord._storage._periods = [_fixed_period_today()]
+
+    assert coord.control_factor() == 1.0
+    assert coord.control_factor_bipolar() == 1.0
+
+
+async def test_control_factor_total_includes_transfer(hass, options, mock_utcnow):
+    """The total control factor ranks by energy plus transfer, fixed periods included."""
+    coord = await _setup_with(hass, options, {CONF_TRANSFER_GROUPS: [_TIERED_TRANSFER_GROUP]})
+    coord._storage._periods = [_fixed_period_today()]
+
+    # Energy is flat, so only the transfer tier separates the slots. The current
+    # slot (00:00) falls in the cheap night tier.
+    assert coord.control_factor_total() == 1.0
+    assert coord.control_factor_total_bipolar() == 1.0
+
+    # Without the fixed period the current slot is the cheapest by spot too
+    coord._storage._periods = []
+    assert coord.control_factor_total() == 1.0
+
+
+async def test_control_factor_transfer_is_one_for_the_cheapest_tier(hass, options, mock_utcnow):
+    """Transfer control factor uses the same polarity as the price one: 1.0 = cheapest."""
+    coord = await _setup_with(hass, options, {CONF_TRANSFER_GROUPS: [_TIERED_TRANSFER_GROUP]})
+
+    # Frozen time is 00:30 → night tier, the cheaper of the two
+    assert coord.control_factor_transfer() == 1.0
+    assert coord.control_factor_transfer_bipolar() == 1.0
+
+
+async def test_control_factor_transfer_is_zero_for_the_dearest_tier(hass, options, mock_utcnow):
+    """The expensive tier sits at the other end of the range."""
+    coord = await _setup_with(hass, options, {CONF_TRANSFER_GROUPS: [_TIERED_TRANSFER_GROUP]})
+
+    day_time = datetime(2026, 3, 13, 12, 0, 0, tzinfo=timezone.utc)
+    with patch("homeassistant.util.dt.utcnow", return_value=day_time):
+        assert coord.control_factor_transfer() == 0.0
+        assert coord.control_factor_transfer_bipolar() == -1.0
+
+
+async def test_control_factor_transfer_is_one_for_a_flat_group(hass, options, mock_utcnow):
+    """A single tier means no hour is dearer than another."""
+    coord = await _setup_with(hass, options, {CONF_TRANSFER_GROUPS: [_TRANSFER_GROUP]})
+
+    assert coord.control_factor_transfer() == 1.0
+
+
+async def test_control_factor_transfer_is_none_without_a_group(hass, options, mock_utcnow):
+    """No transfer group configured means no transfer control factor."""
+    coord = await _setup_with(hass, options, {})
+
+    assert coord.control_factor_transfer() is None
+    assert coord.control_factor_transfer_bipolar() is None
+
+
+async def test_control_factor_transfer_follows_the_curve_settings(hass, options, mock_utcnow):
+    """Scaling and curve function apply to the transfer factor as they do to price."""
+    from custom_components.kilowahti.const import (
+        CONF_CONTROL_FACTOR_FUNCTION,
+        CONF_CONTROL_FACTOR_SCALING,
+        CONTROL_FACTOR_SINUSOIDAL,
+    )
+
+    three_tier_group = {
+        **_TIERED_TRANSFER_GROUP,
+        "tiers": [
+            {**_TIERED_TRANSFER_GROUP["tiers"][0], "hour_start": 0, "hour_end": 7},
+            {**_TIERED_TRANSFER_GROUP["tiers"][1], "hour_start": 7, "hour_end": 12},
+            {
+                "label": "Peak",
+                "price": 9.0,
+                "months": list(range(1, 13)),
+                "weekdays": list(range(0, 7)),
+                "hour_start": 12,
+                "hour_end": 24,
+                "priority": 3,
+            },
+        ],
+    }
+    coord = await _setup_with(
+        hass,
+        options,
+        {
+            CONF_TRANSFER_GROUPS: [three_tier_group],
+            CONF_CONTROL_FACTOR_FUNCTION: CONTROL_FACTOR_SINUSOIDAL,
+            CONF_CONTROL_FACTOR_SCALING: 2.0,
+        },
+    )
+
+    mid_tier_time = datetime(2026, 3, 13, 9, 0, 0, tzinfo=timezone.utc)
+    with patch("homeassistant.util.dt.utcnow", return_value=mid_tier_time):
+        # Middle of three tiers: sinusoidal gives 0.5, squared by the scaling
+        assert coord.control_factor_transfer() == pytest.approx(0.25)

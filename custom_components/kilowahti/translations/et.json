@@ -397,8 +397,17 @@
       "control_factor_price_bipolar": {
         "name": "Hinna juhtimistegur (bipolaarne)"
       },
+      "control_factor_total": {
+        "name": "Koguhinna juhtimistegur"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Koguhinna juhtimistegur (bipolaarne)"
+      },
       "control_factor_transfer": {
         "name": "Võrgutasu juhtimistegur"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Võrgutasu juhtimistegur (bipolaarne)"
       },
       "effective_price": {
         "name": "Aktiivne hind"

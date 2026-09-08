@@ -453,8 +453,17 @@
       "control_factor_price_bipolar": {
         "name": "Hinnan ohjauskerroin (bipolaarinen)"
       },
+      "control_factor_total": {
+        "name": "Kokonaishinnan ohjauskerroin"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Kokonaishinnan ohjauskerroin (bipolaarinen)"
+      },
       "control_factor_transfer": {
         "name": "Siirron ohjauskerroin"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Siirron ohjauskerroin (bipolaarinen)"
       },
       "price_quartile": {
         "name": "Hintakvartiili"

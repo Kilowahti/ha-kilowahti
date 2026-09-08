@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Krmilni faktor cene (bipolarni)"
       },
+      "control_factor_total": {
+        "name": "Krmilni faktor skupne cene"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Krmilni faktor skupne cene (bipolarni)"
+      },
       "control_factor_transfer": {
         "name": "Krmilni faktor omrežnine"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Krmilni faktor omrežnine (bipolarni)"
       },
       "effective_price": {
         "name": "Aktivna cena"

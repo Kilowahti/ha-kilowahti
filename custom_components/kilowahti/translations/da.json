@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Styringsfaktor for pris (bipolar)"
       },
+      "control_factor_total": {
+        "name": "Styringsfaktor for totalpris"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Styringsfaktor for totalpris (bipolar)"
+      },
       "control_factor_transfer": {
         "name": "Styringsfaktor for nettarif"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Styringsfaktor for nettarif (bipolar)"
       },
       "effective_price": {
         "name": "Aktiv pris"

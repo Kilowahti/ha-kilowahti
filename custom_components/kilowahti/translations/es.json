@@ -453,8 +453,17 @@
       "control_factor_price_bipolar": {
         "name": "Factor de control de precio (bipolar)"
       },
+      "control_factor_total": {
+        "name": "Factor de control de precio total"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Factor de control de precio total (bipolar)"
+      },
       "control_factor_transfer": {
         "name": "Factor de control de peaje"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Factor de control de peaje (bipolar)"
       },
       "price_quartile": {
         "name": "Cuartil de precio"

@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Cenas vadības faktors (bipolārs)"
       },
+      "control_factor_total": {
+        "name": "Kopējās cenas vadības faktors"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Kopējās cenas vadības faktors (bipolārs)"
+      },
       "control_factor_transfer": {
         "name": "Sadales tarifa vadības faktors"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Sadales tarifa vadības faktors (bipolārs)"
       },
       "effective_price": {
         "name": "Aktīvā cena"

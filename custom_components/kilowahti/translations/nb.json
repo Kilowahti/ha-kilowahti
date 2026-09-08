@@ -397,8 +397,17 @@
       "control_factor_price_bipolar": {
         "name": "Kontrollfaktorpris (bipolar)"
       },
+      "control_factor_total": {
+        "name": "Kontrollfaktor totalpris"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Kontrollfaktor totalpris (bipolar)"
+      },
       "control_factor_transfer": {
         "name": "Overføring av kontrollfaktor"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Kontrollfaktor nettleie (bipolar)"
       },
       "effective_price": {
         "name": "Aktiv pris"

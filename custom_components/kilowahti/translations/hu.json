@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Ár vezérlési tényezője (bipoláris)"
       },
+      "control_factor_total": {
+        "name": "Teljes ár vezérlési tényezője"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Teljes ár vezérlési tényezője (bipoláris)"
+      },
       "control_factor_transfer": {
         "name": "Hálózati díj vezérlési tényezője"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Hálózati díj vezérlési tényezője (bipoláris)"
       },
       "effective_price": {
         "name": "Aktív ár"
