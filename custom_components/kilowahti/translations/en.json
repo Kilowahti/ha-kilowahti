@@ -585,7 +585,7 @@
         "name": "Fixed price period active"
       },
       "tomorrow_available": {
-        "name": "Tomorrow's prices available"
+        "name": "Tomorrow available"
       },
       "export_price_acceptable": {
         "name": "Export price acceptable"
