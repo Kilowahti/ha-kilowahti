@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Factor de control al prețului (bipolar)"
       },
+      "control_factor_total": {
+        "name": "Factor de control al prețului total"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Factor de control al prețului total (bipolar)"
+      },
       "control_factor_transfer": {
         "name": "Factor de control al distribuției"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Factor de control al distribuției (bipolar)"
       },
       "effective_price": {
         "name": "Preț activ"

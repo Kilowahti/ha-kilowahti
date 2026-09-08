@@ -737,8 +737,21 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return candidate
 
     def current_rank(self) -> int | None:
-        slot = self.current_slot()
-        return slot.rank if slot else None
+        """Rank of the current slot by the energy price actually paid.
+
+        Uses the fixed-period price when one is active, otherwise spot; transfer
+        is excluded. Normalized: cheapest tier(s) = 1, dearest = slots_per_day,
+        so a fixed-price day ranks every slot 1.
+        """
+        current = self.current_slot()
+        if current is None:
+            return None
+        return calc.normalized_total_price_rank(
+            current,
+            self._today_slots,
+            self._energy_price_for_slot,
+            self._resolution.slots_per_day,
+        )
 
     def total_price_rank_now(self) -> int | None:
         """Rank of the current slot by total price among today's slots.
@@ -1411,19 +1424,51 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     # Control factor
     # ------------------------------------------------------------------
 
+    def _control_factor_for_rank(self, rank: int, out_of: int) -> float:
+        """Apply the configured curve and scaling to a rank. 1.0 = cheapest."""
+        if out_of <= 1:
+            # A single tier is the cheapest one there is
+            return calc.control_factor(1, 2, self._control_factor_function, 1.0)
+        return calc.control_factor(
+            rank, out_of, self._control_factor_function, self._control_factor_scaling
+        )
+
     def control_factor(self) -> float | None:
+        """Control factor from the energy price rank, fixed periods included."""
         rank = self.current_rank()
         if rank is None:
             return None
-        return calc.control_factor(
-            rank,
-            self._resolution.slots_per_day,
-            self._control_factor_function,
-            self._control_factor_scaling,
-        )
+        return self._control_factor_for_rank(rank, self._resolution.slots_per_day)
 
     def control_factor_bipolar(self) -> float | None:
         cf = self.control_factor()
+        if cf is None:
+            return None
+        return calc.control_factor_bipolar(cf)
+
+    def control_factor_total(self) -> float | None:
+        """Control factor from the total price rank: energy plus transfer."""
+        rank = self.total_price_rank_now()
+        if rank is None:
+            return None
+        return self._control_factor_for_rank(rank, self._resolution.slots_per_day)
+
+    def control_factor_total_bipolar(self) -> float | None:
+        cf = self.control_factor_total()
+        if cf is None:
+            return None
+        return calc.control_factor_bipolar(cf)
+
+    def control_factor_transfer(self) -> float | None:
+        """Control factor from the transfer tier rank among today's distinct tiers."""
+        info = self.transfer_rank_info()
+        if info is None:
+            return None
+        rank, tier_count = info
+        return self._control_factor_for_rank(rank, tier_count)
+
+    def control_factor_transfer_bipolar(self) -> float | None:
+        cf = self.control_factor_transfer()
         if cf is None:
             return None
         return calc.control_factor_bipolar(cf)

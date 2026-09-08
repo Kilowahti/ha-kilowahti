@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Συντελεστής ελέγχου τιμής (διπολικός)"
       },
+      "control_factor_total": {
+        "name": "Συντελεστής ελέγχου συνολικής τιμής"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Συντελεστής ελέγχου συνολικής τιμής (διπολικός)"
+      },
       "control_factor_transfer": {
         "name": "Συντελεστής ελέγχου δικτύου"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Συντελεστής ελέγχου δικτύου (διπολικός)"
       },
       "effective_price": {
         "name": "Ενεργή τιμή"

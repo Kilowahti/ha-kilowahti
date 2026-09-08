@@ -371,3 +371,114 @@ async def test_transfer_price_sensor_label_without_group(hass, setup_integration
     assert state.attributes["tariff"] is None
     assert state.attributes["group"] is None
     assert state.attributes["tier"] is None
+
+
+async def test_control_factor_sensors_cover_price_total_and_transfer(hass, options, mock_utcnow):
+    """All three control factors exist in unipolar and bipolar form."""
+    from custom_components.kilowahti.const import (
+        CONF_TRANSFER_GROUPS,
+        SENSOR_CONTROL_FACTOR_PRICE,
+        SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR,
+        SENSOR_CONTROL_FACTOR_TOTAL,
+        SENSOR_CONTROL_FACTOR_TOTAL_BIPOLAR,
+        SENSOR_CONTROL_FACTOR_TRANSFER_BIPOLAR,
+    )
+
+    from .conftest import TODAY_PAYLOAD, TODAY_URL_RE, TOMORROW_URL_RE
+
+    group = {
+        "id": "g1",
+        "label": "Day/night",
+        "active": True,
+        "tiers": [
+            {
+                "label": "Night",
+                "price": 2.0,
+                "months": list(range(1, 13)),
+                "weekdays": list(range(0, 7)),
+                "hour_start": 0,
+                "hour_end": 7,
+                "priority": 1,
+            },
+            {
+                "label": "Day",
+                "price": 5.0,
+                "months": list(range(1, 13)),
+                "weekdays": list(range(0, 7)),
+                "hour_start": 7,
+                "hour_end": 24,
+                "priority": 2,
+            },
+        ],
+        "monthly_fixed_cost": 0.0,
+    }
+
+    await hass.config.async_set_time_zone("UTC")
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        title="Test Home",
+        options={**options, CONF_TRANSFER_GROUPS: [group]},
+    )
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    # Frozen time is 00:30 — cheapest spot slot and the cheaper transfer tier
+    for key in (
+        SENSOR_CONTROL_FACTOR_PRICE,
+        SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR,
+        SENSOR_CONTROL_FACTOR_TOTAL,
+        SENSOR_CONTROL_FACTOR_TOTAL_BIPOLAR,
+        SENSOR_CONTROL_FACTOR_TRANSFER,
+        SENSOR_CONTROL_FACTOR_TRANSFER_BIPOLAR,
+    ):
+        entity_id = _entity_id(hass, "sensor", entry.entry_id, key)
+        assert entity_id is not None, f"missing entity for {key}"
+        state = hass.states.get(entity_id)
+        assert float(state.state) == 1.0, f"{key} should read 1.0, got {state.state!r}"
+
+
+async def test_control_factor_transfer_keeps_the_tier_count_attribute(hass, options, mock_utcnow):
+    """The transfer factor still reports how many distinct tiers occur today."""
+    from custom_components.kilowahti.const import CONF_TRANSFER_GROUPS
+
+    from .conftest import TODAY_PAYLOAD, TODAY_URL_RE, TOMORROW_URL_RE
+
+    group = {
+        "id": "g1",
+        "label": "Flat",
+        "active": True,
+        "tiers": [
+            {
+                "label": "All hours",
+                "price": 3.0,
+                "months": list(range(1, 13)),
+                "weekdays": list(range(0, 7)),
+                "hour_start": 0,
+                "hour_end": 24,
+                "priority": 1,
+            }
+        ],
+        "monthly_fixed_cost": 0.0,
+    }
+
+    await hass.config.async_set_time_zone("UTC")
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        title="Test Home",
+        options={**options, CONF_TRANSFER_GROUPS: [group]},
+    )
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        entry.add_to_hass(hass)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+
+    entity_id = _entity_id(hass, "sensor", entry.entry_id, SENSOR_CONTROL_FACTOR_TRANSFER)
+    state = hass.states.get(entity_id)
+    assert state.attributes["tier_count"] == 1
+    assert float(state.state) == 1.0

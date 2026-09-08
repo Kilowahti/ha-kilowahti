@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Kainos valdymo koeficientas (bipolinis)"
       },
+      "control_factor_total": {
+        "name": "Bendros kainos valdymo koeficientas"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Bendros kainos valdymo koeficientas (bipolinis)"
+      },
       "control_factor_transfer": {
         "name": "Persiuntimo valdymo koeficientas"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Persiuntimo valdymo koeficientas (bipolinis)"
       },
       "effective_price": {
         "name": "Aktyvi kaina"

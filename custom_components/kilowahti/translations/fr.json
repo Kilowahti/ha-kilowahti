@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Facteur de pilotage prix (bipolaire)"
       },
+      "control_factor_total": {
+        "name": "Facteur de pilotage prix total"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Facteur de pilotage prix total (bipolaire)"
+      },
       "control_factor_transfer": {
         "name": "Facteur de pilotage acheminement"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Facteur de pilotage acheminement (bipolaire)"
       },
       "effective_price": {
         "name": "Prix actif"

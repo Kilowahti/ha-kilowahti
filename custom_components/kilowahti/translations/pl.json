@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Współczynnik sterowania ceny (bipolarny)"
       },
+      "control_factor_total": {
+        "name": "Współczynnik sterowania ceny całkowitej"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Współczynnik sterowania ceny całkowitej (bipolarny)"
+      },
       "control_factor_transfer": {
         "name": "Współczynnik sterowania dystrybucji"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Współczynnik sterowania dystrybucji (bipolarny)"
       },
       "effective_price": {
         "name": "Cena aktywna"

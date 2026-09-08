@@ -397,8 +397,17 @@
       "control_factor_price_bipolar": {
         "name": "Prisstyrfaktor (bipolär)"
       },
+      "control_factor_total": {
+        "name": "Totalprisstyrfaktor"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Totalprisstyrfaktor (bipolär)"
+      },
       "control_factor_transfer": {
         "name": "Överföringsstyrfaktor"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Överföringsstyrfaktor (bipolär)"
       },
       "effective_price": {
         "name": "Aktivt pris"

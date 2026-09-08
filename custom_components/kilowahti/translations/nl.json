@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Stuurfactor prijs (bipolair)"
       },
+      "control_factor_total": {
+        "name": "Stuurfactor totaalprijs"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Stuurfactor totaalprijs (bipolair)"
+      },
       "control_factor_transfer": {
         "name": "Stuurfactor nettarief"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Stuurfactor nettarief (bipolair)"
       },
       "effective_price": {
         "name": "Actieve prijs"

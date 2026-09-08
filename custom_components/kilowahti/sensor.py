@@ -28,7 +28,10 @@ from .const import (
     SENSOR_CHARGE_OPPORTUNITY_FACTOR,
     SENSOR_CONTROL_FACTOR_PRICE,
     SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR,
+    SENSOR_CONTROL_FACTOR_TOTAL,
+    SENSOR_CONTROL_FACTOR_TOTAL_BIPOLAR,
     SENSOR_CONTROL_FACTOR_TRANSFER,
+    SENSOR_CONTROL_FACTOR_TRANSFER_BIPOLAR,
     SENSOR_CURRENT_30MIN_AVG,
     SENSOR_CURRENT_60MIN_AVG,
     SENSOR_CURRENT_120MIN_AVG,
@@ -133,7 +136,14 @@ _PRICE_SENSOR_KEYS = frozenset(
     }
 )
 _CONTROL_FACTOR_SENSOR_KEYS = frozenset(
-    {SENSOR_CONTROL_FACTOR_PRICE, SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR}
+    {
+        SENSOR_CONTROL_FACTOR_PRICE,
+        SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR,
+        SENSOR_CONTROL_FACTOR_TOTAL,
+        SENSOR_CONTROL_FACTOR_TOTAL_BIPOLAR,
+        SENSOR_CONTROL_FACTOR_TRANSFER,
+        SENSOR_CONTROL_FACTOR_TRANSFER_BIPOLAR,
+    }
 )
 _ROLLING_AVG_SENSOR_KEYS = frozenset(
     {SENSOR_CURRENT_30MIN_AVG, SENSOR_CURRENT_60MIN_AVG, SENSOR_CURRENT_120MIN_AVG}
@@ -243,10 +253,31 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         native_unit_of_measurement=None,
     ),
     KilowahtiSensorEntityDescription(
+        key=SENSOR_CONTROL_FACTOR_TOTAL,
+        translation_key=SENSOR_CONTROL_FACTOR_TOTAL,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda c: round(c.control_factor_total() or 0.0, 3),
+        native_unit_of_measurement=None,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_CONTROL_FACTOR_TOTAL_BIPOLAR,
+        translation_key=SENSOR_CONTROL_FACTOR_TOTAL_BIPOLAR,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda c: round(c.control_factor_total_bipolar() or 0.0, 3),
+        native_unit_of_measurement=None,
+    ),
+    KilowahtiSensorEntityDescription(
         key=SENSOR_CONTROL_FACTOR_TRANSFER,
         translation_key=SENSOR_CONTROL_FACTOR_TRANSFER,
         state_class=SensorStateClass.MEASUREMENT,
-        value_fn=None,  # handled by KilowahtiTransferRankSensor
+        value_fn=lambda c: c.control_factor_transfer(),
+        native_unit_of_measurement=None,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_CONTROL_FACTOR_TRANSFER_BIPOLAR,
+        translation_key=SENSOR_CONTROL_FACTOR_TRANSFER_BIPOLAR,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda c: c.control_factor_transfer_bipolar(),
         native_unit_of_measurement=None,
     ),
     KilowahtiSensorEntityDescription(
@@ -411,7 +442,7 @@ async def async_setup_entry(
             entities.append(KilowahtiTransferPriceSensor(coordinator, entry, description))
         elif key == SENSOR_PRICE_DATA_SOURCE:
             entities.append(KilowahtiPriceDataSourceSensor(coordinator, entry, description))
-        elif key == SENSOR_CONTROL_FACTOR_TRANSFER:
+        elif key in (SENSOR_CONTROL_FACTOR_TRANSFER, SENSOR_CONTROL_FACTOR_TRANSFER_BIPOLAR):
             entities.append(KilowahtiTransferRankSensor(coordinator, entry, description))
         elif key in (SENSOR_OPTIMAL_CHARGE_WINDOW_START, SENSOR_OPTIMAL_CHARGE_WINDOW_END):
             entities.append(KilowahtiOptimalChargeWindowSensor(coordinator, entry, description))
@@ -634,18 +665,11 @@ class KilowahtiEffectivePriceSensor(KilowahtiSensor):
 # ---------------------------------------------------------------------------
 
 
-class KilowahtiTransferRankSensor(KilowahtiSensorBase):
-    @property
-    def suggested_display_precision(self) -> int:
-        return 2
-
+class KilowahtiTransferRankSensor(KilowahtiSensor):
     @property
     def native_value(self) -> float | None:
-        info = self.coordinator.transfer_rank_info()
-        if info is None:
-            return None
-        rank, total = info
-        return 0.0 if total <= 1 else (rank - 1) / (total - 1)
+        value = super().native_value
+        return None if value is None else round(value, 3)
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:

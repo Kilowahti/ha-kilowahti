@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Fator de controlo do preço (bipolar)"
       },
+      "control_factor_total": {
+        "name": "Fator de controlo do preço total"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Fator de controlo do preço total (bipolar)"
+      },
       "control_factor_transfer": {
         "name": "Fator de controlo da rede"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Fator de controlo da rede (bipolar)"
       },
       "effective_price": {
         "name": "Preço ativo"

@@ -395,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Фактор на управување со цена (биполарен)"
       },
+      "control_factor_total": {
+        "name": "Фактор на управување со вкупна цена"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Фактор на управување со вкупна цена (биполарен)"
+      },
       "control_factor_transfer": {
         "name": "Фактор на управување со мрежарина"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Фактор на управување со мрежарина (биполарен)"
       },
       "effective_price": {
         "name": "Активна цена"
