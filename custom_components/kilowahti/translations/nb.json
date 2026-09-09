@@ -125,8 +125,7 @@
       },
       "score_profiles": {
         "title": "Optimaliseringspoeng",
-        "description": "Poeng måler hvor godt forbruket ditt flyttes til billige timer. Den permanente «Total» -profilen dekker alt forbruk - koble en måler (eller meter) til den i Alternativer etter oppsett.",
-        "data": {}
+        "description": "Poeng måler hvor godt forbruket ditt flyttes til billige timer. Den permanente «Total» -profilen dekker alt forbruk - koble en måler (eller meter) til den i Alternativer etter oppsett."
       },
       "advanced_options": {
         "title": "Avanserte alternativer",
@@ -267,8 +266,7 @@
         }
       },
       "score_profiles": {
-        "title": "Poengprofiler",
-        "data": {}
+        "title": "Poengprofiler"
       },
       "advanced_options": {
         "title": "Avanserte alternativer",
