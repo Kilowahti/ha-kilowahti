@@ -92,6 +92,8 @@ from .models import ScoreProfile
 
 _LOGGER = logging.getLogger(__name__)
 
+PARALLEL_UPDATES = 0
+
 _PRICE_SENSOR_KEYS = frozenset(
     {
         SENSOR_SPOT_PRICE,

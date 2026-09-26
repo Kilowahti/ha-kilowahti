@@ -645,6 +645,8 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(self, user_input: dict | None = None):
         if user_input is not None:
+            await self.async_set_unique_id(user_input["name"].strip().lower())
+            self._abort_if_unique_id_configured()
             self._data["name"] = user_input["name"]
             self._data[CONF_REGION] = user_input[CONF_REGION]
             self._data[CONF_PRICE_RESOLUTION] = int(user_input[CONF_PRICE_RESOLUTION])

@@ -114,6 +114,24 @@ async def _complete_config_flow(hass) -> dict:
     return result
 
 
+async def test_config_flow_rejects_duplicate_name(hass):
+    """A second entry with the same name (case-insensitive) is rejected."""
+    MockConfigEntry(domain=DOMAIN, unique_id="test home", options={}).add_to_hass(hass)
+
+    result = await hass.config_entries.flow.async_init(DOMAIN, context={"source": "user"})
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"],
+        user_input={
+            "name": "Test Home",
+            CONF_REGION: "FI",
+            CONF_PRICE_RESOLUTION: "60",
+            CONF_DISPLAY_UNIT: UNIT_SNTPERKWH,
+        },
+    )
+    assert result["type"] == FlowResultType.ABORT
+    assert result["reason"] == "already_configured"
+
+
 async def test_config_flow_creates_entry_with_correct_options(hass, mock_utcnow):
     """Completing the config flow creates an entry with expected options."""
     await hass.config.async_set_time_zone("UTC")

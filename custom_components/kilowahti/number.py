@@ -13,6 +13,8 @@ from .const import DOMAIN, NUMBER_PRICE_THRESHOLD, NUMBER_RANK_THRESHOLD
 from .coordinator import KilowahtiCoordinator
 from .sensor import _device_info
 
+PARALLEL_UPDATES = 0
+
 
 async def async_setup_entry(
     hass: HomeAssistant,

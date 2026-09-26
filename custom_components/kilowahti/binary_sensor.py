@@ -28,6 +28,8 @@ from .sensor import _device_info
 
 _LOGGER = logging.getLogger(__name__)
 
+PARALLEL_UPDATES = 0
+
 
 # ---------------------------------------------------------------------------
 # Platform setup
