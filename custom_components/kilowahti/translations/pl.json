@@ -33,9 +33,9 @@
         "description": "Wstępnie wypełnione na podstawie regionu. W razie potrzeby dostosuj. Wszystkie ceny (stawki dystrybucyjne, okresy stałej ceny) podaje się z VAT.",
         "data": {
           "vat_rate_pct": "Stawka VAT (%)",
-          "electricity_tax": "Akcyza (c/kWh)",
-          "spot_commission": "Marża do ceny giełdowej (c/kWh)",
-          "monthly_fixed_cost": "Koszt stały umowy na energię (€/mies.)"
+          "electricity_tax": "Akcyza",
+          "spot_commission": "Marża do ceny giełdowej",
+          "monthly_fixed_cost": "Koszt stały umowy na energię"
         },
         "data_description": {
           "electricity_tax": "Stała akcyza za kWh doliczana do ceny giełdowej/stałej.",
@@ -54,7 +54,7 @@
         "title": "Dodaj grupę",
         "data": {
           "label": "Nazwa grupy",
-          "monthly_fixed_cost": "Miesięczny koszt stały (€/mies.)"
+          "monthly_fixed_cost": "Miesięczny koszt stały"
         },
         "data_description": {
           "monthly_fixed_cost": "Przyłącze sieciowe + opłata stała umowy. Kwota brutto (z VAT)."
@@ -64,7 +64,7 @@
         "title": "Edytuj ustawienia grupy",
         "data": {
           "label": "Nazwa grupy",
-          "monthly_fixed_cost": "Miesięczny koszt stały (€/mies.)"
+          "monthly_fixed_cost": "Miesięczny koszt stały"
         },
         "data_description": {
           "monthly_fixed_cost": "Przyłącze sieciowe + opłata stała umowy. Kwota brutto (z VAT)."
@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Edytuj grupę",
-        "description": "{group_label} — Dodaj lub usuń stawki albo ustaw tę grupę jako aktywną.",
+        "description": "{group_label}\n\n{tier_list}\n\nWybierz stawkę, aby zobaczyć i zmienić jej ustawienia, dodaj nową albo ustaw tę grupę jako aktywną.",
         "data": {
           "action": "Akcja"
         }
@@ -82,7 +82,7 @@
         "description": "Oceniane w kolejności priorytetów; wygrywa pierwsze dopasowanie. Dodaj stawkę podstawową z najniższym priorytetem, bez ograniczeń czasowych.",
         "data": {
           "label": "Nazwa stawki",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktywne miesiące",
           "weekdays": "Aktywne dni tygodnia",
           "hour_start": "Czas rozpoczęcia (włącznie)",
@@ -90,10 +90,24 @@
           "priority": "Priorytet (niższy = pierwszy)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Edytuj stawkę dystrybucyjną",
+        "description": "Zmień dowolne pola albo zaznacz usunięcie, aby skasować tę stawkę.",
+        "data": {
+          "label": "Nazwa stawki",
+          "price": "Cena",
+          "months": "Aktywne miesiące",
+          "weekdays": "Aktywne dni tygodnia",
+          "hour_start": "Czas rozpoczęcia (włącznie)",
+          "hour_end": "Czas zakończenia (wyłącznie)",
+          "priority": "Priorytet (niższy = pierwszy)",
+          "delete": "Usuń tę stawkę"
+        }
+      },
       "thresholds": {
         "title": "Progi i sterowanie",
         "data": {
-          "max_price": "Maksymalna cena sterowania (c/kWh)",
+          "max_price": "Maksymalna cena sterowania",
           "price_threshold_includes_transfer": "Cena maksymalna obejmuje dystrybucję",
           "max_rank": "Maksymalna ranga sterowania",
           "forward_avg_hours": "Długość okna średniej przyszłej (godziny)",
@@ -111,21 +125,22 @@
       },
       "score_profiles": {
         "title": "Punkty optymalizacji",
-        "description": "Punkty mierzą, jak dobrze zużycie jest przesuwane na tanie godziny. Stały profil 'Total' obejmuje całe zużycie — po konfiguracji powiąż z nim licznik (lub liczniki) w opcjach.",
-        "data": {}
+        "description": "Punkty mierzą, jak dobrze zużycie jest przesuwane na tanie godziny. Stały profil 'Total' obejmuje całe zużycie — po konfiguracji powiąż z nim licznik (lub liczniki) w opcjach."
       },
       "advanced_options": {
         "title": "Opcje zaawansowane",
         "description": "Skonfiguruj sposób wyświetlania wartości sensorów w Home Assistant.",
         "data": {
-          "expose_price_arrays": "Udostępniaj tablice cen jako atrybuty sensora (zwiększa rozmiar bazy danych)",
+          "expose_price_arrays": "Udostępniaj tablice ceny giełdowej jako atrybuty sensora",
+          "expose_total_price_arrays": "Udostępniaj tablice ceny całkowitej jako atrybuty sensora",
           "high_precision": "Tryb wysokiej precyzji",
           "show_rolling_averages": "Pokaż średnie ceny na najbliższe 30 min, 1 h i 2 h",
           "generation_enabled": "Włącz funkcje produkcji i sprzedaży"
         },
         "data_description": {
-          "expose_price_arrays": "Zapisuje tablice today_prices i tomorrow_prices w atrybutach sensora spot_price, które trafiają następnie do bazy danych. Ułatwia budowanie wykresów na dashboardzie, ale nie jest do ich wyświetlania wymagane i niepotrzebnie obciąża bazę.",
-          "high_precision": "Po włączeniu sensory cen pokazują więcej miejsc po przecinku. Atrybuty i obliczenia zawsze używają pełnej precyzji.",
+          "expose_price_arrays": "Zapisuje tablice today_prices i tomorrow_prices w atrybutach sensora spot_price. Ułatwia budowanie wykresów na dashboardzie, ale nie jest do ich wyświetlania wymagane. Tablice nie trafiają do bazy danych; zwiększają jedynie rozmiar bieżącego stanu sensora.",
+          "expose_total_price_arrays": "Zapisuje tablice today_prices i tomorrow_prices w atrybutach sensora ceny całkowitej; każdy wpis zawiera podział na energię i dystrybucję. Podobnie jak tablice ceny giełdowej nie trafiają do bazy danych.",
+          "high_precision": "Po włączeniu sensory cen i atrybuty tablic cen pokazują więcej miejsc po przecinku. Obliczenia wewnętrzne zawsze używają pełnej precyzji.",
           "show_rolling_averages": "Dodaje sensory średniej ceny na najbliższe 30, 60 i 120 minut.",
           "generation_enabled": "Włącza sensory i usługi ceny sprzedaży, akumulatora i arbitrażu. Ustawienia produkcji skonfigurujesz w menu Produkcja i sprzedaż."
         }
@@ -169,9 +184,9 @@
           "price_resolution": "Rozdzielczość cen",
           "display_unit": "Jednostka wyświetlania",
           "vat_rate_pct": "Stawka VAT (%)",
-          "electricity_tax": "Akcyza (c/kWh)",
-          "spot_commission": "Marża do ceny giełdowej (c/kWh)",
-          "monthly_fixed_cost": "Koszt stały umowy na energię (€/mies.)",
+          "electricity_tax": "Akcyza",
+          "spot_commission": "Marża do ceny giełdowej",
+          "monthly_fixed_cost": "Koszt stały umowy na energię",
           "currency_mode": "Waluta wyświetlania",
           "fx_mode": "Źródło kursu wymiany",
           "fx_rate": "Ręczny kurs wymiany (waluta lokalna za EUR)"
@@ -190,7 +205,7 @@
         "title": "Dodaj grupę",
         "data": {
           "label": "Nazwa grupy",
-          "monthly_fixed_cost": "Miesięczny koszt stały (€/mies.)"
+          "monthly_fixed_cost": "Miesięczny koszt stały"
         },
         "data_description": {
           "monthly_fixed_cost": "Przyłącze sieciowe + opłata stała umowy. Kwota brutto (z VAT)."
@@ -200,7 +215,7 @@
         "title": "Edytuj ustawienia grupy",
         "data": {
           "label": "Nazwa grupy",
-          "monthly_fixed_cost": "Miesięczny koszt stały (€/mies.)"
+          "monthly_fixed_cost": "Miesięczny koszt stały"
         },
         "data_description": {
           "monthly_fixed_cost": "Przyłącze sieciowe + opłata stała umowy. Kwota brutto (z VAT)."
@@ -208,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Edytuj grupę",
-        "description": "{group_label} — Dodaj lub usuń stawki albo ustaw tę grupę jako aktywną.",
+        "description": "{group_label}\n\n{tier_list}\n\nWybierz stawkę, aby zobaczyć i zmienić jej ustawienia, dodaj nową albo ustaw tę grupę jako aktywną.",
         "data": {
           "action": "Akcja"
         }
@@ -217,7 +232,7 @@
         "title": "Dodaj stawkę dystrybucyjną",
         "data": {
           "label": "Nazwa stawki (np. Zimowy dzień roboczy)",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktywne miesiące",
           "weekdays": "Aktywne dni tygodnia",
           "hour_start": "Czas rozpoczęcia (włącznie)",
@@ -225,10 +240,24 @@
           "priority": "Priorytet (niższy = pierwszy)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Edytuj stawkę dystrybucyjną",
+        "description": "Zmień dowolne pola albo zaznacz usunięcie, aby skasować tę stawkę.",
+        "data": {
+          "label": "Nazwa stawki (np. Zimowy dzień roboczy)",
+          "price": "Cena",
+          "months": "Aktywne miesiące",
+          "weekdays": "Aktywne dni tygodnia",
+          "hour_start": "Czas rozpoczęcia (włącznie)",
+          "hour_end": "Czas zakończenia (wyłącznie)",
+          "priority": "Priorytet (niższy = pierwszy)",
+          "delete": "Usuń tę stawkę"
+        }
+      },
       "thresholds": {
         "title": "Progi i sterowanie",
         "data": {
-          "max_price": "Maksymalna cena sterowania (c/kWh)",
+          "max_price": "Maksymalna cena sterowania",
           "price_threshold_includes_transfer": "Cena maksymalna obejmuje dystrybucję",
           "max_rank": "Maksymalna ranga sterowania",
           "forward_avg_hours": "Długość okna średniej przyszłej (godziny)",
@@ -237,13 +266,13 @@
         }
       },
       "score_profiles": {
-        "title": "Profile punktowe",
-        "data": {}
+        "title": "Profile punktowe"
       },
       "advanced_options": {
         "title": "Opcje zaawansowane",
         "data": {
-          "expose_price_arrays": "Udostępniaj tablice cen jako atrybuty sensora (zwiększa rozmiar bazy danych)",
+          "expose_price_arrays": "Udostępniaj tablice ceny giełdowej jako atrybuty sensora",
+          "expose_total_price_arrays": "Udostępniaj tablice ceny całkowitej jako atrybuty sensora",
           "high_precision": "Tryb wysokiej precyzji",
           "show_rolling_averages": "Pokaż średnie ceny na najbliższe 30 min, 1 h i 2 h",
           "generation_enabled": "Włącz funkcje produkcji i sprzedaży"
@@ -298,13 +327,13 @@
         "description": "Skonfiguruj ceny sprzedaży i ustawienia akumulatora. Ustaw pojemność akumulatora na 0, aby wyłączyć sensory akumulatora.",
         "data": {
           "export_pricing_mode": "Tryb ceny sprzedaży",
-          "export_commission": "Marża sprzedaży (c/kWh, odejmowana od ceny giełdowej)",
-          "fixed_export_rate": "Stała cena sprzedaży (c/kWh)",
-          "export_price_threshold": "Próg ceny sprzedaży (c/kWh)",
+          "export_commission": "Marża sprzedaży (odejmowana od ceny giełdowej)",
+          "fixed_export_rate": "Stała cena sprzedaży",
+          "export_price_threshold": "Próg ceny sprzedaży",
           "solar_window_start": "Godzina początku okna słonecznego",
           "solar_window_end": "Godzina końca okna słonecznego",
-          "battery_capacity_kwh": "Pojemność akumulatora (kWh, 0 = wyłączone)",
-          "battery_charge_power_kw": "Moc ładowania akumulatora (kW)"
+          "battery_capacity_kwh": "Pojemność akumulatora (0 = wyłączone)",
+          "battery_charge_power_kw": "Moc ładowania akumulatora"
         },
         "data_description": {
           "export_commission": "Tylko w trybie powiązanym z giełdą. Marża odbiorcy odejmowana od ceny giełdowej z API (bez VAT). Mali producenci zwykle nie naliczają VAT od sprzedaży.",
@@ -319,7 +348,7 @@
           "label": "Nazwa okresu",
           "start_date": "Data rozpoczęcia",
           "end_date": "Data zakończenia (włącznie)",
-          "price": "Cena (c/kWh, z VAT)"
+          "price": "Cena (z VAT)"
         },
         "data_description": {
           "price": "Podaj cenę z VAT. Ta cena jest używana bez zmian — VAT nie jest doliczany."
@@ -366,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Współczynnik sterowania ceny (bipolarny)"
       },
+      "control_factor_total": {
+        "name": "Współczynnik sterowania ceny całkowitej"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Współczynnik sterowania ceny całkowitej (bipolarny)"
+      },
       "control_factor_transfer": {
         "name": "Współczynnik sterowania dystrybucji"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Współczynnik sterowania dystrybucji (bipolarny)"
       },
       "effective_price": {
         "name": "Cena aktywna"

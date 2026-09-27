@@ -33,9 +33,9 @@
         "description": "Vnaprej izpolnjeno glede na vaše območje. Po potrebi prilagodite. Vse cene (stopnje omrežnine, obdobja fiksne cene) se vnašajo z vključenim DDV.",
         "data": {
           "vat_rate_pct": "Stopnja DDV (%)",
-          "electricity_tax": "Trošarina (c/kWh)",
-          "spot_commission": "Marža na borzno ceno (c/kWh)",
-          "monthly_fixed_cost": "Fiksni strošek pogodbe o dobavi (€/mesec)"
+          "electricity_tax": "Trošarina",
+          "spot_commission": "Marža na borzno ceno",
+          "monthly_fixed_cost": "Fiksni strošek pogodbe o dobavi"
         },
         "data_description": {
           "electricity_tax": "Fiksna trošarina na kWh, ki se prišteje borzni/fiksni ceni.",
@@ -54,7 +54,7 @@
         "title": "Dodaj skupino",
         "data": {
           "label": "Ime skupine",
-          "monthly_fixed_cost": "Mesečni fiksni strošek (€/mesec)"
+          "monthly_fixed_cost": "Mesečni fiksni strošek"
         },
         "data_description": {
           "monthly_fixed_cost": "Omrežni priključek + fiksna dajatev pogodbe. Bruto znesek (z DDV)."
@@ -64,7 +64,7 @@
         "title": "Uredi nastavitve skupine",
         "data": {
           "label": "Ime skupine",
-          "monthly_fixed_cost": "Mesečni fiksni strošek (€/mesec)"
+          "monthly_fixed_cost": "Mesečni fiksni strošek"
         },
         "data_description": {
           "monthly_fixed_cost": "Omrežni priključek + fiksna dajatev pogodbe. Bruto znesek (z DDV)."
@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Uredi skupino",
-        "description": "{group_label} — Dodajte ali odstranite stopnje ali nastavite to skupino kot aktivno.",
+        "description": "{group_label}\n\n{tier_list}\n\nIzberite stopnjo, da vidite in spremenite njene nastavitve, dodajte novo ali nastavite to skupino kot aktivno.",
         "data": {
           "action": "Dejanje"
         }
@@ -82,7 +82,7 @@
         "description": "Vrednotijo se po vrstnem redu prednosti; zmaga prvo ujemanje. Dodajte osnovno tarifo z najnižjo prednostjo in brez časovnih omejitev.",
         "data": {
           "label": "Ime stopnje",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktivni meseci",
           "weekdays": "Aktivni dnevi",
           "hour_start": "Čas začetka (vključno)",
@@ -90,10 +90,24 @@
           "priority": "Prednost (manjša = prva)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Uredi ceno omrežnine",
+        "description": "Spremenite poljubna polja ali označite odstranitev, da stopnjo izbrišete.",
+        "data": {
+          "label": "Ime stopnje",
+          "price": "Cena",
+          "months": "Aktivni meseci",
+          "weekdays": "Aktivni dnevi",
+          "hour_start": "Čas začetka (vključno)",
+          "hour_end": "Čas konca (izključno)",
+          "priority": "Prednost (manjša = prva)",
+          "delete": "Odstrani to stopnjo"
+        }
+      },
       "thresholds": {
         "title": "Pragovi in krmiljenje",
         "data": {
-          "max_price": "Najvišja cena za krmiljenje (c/kWh)",
+          "max_price": "Najvišja cena za krmiljenje",
           "price_threshold_includes_transfer": "Najvišja cena vključuje omrežnino",
           "max_rank": "Najvišji rang za krmiljenje",
           "forward_avg_hours": "Dolžina okna prihodnjega povprečja (ure)",
@@ -111,21 +125,22 @@
       },
       "score_profiles": {
         "title": "Točke optimizacije",
-        "description": "Točke merijo, kako dobro premikate porabo v poceni ure. Stalni profil 'Total' pokriva vso porabo — po nastavitvi mu v možnostih povežite števec (ali števce).",
-        "data": {}
+        "description": "Točke merijo, kako dobro premikate porabo v poceni ure. Stalni profil 'Total' pokriva vso porabo — po nastavitvi mu v možnostih povežite števec (ali števce)."
       },
       "advanced_options": {
         "title": "Napredne možnosti",
         "description": "Nastavite, kako se vrednosti senzorjev prikazujejo v Home Assistantu.",
         "data": {
-          "expose_price_arrays": "Izpostavi cenovne nize kot atribute senzorja (poveča velikost podatkovne baze)",
+          "expose_price_arrays": "Izpostavi nize borzne cene kot atribute senzorja",
+          "expose_total_price_arrays": "Izpostavi nize skupne cene kot atribute senzorja",
           "high_precision": "Način visoke natančnosti",
           "show_rolling_averages": "Prikaži povprečne cene za naslednjih 30 min, 1 h in 2 h",
           "generation_enabled": "Omogoči funkcije proizvodnje in oddaje"
         },
         "data_description": {
-          "expose_price_arrays": "Zapisuje niza today_prices in tomorrow_prices v atribute senzorja spot_price, ki se nato shranjujejo v podatkovno bazo. Olajša izdelavo grafov na nadzorni plošči, vendar za njihov prikaz ni potrebno in po nepotrebnem obremenjuje podatkovno bazo.",
-          "high_precision": "Ko je vklopljeno, cenovni senzorji prikazujejo več decimalk. Atributi in izračuni vedno uporabljajo polno natančnost.",
+          "expose_price_arrays": "Zapisuje niza today_prices in tomorrow_prices v atribute senzorja spot_price. Olajša izdelavo grafov na nadzorni plošči, vendar za njihov prikaz ni potrebno. Nizi se ne shranjujejo v podatkovno bazo; le povečajo velikost trenutnega stanja senzorja.",
+          "expose_total_price_arrays": "Zapisuje niza today_prices in tomorrow_prices v atribute senzorja skupne cene, pri čemer vsak vnos vsebuje razdelitev na energijo in omrežnino. Tako kot nizi borzne cene se ne shranjujejo v podatkovno bazo.",
+          "high_precision": "Ko je vklopljeno, cenovni senzorji in atributi cenovnih nizov prikazujejo več decimalk. Notranji izračuni vedno uporabljajo polno natančnost.",
           "show_rolling_averages": "Doda senzorje povprečne cene za naslednjih 30, 60 in 120 minut.",
           "generation_enabled": "Omogoči senzorje in storitve cene oddaje, baterije in arbitraže. Nastavitve proizvodnje najdete v meniju Proizvodnja in oddaja."
         }
@@ -169,9 +184,9 @@
           "price_resolution": "Ločljivost cen",
           "display_unit": "Enota prikaza",
           "vat_rate_pct": "Stopnja DDV (%)",
-          "electricity_tax": "Trošarina (c/kWh)",
-          "spot_commission": "Marža na borzno ceno (c/kWh)",
-          "monthly_fixed_cost": "Fiksni strošek pogodbe o dobavi (€/mesec)",
+          "electricity_tax": "Trošarina",
+          "spot_commission": "Marža na borzno ceno",
+          "monthly_fixed_cost": "Fiksni strošek pogodbe o dobavi",
           "currency_mode": "Valuta prikaza",
           "fx_mode": "Vir menjalnega tečaja",
           "fx_rate": "Ročni menjalni tečaj (lokalna valuta za 1 EUR)"
@@ -190,7 +205,7 @@
         "title": "Dodaj skupino",
         "data": {
           "label": "Ime skupine",
-          "monthly_fixed_cost": "Mesečni fiksni strošek (€/mesec)"
+          "monthly_fixed_cost": "Mesečni fiksni strošek"
         },
         "data_description": {
           "monthly_fixed_cost": "Omrežni priključek + fiksna dajatev pogodbe. Bruto znesek (z DDV)."
@@ -200,7 +215,7 @@
         "title": "Uredi nastavitve skupine",
         "data": {
           "label": "Ime skupine",
-          "monthly_fixed_cost": "Mesečni fiksni strošek (€/mesec)"
+          "monthly_fixed_cost": "Mesečni fiksni strošek"
         },
         "data_description": {
           "monthly_fixed_cost": "Omrežni priključek + fiksna dajatev pogodbe. Bruto znesek (z DDV)."
@@ -208,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Uredi skupino",
-        "description": "{group_label} — Dodajte ali odstranite stopnje ali nastavite to skupino kot aktivno.",
+        "description": "{group_label}\n\n{tier_list}\n\nIzberite stopnjo, da vidite in spremenite njene nastavitve, dodajte novo ali nastavite to skupino kot aktivno.",
         "data": {
           "action": "Dejanje"
         }
@@ -217,7 +232,7 @@
         "title": "Dodaj ceno omrežnine",
         "data": {
           "label": "Ime stopnje (npr. Zimski delovni dan)",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktivni meseci",
           "weekdays": "Aktivni dnevi",
           "hour_start": "Čas začetka (vključno)",
@@ -225,10 +240,24 @@
           "priority": "Prednost (manjša = prva)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Uredi ceno omrežnine",
+        "description": "Spremenite poljubna polja ali označite odstranitev, da stopnjo izbrišete.",
+        "data": {
+          "label": "Ime stopnje (npr. Zimski delovni dan)",
+          "price": "Cena",
+          "months": "Aktivni meseci",
+          "weekdays": "Aktivni dnevi",
+          "hour_start": "Čas začetka (vključno)",
+          "hour_end": "Čas konca (izključno)",
+          "priority": "Prednost (manjša = prva)",
+          "delete": "Odstrani to stopnjo"
+        }
+      },
       "thresholds": {
         "title": "Pragovi in krmiljenje",
         "data": {
-          "max_price": "Najvišja cena za krmiljenje (c/kWh)",
+          "max_price": "Najvišja cena za krmiljenje",
           "price_threshold_includes_transfer": "Najvišja cena vključuje omrežnino",
           "max_rank": "Najvišji rang za krmiljenje",
           "forward_avg_hours": "Dolžina okna prihodnjega povprečja (ure)",
@@ -237,13 +266,13 @@
         }
       },
       "score_profiles": {
-        "title": "Profili točk",
-        "data": {}
+        "title": "Profili točk"
       },
       "advanced_options": {
         "title": "Napredne možnosti",
         "data": {
-          "expose_price_arrays": "Izpostavi cenovne nize kot atribute senzorja (poveča velikost podatkovne baze)",
+          "expose_price_arrays": "Izpostavi nize borzne cene kot atribute senzorja",
+          "expose_total_price_arrays": "Izpostavi nize skupne cene kot atribute senzorja",
           "high_precision": "Način visoke natančnosti",
           "show_rolling_averages": "Prikaži povprečne cene za naslednjih 30 min, 1 h in 2 h",
           "generation_enabled": "Omogoči funkcije proizvodnje in oddaje"
@@ -298,13 +327,13 @@
         "description": "Nastavite cene oddaje in parametre baterije. Nastavite kapaciteto baterije na 0, da izklopite senzorje baterije.",
         "data": {
           "export_pricing_mode": "Način cene oddaje",
-          "export_commission": "Marža oddaje (c/kWh, odšteta od borzne)",
-          "fixed_export_rate": "Fiksna cena oddaje (c/kWh)",
-          "export_price_threshold": "Prag cene oddaje (c/kWh)",
+          "export_commission": "Marža oddaje (odšteta od borzne)",
+          "fixed_export_rate": "Fiksna cena oddaje",
+          "export_price_threshold": "Prag cene oddaje",
           "solar_window_start": "Začetna ura sončnega okna",
           "solar_window_end": "Končna ura sončnega okna",
-          "battery_capacity_kwh": "Kapaciteta baterije (kWh, 0 = izklopljeno)",
-          "battery_charge_power_kw": "Moč polnjenja baterije (kW)"
+          "battery_capacity_kwh": "Kapaciteta baterije (0 = izklopljeno)",
+          "battery_charge_power_kw": "Moč polnjenja baterije"
         },
         "data_description": {
           "export_commission": "Samo v načinu, vezanem na borzno ceno. Marža odkupovalca, ki se odšteje od borzne cene iz API-ja (brez DDV). Mali proizvajalci na oddano energijo običajno ne obračunavajo DDV.",
@@ -319,7 +348,7 @@
           "label": "Ime obdobja",
           "start_date": "Datum začetka",
           "end_date": "Datum konca (vključno)",
-          "price": "Cena (c/kWh, z DDV)"
+          "price": "Cena (z DDV)"
         },
         "data_description": {
           "price": "Vnesite ceno z vključenim DDV. Ta cena se uporablja takšna, kot je — DDV se ne prišteje."
@@ -366,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Krmilni faktor cene (bipolarni)"
       },
+      "control_factor_total": {
+        "name": "Krmilni faktor skupne cene"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Krmilni faktor skupne cene (bipolarni)"
+      },
       "control_factor_transfer": {
         "name": "Krmilni faktor omrežnine"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Krmilni faktor omrežnine (bipolarni)"
       },
       "effective_price": {
         "name": "Aktivna cena"

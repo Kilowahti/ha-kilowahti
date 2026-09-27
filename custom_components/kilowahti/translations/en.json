@@ -33,9 +33,9 @@
         "description": "Pre-filled from your region. Adjust if needed. All prices (transfer tiers, fixed periods) are entered incl. VAT.",
         "data": {
           "vat_rate_pct": "VAT rate (%)",
-          "electricity_tax": "Electricity tax (c/kWh)",
-          "spot_commission": "Spot price commission (c/kWh)",
-          "monthly_fixed_cost": "Electricity contract fixed cost (€/month)"
+          "electricity_tax": "Electricity tax",
+          "spot_commission": "Spot price commission",
+          "monthly_fixed_cost": "Electricity contract fixed cost"
         },
         "data_description": {
           "electricity_tax": "Flat per-kWh electricity tax added on top of spot/fixed price.",
@@ -54,7 +54,7 @@
         "title": "Add group",
         "data": {
           "label": "Group name",
-          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+          "monthly_fixed_cost": "Monthly fixed cost"
         },
         "data_description": {
           "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
@@ -64,7 +64,7 @@
         "title": "Edit group settings",
         "data": {
           "label": "Group name",
-          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+          "monthly_fixed_cost": "Monthly fixed cost"
         },
         "data_description": {
           "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Edit group",
-        "description": "{group_label} — Add or remove tiers, or set this group as active.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelect a tier to view and edit its settings, add a new one, or set this group as active.",
         "data": {
           "action": "Action"
         }
@@ -82,7 +82,7 @@
         "description": "Evaluated in priority order; first match wins. Add a base rate as the lowest priority with no time constraints.",
         "data": {
           "label": "Tier label",
-          "price": "Price (c/kWh)",
+          "price": "Price",
           "months": "Months active",
           "weekdays": "Weekdays active",
           "hour_start": "Start time (inclusive)",
@@ -90,10 +90,24 @@
           "priority": "Priority (lower = first)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Edit transfer price",
+        "description": "Change any field, or tick removal to delete this tier.",
+        "data": {
+          "label": "Tier label",
+          "price": "Price",
+          "months": "Months active",
+          "weekdays": "Weekdays active",
+          "hour_start": "Start time (inclusive)",
+          "hour_end": "End time (exclusive)",
+          "priority": "Priority (lower = first)",
+          "delete": "Remove this tier"
+        }
+      },
       "thresholds": {
         "title": "Thresholds & control",
         "data": {
-          "max_price": "Control max price (c/kWh)",
+          "max_price": "Control max price",
           "price_threshold_includes_transfer": "Max price includes transfer",
           "max_rank": "Control max rank",
           "forward_avg_hours": "Forward average window length (hours)",
@@ -118,14 +132,16 @@
         "title": "Advanced options",
         "description": "Configure how sensor values are displayed in Home Assistant.",
         "data": {
-          "expose_price_arrays": "Expose price arrays as sensor attributes (increases DB size)",
+          "expose_price_arrays": "Expose spot price arrays as sensor attributes",
+          "expose_total_price_arrays": "Expose total price arrays as sensor attributes",
           "high_precision": "High precision mode",
           "show_rolling_averages": "Show next 30min, 1h and 2h average prices",
           "generation_enabled": "Enable generation & export features"
         },
         "data_description": {
-          "expose_price_arrays": "Writes today_prices and tomorrow_prices arrays to the spot_price sensor attributes, which are then stored in the database. Makes dashboard graphs easier to build, but is not required for displaying them and adds unnecessary DB load.",
-          "high_precision": "When on, price sensors display more decimals. Attributes and calculations always use full precision.",
+          "expose_price_arrays": "Writes today_prices and tomorrow_prices arrays to the spot_price sensor attributes. Makes dashboard graphs easier to build, but is not required for displaying them. The arrays are kept out of the database; they only add to the size of the sensor's live state.",
+          "expose_total_price_arrays": "Writes today_prices and tomorrow_prices arrays to the total_price sensor attributes, each entry carrying the energy and transfer breakdown. Kept out of the database like the spot price arrays.",
+          "high_precision": "When on, price sensors and price array attributes show more decimals. Internal calculations always use full precision.",
           "show_rolling_averages": "Adds sensors for average price over the next 30, 60, and 120 minutes.",
           "generation_enabled": "Enables export price, battery, and arbitrage sensors and services. Configure generation settings in the Generation & export settings menu."
         }
@@ -169,9 +185,9 @@
           "price_resolution": "Price resolution",
           "display_unit": "Display unit",
           "vat_rate_pct": "VAT rate (%)",
-          "electricity_tax": "Electricity tax (c/kWh)",
-          "spot_commission": "Spot price commission (c/kWh)",
-          "monthly_fixed_cost": "Electricity contract fixed cost (€/month)",
+          "electricity_tax": "Electricity tax",
+          "spot_commission": "Spot price commission",
+          "monthly_fixed_cost": "Electricity contract fixed cost",
           "currency_mode": "Display currency",
           "fx_mode": "Exchange rate source",
           "fx_rate": "Manual exchange rate (local currency per EUR)"
@@ -190,7 +206,7 @@
         "title": "Add group",
         "data": {
           "label": "Group name",
-          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+          "monthly_fixed_cost": "Monthly fixed cost"
         },
         "data_description": {
           "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
@@ -200,7 +216,7 @@
         "title": "Edit group settings",
         "data": {
           "label": "Group name",
-          "monthly_fixed_cost": "Monthly fixed cost (€/month)"
+          "monthly_fixed_cost": "Monthly fixed cost"
         },
         "data_description": {
           "monthly_fixed_cost": "Grid connection + contract base fee. Gross amount (VAT included)."
@@ -208,7 +224,7 @@
       },
       "transfer_group_detail": {
         "title": "Edit group",
-        "description": "{group_label} — Add or remove tiers, or set this group as active.",
+        "description": "{group_label}\n\n{tier_list}\n\nSelect a tier to view and edit its settings, add a new one, or set this group as active.",
         "data": {
           "action": "Action"
         }
@@ -217,7 +233,7 @@
         "title": "Add transfer price",
         "data": {
           "label": "Tier name (e.g. Winter weekday)",
-          "price": "Price (c/kWh)",
+          "price": "Price",
           "months": "Months active",
           "weekdays": "Weekdays active",
           "hour_start": "Start time (inclusive)",
@@ -225,10 +241,24 @@
           "priority": "Priority (lower = first)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Edit transfer price",
+        "description": "Change any field, or tick removal to delete this tier.",
+        "data": {
+          "label": "Tier name (e.g. Winter weekday)",
+          "price": "Price",
+          "months": "Months active",
+          "weekdays": "Weekdays active",
+          "hour_start": "Start time (inclusive)",
+          "hour_end": "End time (exclusive)",
+          "priority": "Priority (lower = first)",
+          "delete": "Remove this tier"
+        }
+      },
       "thresholds": {
         "title": "Thresholds & control",
         "data": {
-          "max_price": "Control max price (c/kWh)",
+          "max_price": "Control max price",
           "price_threshold_includes_transfer": "Max price includes transfer",
           "max_rank": "Control max rank",
           "forward_avg_hours": "Forward average window length (hours)",
@@ -243,7 +273,8 @@
       "advanced_options": {
         "title": "Advanced options",
         "data": {
-          "expose_price_arrays": "Expose price arrays as sensor attributes (increases DB size)",
+          "expose_price_arrays": "Expose spot price arrays as sensor attributes",
+          "expose_total_price_arrays": "Expose total price arrays as sensor attributes",
           "high_precision": "High precision mode",
           "show_rolling_averages": "Show next 30min, 1h and 2h average prices",
           "generation_enabled": "Enable generation & export features"
@@ -298,13 +329,13 @@
         "description": "Configure export pricing and battery settings. Set battery capacity to 0 to disable battery sensors.",
         "data": {
           "export_pricing_mode": "Export pricing mode",
-          "export_commission": "Export commission (c/kWh deducted from spot)",
-          "fixed_export_rate": "Fixed export rate (c/kWh)",
-          "export_price_threshold": "Export price threshold (c/kWh)",
+          "export_commission": "Export commission (deducted from spot)",
+          "fixed_export_rate": "Fixed export rate",
+          "export_price_threshold": "Export price threshold",
           "solar_window_start": "Solar window start hour",
           "solar_window_end": "Solar window end hour",
-          "battery_capacity_kwh": "Battery capacity (kWh, 0 = disabled)",
-          "battery_charge_power_kw": "Battery charge power (kW)"
+          "battery_capacity_kwh": "Battery capacity (0 = disabled)",
+          "battery_charge_power_kw": "Battery charge power"
         },
         "data_description": {
           "export_commission": "Spot-linked mode only. Seller's margin deducted from the spot API price (excl. VAT). Small producers typically don't collect VAT on exports.",
@@ -319,7 +350,7 @@
           "label": "Period label",
           "start_date": "Start date",
           "end_date": "End date (inclusive)",
-          "price": "Price (c/kWh, incl. VAT)"
+          "price": "Price (incl. VAT)"
         },
         "data_description": {
           "price": "Enter price incl. VAT. This price is used as-is — no VAT is added."
@@ -366,8 +397,17 @@
       "control_factor_price_bipolar": {
         "name": "Control factor price (bipolar)"
       },
+      "control_factor_total": {
+        "name": "Control factor total"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Control factor total (bipolar)"
+      },
       "control_factor_transfer": {
         "name": "Control factor transfer"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Control factor transfer (bipolar)"
       },
       "effective_price": {
         "name": "Active price"
@@ -545,7 +585,7 @@
         "name": "Fixed price period active"
       },
       "tomorrow_available": {
-        "name": "Tomorrow's prices available"
+        "name": "Tomorrow available"
       },
       "export_price_acceptable": {
         "name": "Export price acceptable"

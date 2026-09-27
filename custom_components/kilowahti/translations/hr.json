@@ -33,9 +33,9 @@
         "description": "Unaprijed ispunjeno prema vašoj zoni. Prilagodite po potrebi. Sve cijene (stupnjevi mrežarine, razdoblja fiksne cijene) unose se s uključenim PDV-om.",
         "data": {
           "vat_rate_pct": "Stopa PDV-a (%)",
-          "electricity_tax": "Trošarina (c/kWh)",
-          "spot_commission": "Marža na burzovnu cijenu (c/kWh)",
-          "monthly_fixed_cost": "Fiksni trošak ugovora o opskrbi (€/mjesec)"
+          "electricity_tax": "Trošarina",
+          "spot_commission": "Marža na burzovnu cijenu",
+          "monthly_fixed_cost": "Fiksni trošak ugovora o opskrbi"
         },
         "data_description": {
           "electricity_tax": "Fiksna trošarina po kWh koja se dodaje na burzovnu/fiksnu cijenu.",
@@ -54,7 +54,7 @@
         "title": "Dodaj grupu",
         "data": {
           "label": "Naziv grupe",
-          "monthly_fixed_cost": "Mjesečni fiksni trošak (€/mjesec)"
+          "monthly_fixed_cost": "Mjesečni fiksni trošak"
         },
         "data_description": {
           "monthly_fixed_cost": "Priključak na mrežu + fiksna naknada ugovora. Bruto iznos (s PDV-om)."
@@ -64,7 +64,7 @@
         "title": "Uredi postavke grupe",
         "data": {
           "label": "Naziv grupe",
-          "monthly_fixed_cost": "Mjesečni fiksni trošak (€/mjesec)"
+          "monthly_fixed_cost": "Mjesečni fiksni trošak"
         },
         "data_description": {
           "monthly_fixed_cost": "Priključak na mrežu + fiksna naknada ugovora. Bruto iznos (s PDV-om)."
@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Uredi grupu",
-        "description": "{group_label} — Dodajte ili uklonite stupnjeve, ili postavite ovu grupu kao aktivnu.",
+        "description": "{group_label}\n\n{tier_list}\n\nOdaberite stupanj da biste vidjeli i promijenili njegove postavke, dodajte novi ili postavite ovu grupu kao aktivnu.",
         "data": {
           "action": "Radnja"
         }
@@ -82,7 +82,7 @@
         "description": "Vrednuju se po redoslijedu prioriteta; pobjeđuje prvo podudaranje. Dodajte osnovnu tarifu s najnižim prioritetom i bez vremenskih ograničenja.",
         "data": {
           "label": "Naziv stupnja",
-          "price": "Cijena (c/kWh)",
+          "price": "Cijena",
           "months": "Aktivni mjeseci",
           "weekdays": "Aktivni dani",
           "hour_start": "Vrijeme početka (uključivo)",
@@ -90,10 +90,24 @@
           "priority": "Prioritet (manji = prvi)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Uredi cijenu mrežarine",
+        "description": "Promijenite željena polja ili označite uklanjanje da biste obrisali ovaj stupanj.",
+        "data": {
+          "label": "Naziv stupnja",
+          "price": "Cijena",
+          "months": "Aktivni mjeseci",
+          "weekdays": "Aktivni dani",
+          "hour_start": "Vrijeme početka (uključivo)",
+          "hour_end": "Vrijeme kraja (isključivo)",
+          "priority": "Prioritet (manji = prvi)",
+          "delete": "Ukloni ovaj stupanj"
+        }
+      },
       "thresholds": {
         "title": "Pragovi i upravljanje",
         "data": {
-          "max_price": "Maksimalna cijena za upravljanje (c/kWh)",
+          "max_price": "Maksimalna cijena za upravljanje",
           "price_threshold_includes_transfer": "Maksimalna cijena uključuje mrežarinu",
           "max_rank": "Maksimalni rang za upravljanje",
           "forward_avg_hours": "Duljina prozora budućeg prosjeka (sati)",
@@ -111,21 +125,22 @@
       },
       "score_profiles": {
         "title": "Bodovi optimizacije",
-        "description": "Bodovi mjere koliko dobro premještate potrošnju u jeftine sate. Stalni profil 'Total' pokriva svu potrošnju — povežite mu brojilo (ili brojila) u opcijama nakon postavljanja.",
-        "data": {}
+        "description": "Bodovi mjere koliko dobro premještate potrošnju u jeftine sate. Stalni profil 'Total' pokriva svu potrošnju — povežite mu brojilo (ili brojila) u opcijama nakon postavljanja."
       },
       "advanced_options": {
         "title": "Napredne opcije",
         "description": "Postavite kako se vrijednosti senzora prikazuju u Home Assistantu.",
         "data": {
-          "expose_price_arrays": "Izloži nizove cijena kao atribute senzora (povećava veličinu baze podataka)",
+          "expose_price_arrays": "Izloži nizove burzovne cijene kao atribute senzora",
+          "expose_total_price_arrays": "Izloži nizove ukupne cijene kao atribute senzora",
           "high_precision": "Način visoke preciznosti",
           "show_rolling_averages": "Prikaži prosječne cijene za sljedećih 30 min, 1 h i 2 h",
           "generation_enabled": "Omogući funkcije proizvodnje i predaje"
         },
         "data_description": {
-          "expose_price_arrays": "Zapisuje nizove today_prices i tomorrow_prices u atribute senzora spot_price, koji se zatim pohranjuju u bazu podataka. Olakšava izradu grafikona na nadzornoj ploči, ali nije potrebno za njihov prikaz i nepotrebno opterećuje bazu podataka.",
-          "high_precision": "Kada je uključeno, senzori cijena prikazuju više decimala. Atributi i izračuni uvijek koriste punu preciznost.",
+          "expose_price_arrays": "Zapisuje nizove today_prices i tomorrow_prices u atribute senzora spot_price. Olakšava izradu grafikona na nadzornoj ploči, ali nije potrebno za njihov prikaz. Nizovi se ne pohranjuju u bazu podataka; samo povećavaju veličinu trenutnog stanja senzora.",
+          "expose_total_price_arrays": "Zapisuje nizove today_prices i tomorrow_prices u atribute senzora ukupne cijene, pri čemu svaki unos sadrži razdiobu na energiju i mrežarinu. Ne pohranjuju se u bazu podataka, kao ni nizovi burzovne cijene.",
+          "high_precision": "Kada je uključeno, senzori cijena i atributi nizova cijena prikazuju više decimala. Interni izračuni uvijek koriste punu preciznost.",
           "show_rolling_averages": "Dodaje senzore prosječne cijene za sljedećih 30, 60 i 120 minuta.",
           "generation_enabled": "Omogućuje senzore i servise cijene predaje, baterije i arbitraže. Postavke proizvodnje nalaze se u izborniku Proizvodnja i predaja."
         }
@@ -169,9 +184,9 @@
           "price_resolution": "Rezolucija cijena",
           "display_unit": "Jedinica prikaza",
           "vat_rate_pct": "Stopa PDV-a (%)",
-          "electricity_tax": "Trošarina (c/kWh)",
-          "spot_commission": "Marža na burzovnu cijenu (c/kWh)",
-          "monthly_fixed_cost": "Fiksni trošak ugovora o opskrbi (€/mjesec)",
+          "electricity_tax": "Trošarina",
+          "spot_commission": "Marža na burzovnu cijenu",
+          "monthly_fixed_cost": "Fiksni trošak ugovora o opskrbi",
           "currency_mode": "Valuta prikaza",
           "fx_mode": "Izvor tečaja",
           "fx_rate": "Ručni tečaj (lokalna valuta za 1 EUR)"
@@ -190,7 +205,7 @@
         "title": "Dodaj grupu",
         "data": {
           "label": "Naziv grupe",
-          "monthly_fixed_cost": "Mjesečni fiksni trošak (€/mjesec)"
+          "monthly_fixed_cost": "Mjesečni fiksni trošak"
         },
         "data_description": {
           "monthly_fixed_cost": "Priključak na mrežu + fiksna naknada ugovora. Bruto iznos (s PDV-om)."
@@ -200,7 +215,7 @@
         "title": "Uredi postavke grupe",
         "data": {
           "label": "Naziv grupe",
-          "monthly_fixed_cost": "Mjesečni fiksni trošak (€/mjesec)"
+          "monthly_fixed_cost": "Mjesečni fiksni trošak"
         },
         "data_description": {
           "monthly_fixed_cost": "Priključak na mrežu + fiksna naknada ugovora. Bruto iznos (s PDV-om)."
@@ -208,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Uredi grupu",
-        "description": "{group_label} — Dodajte ili uklonite stupnjeve, ili postavite ovu grupu kao aktivnu.",
+        "description": "{group_label}\n\n{tier_list}\n\nOdaberite stupanj da biste vidjeli i promijenili njegove postavke, dodajte novi ili postavite ovu grupu kao aktivnu.",
         "data": {
           "action": "Radnja"
         }
@@ -217,7 +232,7 @@
         "title": "Dodaj cijenu mrežarine",
         "data": {
           "label": "Naziv stupnja (npr. Zimski radni dan)",
-          "price": "Cijena (c/kWh)",
+          "price": "Cijena",
           "months": "Aktivni mjeseci",
           "weekdays": "Aktivni dani",
           "hour_start": "Vrijeme početka (uključivo)",
@@ -225,10 +240,24 @@
           "priority": "Prioritet (manji = prvi)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Uredi cijenu mrežarine",
+        "description": "Promijenite željena polja ili označite uklanjanje da biste obrisali ovaj stupanj.",
+        "data": {
+          "label": "Naziv stupnja (npr. Zimski radni dan)",
+          "price": "Cijena",
+          "months": "Aktivni mjeseci",
+          "weekdays": "Aktivni dani",
+          "hour_start": "Vrijeme početka (uključivo)",
+          "hour_end": "Vrijeme kraja (isključivo)",
+          "priority": "Prioritet (manji = prvi)",
+          "delete": "Ukloni ovaj stupanj"
+        }
+      },
       "thresholds": {
         "title": "Pragovi i upravljanje",
         "data": {
-          "max_price": "Maksimalna cijena za upravljanje (c/kWh)",
+          "max_price": "Maksimalna cijena za upravljanje",
           "price_threshold_includes_transfer": "Maksimalna cijena uključuje mrežarinu",
           "max_rank": "Maksimalni rang za upravljanje",
           "forward_avg_hours": "Duljina prozora budućeg prosjeka (sati)",
@@ -237,13 +266,13 @@
         }
       },
       "score_profiles": {
-        "title": "Profili bodova",
-        "data": {}
+        "title": "Profili bodova"
       },
       "advanced_options": {
         "title": "Napredne opcije",
         "data": {
-          "expose_price_arrays": "Izloži nizove cijena kao atribute senzora (povećava veličinu baze podataka)",
+          "expose_price_arrays": "Izloži nizove burzovne cijene kao atribute senzora",
+          "expose_total_price_arrays": "Izloži nizove ukupne cijene kao atribute senzora",
           "high_precision": "Način visoke preciznosti",
           "show_rolling_averages": "Prikaži prosječne cijene za sljedećih 30 min, 1 h i 2 h",
           "generation_enabled": "Omogući funkcije proizvodnje i predaje"
@@ -298,13 +327,13 @@
         "description": "Postavite cijene predaje i parametre baterije. Postavite kapacitet baterije na 0 da biste isključili senzore baterije.",
         "data": {
           "export_pricing_mode": "Način cijene predaje",
-          "export_commission": "Marža predaje (c/kWh, odbija se od burzovne)",
-          "fixed_export_rate": "Fiksna cijena predaje (c/kWh)",
-          "export_price_threshold": "Prag cijene predaje (c/kWh)",
+          "export_commission": "Marža predaje (odbija se od burzovne)",
+          "fixed_export_rate": "Fiksna cijena predaje",
+          "export_price_threshold": "Prag cijene predaje",
           "solar_window_start": "Početni sat solarnog prozora",
           "solar_window_end": "Završni sat solarnog prozora",
-          "battery_capacity_kwh": "Kapacitet baterije (kWh, 0 = isključeno)",
-          "battery_charge_power_kw": "Snaga punjenja baterije (kW)"
+          "battery_capacity_kwh": "Kapacitet baterije (0 = isključeno)",
+          "battery_charge_power_kw": "Snaga punjenja baterije"
         },
         "data_description": {
           "export_commission": "Samo u načinu vezanom uz burzovnu cijenu. Marža otkupljivača koja se odbija od burzovne cijene iz API-ja (bez PDV-a). Mali proizvođači obično ne obračunavaju PDV na predanu energiju.",
@@ -319,7 +348,7 @@
           "label": "Naziv razdoblja",
           "start_date": "Datum početka",
           "end_date": "Datum kraja (uključivo)",
-          "price": "Cijena (c/kWh, s PDV-om)"
+          "price": "Cijena (s PDV-om)"
         },
         "data_description": {
           "price": "Unesite cijenu s uključenim PDV-om. Ova se cijena koristi kakva jest — PDV se ne dodaje."
@@ -366,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Faktor upravljanja cijenom (bipolarni)"
       },
+      "control_factor_total": {
+        "name": "Faktor upravljanja ukupnom cijenom"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Faktor upravljanja ukupnom cijenom (bipolarni)"
+      },
       "control_factor_transfer": {
         "name": "Faktor upravljanja mrežarinom"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Faktor upravljanja mrežarinom (bipolarni)"
       },
       "effective_price": {
         "name": "Aktivna cijena"

@@ -39,6 +39,7 @@ from .const import (
     CONF_EXPORT_PRICE_THRESHOLD,
     CONF_EXPORT_PRICING_MODE,
     CONF_EXPOSE_PRICE_ARRAYS,
+    CONF_EXPOSE_TOTAL_PRICE_ARRAYS,
     CONF_FIXED_EXPORT_RATE,
     CONF_FORWARD_AVG_HOURS,
     CONF_FX_MODE,
@@ -73,6 +74,7 @@ from .const import (
     DEFAULT_EXPORT_PRICE_THRESHOLD,
     DEFAULT_EXPORT_PRICING_MODE,
     DEFAULT_EXPOSE_PRICE_ARRAYS,
+    DEFAULT_EXPOSE_TOTAL_PRICE_ARRAYS,
     DEFAULT_FIXED_EXPORT_RATE,
     DEFAULT_FORWARD_AVG_HOURS,
     DEFAULT_GENERATION_ENABLED,
@@ -243,6 +245,10 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     @property
     def _expose_price_arrays(self) -> bool:
         return self._opts.get(CONF_EXPOSE_PRICE_ARRAYS, DEFAULT_EXPOSE_PRICE_ARRAYS)
+
+    @property
+    def _expose_total_price_arrays(self) -> bool:
+        return self._opts.get(CONF_EXPOSE_TOTAL_PRICE_ARRAYS, DEFAULT_EXPOSE_TOTAL_PRICE_ARRAYS)
 
     @property
     def _high_precision(self) -> bool:
@@ -731,8 +737,21 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return candidate
 
     def current_rank(self) -> int | None:
-        slot = self.current_slot()
-        return slot.rank if slot else None
+        """Rank of the current slot by the energy price actually paid.
+
+        Uses the fixed-period price when one is active, otherwise spot; transfer
+        is excluded. Normalized: cheapest tier(s) = 1, dearest = slots_per_day,
+        so a fixed-price day ranks every slot 1.
+        """
+        current = self.current_slot()
+        if current is None:
+            return None
+        return calc.normalized_total_price_rank(
+            current,
+            self._today_slots,
+            self._energy_price_for_slot,
+            self._resolution.slots_per_day,
+        )
 
     def total_price_rank_now(self) -> int | None:
         """Rank of the current slot by total price among today's slots.
@@ -830,6 +849,14 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             if tier.matches(now.month, now.weekday(), now.hour):
                 return tier.label
         return None
+
+    def active_transfer_tariff(self) -> str | None:
+        """Group and tier the current transfer price comes from, e.g. "Group, Tier"."""
+        group = self.active_transfer_group_label()
+        if group is None:
+            return None
+        tier = self.active_transfer_tier_label()
+        return f"{group}, {tier}" if tier else group
 
     def transfer_rank_info(self) -> tuple[int, int] | None:
         """Return (rank, tier_count) for the current transfer price among today's unique tiers.
@@ -948,9 +975,38 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return price_snt
 
     @property
+    def display_decimals(self) -> int:
+        """Decimal places for displayed prices, in the active display unit."""
+        base = 5 if self._high_precision else 2
+        return base + (2 if self.display_in_major else 0)
+
+    def display_price(self, price_snt: float | None) -> float | None:
+        """Convert an internal minor-unit price and round it for display."""
+        converted = self.format_price(price_snt)
+        if converted is None:
+            return None
+        return round(converted, self.display_decimals)
+
+    @property
     def native_unit(self) -> str:
         minor, major = self._unit_pair
         return major if self.display_in_major else minor
+
+    @property
+    def currency_symbol(self) -> str:
+        """Symbol of the active display currency, without the per-kWh part."""
+        _minor, major = self._unit_pair
+        return major.split("/")[0]
+
+    @property
+    def minor_unit(self) -> str:
+        """Unit of the minor-scale values used by storage and service calls.
+
+        Currencies whose minor unit is out of use have no label of their own,
+        so those are described relative to the major unit.
+        """
+        minor, major = self._unit_pair
+        return minor or f"1/100 {major}"
 
     @property
     def price_source_name(self) -> str:
@@ -1368,19 +1424,51 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     # Control factor
     # ------------------------------------------------------------------
 
+    def _control_factor_for_rank(self, rank: int, out_of: int) -> float:
+        """Apply the configured curve and scaling to a rank. 1.0 = cheapest."""
+        if out_of <= 1:
+            # A single tier is the cheapest one there is
+            return calc.control_factor(1, 2, self._control_factor_function, 1.0)
+        return calc.control_factor(
+            rank, out_of, self._control_factor_function, self._control_factor_scaling
+        )
+
     def control_factor(self) -> float | None:
+        """Control factor from the energy price rank, fixed periods included."""
         rank = self.current_rank()
         if rank is None:
             return None
-        return calc.control_factor(
-            rank,
-            self._resolution.slots_per_day,
-            self._control_factor_function,
-            self._control_factor_scaling,
-        )
+        return self._control_factor_for_rank(rank, self._resolution.slots_per_day)
 
     def control_factor_bipolar(self) -> float | None:
         cf = self.control_factor()
+        if cf is None:
+            return None
+        return calc.control_factor_bipolar(cf)
+
+    def control_factor_total(self) -> float | None:
+        """Control factor from the total price rank: energy plus transfer."""
+        rank = self.total_price_rank_now()
+        if rank is None:
+            return None
+        return self._control_factor_for_rank(rank, self._resolution.slots_per_day)
+
+    def control_factor_total_bipolar(self) -> float | None:
+        cf = self.control_factor_total()
+        if cf is None:
+            return None
+        return calc.control_factor_bipolar(cf)
+
+    def control_factor_transfer(self) -> float | None:
+        """Control factor from the transfer tier rank among today's distinct tiers."""
+        info = self.transfer_rank_info()
+        if info is None:
+            return None
+        rank, tier_count = info
+        return self._control_factor_for_rank(rank, tier_count)
+
+    def control_factor_transfer_bipolar(self) -> float | None:
+        cf = self.control_factor_transfer()
         if cf is None:
             return None
         return calc.control_factor_bipolar(cf)
@@ -1389,29 +1477,69 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     # Price arrays (for optional attribute exposure)
     # ------------------------------------------------------------------
 
-    def today_price_array(self) -> list[dict] | None:
-        if not self._expose_price_arrays:
-            return None
+    def _spot_price_array(self, slots: list[PriceSlot]) -> list[dict]:
         return [
             {
                 "time": dt_util.as_local(s.dt_utc).isoformat(),
-                "price": self.format_price(self._spot_effective(s)),
+                "price": self.display_price(self._spot_effective(s)),
                 "rank": s.rank,
             }
-            for s in self._today_slots
+            for s in slots
         ]
+
+    def _total_price_array(self, slots: list[PriceSlot]) -> list[dict]:
+        """Build total-price entries with the energy/transfer breakdown.
+
+        Ranks come from the same tier normalization as the total_price_rank
+        sensor, computed among `slots` only, so each day ranks within itself.
+        `price` is the sum of the rounded parts, keeping the breakdown exact.
+        """
+        totals = {
+            s.dt_utc: self._energy_price_for_slot(s) + (self.transfer_price_for_slot(s) or 0.0)
+            for s in slots
+        }
+        entries: list[dict] = []
+        for slot in slots:
+            energy = self.display_price(self._energy_price_for_slot(slot))
+            transfer = self.display_price(self.transfer_price_for_slot(slot) or 0.0)
+            entries.append(
+                {
+                    "time": dt_util.as_local(slot.dt_utc).isoformat(),
+                    "energy": energy,
+                    "transfer": transfer,
+                    "price": round(energy + transfer, self.display_decimals),
+                    "rank": calc.normalized_total_price_rank(
+                        slot,
+                        slots,
+                        lambda s: totals[s.dt_utc],
+                        self._resolution.slots_per_day,
+                    ),
+                }
+            )
+        return entries
+
+    def today_price_array(self) -> list[dict] | None:
+        if not self._expose_price_arrays:
+            return None
+        return self._spot_price_array(self._today_slots)
 
     def tomorrow_price_array(self) -> list[dict] | None:
         if not self._expose_price_arrays or not self._tomorrow_slots:
             return None
-        return [
-            {
-                "time": dt_util.as_local(s.dt_utc).isoformat(),
-                "price": self.format_price(self._spot_effective(s)),
-                "rank": s.rank,
-            }
-            for s in self._tomorrow_slots
-        ]
+        return self._spot_price_array(self._tomorrow_slots)
+
+    def today_total_price_array(self) -> list[dict] | None:
+        if not self._expose_total_price_arrays:
+            return None
+        return self._total_price_array(self._today_slots)
+
+    def tomorrow_total_price_array(self) -> list[dict] | None:
+        if not self._expose_total_price_arrays:
+            return None
+        slots = self._tomorrow_total_slots()
+        if not slots:
+            return None
+        return self._total_price_array(slots)
 
     # ------------------------------------------------------------------
     # Optimization scores

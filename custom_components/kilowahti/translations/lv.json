@@ -33,9 +33,9 @@
         "description": "Aizpildīts iepriekš atbilstoši jūsu reģionam. Pielāgojiet, ja nepieciešams. Visas cenas (sadales tarifa līmeņi, fiksētas cenas periodi) tiek ievadītas ar PVN.",
         "data": {
           "vat_rate_pct": "PVN likme (%)",
-          "electricity_tax": "Elektroenerģijas nodoklis (c/kWh)",
-          "spot_commission": "Biržas cenas uzcenojums (c/kWh)",
-          "monthly_fixed_cost": "Elektroenerģijas līguma fiksētā maksa (€/mēnesī)"
+          "electricity_tax": "Elektroenerģijas nodoklis",
+          "spot_commission": "Biržas cenas uzcenojums",
+          "monthly_fixed_cost": "Elektroenerģijas līguma fiksētā maksa"
         },
         "data_description": {
           "electricity_tax": "Fiksēts elektroenerģijas nodoklis par kWh, ko pieskaita biržas/fiksētajai cenai.",
@@ -54,7 +54,7 @@
         "title": "Pievienot grupu",
         "data": {
           "label": "Grupas nosaukums",
-          "monthly_fixed_cost": "Ikmēneša fiksētā maksa (€/mēnesī)"
+          "monthly_fixed_cost": "Ikmēneša fiksētā maksa"
         },
         "data_description": {
           "monthly_fixed_cost": "Pieslēguma maksa + līguma pamatmaksa. Bruto summa (ar PVN)."
@@ -64,7 +64,7 @@
         "title": "Rediģēt grupas iestatījumus",
         "data": {
           "label": "Grupas nosaukums",
-          "monthly_fixed_cost": "Ikmēneša fiksētā maksa (€/mēnesī)"
+          "monthly_fixed_cost": "Ikmēneša fiksētā maksa"
         },
         "data_description": {
           "monthly_fixed_cost": "Pieslēguma maksa + līguma pamatmaksa. Bruto summa (ar PVN)."
@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Rediģēt grupu",
-        "description": "{group_label} — pievienojiet vai noņemiet līmeņus, vai iestatiet šo grupu kā aktīvo.",
+        "description": "{group_label}\n\n{tier_list}\n\nIzvēlieties līmeni, lai apskatītu un mainītu tā iestatījumus, pievienojiet jaunu vai iestatiet šo grupu kā aktīvo.",
         "data": {
           "action": "Darbība"
         }
@@ -82,7 +82,7 @@
         "description": "Tiek izvērtēts prioritātes secībā; spēkā ir pirmā atbilstība. Pievienojiet pamata tarifu kā zemāko prioritāti bez laika ierobežojumiem.",
         "data": {
           "label": "Līmeņa nosaukums",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktīvie mēneši",
           "weekdays": "Aktīvās nedēļas dienas",
           "hour_start": "Sākuma laiks (ieskaitot)",
@@ -90,10 +90,24 @@
           "priority": "Prioritāte (mazāka = pirmā)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Rediģēt sadales tarifu",
+        "description": "Mainiet vajadzīgos laukus vai atzīmējiet noņemšanu, lai līmeni dzēstu.",
+        "data": {
+          "label": "Līmeņa nosaukums",
+          "price": "Cena",
+          "months": "Aktīvie mēneši",
+          "weekdays": "Aktīvās nedēļas dienas",
+          "hour_start": "Sākuma laiks (ieskaitot)",
+          "hour_end": "Beigu laiks (neieskaitot)",
+          "priority": "Prioritāte (mazāka = pirmā)",
+          "delete": "Noņemt šo līmeni"
+        }
+      },
       "thresholds": {
         "title": "Sliekšņi un vadība",
         "data": {
-          "max_price": "Vadības maksimālā cena (c/kWh)",
+          "max_price": "Vadības maksimālā cena",
           "price_threshold_includes_transfer": "Maksimālā cena ietver sadales tarifu",
           "max_rank": "Vadības maksimālais rangs",
           "forward_avg_hours": "Nākotnes vidējās vērtības loga garums (stundas)",
@@ -111,21 +125,22 @@
       },
       "score_profiles": {
         "title": "Optimizācijas punkti",
-        "description": "Punkti mēra, cik labi jūsu patēriņš tiek pārcelts uz lētajām stundām. Pastāvīgais profils 'Total' aptver visu patēriņu — pēc iestatīšanas sasaistiet ar to skaitītāju (vai vairākus) sadaļā Opcijas.",
-        "data": {}
+        "description": "Punkti mēra, cik labi jūsu patēriņš tiek pārcelts uz lētajām stundām. Pastāvīgais profils 'Total' aptver visu patēriņu — pēc iestatīšanas sasaistiet ar to skaitītāju (vai vairākus) sadaļā Opcijas."
       },
       "advanced_options": {
         "title": "Papildu iestatījumi",
         "description": "Konfigurējiet, kā sensoru vērtības tiek attēlotas Home Assistant.",
         "data": {
-          "expose_price_arrays": "Rādīt cenu masīvus kā sensora atribūtus (palielina DB izmēru)",
+          "expose_price_arrays": "Rādīt biržas cenas masīvus kā sensora atribūtus",
+          "expose_total_price_arrays": "Rādīt kopējās cenas masīvus kā sensora atribūtus",
           "high_precision": "Augstas precizitātes režīms",
           "show_rolling_averages": "Rādīt nākamo 30 min, 1 h un 2 h vidējās cenas",
           "generation_enabled": "Iespējot ražošanas un eksporta funkcijas"
         },
         "data_description": {
-          "expose_price_arrays": "Ieraksta today_prices un tomorrow_prices masīvus spot_price sensora atribūtos, kas pēc tam tiek saglabāti datubāzē. Atvieglo paneļa grafiku veidošanu, taču to attēlošanai tas nav nepieciešams un rada lieku DB slodzi.",
-          "high_precision": "Kad ieslēgts, cenu sensori rāda vairāk decimālzīmju. Atribūti un aprēķini vienmēr izmanto pilnu precizitāti.",
+          "expose_price_arrays": "Ieraksta today_prices un tomorrow_prices masīvus spot_price sensora atribūtos. Atvieglo paneļa grafiku veidošanu, taču to attēlošanai tas nav nepieciešams. Masīvi netiek saglabāti datubāzē; tie tikai palielina sensora pašreizējā stāvokļa apjomu.",
+          "expose_total_price_arrays": "Ieraksta today_prices un tomorrow_prices masīvus kopējās cenas sensora atribūtos, katrā ierakstā norādot enerģijas un sadales tarifa sadalījumu. Netiek saglabāti datubāzē, tāpat kā biržas cenas masīvi.",
+          "high_precision": "Kad ieslēgts, cenu sensori un cenu masīvu atribūti rāda vairāk decimālzīmju. Iekšējie aprēķini vienmēr izmanto pilnu precizitāti.",
           "show_rolling_averages": "Pievieno sensorus vidējai cenai nākamajās 30, 60 un 120 minūtēs.",
           "generation_enabled": "Iespējo eksporta cenas, akumulatora un arbitrāžas sensorus un pakalpojumus. Ražošanas iestatījumus konfigurējiet izvēlnē Ražošana un eksports."
         }
@@ -169,9 +184,9 @@
           "price_resolution": "Cenu izšķirtspēja",
           "display_unit": "Attēlošanas mērvienība",
           "vat_rate_pct": "PVN likme (%)",
-          "electricity_tax": "Elektroenerģijas nodoklis (c/kWh)",
-          "spot_commission": "Biržas cenas uzcenojums (c/kWh)",
-          "monthly_fixed_cost": "Elektroenerģijas līguma fiksētā maksa (€/mēnesī)",
+          "electricity_tax": "Elektroenerģijas nodoklis",
+          "spot_commission": "Biržas cenas uzcenojums",
+          "monthly_fixed_cost": "Elektroenerģijas līguma fiksētā maksa",
           "currency_mode": "Attēlošanas valūta",
           "fx_mode": "Valūtas kursa avots",
           "fx_rate": "Manuāls valūtas kurss (vietējā valūta par 1 EUR)"
@@ -190,7 +205,7 @@
         "title": "Pievienot grupu",
         "data": {
           "label": "Grupas nosaukums",
-          "monthly_fixed_cost": "Ikmēneša fiksētā maksa (€/mēnesī)"
+          "monthly_fixed_cost": "Ikmēneša fiksētā maksa"
         },
         "data_description": {
           "monthly_fixed_cost": "Pieslēguma maksa + līguma pamatmaksa. Bruto summa (ar PVN)."
@@ -200,7 +215,7 @@
         "title": "Rediģēt grupas iestatījumus",
         "data": {
           "label": "Grupas nosaukums",
-          "monthly_fixed_cost": "Ikmēneša fiksētā maksa (€/mēnesī)"
+          "monthly_fixed_cost": "Ikmēneša fiksētā maksa"
         },
         "data_description": {
           "monthly_fixed_cost": "Pieslēguma maksa + līguma pamatmaksa. Bruto summa (ar PVN)."
@@ -208,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Rediģēt grupu",
-        "description": "{group_label} — pievienojiet vai noņemiet līmeņus, vai iestatiet šo grupu kā aktīvo.",
+        "description": "{group_label}\n\n{tier_list}\n\nIzvēlieties līmeni, lai apskatītu un mainītu tā iestatījumus, pievienojiet jaunu vai iestatiet šo grupu kā aktīvo.",
         "data": {
           "action": "Darbība"
         }
@@ -217,7 +232,7 @@
         "title": "Pievienot sadales tarifu",
         "data": {
           "label": "Līmeņa nosaukums (piem., Ziemas darbdiena)",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktīvie mēneši",
           "weekdays": "Aktīvās nedēļas dienas",
           "hour_start": "Sākuma laiks (ieskaitot)",
@@ -225,10 +240,24 @@
           "priority": "Prioritāte (mazāka = pirmā)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Rediģēt sadales tarifu",
+        "description": "Mainiet vajadzīgos laukus vai atzīmējiet noņemšanu, lai līmeni dzēstu.",
+        "data": {
+          "label": "Līmeņa nosaukums (piem., Ziemas darbdiena)",
+          "price": "Cena",
+          "months": "Aktīvie mēneši",
+          "weekdays": "Aktīvās nedēļas dienas",
+          "hour_start": "Sākuma laiks (ieskaitot)",
+          "hour_end": "Beigu laiks (neieskaitot)",
+          "priority": "Prioritāte (mazāka = pirmā)",
+          "delete": "Noņemt šo līmeni"
+        }
+      },
       "thresholds": {
         "title": "Sliekšņi un vadība",
         "data": {
-          "max_price": "Vadības maksimālā cena (c/kWh)",
+          "max_price": "Vadības maksimālā cena",
           "price_threshold_includes_transfer": "Maksimālā cena ietver sadales tarifu",
           "max_rank": "Vadības maksimālais rangs",
           "forward_avg_hours": "Nākotnes vidējās vērtības loga garums (stundas)",
@@ -237,13 +266,13 @@
         }
       },
       "score_profiles": {
-        "title": "Punktu profili",
-        "data": {}
+        "title": "Punktu profili"
       },
       "advanced_options": {
         "title": "Papildu iestatījumi",
         "data": {
-          "expose_price_arrays": "Rādīt cenu masīvus kā sensora atribūtus (palielina DB izmēru)",
+          "expose_price_arrays": "Rādīt biržas cenas masīvus kā sensora atribūtus",
+          "expose_total_price_arrays": "Rādīt kopējās cenas masīvus kā sensora atribūtus",
           "high_precision": "Augstas precizitātes režīms",
           "show_rolling_averages": "Rādīt nākamo 30 min, 1 h un 2 h vidējās cenas",
           "generation_enabled": "Iespējot ražošanas un eksporta funkcijas"
@@ -298,13 +327,13 @@
         "description": "Konfigurējiet eksporta cenas un akumulatora iestatījumus. Iestatiet akumulatora ietilpību uz 0, lai atspējotu akumulatora sensorus.",
         "data": {
           "export_pricing_mode": "Eksporta cenu režīms",
-          "export_commission": "Eksporta marža (c/kWh, ko atskaita no biržas cenas)",
-          "fixed_export_rate": "Fiksētā eksporta cena (c/kWh)",
-          "export_price_threshold": "Eksporta cenas slieksnis (c/kWh)",
+          "export_commission": "Eksporta marža (ko atskaita no biržas cenas)",
+          "fixed_export_rate": "Fiksētā eksporta cena",
+          "export_price_threshold": "Eksporta cenas slieksnis",
           "solar_window_start": "Saules loga sākuma stunda",
           "solar_window_end": "Saules loga beigu stunda",
-          "battery_capacity_kwh": "Akumulatora ietilpība (kWh, 0 = atspējots)",
-          "battery_charge_power_kw": "Akumulatora uzlādes jauda (kW)"
+          "battery_capacity_kwh": "Akumulatora ietilpība (0 = atspējots)",
+          "battery_charge_power_kw": "Akumulatora uzlādes jauda"
         },
         "data_description": {
           "export_commission": "Tikai biržai piesaistītajā režīmā. Pārdevēja marža, ko atskaita no biržas API cenas (bez PVN). Mazie ražotāji par eksportu PVN parasti neiekasē.",
@@ -319,7 +348,7 @@
           "label": "Perioda nosaukums",
           "start_date": "Sākuma datums",
           "end_date": "Beigu datums (ieskaitot)",
-          "price": "Cena (c/kWh, ar PVN)"
+          "price": "Cena (ar PVN)"
         },
         "data_description": {
           "price": "Ievadiet cenu ar PVN. Šī cena tiek izmantota bez izmaiņām — PVN netiek pieskaitīts."
@@ -366,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Cenas vadības faktors (bipolārs)"
       },
+      "control_factor_total": {
+        "name": "Kopējās cenas vadības faktors"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Kopējās cenas vadības faktors (bipolārs)"
+      },
       "control_factor_transfer": {
         "name": "Sadales tarifa vadības faktors"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Sadales tarifa vadības faktors (bipolārs)"
       },
       "effective_price": {
         "name": "Aktīvā cena"

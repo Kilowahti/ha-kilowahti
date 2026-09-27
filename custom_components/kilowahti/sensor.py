@@ -28,7 +28,10 @@ from .const import (
     SENSOR_CHARGE_OPPORTUNITY_FACTOR,
     SENSOR_CONTROL_FACTOR_PRICE,
     SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR,
+    SENSOR_CONTROL_FACTOR_TOTAL,
+    SENSOR_CONTROL_FACTOR_TOTAL_BIPOLAR,
     SENSOR_CONTROL_FACTOR_TRANSFER,
+    SENSOR_CONTROL_FACTOR_TRANSFER_BIPOLAR,
     SENSOR_CURRENT_30MIN_AVG,
     SENSOR_CURRENT_60MIN_AVG,
     SENSOR_CURRENT_120MIN_AVG,
@@ -89,6 +92,8 @@ from .models import ScoreProfile
 
 _LOGGER = logging.getLogger(__name__)
 
+PARALLEL_UPDATES = 0
+
 _PRICE_SENSOR_KEYS = frozenset(
     {
         SENSOR_SPOT_PRICE,
@@ -133,7 +138,14 @@ _PRICE_SENSOR_KEYS = frozenset(
     }
 )
 _CONTROL_FACTOR_SENSOR_KEYS = frozenset(
-    {SENSOR_CONTROL_FACTOR_PRICE, SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR}
+    {
+        SENSOR_CONTROL_FACTOR_PRICE,
+        SENSOR_CONTROL_FACTOR_PRICE_BIPOLAR,
+        SENSOR_CONTROL_FACTOR_TOTAL,
+        SENSOR_CONTROL_FACTOR_TOTAL_BIPOLAR,
+        SENSOR_CONTROL_FACTOR_TRANSFER,
+        SENSOR_CONTROL_FACTOR_TRANSFER_BIPOLAR,
+    }
 )
 _ROLLING_AVG_SENSOR_KEYS = frozenset(
     {SENSOR_CURRENT_30MIN_AVG, SENSOR_CURRENT_60MIN_AVG, SENSOR_CURRENT_120MIN_AVG}
@@ -243,10 +255,31 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         native_unit_of_measurement=None,
     ),
     KilowahtiSensorEntityDescription(
+        key=SENSOR_CONTROL_FACTOR_TOTAL,
+        translation_key=SENSOR_CONTROL_FACTOR_TOTAL,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda c: round(c.control_factor_total() or 0.0, 3),
+        native_unit_of_measurement=None,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_CONTROL_FACTOR_TOTAL_BIPOLAR,
+        translation_key=SENSOR_CONTROL_FACTOR_TOTAL_BIPOLAR,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda c: round(c.control_factor_total_bipolar() or 0.0, 3),
+        native_unit_of_measurement=None,
+    ),
+    KilowahtiSensorEntityDescription(
         key=SENSOR_CONTROL_FACTOR_TRANSFER,
         translation_key=SENSOR_CONTROL_FACTOR_TRANSFER,
         state_class=SensorStateClass.MEASUREMENT,
-        value_fn=None,  # handled by KilowahtiTransferRankSensor
+        value_fn=lambda c: c.control_factor_transfer(),
+        native_unit_of_measurement=None,
+    ),
+    KilowahtiSensorEntityDescription(
+        key=SENSOR_CONTROL_FACTOR_TRANSFER_BIPOLAR,
+        translation_key=SENSOR_CONTROL_FACTOR_TRANSFER_BIPOLAR,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda c: c.control_factor_transfer_bipolar(),
         native_unit_of_measurement=None,
     ),
     KilowahtiSensorEntityDescription(
@@ -376,7 +409,7 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
         key=SENSOR_MONTHLY_FIXED_COST_TODAY,
         translation_key=SENSOR_MONTHLY_FIXED_COST_TODAY,
         state_class=SensorStateClass.MEASUREMENT,
-        native_unit_of_measurement="€",
+        # native_unit_of_measurement is dynamic (currency symbol from coordinator)
         value_fn=lambda c: c.monthly_fixed_cost_today(),
     ),
 )
@@ -405,9 +438,13 @@ async def async_setup_entry(
             continue
         if key == SENSOR_SPOT_PRICE:
             entities.append(KilowahtiSpotPriceSensor(coordinator, entry, description))
+        elif key == SENSOR_TOTAL_PRICE:
+            entities.append(KilowahtiTotalPriceSensor(coordinator, entry, description))
+        elif key == SENSOR_TRANSFER_PRICE:
+            entities.append(KilowahtiTransferPriceSensor(coordinator, entry, description))
         elif key == SENSOR_PRICE_DATA_SOURCE:
             entities.append(KilowahtiPriceDataSourceSensor(coordinator, entry, description))
-        elif key == SENSOR_CONTROL_FACTOR_TRANSFER:
+        elif key in (SENSOR_CONTROL_FACTOR_TRANSFER, SENSOR_CONTROL_FACTOR_TRANSFER_BIPOLAR):
             entities.append(KilowahtiTransferRankSensor(coordinator, entry, description))
         elif key in (SENSOR_OPTIMAL_CHARGE_WINDOW_START, SENSOR_OPTIMAL_CHARGE_WINDOW_END):
             entities.append(KilowahtiOptimalChargeWindowSensor(coordinator, entry, description))
@@ -481,6 +518,8 @@ class KilowahtiSensorBase(CoordinatorEntity[KilowahtiCoordinator], SensorEntity)
         # Price sensors inherit dynamic unit from coordinator
         if self.entity_description.key in _PRICE_SENSOR_KEYS:
             return self.coordinator.native_unit
+        if self.entity_description.key == SENSOR_MONTHLY_FIXED_COST_TODAY:
+            return self.coordinator.currency_symbol
         return self.entity_description.native_unit_of_measurement
 
     @property
@@ -519,6 +558,10 @@ class KilowahtiSensor(KilowahtiSensorBase):
 
 
 class KilowahtiSpotPriceSensor(KilowahtiSensor):
+    # Live data only: recording the arrays adds no history value and can exceed
+    # the recorder's per-state attribute size limit at 15-minute resolution.
+    _unrecorded_attributes = frozenset({"today_prices", "tomorrow_prices"})
+
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         attrs: dict[str, Any] = {"price_source": self.coordinator.price_source_name}
@@ -526,6 +569,41 @@ class KilowahtiSpotPriceSensor(KilowahtiSensor):
         if today_arr is not None:
             attrs["today_prices"] = today_arr
         tomorrow_arr = self.coordinator.tomorrow_price_array()
+        if tomorrow_arr is not None:
+            attrs["tomorrow_prices"] = tomorrow_arr
+        return attrs
+
+
+# ---------------------------------------------------------------------------
+# Transfer price sensor
+# ---------------------------------------------------------------------------
+
+
+class KilowahtiTransferPriceSensor(KilowahtiSensor):
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        return {
+            "tariff": self.coordinator.active_transfer_tariff(),
+            "group": self.coordinator.active_transfer_group_label(),
+            "tier": self.coordinator.active_transfer_tier_label(),
+        }
+
+
+# ---------------------------------------------------------------------------
+# Total price sensor (with optional price array attributes)
+# ---------------------------------------------------------------------------
+
+
+class KilowahtiTotalPriceSensor(KilowahtiSensor):
+    _unrecorded_attributes = frozenset({"today_prices", "tomorrow_prices"})
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        attrs: dict[str, Any] = {}
+        today_arr = self.coordinator.today_total_price_array()
+        if today_arr is not None:
+            attrs["today_prices"] = today_arr
+        tomorrow_arr = self.coordinator.tomorrow_total_price_array()
         if tomorrow_arr is not None:
             attrs["tomorrow_prices"] = tomorrow_arr
         return attrs
@@ -589,18 +667,11 @@ class KilowahtiEffectivePriceSensor(KilowahtiSensor):
 # ---------------------------------------------------------------------------
 
 
-class KilowahtiTransferRankSensor(KilowahtiSensorBase):
-    @property
-    def suggested_display_precision(self) -> int:
-        return 2
-
+class KilowahtiTransferRankSensor(KilowahtiSensor):
     @property
     def native_value(self) -> float | None:
-        info = self.coordinator.transfer_rank_info()
-        if info is None:
-            return None
-        rank, total = info
-        return 0.0 if total <= 1 else (rank - 1) / (total - 1)
+        value = super().native_value
+        return None if value is None else round(value, 3)
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:

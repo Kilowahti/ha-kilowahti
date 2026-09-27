@@ -33,9 +33,9 @@
         "description": "Předvyplněno podle vaší zóny. V případě potřeby upravte. Všechny ceny (distribuční pásma, období fixní ceny) se zadávají včetně DPH.",
         "data": {
           "vat_rate_pct": "Sazba DPH (%)",
-          "electricity_tax": "Daň z elektřiny (c/kWh)",
-          "spot_commission": "Marže ke spotové ceně (c/kWh)",
-          "monthly_fixed_cost": "Fixní náklady smlouvy o dodávce elektřiny (€/měsíc)"
+          "electricity_tax": "Daň z elektřiny",
+          "spot_commission": "Marže ke spotové ceně",
+          "monthly_fixed_cost": "Fixní náklady smlouvy o dodávce elektřiny"
         },
         "data_description": {
           "electricity_tax": "Pevná daň z elektřiny za kWh přičítaná ke spotové/fixní ceně.",
@@ -54,7 +54,7 @@
         "title": "Přidat skupinu",
         "data": {
           "label": "Název skupiny",
-          "monthly_fixed_cost": "Měsíční fixní náklady (€/měsíc)"
+          "monthly_fixed_cost": "Měsíční fixní náklady"
         },
         "data_description": {
           "monthly_fixed_cost": "Připojení k síti + stálý plat smlouvy. Hrubá částka (včetně DPH)."
@@ -64,7 +64,7 @@
         "title": "Upravit nastavení skupiny",
         "data": {
           "label": "Název skupiny",
-          "monthly_fixed_cost": "Měsíční fixní náklady (€/měsíc)"
+          "monthly_fixed_cost": "Měsíční fixní náklady"
         },
         "data_description": {
           "monthly_fixed_cost": "Připojení k síti + stálý plat smlouvy. Hrubá částka (včetně DPH)."
@@ -72,7 +72,7 @@
       },
       "transfer_group_detail": {
         "title": "Upravit skupinu",
-        "description": "{group_label} — Přidejte nebo odeberte pásma, nebo nastavte tuto skupinu jako aktivní.",
+        "description": "{group_label}\n\n{tier_list}\n\nVyberte pásmo, abyste zobrazili a upravili jeho nastavení, přidejte nové, nebo nastavte tuto skupinu jako aktivní.",
         "data": {
           "action": "Akce"
         }
@@ -82,7 +82,7 @@
         "description": "Vyhodnocují se v pořadí priority; vyhrává první shoda. Přidejte základní sazbu s nejnižší prioritou a bez časových omezení.",
         "data": {
           "label": "Název pásma",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktivní měsíce",
           "weekdays": "Aktivní dny",
           "hour_start": "Čas začátku (včetně)",
@@ -90,10 +90,24 @@
           "priority": "Priorita (nižší = dříve)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Upravit cenu distribuce",
+        "description": "Změňte libovolná pole, nebo zaškrtněte odstranění a pásmo se smaže.",
+        "data": {
+          "label": "Název pásma",
+          "price": "Cena",
+          "months": "Aktivní měsíce",
+          "weekdays": "Aktivní dny",
+          "hour_start": "Čas začátku (včetně)",
+          "hour_end": "Čas konce (mimo)",
+          "priority": "Priorita (nižší = dříve)",
+          "delete": "Odstranit toto pásmo"
+        }
+      },
       "thresholds": {
         "title": "Prahy a řízení",
         "data": {
-          "max_price": "Maximální cena pro řízení (c/kWh)",
+          "max_price": "Maximální cena pro řízení",
           "price_threshold_includes_transfer": "Maximální cena zahrnuje distribuci",
           "max_rank": "Maximální pořadí pro řízení",
           "forward_avg_hours": "Délka okna budoucího průměru (hodiny)",
@@ -111,21 +125,22 @@
       },
       "score_profiles": {
         "title": "Optimalizační skóre",
-        "description": "Skóre měří, jak dobře přesouváte spotřebu do levných hodin. Trvalý profil 'Total' pokrývá veškerou spotřebu — po nastavení k němu v možnostech připojte měřič (nebo měřiče).",
-        "data": {}
+        "description": "Skóre měří, jak dobře přesouváte spotřebu do levných hodin. Trvalý profil 'Total' pokrývá veškerou spotřebu — po nastavení k němu v možnostech připojte měřič (nebo měřiče)."
       },
       "advanced_options": {
         "title": "Pokročilé možnosti",
         "description": "Nastavte, jak se hodnoty senzorů zobrazují v Home Assistantu.",
         "data": {
-          "expose_price_arrays": "Zveřejnit cenová pole jako atributy senzoru (zvětšuje databázi)",
+          "expose_price_arrays": "Zveřejnit pole spotové ceny jako atributy senzoru",
+          "expose_total_price_arrays": "Zveřejnit pole celkové ceny jako atributy senzoru",
           "high_precision": "Režim vysoké přesnosti",
           "show_rolling_averages": "Zobrazit průměrné ceny na příštích 30 min, 1 h a 2 h",
           "generation_enabled": "Povolit funkce výroby a výkupu"
         },
         "data_description": {
-          "expose_price_arrays": "Zapisuje pole today_prices a tomorrow_prices do atributů senzoru spot_price, která se pak ukládají do databáze. Usnadňuje tvorbu grafů na dashboardu, ale pro jejich zobrazení není nutné a zbytečně zatěžuje databázi.",
-          "high_precision": "Při zapnutí zobrazují cenové senzory více desetinných míst. Atributy a výpočty vždy používají plnou přesnost.",
+          "expose_price_arrays": "Zapisuje pole today_prices a tomorrow_prices do atributů senzoru spot_price. Usnadňuje tvorbu grafů na dashboardu, ale pro jejich zobrazení není nutné. Pole se neukládají do databáze; pouze zvětšují aktuální stav senzoru.",
+          "expose_total_price_arrays": "Zapisuje pole today_prices a tomorrow_prices do atributů senzoru celkové ceny, kde každá položka obsahuje rozpad na energii a distribuci. Stejně jako pole spotové ceny se neukládají do databáze.",
+          "high_precision": "Při zapnutí zobrazují cenové senzory a atributy cenových polí více desetinných míst. Vnitřní výpočty vždy používají plnou přesnost.",
           "show_rolling_averages": "Přidá senzory průměrné ceny na příštích 30, 60 a 120 minut.",
           "generation_enabled": "Povolí senzory a služby výkupní ceny, baterie a arbitráže. Nastavení výroby najdete v nabídce Výroba a výkup."
         }
@@ -169,9 +184,9 @@
           "price_resolution": "Rozlišení cen",
           "display_unit": "Jednotka zobrazení",
           "vat_rate_pct": "Sazba DPH (%)",
-          "electricity_tax": "Daň z elektřiny (c/kWh)",
-          "spot_commission": "Marže ke spotové ceně (c/kWh)",
-          "monthly_fixed_cost": "Fixní náklady smlouvy o dodávce elektřiny (€/měsíc)",
+          "electricity_tax": "Daň z elektřiny",
+          "spot_commission": "Marže ke spotové ceně",
+          "monthly_fixed_cost": "Fixní náklady smlouvy o dodávce elektřiny",
           "currency_mode": "Měna zobrazení",
           "fx_mode": "Zdroj směnného kurzu",
           "fx_rate": "Ruční směnný kurz (místní měna za EUR)"
@@ -190,7 +205,7 @@
         "title": "Přidat skupinu",
         "data": {
           "label": "Název skupiny",
-          "monthly_fixed_cost": "Měsíční fixní náklady (€/měsíc)"
+          "monthly_fixed_cost": "Měsíční fixní náklady"
         },
         "data_description": {
           "monthly_fixed_cost": "Připojení k síti + stálý plat smlouvy. Hrubá částka (včetně DPH)."
@@ -200,7 +215,7 @@
         "title": "Upravit nastavení skupiny",
         "data": {
           "label": "Název skupiny",
-          "monthly_fixed_cost": "Měsíční fixní náklady (€/měsíc)"
+          "monthly_fixed_cost": "Měsíční fixní náklady"
         },
         "data_description": {
           "monthly_fixed_cost": "Připojení k síti + stálý plat smlouvy. Hrubá částka (včetně DPH)."
@@ -208,7 +223,7 @@
       },
       "transfer_group_detail": {
         "title": "Upravit skupinu",
-        "description": "{group_label} — Přidejte nebo odeberte pásma, nebo nastavte tuto skupinu jako aktivní.",
+        "description": "{group_label}\n\n{tier_list}\n\nVyberte pásmo, abyste zobrazili a upravili jeho nastavení, přidejte nové, nebo nastavte tuto skupinu jako aktivní.",
         "data": {
           "action": "Akce"
         }
@@ -217,7 +232,7 @@
         "title": "Přidat cenu distribuce",
         "data": {
           "label": "Název pásma (např. Zimní všední den)",
-          "price": "Cena (c/kWh)",
+          "price": "Cena",
           "months": "Aktivní měsíce",
           "weekdays": "Aktivní dny",
           "hour_start": "Čas začátku (včetně)",
@@ -225,10 +240,24 @@
           "priority": "Priorita (nižší = dříve)"
         }
       },
+      "edit_transfer_tier": {
+        "title": "Upravit cenu distribuce",
+        "description": "Změňte libovolná pole, nebo zaškrtněte odstranění a pásmo se smaže.",
+        "data": {
+          "label": "Název pásma (např. Zimní všední den)",
+          "price": "Cena",
+          "months": "Aktivní měsíce",
+          "weekdays": "Aktivní dny",
+          "hour_start": "Čas začátku (včetně)",
+          "hour_end": "Čas konce (mimo)",
+          "priority": "Priorita (nižší = dříve)",
+          "delete": "Odstranit toto pásmo"
+        }
+      },
       "thresholds": {
         "title": "Prahy a řízení",
         "data": {
-          "max_price": "Maximální cena pro řízení (c/kWh)",
+          "max_price": "Maximální cena pro řízení",
           "price_threshold_includes_transfer": "Maximální cena zahrnuje distribuci",
           "max_rank": "Maximální pořadí pro řízení",
           "forward_avg_hours": "Délka okna budoucího průměru (hodiny)",
@@ -237,13 +266,13 @@
         }
       },
       "score_profiles": {
-        "title": "Profily skóre",
-        "data": {}
+        "title": "Profily skóre"
       },
       "advanced_options": {
         "title": "Pokročilé možnosti",
         "data": {
-          "expose_price_arrays": "Zveřejnit cenová pole jako atributy senzoru (zvětšuje databázi)",
+          "expose_price_arrays": "Zveřejnit pole spotové ceny jako atributy senzoru",
+          "expose_total_price_arrays": "Zveřejnit pole celkové ceny jako atributy senzoru",
           "high_precision": "Režim vysoké přesnosti",
           "show_rolling_averages": "Zobrazit průměrné ceny na příštích 30 min, 1 h a 2 h",
           "generation_enabled": "Povolit funkce výroby a výkupu"
@@ -298,13 +327,13 @@
         "description": "Nastavte výkupní ceny a parametry baterie. Nastavením kapacity baterie na 0 vypnete senzory baterie.",
         "data": {
           "export_pricing_mode": "Režim výkupní ceny",
-          "export_commission": "Výkupní marže (c/kWh, odečtená od spotu)",
-          "fixed_export_rate": "Pevná výkupní sazba (c/kWh)",
-          "export_price_threshold": "Práh výkupní ceny (c/kWh)",
+          "export_commission": "Výkupní marže (odečtená od spotu)",
+          "fixed_export_rate": "Pevná výkupní sazba",
+          "export_price_threshold": "Práh výkupní ceny",
           "solar_window_start": "Hodina začátku solárního okna",
           "solar_window_end": "Hodina konce solárního okna",
-          "battery_capacity_kwh": "Kapacita baterie (kWh, 0 = vypnuto)",
-          "battery_charge_power_kw": "Nabíjecí výkon baterie (kW)"
+          "battery_capacity_kwh": "Kapacita baterie (0 = vypnuto)",
+          "battery_charge_power_kw": "Nabíjecí výkon baterie"
         },
         "data_description": {
           "export_commission": "Pouze v režimu vázaném na spot. Marže odběratele odečtená od spotové ceny API (bez DPH). Malí výrobci obvykle z dodávek do sítě DPH neodvádějí.",
@@ -319,7 +348,7 @@
           "label": "Název období",
           "start_date": "Datum začátku",
           "end_date": "Datum konce (včetně)",
-          "price": "Cena (c/kWh, včetně DPH)"
+          "price": "Cena (včetně DPH)"
         },
         "data_description": {
           "price": "Zadejte cenu včetně DPH. Tato cena se používá tak, jak je — DPH se nepřičítá."
@@ -366,8 +395,17 @@
       "control_factor_price_bipolar": {
         "name": "Řídicí faktor ceny (bipolární)"
       },
+      "control_factor_total": {
+        "name": "Řídicí faktor celkové ceny"
+      },
+      "control_factor_total_bipolar": {
+        "name": "Řídicí faktor celkové ceny (bipolární)"
+      },
       "control_factor_transfer": {
         "name": "Řídicí faktor distribuce"
+      },
+      "control_factor_transfer_bipolar": {
+        "name": "Řídicí faktor distribuce (bipolární)"
       },
       "effective_price": {
         "name": "Aktivní cena"
