@@ -694,7 +694,7 @@
         "step": {
           "confirm": {
             "title": "Redenumește ID-urile entităților",
-            "description": "{count} entități din {name} folosesc încă ID-uri construite din numele afișate, care diferă în funcție de limbă și versiune. Confirmarea le redenumește cu ID-urile stabile listate pe [pagina entităților]({entities_url}). Automatizările, scripturile, șabloanele și dashboard-urile care fac referire la vechile ID-uri trebuie actualizate manual după aceea. Entitățile pe care le-ai redenumit tu nu sunt modificate; istoricul și statisticile se păstrează."
+            "description": "{count} entități din {name} folosesc încă ID-uri construite din numele afișate, care diferă în funcție de limbă și versiune. Confirmarea le redenumește cu ID-urile stabile listate pe [pagina entităților]({entities_url}). Entitățile pe care le-ai redenumit tu nu sunt modificate; istoricul și statisticile se păstrează.\n\nFac referire la ele aceste automatizări, scripturi, scene și grupuri, care trebuie actualizate manual după aceea. Dashboard-urile, șabloanele și alte sisteme nu sunt verificate, așa că verifică-le și pe acelea:\n\n{usage}"
           }
         }
       }

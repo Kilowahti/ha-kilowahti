@@ -694,7 +694,7 @@
         "step": {
           "confirm": {
             "title": "Pervadinti esybių ID",
-            "description": "{name}: {count} esybių vis dar naudoja ID, sudarytus iš rodomų pavadinimų, kurie skiriasi priklausomai nuo kalbos ir versijos. Patvirtinus jos bus pervadintos į stabilius ID, išvardytus [esybių puslapyje]({entities_url}). Automatizacijas, scenarijus, šablonus ir skydelius, kurie naudoja senus ID, vėliau reikės atnaujinti rankiniu būdu. Jūsų pačių pervadintos esybės nekeičiamos; istorija ir statistika išsaugomos."
+            "description": "{name}: {count} esybių vis dar naudoja ID, sudarytus iš rodomų pavadinimų, kurie skiriasi priklausomai nuo kalbos ir versijos. Patvirtinus jos bus pervadintos į stabilius ID, išvardytus [esybių puslapyje]({entities_url}). Jūsų pačių pervadintos esybės nekeičiamos; istorija ir statistika išsaugomos.\n\nĮ jas remiasi šios automatizacijos, scenarijai, scenos ir grupės, kurias vėliau reikės atnaujinti rankiniu būdu. Skydeliai, šablonai ir kitos sistemos netikrinami, todėl patikrinkite ir juos:\n\n{usage}"
           }
         }
       }

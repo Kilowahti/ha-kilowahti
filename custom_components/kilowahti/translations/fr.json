@@ -694,7 +694,7 @@
         "step": {
           "confirm": {
             "title": "Renommer les identifiants d'entités",
-            "description": "{count} entités de {name} utilisent encore des identifiants construits à partir de leurs noms affichés, qui varient selon la langue et la version. La confirmation les renomme avec les identifiants stables listés sur la [page des entités]({entities_url}). Les automatisations, scripts, modèles et tableaux de bord qui font référence aux anciens identifiants devront ensuite être mis à jour à la main. Les entités que vous avez renommées vous-même ne sont pas modifiées ; l'historique et les statistiques sont conservés."
+            "description": "{count} entités de {name} utilisent encore des identifiants construits à partir de leurs noms affichés, qui varient selon la langue et la version. La confirmation les renomme avec les identifiants stables listés sur la [page des entités]({entities_url}). Les entités que vous avez renommées vous-même ne sont pas modifiées ; l'historique et les statistiques sont conservés.\n\nCes automatisations, scripts, scènes et groupes y font référence et devront ensuite être mis à jour à la main. Les tableaux de bord, modèles et autres systèmes ne sont pas vérifiés, regardez-y donc aussi :\n\n{usage}"
           }
         }
       }

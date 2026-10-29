@@ -696,7 +696,7 @@
         "step": {
           "confirm": {
             "title": "Rename entity IDs",
-            "description": "{count} entities of {name} still use entity IDs built from their display names, which differ between languages and releases. Submitting renames them to the stable IDs listed on the [entities page]({entities_url}). Automations, scripts, templates and dashboards that reference the old IDs must be updated by hand afterwards. Entities you renamed yourself are not touched; history and statistics are kept."
+            "description": "{count} entities of {name} still use entity IDs built from their display names, which differ between languages and releases. Submitting renames them to the stable IDs listed on the [entities page]({entities_url}). Entities you renamed yourself are not touched; history and statistics are kept.\n\nThese automations, scripts, scenes and groups reference them and must be updated by hand afterwards. Dashboards, templates and other systems are not checked, so look there too:\n\n{usage}"
           }
         }
       }

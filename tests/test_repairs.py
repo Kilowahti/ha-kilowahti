@@ -10,6 +10,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from custom_components.kilowahti.const import DOMAIN
 from custom_components.kilowahti.repairs import async_create_fix_flow, async_update_failover_issue
 from homeassistant.helpers import device_registry as dr, entity_registry as er, issue_registry as ir
+from homeassistant.setup import async_setup_component
 from homeassistant.util import dt as dt_util
 
 from .conftest import TODAY_PAYLOAD, TODAY_URL_RE, TOMORROW_URL_RE
@@ -178,3 +179,52 @@ async def test_no_issue_once_ids_are_stable(hass, options, mock_utcnow):
     await hass.async_block_till_done()
 
     assert ir.async_get(hass).async_get_issue(DOMAIN, issue.issue_id) is None
+
+
+async def test_confirm_step_lists_automations_using_the_entities(hass, options, mock_utcnow):
+    """The user sees which automations reference the entities before confirming."""
+    await hass.config.async_set_time_zone("UTC")
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=options)
+    entry.add_to_hass(hass)
+    _register(hass, entry, "spot_price", "Spot-hinta", "kilowahti_test_home_spot_hinta")
+    assert await async_setup_component(
+        hass,
+        "automation",
+        {
+            "automation": {
+                "alias": "Heat when cheap",
+                "triggers": {
+                    "trigger": "state",
+                    "entity_id": "sensor.kilowahti_test_home_spot_hinta",
+                },
+                "actions": [],
+            }
+        },
+    )
+
+    await _setup(hass, entry)
+    issue = ir.async_get(hass).async_get_issue(DOMAIN, f"stable_entity_ids_{entry.entry_id}")
+    flow = await async_create_fix_flow(hass, issue.issue_id, issue.data)
+    flow.hass, flow.handler, flow.issue_id = hass, DOMAIN, issue.issue_id
+
+    result = await flow.async_step_confirm()
+
+    placeholders = result["description_placeholders"]
+    assert placeholders["count"] == "1"
+    assert "Heat when cheap" in placeholders["usage"]
+
+
+async def test_confirm_step_without_references_shows_a_dash(hass, options, mock_utcnow):
+    await hass.config.async_set_time_zone("UTC")
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=options)
+    entry.add_to_hass(hass)
+    _register(hass, entry, "spot_price", "Spot-hinta", "kilowahti_test_home_spot_hinta")
+
+    await _setup(hass, entry)
+    issue = ir.async_get(hass).async_get_issue(DOMAIN, f"stable_entity_ids_{entry.entry_id}")
+    flow = await async_create_fix_flow(hass, issue.issue_id, issue.data)
+    flow.hass, flow.handler, flow.issue_id = hass, DOMAIN, issue.issue_id
+
+    result = await flow.async_step_confirm()
+
+    assert result["description_placeholders"]["usage"] == "—"

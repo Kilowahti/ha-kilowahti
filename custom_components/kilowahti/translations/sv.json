@@ -696,7 +696,7 @@
         "step": {
           "confirm": {
             "title": "Byt namn på entitets-ID:n",
-            "description": "{count} entiteter i {name} använder fortfarande entitets-ID:n som bygger på visningsnamnen, vilka skiljer sig mellan språk och versioner. Bekräftelsen byter namn på dem till de stabila ID:n som listas på [entitetssidan]({entities_url}). Automationer, skript, mallar och instrumentpaneler som refererar till de gamla ID:na måste uppdateras manuellt efteråt. Entiteter du själv har döpt om lämnas orörda; historik och statistik bevaras."
+            "description": "{count} entiteter i {name} använder fortfarande entitets-ID:n som bygger på visningsnamnen, vilka skiljer sig mellan språk och versioner. Bekräftelsen byter namn på dem till de stabila ID:n som listas på [entitetssidan]({entities_url}). Entiteter du själv har döpt om lämnas orörda; historik och statistik bevaras.\n\nDessa automationer, skript, scener och grupper refererar till dem och måste uppdateras manuellt efteråt. Instrumentpaneler, mallar och andra system kontrolleras inte, så titta även där:\n\n{usage}"
           }
         }
       }

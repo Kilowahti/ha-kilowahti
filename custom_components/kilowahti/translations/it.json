@@ -694,7 +694,7 @@
         "step": {
           "confirm": {
             "title": "Rinomina gli ID delle entità",
-            "description": "{count} entità di {name} usano ancora ID costruiti dai nomi visualizzati, che cambiano con la lingua e la versione. Confermando, vengono rinominate con gli ID stabili elencati nella [pagina delle entità]({entities_url}). Automazioni, script, template e dashboard che fanno riferimento ai vecchi ID dovranno poi essere aggiornati a mano. Le entità che hai rinominato tu non vengono toccate; cronologia e statistiche vengono mantenute."
+            "description": "{count} entità di {name} usano ancora ID costruiti dai nomi visualizzati, che cambiano con la lingua e la versione. Confermando, vengono rinominate con gli ID stabili elencati nella [pagina delle entità]({entities_url}). Le entità che hai rinominato tu non vengono toccate; cronologia e statistiche vengono mantenute.\n\nVi fanno riferimento queste automazioni, script, scene e gruppi, che dovranno poi essere aggiornati a mano. Dashboard, template e altri sistemi non vengono controllati, quindi verifica anche lì:\n\n{usage}"
           }
         }
       }

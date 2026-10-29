@@ -694,7 +694,7 @@
         "step": {
           "confirm": {
             "title": "Entiteit-ID's hernoemen",
-            "description": "{count} entiteiten van {name} gebruiken nog entiteit-ID's die zijn afgeleid van hun weergavenamen, en die per taal en versie verschillen. Bevestigen hernoemt ze naar de stabiele ID's op de [entiteitenpagina]({entities_url}). Automatiseringen, scripts, sjablonen en dashboards die naar de oude ID's verwijzen, moet je daarna handmatig bijwerken. Entiteiten die je zelf hebt hernoemd blijven ongemoeid; geschiedenis en statistieken blijven behouden."
+            "description": "{count} entiteiten van {name} gebruiken nog entiteit-ID's die zijn afgeleid van hun weergavenamen, en die per taal en versie verschillen. Bevestigen hernoemt ze naar de stabiele ID's op de [entiteitenpagina]({entities_url}). Entiteiten die je zelf hebt hernoemd blijven ongemoeid; geschiedenis en statistieken blijven behouden.\n\nNaar deze entiteiten verwijzen de volgende automatiseringen, scripts, scènes en groepen, die je daarna handmatig moet bijwerken. Dashboards, sjablonen en andere systemen worden niet gecontroleerd, dus kijk daar ook:\n\n{usage}"
           }
         }
       }

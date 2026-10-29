@@ -694,7 +694,7 @@
         "step": {
           "confirm": {
             "title": "Preimenuj ID-ove entiteta",
-            "description": "{count} entiteta iz {name} još uvijek koristi ID-ove nastale iz prikazanih naziva, koji se razlikuju prema jeziku i verziji. Potvrdom se preimenuju u stabilne ID-ove navedene na [stranici entiteta]({entities_url}). Automatizacije, skripte, predloške i nadzorne ploče koji upućuju na stare ID-ove morate poslije ručno ažurirati. Entiteti koje ste sami preimenovali ne mijenjaju se; povijest i statistika ostaju sačuvani."
+            "description": "{count} entiteta iz {name} još uvijek koristi ID-ove nastale iz prikazanih naziva, koji se razlikuju prema jeziku i verziji. Potvrdom se preimenuju u stabilne ID-ove navedene na [stranici entiteta]({entities_url}). Entiteti koje ste sami preimenovali ne mijenjaju se; povijest i statistika ostaju sačuvani.\n\nNa njih upućuju ove automatizacije, skripte, scene i grupe, koje morate poslije ručno ažurirati. Nadzorne ploče, predlošci i drugi sustavi ne provjeravaju se, pa provjerite i njih:\n\n{usage}"
           }
         }
       }

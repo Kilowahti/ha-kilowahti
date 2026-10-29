@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import logging
 from datetime import datetime, timedelta
+
+import voluptuous as vol
 
 from homeassistant.components.repairs import ConfirmRepairFlow, RepairsFlow
 from homeassistant.config_entries import ConfigEntry
@@ -10,8 +13,14 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers import issue_registry as ir
 from homeassistant.util import dt as dt_util
 
-from ._migrate import async_find_renamable_entity_ids, async_rename_to_stable_entity_ids
+from ._migrate import (
+    async_find_renamable_entity_ids,
+    async_plan_stable_renames,
+    async_rename_to_stable_entity_ids,
+)
 from .const import DOMAIN
+
+_LOGGER = logging.getLogger(__name__)
 
 STALE_FAILOVER_THRESHOLD = timedelta(hours=24)
 FAQ_URL = "https://docs.kilowahti.fi/faq/"
@@ -103,8 +112,39 @@ def async_check_stable_entity_ids(hass: HomeAssistant, entry: ConfigEntry) -> No
     )
 
 
+# Item types of Home Assistant's search integration that hold entity references.
+_USAGE_TYPES = ("automation", "script", "scene", "group")
+_USAGE_LIMIT = 10
+
+
+def async_find_entity_usage(hass: HomeAssistant, entity_ids: list[str]) -> list[str]:
+    """Name the automations, scripts, scenes and groups that reference the entities.
+
+    Dashboards and templates are not covered by Home Assistant's search. Returns an
+    empty list when the search is unavailable.
+    """
+    try:
+        from homeassistant.components.search import ItemType, Searcher
+        from homeassistant.helpers.entity import entity_sources
+
+        found: set[str] = set()
+        for entity_id in entity_ids:
+            related = Searcher(hass, entity_sources(hass)).async_search(ItemType.ENTITY, entity_id)
+            for item_type in _USAGE_TYPES:
+                found.update(related.get(item_type, ()))
+    except Exception:  # noqa: BLE001 - the list is advisory; never block the rename
+        _LOGGER.debug("Entity usage search failed", exc_info=True)
+        return []
+
+    names = []
+    for item_id in sorted(found):
+        state = hass.states.get(item_id)
+        names.append(f"{state.name} (`{item_id}`)" if state else f"`{item_id}`")
+    return names
+
+
 class StableEntityIdsFlow(ConfirmRepairFlow):
-    """Rename the stored entities after the user confirms."""
+    """Show where the entities are used, then rename them after the user confirms."""
 
     def __init__(self, entry_id: str, entity_ids: list[str]) -> None:
         self._entry_id = entry_id
@@ -113,7 +153,24 @@ class StableEntityIdsFlow(ConfirmRepairFlow):
     async def async_step_confirm(self, user_input: dict[str, str] | None = None):
         if user_input is not None:
             async_rename_to_stable_entity_ids(self.hass, self._entry_id, self._entity_ids)
-        return await super().async_step_confirm(user_input)
+            return self.async_create_entry(data={})
+
+        plan = async_plan_stable_renames(self.hass, self._entry_id, self._entity_ids)
+        usage = async_find_entity_usage(self.hass, list(plan))
+        shown = [f"- {item}" for item in usage[:_USAGE_LIMIT]]
+        if len(usage) > _USAGE_LIMIT:
+            shown.append(f"- … (+{len(usage) - _USAGE_LIMIT})")
+
+        issue = ir.async_get(self.hass).async_get_issue(self.handler, self.issue_id)
+        return self.async_show_form(
+            step_id="confirm",
+            data_schema=vol.Schema({}),
+            description_placeholders={
+                **(issue.translation_placeholders if issue else {}),
+                "count": str(len(plan)),
+                "usage": "\n".join(shown) or "—",
+            },
+        )
 
 
 async def async_create_fix_flow(

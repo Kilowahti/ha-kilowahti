@@ -694,7 +694,7 @@
         "step": {
           "confirm": {
             "title": "Pārdēvēt entītiju ID",
-            "description": "{name}: {count} entītijas joprojām izmanto ID, kas veidoti no attēlotajiem nosaukumiem un atšķiras starp valodām un versijām. Apstiprinot, tās tiks pārdēvētas uz stabilajiem ID, kas norādīti [entītiju lapā]({entities_url}). Automatizācijas, skripti, veidnes un informācijas paneļi, kas atsaucas uz vecajiem ID, pēc tam jāatjaunina manuāli. Entītijas, kuras esat pārdēvējis pats, netiek mainītas; vēsture un statistika tiek saglabāta."
+            "description": "{name}: {count} entītijas joprojām izmanto ID, kas veidoti no attēlotajiem nosaukumiem un atšķiras starp valodām un versijām. Apstiprinot, tās tiks pārdēvētas uz stabilajiem ID, kas norādīti [entītiju lapā]({entities_url}). Entītijas, kuras esat pārdēvējis pats, netiek mainītas; vēsture un statistika tiek saglabāta.\n\nUz tām atsaucas šīs automatizācijas, skripti, ainas un grupas, kas pēc tam jāatjaunina manuāli. Informācijas paneļi, veidnes un citas sistēmas netiek pārbaudītas, tāpēc pārbaudiet arī tos:\n\n{usage}"
           }
         }
       }

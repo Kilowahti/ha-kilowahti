@@ -694,7 +694,7 @@
         "step": {
           "confirm": {
             "title": "Entitäts-IDs umbenennen",
-            "description": "{count} Entitäten von {name} verwenden noch Entitäts-IDs, die aus den Anzeigenamen gebildet wurden und sich je nach Sprache und Version unterscheiden. Mit dem Bestätigen werden sie auf die stabilen IDs umbenannt, die auf der [Entitäten-Seite]({entities_url}) aufgeführt sind. Automatisierungen, Skripte, Vorlagen und Dashboards, die auf die alten IDs verweisen, musst du danach manuell anpassen. Von dir selbst umbenannte Entitäten bleiben unberührt; Verlauf und Statistiken bleiben erhalten."
+            "description": "{count} Entitäten von {name} verwenden noch Entitäts-IDs, die aus den Anzeigenamen gebildet wurden und sich je nach Sprache und Version unterscheiden. Mit dem Bestätigen werden sie auf die stabilen IDs umbenannt, die auf der [Entitäten-Seite]({entities_url}) aufgeführt sind. Von dir selbst umbenannte Entitäten bleiben unberührt; Verlauf und Statistiken bleiben erhalten.\n\nAuf sie verweisen diese Automatisierungen, Skripte, Szenen und Gruppen, die du danach manuell anpassen musst. Dashboards, Vorlagen und andere Systeme werden nicht geprüft, schau also auch dort nach:\n\n{usage}"
           }
         }
       }

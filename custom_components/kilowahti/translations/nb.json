@@ -694,7 +694,7 @@
         "step": {
           "confirm": {
             "title": "Gi nytt navn til entitets-ID-er",
-            "description": "{count} entiteter i {name} bruker fortsatt entitets-ID-er laget av visningsnavnene, som varierer mellom språk og versjoner. Bekreftelsen gir dem nytt navn til de stabile ID-ene som er oppført på [entitetssiden]({entities_url}). Automatiseringer, skript, maler og dashbord som refererer til de gamle ID-ene må oppdateres manuelt etterpå. Entiteter du selv har gitt nytt navn, berøres ikke; historikk og statistikk beholdes."
+            "description": "{count} entiteter i {name} bruker fortsatt entitets-ID-er laget av visningsnavnene, som varierer mellom språk og versjoner. Bekreftelsen gir dem nytt navn til de stabile ID-ene som er oppført på [entitetssiden]({entities_url}). Entiteter du selv har gitt nytt navn, berøres ikke; historikk og statistikk beholdes.\n\nDisse automatiseringene, skriptene, scenene og gruppene refererer til dem og må oppdateres manuelt etterpå. Dashbord, maler og andre systemer kontrolleres ikke, så sjekk dem også:\n\n{usage}"
           }
         }
       }

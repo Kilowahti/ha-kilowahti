@@ -119,15 +119,16 @@ def async_find_renamable_entity_ids(hass: HomeAssistant, entry: ConfigEntry) -> 
     return found
 
 
-def async_rename_to_stable_entity_ids(
+def async_plan_stable_renames(
     hass: HomeAssistant, entry_id: str, entity_ids: list[str]
-) -> int:
-    """Rename the given entities to their stable IDs, returning how many changed.
+) -> dict[str, str]:
+    """Map each listed entity ID to its stable ID, leaving out entities that cannot move.
 
-    Entities that no longer exist or whose stable ID is already taken are skipped.
+    Entities that no longer exist, already have the stable ID, or whose stable ID
+    is taken are omitted.
     """
     registry = er.async_get(hass)
-    renamed = 0
+    plan = {}
     for entity_id in entity_ids:
         entity = registry.async_get(entity_id)
         if entity is None or entity.config_entry_id != entry_id:
@@ -138,6 +139,16 @@ def async_rename_to_stable_entity_ids(
         if registry.async_get(ids[0]) is not None or hass.states.get(ids[0]) is not None:
             _LOGGER.warning("Cannot rename %s to %s: ID already in use", entity_id, ids[0])
             continue
-        registry.async_update_entity(entity_id, new_entity_id=ids[0])
-        renamed += 1
-    return renamed
+        plan[entity_id] = ids[0]
+    return plan
+
+
+def async_rename_to_stable_entity_ids(
+    hass: HomeAssistant, entry_id: str, entity_ids: list[str]
+) -> int:
+    """Rename the given entities to their stable IDs, returning how many changed."""
+    registry = er.async_get(hass)
+    plan = async_plan_stable_renames(hass, entry_id, entity_ids)
+    for entity_id, stable_id in plan.items():
+        registry.async_update_entity(entity_id, new_entity_id=stable_id)
+    return len(plan)
