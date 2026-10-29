@@ -1094,7 +1094,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
                     )
         self._options[CONF_TRANSFER_GROUPS] = groups
 
-        coordinator = self.hass.data.get(DOMAIN, {}).get(self._entry.entry_id)
+        coordinator = getattr(self._entry, "runtime_data", None)
         if coordinator is not None:
             await coordinator._storage.async_scale_period_prices(factor)
             _LOGGER.info("Currency flip: fixed-period prices scaled by %.6f", factor)
@@ -1105,7 +1105,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
         if self._options.get(CONF_FX_MODE) == FX_MODE_MANUAL:
             manual = float(self._options.get(CONF_FX_RATE) or 0.0)
             return manual if manual > 0 else None
-        coordinator = self.hass.data.get(DOMAIN, {}).get(self._entry.entry_id)
+        coordinator = getattr(self._entry, "runtime_data", None)
         if coordinator is not None and coordinator._fx_active_rate:
             return coordinator._fx_active_rate
         currency = _region_currency(region)
@@ -1531,9 +1531,7 @@ class KilowahtiOptionsFlow(OptionsFlow):
     # ------ Fixed-price periods -------------------------------------------
 
     def _coordinator(self):
-        from .const import DOMAIN
-
-        return self.hass.data[DOMAIN][self._entry.entry_id]
+        return self._entry.runtime_data
 
     async def async_step_fixed_periods(self, user_input: dict | None = None):
         coordinator = self._coordinator()

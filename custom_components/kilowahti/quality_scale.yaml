@@ -40,8 +40,8 @@ rules:
   entity-unique-id: done
   has-entity-name: done
   runtime-data:
-    status: todo
-    comment: "Coordinators are stored in hass.data."
+    status: done
+    comment: "The coordinator is stored on entry.runtime_data."
   test-before-configure:
     status: exempt
     comment: "No host or credentials. Prices come from public sources with a fallback chain, so a connection test in the flow adds nothing."

@@ -130,7 +130,11 @@ GENERATION_SCHEDULE_SCHEMA = vol.Schema(
 
 
 def _get_coordinator(hass: HomeAssistant, entry_id: str | None) -> KilowahtiCoordinator:
-    coordinators: dict[str, KilowahtiCoordinator] = hass.data.get(DOMAIN, {})
+    coordinators: dict[str, KilowahtiCoordinator] = {
+        entry.entry_id: entry.runtime_data
+        for entry in hass.config_entries.async_entries(DOMAIN)
+        if hasattr(entry, "runtime_data")
+    }
 
     if not coordinators:
         raise ServiceValidationError(

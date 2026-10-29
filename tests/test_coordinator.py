@@ -37,6 +37,7 @@ from custom_components.kilowahti.const import (
     PRICE_SOURCE_SPOT_HINTA,
     UNIT_EUROKWH,
 )
+from custom_components.kilowahti.coordinator import KilowahtiCoordinator
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.helpers import issue_registry as ir
 
@@ -65,7 +66,7 @@ async def test_startup_fetches_api_when_no_cache(hass, mock_config_entry, mock_u
         await hass.config_entries.async_setup(mock_config_entry.entry_id)
         await hass.async_block_till_done()
 
-    coord = hass.data[DOMAIN][mock_config_entry.entry_id]
+    coord = mock_config_entry.runtime_data
     assert len(coord.today_slots()) == 3
     assert coord._today_date == FROZEN_DATE
 
@@ -91,7 +92,7 @@ async def test_startup_uses_valid_cache(hass, mock_config_entry, mock_utcnow):
         await hass.config_entries.async_setup(mock_config_entry.entry_id)
         await hass.async_block_till_done()
 
-    coord = hass.data[DOMAIN][mock_config_entry.entry_id]
+    coord = mock_config_entry.runtime_data
     assert len(coord.today_slots()) == 3
 
 
@@ -111,7 +112,7 @@ async def test_startup_fails_gracefully_on_api_error(hass, mock_config_entry, mo
 
     # ConfigEntryNotReady → SETUP_RETRY (will be retried by HA automatically)
     assert mock_config_entry.state == ConfigEntryState.SETUP_RETRY
-    assert mock_config_entry.entry_id not in hass.data.get(DOMAIN, {})
+    assert not hasattr(mock_config_entry, "runtime_data")
 
 
 # ---------------------------------------------------------------------------
@@ -121,7 +122,7 @@ async def test_startup_fails_gracefully_on_api_error(hass, mock_config_entry, mo
 
 async def test_midnight_rollover_promotes_tomorrow(hass, setup_integration, mock_utcnow):
     """Midnight rollover replaces today's slots with tomorrow's slots."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
 
     # Inject tomorrow slots directly.
     tomorrow_slots = [
@@ -154,7 +155,7 @@ async def test_midnight_rollover_promotes_tomorrow(hass, setup_integration, mock
 
 async def test_eager_poll_reschedules_when_tomorrow_unavailable(hass, setup_integration):
     """When DayForward returns nothing, _async_eager_poll schedules a retry."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     coord._tomorrow_slots = None
 
     # Pretend we're at 15:00 UTC — inside the eager window (13–21).
@@ -174,7 +175,7 @@ async def test_eager_poll_reschedules_when_tomorrow_unavailable(hass, setup_inte
 
 async def test_eager_poll_stores_tomorrow_on_success(hass, setup_integration):
     """When DayForward returns data, tomorrow slots are stored."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     coord._tomorrow_slots = None
 
     eager_time = datetime(2026, 3, 13, 15, 0, 0, tzinfo=timezone.utc)
@@ -195,7 +196,7 @@ async def test_eager_poll_window_close_uses_cet_not_ha_local(hass, setup_integra
     (pre-DST), so it's already 21:15 CET — past the cutoff. No request
     should be attempted; an unmatched request would raise via aioresponses.
     """
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     coord._tomorrow_slots = None
 
     past_cutoff_in_cet = datetime(2026, 3, 13, 20, 15, 0, tzinfo=timezone.utc)
@@ -214,7 +215,7 @@ async def test_eager_poll_window_close_uses_cet_not_ha_local(hass, setup_integra
 
 async def test_set_price_threshold_persists(hass, setup_integration):
     """set_price_threshold updates instance var and persists to entry options."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     entry = setup_integration
 
     coord.set_price_threshold(5.0)
@@ -225,7 +226,7 @@ async def test_set_price_threshold_persists(hass, setup_integration):
 
 async def test_set_rank_threshold_persists(hass, setup_integration):
     """set_rank_threshold updates instance var and persists to entry options."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     entry = setup_integration
 
     coord.set_rank_threshold(10)
@@ -255,13 +256,13 @@ async def test_non_structural_options_change_does_not_reload(hass, setup_integra
 
     # Entry should still be loaded (same entry_id means no reload destroyed it).
     assert entry.entry_id == original_entry_id
-    assert hass.data[DOMAIN].get(entry.entry_id) is not None
+    assert getattr(entry, "runtime_data", None) is not None
 
 
 async def test_structural_options_change_triggers_reload(hass, setup_integration, mock_utcnow):
     """Changing region triggers a full integration reload."""
     entry = setup_integration
-    coord_before = hass.data[DOMAIN][entry.entry_id]
+    coord_before = entry.runtime_data
 
     new_options = dict(entry.options)
     new_options[CONF_REGION] = "EE"
@@ -273,7 +274,7 @@ async def test_structural_options_change_triggers_reload(hass, setup_integration
         await hass.async_block_till_done()
 
     # After reload, a new coordinator instance was created.
-    coord_after = hass.data[DOMAIN].get(entry.entry_id)
+    coord_after = getattr(entry, "runtime_data", None)
     assert coord_after is not None
     assert coord_after is not coord_before
 
@@ -303,7 +304,7 @@ async def test_total_price_rank_now_uses_fixed_period_price(hass, options, mock_
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
 
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
 
     coord._today_slots = [
         PriceSlot(dt_utc=datetime(2026, 3, 13, 0, 0, tzinfo=tz.utc), price_no_tax=10.0, rank=3),
@@ -328,7 +329,7 @@ async def test_total_price_rank_now_uses_fixed_period_price(hass, options, mock_
 
 async def test_total_price_rank_now_returns_1_for_cheapest(hass, setup_integration, mock_utcnow):
     """total_price_rank_now returns 1 when the current slot is the cheapest today."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
 
     # Fixture slots (sorted by time):
     #   00:00 UTC — 0.03 €/kWh → rank 1 (cheapest by total price, no transfer)
@@ -370,7 +371,7 @@ async def test_score_accumulation_on_meter_change(hass, options, mock_utcnow):
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
 
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
 
     # Simulate a meter reporting 10 kWh consumed.
     mock_event = SimpleNamespace(
@@ -401,7 +402,7 @@ async def test_monthly_fixed_cost_today_returns_none_when_zero(
     hass, setup_integration, mock_utcnow
 ):
     """monthly_fixed_cost_today returns None when monthly cost is 0.0 (the default)."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     assert coord.monthly_fixed_cost_today() is None
 
 
@@ -412,7 +413,7 @@ async def test_monthly_fixed_cost_today_returns_daily_share(hass, setup_integrat
     Setting cost to 31.0 € → daily share = 1.0 €/day.
     """
     entry = setup_integration
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
 
     with aioresponses() as m:
         m.get(TODAY_URL_RE, status=404, repeat=True)
@@ -437,7 +438,7 @@ async def test_charge_opportunity_factor_returns_1_for_cheapest(
     FROZEN_UTC = 00:30 UTC → current slot is at 00:00 (PriceNoTax=0.03, rank 1).
     With no transfer price: total = spot_effective = cheapest slot → factor = 1.0.
     """
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     assert coord.charge_opportunity_factor() == pytest.approx(1.0)
 
 
@@ -445,7 +446,7 @@ async def test_charge_opportunity_factor_returns_none_when_no_today_slots(
     hass, setup_integration, mock_utcnow
 ):
     """charge_opportunity_factor returns None when no today slots are loaded."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     coord._today_slots = []
     assert coord.charge_opportunity_factor() is None
 
@@ -459,7 +460,7 @@ async def test_battery_charge_recommendation_none_when_no_battery(
     hass, setup_integration, mock_utcnow
 ):
     """battery_charge_recommendation returns None when battery capacity is 0 (default)."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     # Default battery_capacity_kwh = 0.0 → no battery configured.
     assert coord.battery_charge_recommendation() is None
 
@@ -473,7 +474,7 @@ async def test_battery_charge_recommendation_charge_from_grid_when_cheapest(
     position = (3.765 - 3.765) / (12.55 - 3.765) = 0.0 ≤ 0.25 → charge_from_grid.
     """
     entry = setup_integration
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
 
     with aioresponses() as m:
         m.get(TODAY_URL_RE, status=404, repeat=True)
@@ -497,7 +498,7 @@ async def test_export_price_now_spot_linked_no_commission(hass, setup_integratio
     FROZEN_UTC = 00:30 → current slot has price_no_tax=3.0 c/kWh (0.03 €/kWh * 100).
     export = max(0.0, 3.0 - 0.0) = 3.0 c/kWh.
     """
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     export = coord.export_price_now()
     assert export == pytest.approx(3.0)
 
@@ -514,7 +515,7 @@ async def test_get_daily_score_uses_quartile_midpoint_when_no_meter_data(
 
     FROZEN_UTC = 2026-03-13T00:30Z → current slot is the cheapest (Q1) → 87.5.
     """
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     assert coord.total_price_quartile() == 1
     assert coord.get_daily_score("nonexistent_profile") == 87.5
 
@@ -523,7 +524,7 @@ async def test_get_daily_score_returns_none_when_no_price_data(
     hass, setup_integration, mock_utcnow
 ):
     """When neither consumption nor price data exist, score is unknown."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     coord._today_slots = []
     assert coord.get_daily_score("p1") is None
 
@@ -538,7 +539,7 @@ async def test_get_monthly_score_falls_back_when_no_data_anywhere(
 ):
     """Monthly score returns None when nothing is available — no current-month days,
     no in-progress today, no previous month."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     coord._today_slots = []  # also kills today's quartile-midpoint fallback
     assert coord.get_monthly_score("p1") is None
 
@@ -550,7 +551,7 @@ async def test_get_monthly_score_includes_todays_in_progress(hass, setup_integra
     Two completed days (80, 60) plus today's quartile-midpoint placeholder (Q1 → 87.5)
     → average = (80 + 60 + 87.5) / 3 = 75.833…
     """
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     coord._daily_history = [
         {"date": "2026-03-01", "scores": {"p1": 80.0}},
         {"date": "2026-03-02", "scores": {"p1": 60.0}},
@@ -562,7 +563,7 @@ async def test_get_monthly_score_includes_todays_in_progress(hass, setup_integra
 async def test_get_monthly_score_falls_back_to_previous_month(hass, setup_integration, mock_utcnow):
     """When neither completed days nor today's score are available for the current
     month, fall back to the previous month's finalised score."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     coord._today_slots = []  # disables today's placeholder
     coord._month_scores = [{"month": "2026-02", "scores": {"p1": 73.0}}]
     assert coord.get_monthly_score("p1") == pytest.approx(73.0)
@@ -593,7 +594,7 @@ async def test_finalise_daily_scores_skips_profiles_with_no_data(hass, options, 
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
 
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
     # p1 has data; p2 has nothing.
     coord._score_data = {"p1": {"q1": 10.0}}
 
@@ -620,7 +621,7 @@ async def test_charge_from_grid_recommended_true_when_cheapest(
     FROZEN_UTC = 00:30 → slot 0 (cheapest). Future slots at 01:00 and 02:00 are pricier.
     """
     entry = setup_integration
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
 
     with aioresponses() as m:
         m.get(TODAY_URL_RE, status=404, repeat=True)
@@ -641,7 +642,7 @@ async def test_discharge_to_grid_recommended_false_when_cheapest(
     Top-quartile threshold = 10.0 c/kWh (slot 2). 3.0 < 10.0 → False.
     """
     entry = setup_integration
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
 
     with aioresponses() as m:
         m.get(TODAY_URL_RE, status=404, repeat=True)
@@ -663,14 +664,14 @@ async def test_import_export_spread_now(hass, setup_integration, mock_utcnow):
 
     Slot 0: spot_effective = 3.765 c/kWh, export = 3.0 c/kWh → spread = 0.765.
     """
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     spread = coord.import_export_spread_now()
     assert spread == pytest.approx(0.765, rel=1e-3)
 
 
 async def test_self_consumption_value_now_equals_total_price(hass, setup_integration, mock_utcnow):
     """self_consumption_value_now equals total_price_now (avoided import cost per kWh)."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     assert coord.self_consumption_value_now() == pytest.approx(coord.total_price_now(), rel=1e-6)
 
 
@@ -681,7 +682,7 @@ async def test_self_consumption_value_now_equals_total_price(hass, setup_integra
 
 async def test_optimal_charge_window_none_when_no_battery(hass, setup_integration, mock_utcnow):
     """optimal_charge_window returns None when battery is not configured."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     assert coord.optimal_charge_window() is None
 
 
@@ -698,7 +699,7 @@ async def test_optimal_charge_window_selects_cheapest_2h_window(
     Window [00:00, 01:00] avg=5.02 < [01:00, 02:00] avg=9.41 → start at 00:00, end at 02:00.
     """
     entry = setup_integration
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
 
     with aioresponses() as m:
         m.get(TODAY_URL_RE, status=404, repeat=True)
@@ -741,7 +742,7 @@ async def test_chain_composition_nordic_vs_cdn_only(hass, options, mock_utcnow):
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
 
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
     assert [name for name, _ in coord._sources] == [PRICE_SOURCE_KILOWAHTI_CDN]
     assert coord.price_source_name == PRICE_SOURCE_KILOWAHTI_CDN
     assert coord.last_failover_utc is None
@@ -761,7 +762,7 @@ async def test_chain_cdn_primary_serves_nordic_region(hass, options, mock_utcnow
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
 
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
     assert [name for name, _ in coord._sources] == [
         PRICE_SOURCE_KILOWAHTI_CDN,
         PRICE_SOURCE_SPOT_HINTA,
@@ -777,7 +778,7 @@ async def test_chain_cdn_primary_serves_nordic_region(hass, options, mock_utcnow
 async def test_chain_falls_back_to_spot_hinta_on_cdn_failure(hass, setup_integration):
     """setup_integration mocks only spot-hinta, so the CDN fetch fails and the
     chain serves today's prices from spot-hinta, recording the failover."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     assert coord.price_source_name == PRICE_SOURCE_SPOT_HINTA
     assert coord.last_failover_utc is not None
     assert len(coord.today_slots()) == len(TODAY_PAYLOAD)
@@ -785,7 +786,7 @@ async def test_chain_falls_back_to_spot_hinta_on_cdn_failure(hass, setup_integra
 
 async def test_eager_poll_no_fallback_before_deadline(hass, setup_integration):
     """Primary returning None before the CET deadline only reschedules; fallback untouched."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     coord._tomorrow_slots = None
     if coord._eager_poll_unsub is not None:
         coord._eager_poll_unsub()
@@ -811,7 +812,7 @@ async def test_eager_poll_no_fallback_before_deadline(hass, setup_integration):
 
 async def test_eager_poll_falls_back_after_deadline(hass, setup_integration):
     """Primary silent past 15:00 CET → next source is tried and its tomorrow accepted."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     coord._tomorrow_slots = None
     coord._last_failover_utc = None
     coord._active_source_name = PRICE_SOURCE_KILOWAHTI_CDN
@@ -855,7 +856,7 @@ async def test_eager_poll_does_not_retry_on_cdn_zone_not_found(hass, options, mo
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
 
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
     coord._tomorrow_slots = None
     if coord._eager_poll_unsub is not None:
         coord._eager_poll_unsub()
@@ -905,7 +906,7 @@ async def _setup_se1(hass, options, currency_opts: dict, mock_ecb: bool = False)
         entry.add_to_hass(hass)
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
-    return hass.data[DOMAIN][entry.entry_id]
+    return entry.runtime_data
 
 
 async def test_fx_manual_rate_applied_to_prices(hass, options, mock_utcnow):
@@ -989,7 +990,7 @@ async def test_fx_major_only_currency_forces_major_unit(hass, options, mock_utcn
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
 
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
     assert coord.native_unit == "Kč/kWh"
     assert coord.display_in_major is True
     # format_price converts internal minor scale to major
@@ -1029,7 +1030,7 @@ async def _setup_with(hass, options, extra):
         entry.add_to_hass(hass)
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
-    return hass.data[DOMAIN][entry.entry_id]
+    return entry.runtime_data
 
 
 async def test_price_arrays_are_none_when_options_disabled(hass, options, mock_utcnow):
@@ -1411,7 +1412,7 @@ async def test_control_factor_transfer_follows_the_curve_settings(hass, options,
 async def test_persisting_failover_creates_and_unload_clears_repair_issue(
     hass, setup_integration, mock_utcnow
 ):
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     issue_id = f"stale_failover_{setup_integration.entry_id}"
     registry = ir.async_get(hass)
 
@@ -1422,3 +1423,12 @@ async def test_persisting_failover_creates_and_unload_clears_repair_issue(
 
     await hass.config_entries.async_unload(setup_integration.entry_id)
     assert registry.async_get_issue(DOMAIN, issue_id) is None
+
+
+async def test_coordinator_lives_on_entry_runtime_data(hass, setup_integration):
+    assert isinstance(setup_integration.runtime_data, KilowahtiCoordinator)
+    assert DOMAIN not in hass.data
+
+    await hass.config_entries.async_unload(setup_integration.entry_id)
+
+    assert not hasattr(setup_integration, "runtime_data")

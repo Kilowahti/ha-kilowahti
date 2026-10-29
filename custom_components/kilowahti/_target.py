@@ -34,7 +34,11 @@ def resolve_entry_id(hass: HomeAssistant, target: dict[str, Any] | None) -> str 
 
     Returns None when the target cannot be resolved to exactly one entry.
     """
-    entries: list[str] = list(hass.data.get(DOMAIN, {}).keys())
+    entries: list[str] = [
+        entry.entry_id
+        for entry in hass.config_entries.async_entries(DOMAIN)
+        if hasattr(entry, "runtime_data")
+    ]
     if not entries:
         return None
 
@@ -65,4 +69,5 @@ def resolve_coordinator(
     entry_id = resolve_entry_id(hass, target)
     if entry_id is None:
         return None
-    return hass.data.get(DOMAIN, {}).get(entry_id)
+    entry = hass.config_entries.async_get_entry(entry_id)
+    return getattr(entry, "runtime_data", None) if entry else None

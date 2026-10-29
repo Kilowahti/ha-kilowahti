@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from custom_components.kilowahti.const import (
-    DOMAIN,
     TRIGGER_BECAME_CHEAPEST_SLOT,
     TRIGGER_FIXED_PERIOD_ENDED,
     TRIGGER_FIXED_PERIOD_STARTED,
@@ -57,7 +56,7 @@ async def test_price_fires_on_transition_to_acceptable(
     hass, setup_integration, mock_utcnow
 ) -> None:
     """Rising edge: price crossing from not-acceptable to acceptable fires once."""
-    coordinator = hass.data[DOMAIN][setup_integration.entry_id]
+    coordinator = setup_integration.runtime_data
     runner = _Runner()
 
     coordinator._max_price_value = -1000.0
@@ -80,7 +79,7 @@ async def test_price_no_longer_acceptable_fires_on_falling(
     """Falling edge: price crossing from acceptable to not-acceptable fires once."""
     from custom_components.kilowahti.trigger import PriceNoLongerAcceptableTrigger
 
-    coordinator = hass.data[DOMAIN][setup_integration.entry_id]
+    coordinator = setup_integration.runtime_data
     runner = _Runner()
 
     coordinator._max_price_value = 1000.0
@@ -97,7 +96,7 @@ async def test_price_no_longer_acceptable_fires_on_falling(
 
 async def test_rank_fires_on_transition_to_acceptable(hass, setup_integration, mock_utcnow) -> None:
     """Rising edge on the rank threshold fires once."""
-    coordinator = hass.data[DOMAIN][setup_integration.entry_id]
+    coordinator = setup_integration.runtime_data
     runner = _Runner()
 
     coordinator._max_rank_value = 0
@@ -114,7 +113,7 @@ async def test_rank_fires_on_transition_to_acceptable(hass, setup_integration, m
 
 async def test_no_fire_when_already_acceptable(hass, setup_integration, mock_utcnow) -> None:
     """No fire when price is acceptable at attach time and stays acceptable."""
-    coordinator = hass.data[DOMAIN][setup_integration.entry_id]
+    coordinator = setup_integration.runtime_data
     runner = _Runner()
 
     coordinator._max_price_value = 1000.0

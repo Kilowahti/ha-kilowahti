@@ -13,7 +13,6 @@ from custom_components.kilowahti.const import (
     CONDITION_PRICE_IS_LOWEST_TODAY,
     CONDITION_RANK_IS_ACCEPTABLE,
     CONDITION_TOMORROW_AVAILABLE,
-    DOMAIN,
 )
 from homeassistant.helpers.condition import ConditionConfig
 
@@ -37,25 +36,25 @@ async def test_async_get_conditions_lists_all(hass) -> None:
 
 
 async def test_price_true_when_below_threshold(hass, setup_integration, mock_utcnow) -> None:
-    coordinator = hass.data[DOMAIN][setup_integration.entry_id]
+    coordinator = setup_integration.runtime_data
     coordinator._max_price_value = 1000.0
     assert PriceIsAcceptableCondition(hass, _config())._async_check() is True
 
 
 async def test_price_false_when_above_threshold(hass, setup_integration, mock_utcnow) -> None:
-    coordinator = hass.data[DOMAIN][setup_integration.entry_id]
+    coordinator = setup_integration.runtime_data
     coordinator._max_price_value = -1000.0
     assert PriceIsAcceptableCondition(hass, _config())._async_check() is False
 
 
 async def test_rank_true_when_below_threshold(hass, setup_integration, mock_utcnow) -> None:
-    coordinator = hass.data[DOMAIN][setup_integration.entry_id]
+    coordinator = setup_integration.runtime_data
     coordinator._max_rank_value = 999
     assert RankIsAcceptableCondition(hass, _config())._async_check() is True
 
 
 async def test_rank_false_when_above_threshold(hass, setup_integration, mock_utcnow) -> None:
-    coordinator = hass.data[DOMAIN][setup_integration.entry_id]
+    coordinator = setup_integration.runtime_data
     coordinator._max_rank_value = 0
     assert RankIsAcceptableCondition(hass, _config())._async_check() is False
 

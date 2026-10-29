@@ -235,7 +235,7 @@ async def test_config_flow_cdn_only_zone_completes(hass, mock_utcnow):
 async def test_options_flow_vat_change_no_reload(hass, setup_integration, mock_utcnow):
     """Changing VAT via options flow basic step does not reload the integration."""
     entry = setup_integration
-    coord_before = hass.data[DOMAIN][entry.entry_id]
+    coord_before = entry.runtime_data
 
     result = await hass.config_entries.options.async_init(entry.entry_id)
     assert result["type"] == FlowResultType.MENU
@@ -264,7 +264,7 @@ async def test_options_flow_vat_change_no_reload(hass, setup_integration, mock_u
 
     assert result["type"] == FlowResultType.CREATE_ENTRY
     # Same coordinator instance → no reload happened.
-    coord_after = hass.data[DOMAIN].get(entry.entry_id)
+    coord_after = getattr(entry, "runtime_data", None)
     assert coord_after is coord_before
     assert entry.options[CONF_VAT_RATE] == 0.10
 
@@ -272,7 +272,7 @@ async def test_options_flow_vat_change_no_reload(hass, setup_integration, mock_u
 async def test_options_flow_region_change_triggers_reload(hass, setup_integration, mock_utcnow):
     """Changing region via options flow basic step triggers a full reload."""
     entry = setup_integration
-    coord_before = hass.data[DOMAIN][entry.entry_id]
+    coord_before = entry.runtime_data
 
     result = await hass.config_entries.options.async_init(entry.entry_id)
     result = await hass.config_entries.options.async_configure(
@@ -298,7 +298,7 @@ async def test_options_flow_region_change_triggers_reload(hass, setup_integratio
 
     assert result["type"] == FlowResultType.CREATE_ENTRY
     # A new coordinator instance means the integration was reloaded.
-    coord_after = hass.data[DOMAIN].get(entry.entry_id)
+    coord_after = getattr(entry, "runtime_data", None)
     assert coord_after is not None
     assert coord_after is not coord_before
 
@@ -469,7 +469,7 @@ async def test_options_flow_enables_total_price_arrays(hass, setup_integration, 
     assert result["type"] == FlowResultType.CREATE_ENTRY
     assert entry.options[CONF_EXPOSE_TOTAL_PRICE_ARRAYS] is True
 
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
     assert coord.today_total_price_array() is not None
     assert coord.today_price_array() is None
 

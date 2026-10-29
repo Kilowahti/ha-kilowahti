@@ -23,13 +23,14 @@ from .const import (
     CONF_SHOW_ROLLING_AVERAGES,
     DEFAULT_MAX_PRICE,
     DEFAULT_MAX_RANK,
-    DOMAIN,
 )
 from .coordinator import KilowahtiCoordinator
 from .services import async_register_services
 from .storage import KilowahtiStorage
 
 _LOGGER = logging.getLogger(__name__)
+
+type KilowahtiConfigEntry = ConfigEntry[KilowahtiCoordinator]
 
 PLATFORMS: list[Platform] = [Platform.BINARY_SENSOR, Platform.NUMBER, Platform.SENSOR]
 
@@ -56,10 +57,8 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     return True
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+async def async_setup_entry(hass: HomeAssistant, entry: KilowahtiConfigEntry) -> bool:
     """Set up Kilowahti from a config entry."""
-    hass.data.setdefault(DOMAIN, {})
-
     storage = KilowahtiStorage(hass, entry.entry_id)
     await storage.async_load()
 
@@ -71,7 +70,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Set up time-based tracking (slot updates, midnight rollover, eager fetch).
     await coordinator.async_setup_timers()
 
-    hass.data[DOMAIN][entry.entry_id] = coordinator
+    entry.runtime_data = coordinator
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
@@ -81,25 +80,24 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return True
 
 
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+async def async_unload_entry(hass: HomeAssistant, entry: KilowahtiConfigEntry) -> bool:
     """Unload a config entry."""
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
     if unload_ok:
-        coordinator: KilowahtiCoordinator = hass.data[DOMAIN].pop(entry.entry_id)
-        coordinator.async_unload()
+        entry.runtime_data.async_unload()
 
     return unload_ok
 
 
-async def _async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+async def _async_reload_entry(hass: HomeAssistant, entry: KilowahtiConfigEntry) -> None:
     """Reload the entry when options change.
 
     Only reloads for structural changes (entity count, timer setup). For all other
     option changes (thresholds, VAT, commission, etc.) we sync instance vars and
     notify listeners in-place, avoiding a disruptive teardown/setup cycle.
     """
-    coordinator: KilowahtiCoordinator | None = hass.data.get(DOMAIN, {}).get(entry.entry_id)
+    coordinator = getattr(entry, "runtime_data", None)
     if coordinator is not None:
         old = coordinator._last_known_options
         new = entry.options

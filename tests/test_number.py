@@ -33,7 +33,7 @@ async def test_price_threshold_set_value_persists(hass, setup_integration, mock_
         blocking=True,
     )
 
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
     assert coord._max_price_value == pytest.approx(7.5)
     assert entry.options[CONF_MAX_PRICE] == pytest.approx(7.5)
 
@@ -109,5 +109,5 @@ async def test_price_threshold_euro_unit_conversion(hass, options, mock_utcnow):
         blocking=True,
     )
 
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
     assert coord._max_price_value == pytest.approx(7.5)

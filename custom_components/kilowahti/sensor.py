@@ -21,6 +21,7 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
+from . import KilowahtiConfigEntry
 from .const import (
     DOMAIN,
     SENSOR_ARBITRAGE_SPREAD_TODAY,
@@ -422,10 +423,10 @@ SENSOR_DESCRIPTIONS: tuple[KilowahtiSensorEntityDescription, ...] = (
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    entry: ConfigEntry,
+    entry: KilowahtiConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    coordinator: KilowahtiCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     entities: list[SensorEntity] = []
 
     for description in SENSOR_DESCRIPTIONS:

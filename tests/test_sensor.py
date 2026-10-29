@@ -64,7 +64,7 @@ async def test_price_data_source_sensor(hass, setup_integration, mock_utcnow):
 async def test_tomorrow_stats_unknown_when_no_tomorrow(hass, setup_integration, mock_utcnow):
     """tomorrow_spot_avg/min/max sensors are unknown when tomorrow prices are not available."""
     entry = setup_integration
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
     assert coord._tomorrow_slots is None
 
     for key in (SENSOR_TOMORROW_SPOT_AVG, SENSOR_TOMORROW_SPOT_MIN, SENSOR_TOMORROW_SPOT_MAX):
@@ -106,7 +106,7 @@ async def test_synthetic_slots_dst_spring_forward(hass, setup_integration, mock_
     from datetime import date
 
     entry = setup_integration
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
 
     # Temporarily set HA timezone to Helsinki to exercise DST logic
     await hass.config.async_set_time_zone("Europe/Helsinki")
@@ -127,7 +127,7 @@ async def test_tomorrow_total_stats_with_fixed_period(hass, setup_integration, m
     Fixed period at 7.5 c/kWh covering 2026-03-14 → stats should equal 7.5 (no transfer).
     """
     entry = setup_integration
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
 
     tomorrow = date(2026, 3, 14)
     period = FixedPeriod(

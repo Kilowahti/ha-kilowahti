@@ -9,8 +9,10 @@ from pathlib import Path
 
 import pytest
 from kilowahti.models import FixedPeriod
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.kilowahti.const import DOMAIN
+from homeassistant.config_entries import ConfigEntryState
 from homeassistant.exceptions import ServiceValidationError
 from homeassistant.setup import async_setup_component
 
@@ -202,7 +204,7 @@ async def test_generation_schedule_recommends_self_consume(hass, setup_integrati
 
 async def test_get_active_prices_uses_fixed_price(hass, setup_integration, mock_utcnow):
     """get_active_prices substitutes fixed period price for spot when a period is active."""
-    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    coord = setup_integration.runtime_data
     storage = coord._storage
 
     # Inject a fixed period covering the fixture date.
@@ -269,3 +271,20 @@ def test_every_service_exception_key_exists_in_en_json():
     defined = json.loads((base / "translations" / "en.json").read_text())["exceptions"]
     assert used
     assert used <= set(defined)
+
+
+async def test_service_ignores_entry_that_failed_setup(hass, setup_integration, mock_utcnow):
+    """A second entry stuck in SETUP_RETRY has no runtime data and must not break calls."""
+    broken = MockConfigEntry(domain=DOMAIN, unique_id="broken home", options={})
+    broken.add_to_hass(hass)
+    broken.mock_state(hass, ConfigEntryState.SETUP_RETRY)
+
+    result = await hass.services.async_call(
+        DOMAIN,
+        "average_price",
+        {"start": _T0.isoformat(), "end": _T3.isoformat()},
+        blocking=True,
+        return_response=True,
+    )
+
+    assert result["slot_count"] == 3

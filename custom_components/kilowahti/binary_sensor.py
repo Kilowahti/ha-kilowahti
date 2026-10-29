@@ -12,6 +12,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
+from . import KilowahtiConfigEntry
 from .const import (
     BINARY_SENSOR_CHARGE_FROM_GRID_RECOMMENDED,
     BINARY_SENSOR_DISCHARGE_TO_GRID_RECOMMENDED,
@@ -21,7 +22,6 @@ from .const import (
     BINARY_SENSOR_PRICE_OR_RANK_ACCEPTABLE,
     BINARY_SENSOR_RANK_ACCEPTABLE,
     BINARY_SENSOR_TOMORROW_AVAILABLE,
-    DOMAIN,
 )
 from .coordinator import KilowahtiCoordinator
 from .sensor import _device_info
@@ -38,10 +38,10 @@ PARALLEL_UPDATES = 0
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    entry: ConfigEntry,
+    entry: KilowahtiConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    coordinator: KilowahtiCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     entities = [
         KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_PRICE_ACCEPTABLE),
         KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_RANK_ACCEPTABLE),

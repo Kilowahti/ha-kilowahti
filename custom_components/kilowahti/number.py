@@ -9,7 +9,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, NUMBER_PRICE_THRESHOLD, NUMBER_RANK_THRESHOLD
+from . import KilowahtiConfigEntry
+from .const import NUMBER_PRICE_THRESHOLD, NUMBER_RANK_THRESHOLD
 from .coordinator import KilowahtiCoordinator
 from .sensor import _device_info
 
@@ -18,10 +19,10 @@ PARALLEL_UPDATES = 0
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    entry: ConfigEntry,
+    entry: KilowahtiConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    coordinator: KilowahtiCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     async_add_entities(
         [
             KilowahtiPriceThresholdNumber(coordinator, entry),

@@ -46,7 +46,7 @@ async def test_price_acceptable_true_when_below_threshold(hass, setup_integratio
 async def test_price_acceptable_false_when_above_threshold(hass, setup_integration, mock_utcnow):
     """price_acceptable is off when effective price > max_price threshold."""
     entry = setup_integration
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
 
     # Lower the threshold below the current spot price (3.765 c/kWh).
     coord.set_price_threshold(2.0)
@@ -84,7 +84,7 @@ async def test_tomorrow_available_transitions_on_eager_fetch(hass, setup_integra
     assert state.state == "off"
 
     # Simulate successful eager poll.
-    coord = hass.data[DOMAIN][entry.entry_id]
+    coord = entry.runtime_data
     eager_time = datetime(2026, 3, 13, 15, 0, 0, tzinfo=timezone.utc)
     with patch("homeassistant.util.dt.utcnow", return_value=eager_time):
         with aioresponses() as m:
