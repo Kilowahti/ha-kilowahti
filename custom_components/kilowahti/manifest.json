@@ -1,6 +1,7 @@
 {
   "domain": "kilowahti",
   "name": "Kilowahti",
+  "after_dependencies": ["search"],
   "categories": ["energy.energy_prices"],
   "codeowners": ["@geekuality"],
   "config_flow": true,
