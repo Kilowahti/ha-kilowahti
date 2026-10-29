@@ -888,3 +888,76 @@ def test_tier_summary_pads_price_to_two_decimals():
     }
     summary = _tier_list_markdown([tier], _units_for({CONF_REGION: "FI"}))
     assert summary == ("- **Muu aika** — 1.90 c/kWh · All year · All days · All day · priority 10")
+
+
+async def _setup_named_entry(hass, options, name="Test Home"):
+    await hass.config.async_set_time_zone("UTC")
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        title=name,
+        unique_id=name.strip().lower(),
+        options={**options, "name": name},
+    )
+    entry.add_to_hass(hass)
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        await hass.config_entries.async_setup(entry.entry_id)
+        await hass.async_block_till_done()
+    return entry
+
+
+async def test_reconfigure_renames_entry_and_keeps_other_options(hass, options, mock_utcnow):
+    entry = await _setup_named_entry(hass, options)
+
+    result = await entry.start_reconfigure_flow(hass)
+    assert result["type"] == FlowResultType.FORM
+    assert result["step_id"] == "reconfigure"
+
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], user_input={"name": "Summer Cabin"}
+        )
+        await hass.async_block_till_done()
+
+    assert result["type"] == FlowResultType.ABORT
+    assert result["reason"] == "reconfigure_successful"
+    assert entry.title == "Summer Cabin"
+    assert entry.unique_id == "summer cabin"
+    assert entry.options["name"] == "Summer Cabin"
+    assert {k: v for k, v in entry.options.items() if k != "name"} == {
+        k: v for k, v in options.items() if k != "name"
+    }
+
+
+async def test_reconfigure_with_unchanged_name_succeeds(hass, options, mock_utcnow):
+    entry = await _setup_named_entry(hass, options)
+
+    result = await entry.start_reconfigure_flow(hass)
+    with aioresponses() as m:
+        m.get(TODAY_URL_RE, payload=TODAY_PAYLOAD, repeat=True)
+        m.get(TOMORROW_URL_RE, status=404, repeat=True)
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], user_input={"name": "Test Home"}
+        )
+        await hass.async_block_till_done()
+
+    assert result["type"] == FlowResultType.ABORT
+    assert result["reason"] == "reconfigure_successful"
+    assert entry.unique_id == "test home"
+
+
+async def test_reconfigure_to_name_of_another_entry_aborts(hass, options, mock_utcnow):
+    entry = await _setup_named_entry(hass, options)
+    MockConfigEntry(domain=DOMAIN, unique_id="other home", options={}).add_to_hass(hass)
+
+    result = await entry.start_reconfigure_flow(hass)
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"], user_input={"name": "Other Home"}
+    )
+
+    assert result["type"] == FlowResultType.ABORT
+    assert result["reason"] == "already_configured"
+    assert entry.unique_id == "test home"

@@ -660,6 +660,34 @@ class KilowahtiConfigFlow(ConfigFlow, domain=DOMAIN):
             data_schema=_user_schema(self._data),
         )
 
+    # ------ Reconfigure: rename ---------------------------------------------
+
+    async def async_step_reconfigure(self, user_input: dict | None = None):
+        """Rename the entry. The name is the entry's unique ID, so Options cannot change it."""
+        entry = self._get_reconfigure_entry()
+        if user_input is not None:
+            key = user_input["name"].strip().lower()
+            await self.async_set_unique_id(key)
+            if key != entry.unique_id:
+                self._abort_if_unique_id_configured()
+            return self.async_update_reload_and_abort(
+                entry,
+                title=user_input["name"],
+                unique_id=key,
+                options={**entry.options, "name": user_input["name"]},
+            )
+
+        return self.async_show_form(
+            step_id="reconfigure",
+            data_schema=vol.Schema(
+                {
+                    vol.Required(
+                        "name", default=entry.options.get("name", entry.title)
+                    ): selector.TextSelector()
+                }
+            ),
+        )
+
     # ------ Step 1b: currency (non-EUR regions only) -----------------------
 
     async def async_step_currency(self, user_input: dict | None = None):
