@@ -665,7 +665,7 @@
       "message": "Nav konfigurēts neviens Kilowahti ieraksts."
     },
     "entry_not_found": {
-      "message": "Nav Kilowahti ieraksta ar id '{entry_id}'."
+      "message": "Nav Kilowahti ieraksta ar id {entry_id}."
     },
     "multiple_entries_ambiguous": {
       "message": "Ir vairāki Kilowahti ieraksti; pakalpojuma izsaukumā norādiet config_entry_id."
@@ -680,13 +680,13 @@
       "message": "Šis periods pārklājas ar esošu fiksētas cenas periodu."
     },
     "period_not_found": {
-      "message": "Nav fiksētas cenas perioda ar id '{period_id}'."
+      "message": "Nav fiksētas cenas perioda ar id {period_id}."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "Tiek izmantots rezerves cenu avots",
-      "description": "Kilowahti jau vairāk nekā 24 stundas sniedz reģiona {region} cenas no avota {fallback_source}, nevis {primary_source}. Parasti tas nozīmē, ka {primary_source} ir traucējums; Kilowahti automātiski pārslēgsies atpakaļ, tiklīdz tas atjaunosies. Darbības nav nepieciešamas. Ja tas turpinās, skatiet [BUJ](https://docs.kilowahti.fi/faq/)."
+      "description": "Kilowahti jau vairāk nekā 24 stundas sniedz reģiona {region} cenas no avota {fallback_source}, nevis {primary_source}. Parasti tas nozīmē, ka {primary_source} ir traucējums; Kilowahti automātiski pārslēgsies atpakaļ, tiklīdz tas atjaunosies. Darbības nav nepieciešamas. Ja tas turpinās, skatiet [BUJ]({faq_url})."
     }
   }
 }

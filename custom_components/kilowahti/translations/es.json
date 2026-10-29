@@ -665,7 +665,7 @@
       "message": "No hay entradas de Kilowahti configuradas."
     },
     "entry_not_found": {
-      "message": "No hay ninguna entrada de Kilowahti con id '{entry_id}'."
+      "message": "No hay ninguna entrada de Kilowahti con id {entry_id}."
     },
     "multiple_entries_ambiguous": {
       "message": "Existen varias entradas de Kilowahti; indica config_entry_id en la llamada al servicio."
@@ -680,13 +680,13 @@
       "message": "Este periodo se solapa con un periodo de precio fijo existente."
     },
     "period_not_found": {
-      "message": "No hay ningún periodo de precio fijo con id '{period_id}'."
+      "message": "No hay ningún periodo de precio fijo con id {period_id}."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "Se usa una fuente de precios de respaldo",
-      "description": "Kilowahti lleva más de 24 horas sirviendo los precios de {region} desde {fallback_source} en lugar de {primary_source}. Normalmente significa que {primary_source} tiene una incidencia; Kilowahti volverá a ella automáticamente cuando se recupere. No hace falta hacer nada. Si persiste, consulta las [FAQ](https://docs.kilowahti.fi/faq/)."
+      "description": "Kilowahti lleva más de 24 horas sirviendo los precios de {region} desde {fallback_source} en lugar de {primary_source}. Normalmente significa que {primary_source} tiene una incidencia; Kilowahti volverá a ella automáticamente cuando se recupere. No hace falta hacer nada. Si persiste, consulta las [FAQ]({faq_url})."
     }
   }
 }

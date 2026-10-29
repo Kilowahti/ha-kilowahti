@@ -665,7 +665,7 @@
       "message": "Não há entradas Kilowahti configuradas."
     },
     "entry_not_found": {
-      "message": "Não existe nenhuma entrada Kilowahti com o id '{entry_id}'."
+      "message": "Não existe nenhuma entrada Kilowahti com o id {entry_id}."
     },
     "multiple_entries_ambiguous": {
       "message": "Existem várias entradas Kilowahti; indique config_entry_id na chamada do serviço."
@@ -680,13 +680,13 @@
       "message": "Este período sobrepõe-se a um período de preço fixo existente."
     },
     "period_not_found": {
-      "message": "Não existe nenhum período de preço fixo com o id '{period_id}'."
+      "message": "Não existe nenhum período de preço fixo com o id {period_id}."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "Fonte de preços alternativa em utilização",
-      "description": "O Kilowahti fornece os preços de {region} a partir de {fallback_source} em vez de {primary_source} há mais de 24 horas. Normalmente significa que {primary_source} tem uma falha; o Kilowahti voltará automaticamente a ela quando recuperar. Não é necessária qualquer ação. Se persistir, consulte as [FAQ](https://docs.kilowahti.fi/faq/)."
+      "description": "O Kilowahti fornece os preços de {region} a partir de {fallback_source} em vez de {primary_source} há mais de 24 horas. Normalmente significa que {primary_source} tem uma falha; o Kilowahti voltará automaticamente a ela quando recuperar. Não é necessária qualquer ação. Se persistir, consulte as [FAQ]({faq_url})."
     }
   }
 }

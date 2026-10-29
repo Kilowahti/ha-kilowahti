@@ -665,7 +665,7 @@
       "message": "Nincs beállított Kilowahti-bejegyzés."
     },
     "entry_not_found": {
-      "message": "Nincs '{entry_id}' azonosítójú Kilowahti-bejegyzés."
+      "message": "Nincs {entry_id} azonosítójú Kilowahti-bejegyzés."
     },
     "multiple_entries_ambiguous": {
       "message": "Több Kilowahti-bejegyzés létezik; add meg a config_entry_id értékét a szolgáltatáshívásban."
@@ -680,13 +680,13 @@
       "message": "Ez az időszak átfedi egy meglévő fix áras időszakot."
     },
     "period_not_found": {
-      "message": "Nincs '{period_id}' azonosítójú fix áras időszak."
+      "message": "Nincs {period_id} azonosítójú fix áras időszak."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "Tartalék árforrás van használatban",
-      "description": "A Kilowahti több mint 24 órája a(z) {region} árait a(z) {fallback_source} forrásból szolgáltatja a(z) {primary_source} helyett. Ez általában azt jelenti, hogy a(z) {primary_source} üzemzavarral küzd; a Kilowahti automatikusan visszavált, amint helyreáll. Teendő nincs. Ha ez fennmarad, nézd meg a [GYIK](https://docs.kilowahti.fi/faq/)-et."
+      "description": "A Kilowahti több mint 24 órája a(z) {region} árait a(z) {fallback_source} forrásból szolgáltatja a(z) {primary_source} helyett. Ez általában azt jelenti, hogy a(z) {primary_source} üzemzavarral küzd; a Kilowahti automatikusan visszavált, amint helyreáll. Teendő nincs. Ha ez fennmarad, nézd meg a [GYIK]({faq_url})-et."
     }
   }
 }

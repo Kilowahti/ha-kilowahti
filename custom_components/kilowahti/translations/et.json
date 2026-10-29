@@ -667,7 +667,7 @@
       "message": "Ühtegi Kilowahti kirjet pole seadistatud."
     },
     "entry_not_found": {
-      "message": "Kilowahti kirjet ID-ga '{entry_id}' ei ole."
+      "message": "Kilowahti kirjet ID-ga {entry_id} ei ole."
     },
     "multiple_entries_ambiguous": {
       "message": "Kilowahti kirjeid on mitu; määrake teenusekutses config_entry_id."
@@ -682,13 +682,13 @@
       "message": "See periood kattub olemasoleva fikseeritud perioodiga."
     },
     "period_not_found": {
-      "message": "Fikseeritud perioodi ID-ga '{period_id}' ei ole."
+      "message": "Fikseeritud perioodi ID-ga {period_id} ei ole."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "Kasutusel on varuhinnaallikas",
-      "description": "Kilowahti on üle 24 tunni pakkunud piirkonna {region} hindu allikast {fallback_source} allika {primary_source} asemel. See tähendab tavaliselt, et {primary_source} on rikkes; Kilowahti lülitub automaatselt tagasi, kui see taastub. Midagi pole vaja teha. Kui see jätkub, vaadake [KKK](https://docs.kilowahti.fi/faq/)."
+      "description": "Kilowahti on üle 24 tunni pakkunud piirkonna {region} hindu allikast {fallback_source} allika {primary_source} asemel. See tähendab tavaliselt, et {primary_source} on rikkes; Kilowahti lülitub automaatselt tagasi, kui see taastub. Midagi pole vaja teha. Kui see jätkub, vaadake [KKK]({faq_url})."
     }
   }
 }

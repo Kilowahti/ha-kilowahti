@@ -665,7 +665,7 @@
       "message": "Nessuna voce Kilowahti configurata."
     },
     "entry_not_found": {
-      "message": "Nessuna voce Kilowahti con id '{entry_id}'."
+      "message": "Nessuna voce Kilowahti con id {entry_id}."
     },
     "multiple_entries_ambiguous": {
       "message": "Esistono più voci Kilowahti; specifica config_entry_id nella chiamata al servizio."
@@ -680,13 +680,13 @@
       "message": "Questo periodo si sovrappone a un periodo a prezzo fisso esistente."
     },
     "period_not_found": {
-      "message": "Nessun periodo a prezzo fisso con id '{period_id}'."
+      "message": "Nessun periodo a prezzo fisso con id {period_id}."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "In uso una fonte di prezzi di riserva",
-      "description": "Kilowahti fornisce i prezzi di {region} da {fallback_source} invece che da {primary_source} da oltre 24 ore. Di solito significa che {primary_source} ha un'interruzione; Kilowahti tornerà automaticamente alla fonte principale quando si riprende. Non serve alcuna azione. Se persiste, consulta le [FAQ](https://docs.kilowahti.fi/faq/)."
+      "description": "Kilowahti fornisce i prezzi di {region} da {fallback_source} invece che da {primary_source} da oltre 24 ore. Di solito significa che {primary_source} ha un'interruzione; Kilowahti tornerà automaticamente alla fonte principale quando si riprende. Non serve alcuna azione. Se persiste, consulta le [FAQ]({faq_url})."
     }
   }
 }

@@ -665,7 +665,7 @@
       "message": "Nesukonfigūruotas nė vienas Kilowahti įrašas."
     },
     "entry_not_found": {
-      "message": "Nėra Kilowahti įrašo su id '{entry_id}'."
+      "message": "Nėra Kilowahti įrašo su id {entry_id}."
     },
     "multiple_entries_ambiguous": {
       "message": "Yra keli Kilowahti įrašai; paslaugos iškvietime nurodykite config_entry_id."
@@ -680,13 +680,13 @@
       "message": "Šis laikotarpis sutampa su esamu fiksuotos kainos laikotarpiu."
     },
     "period_not_found": {
-      "message": "Nėra fiksuotos kainos laikotarpio su id '{period_id}'."
+      "message": "Nėra fiksuotos kainos laikotarpio su id {period_id}."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "Naudojamas atsarginis kainų šaltinis",
-      "description": "Kilowahti jau daugiau nei 24 valandas teikia {region} kainas iš šaltinio {fallback_source}, o ne {primary_source}. Paprastai tai reiškia, kad {primary_source} sutriko; Kilowahti automatiškai persijungs atgal, kai šaltinis atsistatys. Nieko daryti nereikia. Jei tai tęsiasi, žr. [DUK](https://docs.kilowahti.fi/faq/)."
+      "description": "Kilowahti jau daugiau nei 24 valandas teikia {region} kainas iš šaltinio {fallback_source}, o ne {primary_source}. Paprastai tai reiškia, kad {primary_source} sutriko; Kilowahti automatiškai persijungs atgal, kai šaltinis atsistatys. Nieko daryti nereikia. Jei tai tęsiasi, žr. [DUK]({faq_url})."
     }
   }
 }

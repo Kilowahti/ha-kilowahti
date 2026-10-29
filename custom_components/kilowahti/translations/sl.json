@@ -665,7 +665,7 @@
       "message": "Noben vnos Kilowahti ni nastavljen."
     },
     "entry_not_found": {
-      "message": "Vnos Kilowahti z id '{entry_id}' ne obstaja."
+      "message": "Vnos Kilowahti z id {entry_id} ne obstaja."
     },
     "multiple_entries_ambiguous": {
       "message": "Obstaja več vnosov Kilowahti; v klicu storitve navedite config_entry_id."
@@ -680,13 +680,13 @@
       "message": "To obdobje se prekriva z obstoječim obdobjem fiksne cene."
     },
     "period_not_found": {
-      "message": "Obdobje fiksne cene z id '{period_id}' ne obstaja."
+      "message": "Obdobje fiksne cene z id {period_id} ne obstaja."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "Uporablja se nadomestni vir cen",
-      "description": "Kilowahti že več kot 24 ur zagotavlja cene za {region} iz vira {fallback_source} namesto {primary_source}. To običajno pomeni, da ima {primary_source} izpad; Kilowahti se bo samodejno vrnil nanj, ko se povrne. Ukrepanje ni potrebno. Če se nadaljuje, glejte [FAQ](https://docs.kilowahti.fi/faq/)."
+      "description": "Kilowahti že več kot 24 ur zagotavlja cene za {region} iz vira {fallback_source} namesto {primary_source}. To običajno pomeni, da ima {primary_source} izpad; Kilowahti se bo samodejno vrnil nanj, ko se povrne. Ukrepanje ni potrebno. Če se nadaljuje, glejte [FAQ]({faq_url})."
     }
   }
 }

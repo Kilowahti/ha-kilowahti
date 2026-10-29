@@ -665,7 +665,7 @@
       "message": "Nu este configurată nicio intrare Kilowahti."
     },
     "entry_not_found": {
-      "message": "Nu există nicio intrare Kilowahti cu id '{entry_id}'."
+      "message": "Nu există nicio intrare Kilowahti cu id {entry_id}."
     },
     "multiple_entries_ambiguous": {
       "message": "Există mai multe intrări Kilowahti; specifică config_entry_id în apelul serviciului."
@@ -680,13 +680,13 @@
       "message": "Această perioadă se suprapune cu o perioadă cu preț fix existentă."
     },
     "period_not_found": {
-      "message": "Nu există nicio perioadă cu preț fix cu id '{period_id}'."
+      "message": "Nu există nicio perioadă cu preț fix cu id {period_id}."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "Se folosește o sursă de prețuri de rezervă",
-      "description": "Kilowahti furnizează de peste 24 de ore prețurile pentru {region} din {fallback_source}, în loc de {primary_source}. De obicei înseamnă că {primary_source} are o avarie; Kilowahti va reveni automat la ea când își revine. Nu este necesară nicio acțiune. Dacă persistă, consultă [FAQ](https://docs.kilowahti.fi/faq/)."
+      "description": "Kilowahti furnizează de peste 24 de ore prețurile pentru {region} din {fallback_source}, în loc de {primary_source}. De obicei înseamnă că {primary_source} are o avarie; Kilowahti va reveni automat la ea când își revine. Nu este necesară nicio acțiune. Dacă persistă, consultă [FAQ]({faq_url})."
     }
   }
 }

@@ -665,7 +665,7 @@
       "message": "Není nakonfigurována žádná položka Kilowahti."
     },
     "entry_not_found": {
-      "message": "Neexistuje položka Kilowahti s id '{entry_id}'."
+      "message": "Neexistuje položka Kilowahti s id {entry_id}."
     },
     "multiple_entries_ambiguous": {
       "message": "Existuje více položek Kilowahti; v zavolání služby uveďte config_entry_id."
@@ -680,13 +680,13 @@
       "message": "Toto období se překrývá se stávajícím obdobím fixní ceny."
     },
     "period_not_found": {
-      "message": "Neexistuje období fixní ceny s id '{period_id}'."
+      "message": "Neexistuje období fixní ceny s id {period_id}."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "Používá se záložní zdroj cen",
-      "description": "Kilowahti už déle než 24 hodin poskytuje ceny pro {region} ze zdroje {fallback_source} místo {primary_source}. Obvykle to znamená, že {primary_source} má výpadek; Kilowahti se automaticky přepne zpět, jakmile se zdroj obnoví. Není třeba nic dělat. Pokud to přetrvává, podívejte se do [FAQ](https://docs.kilowahti.fi/faq/)."
+      "description": "Kilowahti už déle než 24 hodin poskytuje ceny pro {region} ze zdroje {fallback_source} místo {primary_source}. Obvykle to znamená, že {primary_source} má výpadek; Kilowahti se automaticky přepne zpět, jakmile se zdroj obnoví. Není třeba nic dělat. Pokud to přetrvává, podívejte se do [FAQ]({faq_url})."
     }
   }
 }

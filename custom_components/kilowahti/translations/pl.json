@@ -665,7 +665,7 @@
       "message": "Nie skonfigurowano żadnych wpisów Kilowahti."
     },
     "entry_not_found": {
-      "message": "Brak wpisu Kilowahti o identyfikatorze '{entry_id}'."
+      "message": "Brak wpisu Kilowahti o identyfikatorze {entry_id}."
     },
     "multiple_entries_ambiguous": {
       "message": "Istnieje wiele wpisów Kilowahti; podaj config_entry_id w wywołaniu usługi."
@@ -680,13 +680,13 @@
       "message": "Ten okres nakłada się na istniejący okres stałej ceny."
     },
     "period_not_found": {
-      "message": "Brak okresu stałej ceny o identyfikatorze '{period_id}'."
+      "message": "Brak okresu stałej ceny o identyfikatorze {period_id}."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "Używane jest zapasowe źródło cen",
-      "description": "Kilowahti od ponad 24 godzin pobiera ceny dla {region} z {fallback_source} zamiast z {primary_source}. Zwykle oznacza to awarię {primary_source}; Kilowahti wróci do niego automatycznie po przywróceniu działania. Nie są wymagane żadne działania. Jeśli sytuacja się utrzymuje, zajrzyj do [FAQ](https://docs.kilowahti.fi/faq/)."
+      "description": "Kilowahti od ponad 24 godzin pobiera ceny dla {region} z {fallback_source} zamiast z {primary_source}. Zwykle oznacza to awarię {primary_source}; Kilowahti wróci do niego automatycznie po przywróceniu działania. Nie są wymagane żadne działania. Jeśli sytuacja się utrzymuje, zajrzyj do [FAQ]({faq_url})."
     }
   }
 }

@@ -11,6 +11,7 @@ from homeassistant.util import dt as dt_util
 from .const import DOMAIN
 
 STALE_FAILOVER_THRESHOLD = timedelta(hours=24)
+FAQ_URL = "https://docs.kilowahti.fi/faq/"
 
 
 def failover_issue_id(entry_id: str) -> str:
@@ -55,6 +56,7 @@ def async_update_failover_issue(
             "region": region,
             "fallback_source": active_name,
             "primary_source": primary_name,
+            "faq_url": FAQ_URL,
         },
-        learn_more_url="https://docs.kilowahti.fi/faq/",
+        learn_more_url=FAQ_URL,
     )

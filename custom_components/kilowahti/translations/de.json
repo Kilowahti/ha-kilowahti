@@ -665,7 +665,7 @@
       "message": "Es sind keine Kilowahti-Einträge konfiguriert."
     },
     "entry_not_found": {
-      "message": "Es gibt keinen Kilowahti-Eintrag mit der ID '{entry_id}'."
+      "message": "Es gibt keinen Kilowahti-Eintrag mit der ID {entry_id}."
     },
     "multiple_entries_ambiguous": {
       "message": "Es gibt mehrere Kilowahti-Einträge; gib im Dienstaufruf config_entry_id an."
@@ -680,13 +680,13 @@
       "message": "Dieser Zeitraum überschneidet sich mit einem bestehenden Festpreiszeitraum."
     },
     "period_not_found": {
-      "message": "Es gibt keinen Festpreiszeitraum mit der ID '{period_id}'."
+      "message": "Es gibt keinen Festpreiszeitraum mit der ID {period_id}."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "Ersatz-Preisquelle in Verwendung",
-      "description": "Kilowahti liefert die Preise für {region} seit über 24 Stunden von {fallback_source} statt von {primary_source}. Das bedeutet meist, dass bei {primary_source} eine Störung vorliegt; Kilowahti wechselt automatisch zurück, sobald sie behoben ist. Es ist nichts zu tun. Falls das anhält, sieh in den [FAQ](https://docs.kilowahti.fi/faq/) nach."
+      "description": "Kilowahti liefert die Preise für {region} seit über 24 Stunden von {fallback_source} statt von {primary_source}. Das bedeutet meist, dass bei {primary_source} eine Störung vorliegt; Kilowahti wechselt automatisch zurück, sobald sie behoben ist. Es ist nichts zu tun. Falls das anhält, sieh in den [FAQ]({faq_url}) nach."
     }
   }
 }

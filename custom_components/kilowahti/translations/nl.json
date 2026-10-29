@@ -665,7 +665,7 @@
       "message": "Er zijn geen Kilowahti-items geconfigureerd."
     },
     "entry_not_found": {
-      "message": "Er is geen Kilowahti-item met id '{entry_id}'."
+      "message": "Er is geen Kilowahti-item met id {entry_id}."
     },
     "multiple_entries_ambiguous": {
       "message": "Er zijn meerdere Kilowahti-items; geef config_entry_id op in de serviceaanroep."
@@ -680,13 +680,13 @@
       "message": "Deze periode overlapt met een bestaande vasteprijsperiode."
     },
     "period_not_found": {
-      "message": "Er is geen vasteprijsperiode met id '{period_id}'."
+      "message": "Er is geen vasteprijsperiode met id {period_id}."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "Reserveprijsbron in gebruik",
-      "description": "Kilowahti levert de prijzen voor {region} al meer dan 24 uur vanuit {fallback_source} in plaats van {primary_source}. Dit betekent meestal dat {primary_source} een storing heeft; Kilowahti schakelt automatisch terug zodra die is hersteld. Actie is niet nodig. Houdt dit aan, raadpleeg dan de [FAQ](https://docs.kilowahti.fi/faq/)."
+      "description": "Kilowahti levert de prijzen voor {region} al meer dan 24 uur vanuit {fallback_source} in plaats van {primary_source}. Dit betekent meestal dat {primary_source} een storing heeft; Kilowahti schakelt automatisch terug zodra die is hersteld. Actie is niet nodig. Houdt dit aan, raadpleeg dan de [FAQ]({faq_url})."
     }
   }
 }

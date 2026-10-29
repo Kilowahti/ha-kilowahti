@@ -665,7 +665,7 @@
       "message": "Ingen Kilowahti-poster er konfigureret."
     },
     "entry_not_found": {
-      "message": "Ingen Kilowahti-post med id '{entry_id}'."
+      "message": "Ingen Kilowahti-post med id {entry_id}."
     },
     "multiple_entries_ambiguous": {
       "message": "Der findes flere Kilowahti-poster; angiv config_entry_id i tjenestekaldet."
@@ -680,13 +680,13 @@
       "message": "Denne periode overlapper en eksisterende fastprisperiode."
     },
     "period_not_found": {
-      "message": "Ingen fastprisperiode med id '{period_id}'."
+      "message": "Ingen fastprisperiode med id {period_id}."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "Reservekilde til priser er i brug",
-      "description": "Kilowahti har leveret priser for {region} fra {fallback_source} i stedet for {primary_source} i over 24 timer. Det betyder normalt, at {primary_source} har et nedbrud; Kilowahti skifter automatisk tilbage, når den er oppe igen. Ingen handling er nødvendig. Hvis det fortsætter, se [FAQ](https://docs.kilowahti.fi/faq/)."
+      "description": "Kilowahti har leveret priser for {region} fra {fallback_source} i stedet for {primary_source} i over 24 timer. Det betyder normalt, at {primary_source} har et nedbrud; Kilowahti skifter automatisk tilbage, når den er oppe igen. Ingen handling er nødvendig. Hvis det fortsætter, se [FAQ]({faq_url})."
     }
   }
 }

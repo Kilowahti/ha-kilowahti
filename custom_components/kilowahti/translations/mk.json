@@ -665,7 +665,7 @@
       "message": "Не е конфигуриран ниту еден запис на Kilowahti."
     },
     "entry_not_found": {
-      "message": "Не постои запис на Kilowahti со ид '{entry_id}'."
+      "message": "Не постои запис на Kilowahti со ид {entry_id}."
     },
     "multiple_entries_ambiguous": {
       "message": "Постојат повеќе записи на Kilowahti; наведете config_entry_id во повикот на услугата."
@@ -680,13 +680,13 @@
       "message": "Овој период се преклопува со постоечки период со фиксна цена."
     },
     "period_not_found": {
-      "message": "Не постои период со фиксна цена со ид '{period_id}'."
+      "message": "Не постои период со фиксна цена со ид {period_id}."
     }
   },
   "issues": {
     "stale_failover": {
       "title": "Се користи резервен извор на цени",
-      "description": "Kilowahti веќе повеќе од 24 часа ги дава цените за {region} од {fallback_source} наместо од {primary_source}. Тоа обично значи дека {primary_source} има прекин; Kilowahti автоматски ќе се врати на него штом се опорави. Не е потребна дејност. Ако продолжи, погледнете [ЧПП](https://docs.kilowahti.fi/faq/)."
+      "description": "Kilowahti веќе повеќе од 24 часа ги дава цените за {region} од {fallback_source} наместо од {primary_source}. Тоа обично значи дека {primary_source} има прекин; Kilowahti автоматски ќе се врати на него штом се опорави. Не е потребна дејност. Ако продолжи, погледнете [ЧПП]({faq_url})."
     }
   }
 }
