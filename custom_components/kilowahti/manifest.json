@@ -1,6 +1,7 @@
 {
   "domain": "kilowahti",
   "name": "Kilowahti",
+  "categories": ["energy.energy_prices"],
   "codeowners": ["@geekuality"],
   "config_flow": true,
   "documentation": "https://docs.kilowahti.fi/",
