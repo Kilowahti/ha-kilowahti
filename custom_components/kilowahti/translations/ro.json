@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Perioade cu preț fix / contracte fixe",
-        "description": "Gestionează perioadele cu preț fix sau contractele fixe. Când o perioadă este activă, effective_price arată prețul fix setat în locul celui spot.",
+        "description": "Gestionează perioadele cu preț fix sau contractele fixe. Când o perioadă este activă, active_price arată prețul fix setat în locul celui spot.",
         "data": {
           "action": "Acțiune"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Diferență de arbitraj azi"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Preț mediu 120 min"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Preț mediu 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Preț mediu 60 min"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Factor de control al distribuției (bipolar)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Preț activ"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Preț de livrare"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Preț de livrare mediu azi"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Preț de livrare maxim azi"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Preț de livrare minim azi"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Preț de livrare mediu mâine"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Preț de livrare maxim mâine"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Preț de livrare minim mâine"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Cost fix lunar azi"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Media următoarelor ore"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Media următoarei ferestre solare"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Valoarea autoconsumului"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Rang acceptabil"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Treaptă de distribuție activă"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Forma factorului de control"
       },
       "setting_forward_window": {
         "name": "Fereastră viitoare"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Prag de preț"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Pragul de preț include distribuția"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Media spot a următoarelor ore"
       },
       "spot_price": {
         "name": "Preț spot"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Media azi"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Maxim azi"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Minim azi"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Preț spot mediu azi"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Preț spot maxim azi"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Preț spot minim azi"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Preț total mediu azi"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Preț total maxim azi"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Preț total minim azi"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Media mâine"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Maxim mâine"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Minim mâine"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Preț spot mediu mâine"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Preț spot maxim mâine"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Preț spot minim mâine"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Preț total mediu mâine"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Preț total maxim mâine"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Preț total minim mâine"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Preț sau rang acceptabil"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Perioadă cu preț fix activă"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Se folosește o sursă de prețuri de rezervă",
       "description": "Kilowahti furnizează de peste 24 de ore prețurile pentru {region} din {fallback_source}, în loc de {primary_source}. De obicei înseamnă că {primary_source} are o avarie; Kilowahti va reveni automat la ea când își revine. Nu este necesară nicio acțiune. Dacă persistă, consultă [FAQ]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "ID-urile entităților pot fi mutate pe schema stabilă",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Redenumește ID-urile entităților",
+            "description": "{count} entități din {name} folosesc încă ID-uri construite din numele afișate, care diferă în funcție de limbă și versiune. Confirmarea le redenumește cu ID-urile stabile listate pe [pagina entităților]({entities_url}). Automatizările, scripturile, șabloanele și dashboard-urile care fac referire la vechile ID-uri trebuie actualizate manual după aceea. Entitățile pe care le-ai redenumit tu nu sunt modificate; istoricul și statisticile se păstrează."
+          }
+        }
+      }
     }
   }
 }

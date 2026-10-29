@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Vasteprijsperiodes / vaste contracten",
-        "description": "Beheer vasteprijsperiodes of vaste contracten. Als een periode actief is, toont effective_price de ingestelde vaste prijs in plaats van de spotprijs.",
+        "description": "Beheer vasteprijsperiodes of vaste contracten. Als een periode actief is, toont active_price de ingestelde vaste prijs in plaats van de spotprijs.",
         "data": {
           "action": "Actie"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Arbitragespreiding vandaag"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Gemiddelde prijs 120 min"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Gemiddelde prijs 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Gemiddelde prijs 60 min"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Stuurfactor nettarief (bipolair)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Actieve prijs"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Terugleverprijs"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Gemiddelde terugleverprijs vandaag"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Hoogste terugleverprijs vandaag"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Laagste terugleverprijs vandaag"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Gemiddelde terugleverprijs morgen"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Hoogste terugleverprijs morgen"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Laagste terugleverprijs morgen"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Maandelijkse vaste kosten vandaag"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Gemiddelde komende uren"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Gemiddelde volgend zonnevenster"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Eigenverbruikswaarde"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Acceptabele rang"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Actief nettariefniveau"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Stuurfactorvorm"
       },
       "setting_forward_window": {
         "name": "Vooruitblikvenster"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Prijsdrempel"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Prijsdrempel inclusief nettarief"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Spotgemiddelde komende uren"
       },
       "spot_price": {
         "name": "Spotprijs"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Gemiddelde vandaag"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Maximum vandaag"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Minimum vandaag"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Gemiddelde spotprijs vandaag"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Hoogste spotprijs vandaag"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Laagste spotprijs vandaag"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Gemiddelde totaalprijs vandaag"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Hoogste totaalprijs vandaag"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Laagste totaalprijs vandaag"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Gemiddelde morgen"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Maximum morgen"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Minimum morgen"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Gemiddelde spotprijs morgen"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Hoogste spotprijs morgen"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Laagste spotprijs morgen"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Gemiddelde totaalprijs morgen"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Hoogste totaalprijs morgen"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Laagste totaalprijs morgen"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Prijs of rang acceptabel"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Vasteprijsperiode actief"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Reserveprijsbron in gebruik",
       "description": "Kilowahti levert de prijzen voor {region} al meer dan 24 uur vanuit {fallback_source} in plaats van {primary_source}. Dit betekent meestal dat {primary_source} een storing heeft; Kilowahti schakelt automatisch terug zodra die is hersteld. Actie is niet nodig. Houdt dit aan, raadpleeg dan de [FAQ]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "Entiteit-ID's kunnen naar het stabiele schema worden verplaatst",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Entiteit-ID's hernoemen",
+            "description": "{count} entiteiten van {name} gebruiken nog entiteit-ID's die zijn afgeleid van hun weergavenamen, en die per taal en versie verschillen. Bevestigen hernoemt ze naar de stabiele ID's op de [entiteitenpagina]({entities_url}). Automatiseringen, scripts, sjablonen en dashboards die naar de oude ID's verwijzen, moet je daarna handmatig bijwerken. Entiteiten die je zelf hebt hernoemd blijven ongemoeid; geschiedenis en statistieken blijven behouden."
+          }
+        }
+      }
     }
   }
 }

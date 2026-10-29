@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Období fixní ceny / fixní smlouvy",
-        "description": "Spravujte období fixní ceny nebo fixní smlouvy. Když je období aktivní, effective_price zobrazuje nastavenou fixní cenu místo spotové.",
+        "description": "Spravujte období fixní ceny nebo fixní smlouvy. Když je období aktivní, active_price zobrazuje nastavenou fixní cenu místo spotové.",
         "data": {
           "action": "Akce"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Arbitrážní rozpětí dnes"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Průměrná cena 120 min"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Průměrná cena 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Průměrná cena 60 min"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Řídicí faktor distribuce (bipolární)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Aktivní cena"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Výkupní cena"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Průměrná výkupní cena dnes"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Nejvyšší výkupní cena dnes"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Nejnižší výkupní cena dnes"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Průměrná výkupní cena zítra"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Nejvyšší výkupní cena zítra"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Nejnižší výkupní cena zítra"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Měsíční fixní náklady dnes"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Průměr příštích hodin"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Průměr příštího solárního okna"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Hodnota vlastní spotřeby"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Přijatelné pořadí"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Aktivní distribuční pásmo"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Tvar řídicího faktoru"
       },
       "setting_forward_window": {
         "name": "Budoucí okno"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Práh ceny"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Práh ceny zahrnuje distribuci"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Spotový průměr příštích hodin"
       },
       "spot_price": {
         "name": "Spotová cena"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Průměr dnes"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Maximum dnes"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Minimum dnes"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Průměrná spotová cena dnes"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Nejvyšší spotová cena dnes"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Nejnižší spotová cena dnes"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Průměrná celková cena dnes"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Nejvyšší celková cena dnes"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Nejnižší celková cena dnes"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Průměr zítra"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Maximum zítra"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Minimum zítra"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Průměrná spotová cena zítra"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Nejvyšší spotová cena zítra"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Nejnižší spotová cena zítra"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Průměrná celková cena zítra"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Nejvyšší celková cena zítra"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Nejnižší celková cena zítra"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Cena nebo pořadí přijatelné"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Období fixní ceny aktivní"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Používá se záložní zdroj cen",
       "description": "Kilowahti už déle než 24 hodin poskytuje ceny pro {region} ze zdroje {fallback_source} místo {primary_source}. Obvykle to znamená, že {primary_source} má výpadek; Kilowahti se automaticky přepne zpět, jakmile se zdroj obnoví. Není třeba nic dělat. Pokud to přetrvává, podívejte se do [FAQ]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "ID entit lze přesunout na stabilní schéma",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Přejmenovat ID entit",
+            "description": "{count} entit v {name} stále používá ID vytvořená ze zobrazovaných názvů, která se liší podle jazyka a verze. Potvrzením je přejmenujete na stabilní ID uvedená na [stránce entit]({entities_url}). Automatizace, skripty, šablony a dashboardy odkazující na stará ID pak musíte upravit ručně. Entity, které jste přejmenovali sami, zůstanou beze změny; historie a statistiky se zachovají."
+          }
+        }
+      }
     }
   }
 }

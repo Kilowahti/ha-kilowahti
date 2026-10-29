@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Períodos de preço fixo / contratos fixos",
-        "description": "Faça a gestão dos períodos de preço fixo ou dos contratos fixos. Quando um período está ativo, o effective_price mostra o preço fixo definido em vez do spot.",
+        "description": "Faça a gestão dos períodos de preço fixo ou dos contratos fixos. Quando um período está ativo, o active_price mostra o preço fixo definido em vez do spot.",
         "data": {
           "action": "Ação"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Diferencial de arbitragem hoje"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Preço médio 120 min"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Preço médio 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Preço médio 60 min"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Fator de controlo da rede (bipolar)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Preço ativo"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Preço dos excedentes"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Preço dos excedentes médio hoje"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Preço dos excedentes máximo hoje"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Preço dos excedentes mínimo hoje"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Preço dos excedentes médio amanhã"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Preço dos excedentes máximo amanhã"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Preço dos excedentes mínimo amanhã"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Custo fixo mensal hoje"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Média das próximas horas"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Média da próxima janela solar"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Valor do autoconsumo"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Posição aceitável"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Escalão de rede ativo"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Forma do fator de controlo"
       },
       "setting_forward_window": {
         "name": "Janela futura"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Limiar de preço"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "O limiar de preço inclui a rede"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Média spot das próximas horas"
       },
       "spot_price": {
         "name": "Preço spot"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Média hoje"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Máximo hoje"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Mínimo hoje"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Preço spot médio hoje"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Preço spot máximo hoje"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Preço spot mínimo hoje"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Preço total médio hoje"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Preço total máximo hoje"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Preço total mínimo hoje"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Média amanhã"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Máximo amanhã"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Mínimo amanhã"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Preço spot médio amanhã"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Preço spot máximo amanhã"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Preço spot mínimo amanhã"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Preço total médio amanhã"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Preço total máximo amanhã"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Preço total mínimo amanhã"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Preço ou posição aceitável"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Período de preço fixo ativo"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Fonte de preços alternativa em utilização",
       "description": "O Kilowahti fornece os preços de {region} a partir de {fallback_source} em vez de {primary_source} há mais de 24 horas. Normalmente significa que {primary_source} tem uma falha; o Kilowahti voltará automaticamente a ela quando recuperar. Não é necessária qualquer ação. Se persistir, consulte as [FAQ]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "Os IDs das entidades podem passar para o esquema estável",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Mudar o nome dos IDs das entidades",
+            "description": "{count} entidades de {name} ainda usam IDs construídos a partir dos nomes apresentados, que variam consoante o idioma e a versão. Ao confirmar, são renomeadas para os IDs estáveis indicados na [página de entidades]({entities_url}). As automatizações, scripts, modelos e painéis que referenciem os IDs antigos têm de ser atualizados manualmente depois. As entidades que renomeou não são alteradas; o histórico e as estatísticas são mantidos."
+          }
+        }
+      }
     }
   }
 }

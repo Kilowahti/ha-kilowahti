@@ -9,6 +9,7 @@ from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType
 
+from ._migrate import async_migrate_unique_ids
 from .const import (
     CONF_BATTERY_CAPACITY_KWH,
     CONF_CURRENCY_MODE,
@@ -25,6 +26,7 @@ from .const import (
     DEFAULT_MAX_RANK,
 )
 from .coordinator import KilowahtiCoordinator
+from .repairs import async_check_stable_entity_ids
 from .services import async_register_services
 from .storage import KilowahtiStorage
 
@@ -59,6 +61,9 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: KilowahtiConfigEntry) -> bool:
     """Set up Kilowahti from a config entry."""
+    async_migrate_unique_ids(hass, entry)
+    async_check_stable_entity_ids(hass, entry)
+
     storage = KilowahtiStorage(hass, entry.entry_id)
     await storage.async_load()
 

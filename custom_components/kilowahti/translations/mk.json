@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Периоди со фиксна цена / фиксни договори",
-        "description": "Управувајте со периодите со фиксна цена или фиксните договори. Кога период е активен, effective_price ја прикажува поставената фиксна цена наместо берзанската.",
+        "description": "Управувајте со периодите со фиксна цена или фиксните договори. Кога период е активен, active_price ја прикажува поставената фиксна цена наместо берзанската.",
         "data": {
           "action": "Дејство"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Арбитражен распон денес"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Просечна цена 120 мин"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Просечна цена 30 мин"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Просечна цена 60 мин"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Фактор на управување со мрежарина (биполарен)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Активна цена"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Цена на предавање"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Просечна цена на предавање денес"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Највисока цена на предавање денес"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Најниска цена на предавање денес"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Просечна цена на предавање утре"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Највисока цена на предавање утре"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Најниска цена на предавање утре"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Месечен фиксен трошок денес"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Просек на следните часови"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Просек на следниот сончев прозорец"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Вредност на сопствената потрошувачка"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Прифатлив ранг"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Активно ниво на мрежарина"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Облик на факторот на управување"
       },
       "setting_forward_window": {
         "name": "Иден прозорец"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Праг на цена"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Прагот на цена ја вклучува мрежарината"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Берзански просек на следните часови"
       },
       "spot_price": {
         "name": "Берзанска цена"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Просек денес"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Максимум денес"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Минимум денес"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Просечна берзанска цена денес"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Највисока берзанска цена денес"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Најниска берзанска цена денес"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Просечна вкупна цена денес"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Највисока вкупна цена денес"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Најниска вкупна цена денес"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Просек утре"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Максимум утре"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Минимум утре"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Просечна берзанска цена утре"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Највисока берзанска цена утре"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Најниска берзанска цена утре"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Просечна вкупна цена утре"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Највисока вкупна цена утре"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Најниска вкупна цена утре"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Цената или рангот се прифатливи"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Периодот со фиксна цена е активен"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Се користи резервен извор на цени",
       "description": "Kilowahti веќе повеќе од 24 часа ги дава цените за {region} од {fallback_source} наместо од {primary_source}. Тоа обично значи дека {primary_source} има прекин; Kilowahti автоматски ќе се врати на него штом се опорави. Не е потребна дејност. Ако продолжи, погледнете [ЧПП]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "ИД-јата на ентитетите може да се преместат на стабилната шема",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Преименувај ги ИД-јата на ентитетите",
+            "description": "{count} ентитети од {name} сè уште користат ИД-ја создадени од прикажаните имиња, кои се разликуваат според јазикот и верзијата. Со потврда се преименуваат во стабилните ИД-ја наведени на [страницата со ентитети]({entities_url}). Автоматизациите, скриптите, шаблоните и контролните табли што упатуваат на старите ИД-ја мора потоа да се ажурираат рачно. Ентитетите што сами сте ги преименувале не се менуваат; историјата и статистиката се зачувуваат."
+          }
+        }
+      }
     }
   }
 }

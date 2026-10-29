@@ -327,7 +327,7 @@
       },
       "fixed_periods": {
         "title": "Fixed-price periods / fixed contracts",
-        "description": "Manage fixed-price periods or fixed contracts. When active, effective_price shows the set fixed price instead of spot.",
+        "description": "Manage fixed-price periods or fixed contracts. When active, the active price sensor shows the set fixed price instead of spot.",
         "data": {
           "action": "Action"
         }
@@ -379,13 +379,13 @@
       "arbitrage_spread_today": {
         "name": "Arbitrage spread today"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Average price 120 min"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Average price 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Average price 60 min"
       },
       "battery_charge_recommendation": {
@@ -417,7 +417,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Control factor transfer (bipolar)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Active price"
       },
       "exchange_rate": {
@@ -426,22 +426,22 @@
       "export_price": {
         "name": "Export price"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Export today average"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Export today maximum"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Export today minimum"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Export tomorrow average"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Export tomorrow maximum"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Export tomorrow minimum"
       },
       "import_export_spread": {
@@ -450,10 +450,10 @@
       "monthly_fixed_cost_today": {
         "name": "Monthly fixed cost today"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Next hours average"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Next solar window average"
       },
       "optimal_charge_window_end": {
@@ -469,12 +469,12 @@
         "name": "Price quartile"
       },
       "price_rank": {
-        "name": "Rank"
+        "name": "Price rank"
       },
       "self_consumption_value": {
         "name": "Self-consumption value"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Acceptable rank"
       },
       "setting_active_fixed_period": {
@@ -486,76 +486,76 @@
       "setting_active_transfer_tier": {
         "name": "Active transfer tier"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Control factor shape"
       },
       "setting_forward_window": {
         "name": "Forward window"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Price threshold"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Price threshold includes transfer"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Spot next hours average"
       },
       "spot_price": {
         "name": "Spot price"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Today average"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Today maximum"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Today minimum"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Today spot average"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Today spot maximum"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Today spot minimum"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Today total average"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Today total maximum"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Today total minimum"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Tomorrow average"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Tomorrow maximum"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Tomorrow minimum"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Tomorrow spot average"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Tomorrow spot maximum"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Tomorrow spot minimum"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Tomorrow total average"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Tomorrow total maximum"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Tomorrow total minimum"
       },
       "total_price": {
@@ -589,7 +589,7 @@
       "price_or_rank_acceptable": {
         "name": "Price or rank acceptable"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Fixed price period active"
       },
       "tomorrow_available": {
@@ -689,6 +689,17 @@
     "stale_failover": {
       "title": "Using a fallback price source",
       "description": "Kilowahti has been serving prices for {region} from {fallback_source} instead of {primary_source} for over 24 hours. This usually means {primary_source} is having an outage; Kilowahti will switch back automatically once it recovers. No action is needed. If this persists, check the [FAQ]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "Entity IDs can be moved to the stable scheme",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Rename entity IDs",
+            "description": "{count} entities of {name} still use entity IDs built from their display names, which differ between languages and releases. Submitting renames them to the stable IDs listed on the [entities page]({entities_url}). Automations, scripts, templates and dashboards that reference the old IDs must be updated by hand afterwards. Entities you renamed yourself are not touched; history and statistics are kept."
+          }
+        }
+      }
     }
   }
 }

@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Périodes à prix fixe / contrats à prix fixe",
-        "description": "Gérez les périodes à prix fixe ou les contrats à prix fixe. Quand une période est active, effective_price affiche le prix fixe défini au lieu du prix spot.",
+        "description": "Gérez les périodes à prix fixe ou les contrats à prix fixe. Quand une période est active, active_price affiche le prix fixe défini au lieu du prix spot.",
         "data": {
           "action": "Action"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Écart d'arbitrage aujourd'hui"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Prix moyen 120 min"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Prix moyen 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Prix moyen 60 min"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Facteur de pilotage acheminement (bipolaire)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Prix actif"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Prix de revente"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Prix de revente moyen aujourd'hui"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Prix de revente le plus haut aujourd'hui"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Prix de revente le plus bas aujourd'hui"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Prix de revente moyen demain"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Prix de revente le plus haut demain"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Prix de revente le plus bas demain"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Coût fixe mensuel aujourd'hui"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Moyenne des prochaines heures"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Moyenne de la prochaine fenêtre solaire"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Valeur de l'autoconsommation"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Rang acceptable"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Palier d'acheminement actif"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Forme du facteur de pilotage"
       },
       "setting_forward_window": {
         "name": "Fenêtre à venir"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Seuil de prix"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Seuil de prix incluant l'acheminement"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Moyenne spot des prochaines heures"
       },
       "spot_price": {
         "name": "Prix spot"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Moyenne aujourd'hui"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Maximum aujourd'hui"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Minimum aujourd'hui"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Prix spot moyen aujourd'hui"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Prix spot le plus haut aujourd'hui"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Prix spot le plus bas aujourd'hui"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Prix total moyen aujourd'hui"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Prix total le plus haut aujourd'hui"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Prix total le plus bas aujourd'hui"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Moyenne demain"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Maximum demain"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Minimum demain"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Prix spot moyen demain"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Prix spot le plus haut demain"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Prix spot le plus bas demain"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Prix total moyen demain"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Prix total le plus haut demain"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Prix total le plus bas demain"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Prix ou rang acceptable"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Période à prix fixe active"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Source de prix de secours utilisée",
       "description": "Kilowahti fournit les prix de {region} depuis {fallback_source} au lieu de {primary_source} depuis plus de 24 heures. Cela signifie généralement que {primary_source} subit une panne ; Kilowahti reviendra automatiquement dessus dès son rétablissement. Aucune action n'est requise. Si la situation persiste, consultez la [FAQ]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "Les identifiants d'entités peuvent passer au schéma stable",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Renommer les identifiants d'entités",
+            "description": "{count} entités de {name} utilisent encore des identifiants construits à partir de leurs noms affichés, qui varient selon la langue et la version. La confirmation les renomme avec les identifiants stables listés sur la [page des entités]({entities_url}). Les automatisations, scripts, modèles et tableaux de bord qui font référence aux anciens identifiants devront ensuite être mis à jour à la main. Les entités que vous avez renommées vous-même ne sont pas modifiées ; l'historique et les statistiques sont conservés."
+          }
+        }
+      }
     }
   }
 }

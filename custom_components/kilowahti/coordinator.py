@@ -809,7 +809,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return calc.spot_effective(slot, self._vat_rate, self._spot_commission, rate=self.fx_rate)
 
     def _energy_price_for_slot(self, slot: PriceSlot) -> float:
-        """Return effective energy price for a slot, respecting fixed-price periods."""
+        """Return active energy price for a slot, respecting fixed-price periods."""
         slot_date = dt_util.as_local(slot.dt_utc).date()
         fixed = self.fixed_period_for_date(slot_date)
         return fixed.price if fixed is not None else self._spot_effective(slot)
@@ -841,7 +841,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
     def fixed_period_active_now(self) -> FixedPeriod | None:
         return self.fixed_period_for_date(self._now_local().date())
 
-    def effective_price_now(self) -> float | None:
+    def active_price_now(self) -> float | None:
         period = self.fixed_period_active_now()
         if period is not None:
             return period.price
@@ -891,21 +891,21 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         return group.price_at(now.month, now.weekday(), now.hour)
 
     def total_price_now(self) -> float | None:
-        effective = self.effective_price_now()
-        if effective is None:
+        active = self.active_price_now()
+        if active is None:
             return None
         transfer = self.transfer_price_now() or 0.0
-        return effective + transfer
+        return active + transfer
 
     def _price_for_comparison(self) -> float | None:
         """Price compared against max_price threshold."""
-        effective = self.effective_price_now()
-        if effective is None:
+        active = self.active_price_now()
+        if active is None:
             return None
         if self._price_threshold_includes_transfer:
             transfer = self.transfer_price_now() or 0.0
-            return effective + transfer
-        return effective
+            return active + transfer
+        return active
 
     # ------------------------------------------------------------------
     # Currency / FX

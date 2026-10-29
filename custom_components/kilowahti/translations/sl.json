@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Obdobja fiksne cene / fiksne pogodbe",
-        "description": "Upravljajte obdobja fiksne cene ali fiksne pogodbe. Ko je obdobje aktivno, effective_price prikazuje nastavljeno fiksno ceno namesto borzne.",
+        "description": "Upravljajte obdobja fiksne cene ali fiksne pogodbe. Ko je obdobje aktivno, active_price prikazuje nastavljeno fiksno ceno namesto borzne.",
         "data": {
           "action": "Dejanje"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Arbitražni razpon danes"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Povprečna cena 120 min"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Povprečna cena 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Povprečna cena 60 min"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Krmilni faktor omrežnine (bipolarni)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Aktivna cena"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Cena oddaje"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Povprečna cena oddaje danes"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Najvišja cena oddaje danes"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Najnižja cena oddaje danes"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Povprečna cena oddaje jutri"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Najvišja cena oddaje jutri"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Najnižja cena oddaje jutri"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Mesečni fiksni strošek danes"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Povprečje naslednjih ur"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Povprečje naslednjega sončnega okna"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Vrednost samooskrbe"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Sprejemljiv rang"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Aktivna stopnja omrežnine"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Oblika krmilnega faktorja"
       },
       "setting_forward_window": {
         "name": "Prihodnje okno"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Prag cene"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Prag cene vključuje omrežnino"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Borzno povprečje naslednjih ur"
       },
       "spot_price": {
         "name": "Borzna cena"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Povprečje danes"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Maksimum danes"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Minimum danes"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Povprečna borzna cena danes"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Najvišja borzna cena danes"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Najnižja borzna cena danes"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Povprečna skupna cena danes"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Najvišja skupna cena danes"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Najnižja skupna cena danes"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Povprečje jutri"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Maksimum jutri"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Minimum jutri"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Povprečna borzna cena jutri"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Najvišja borzna cena jutri"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Najnižja borzna cena jutri"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Povprečna skupna cena jutri"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Najvišja skupna cena jutri"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Najnižja skupna cena jutri"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Cena ali rang sprejemljiva"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Obdobje fiksne cene aktivno"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Uporablja se nadomestni vir cen",
       "description": "Kilowahti že več kot 24 ur zagotavlja cene za {region} iz vira {fallback_source} namesto {primary_source}. To običajno pomeni, da ima {primary_source} izpad; Kilowahti se bo samodejno vrnil nanj, ko se povrne. Ukrepanje ni potrebno. Če se nadaljuje, glejte [FAQ]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "ID-je entitet je mogoče preseliti na stabilno shemo",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Preimenuj ID-je entitet",
+            "description": "{count} entitet v {name} še vedno uporablja ID-je, ustvarjene iz prikazanih imen, ki se razlikujejo glede na jezik in različico. S potrditvijo jih preimenujete v stabilne ID-je, navedene na [strani entitet]({entities_url}). Avtomatizacije, skripte, predloge in nadzorne plošče, ki se sklicujejo na stare ID-je, boste morali nato posodobiti ročno. Entitet, ki ste jih preimenovali sami, se ne spremeni; zgodovina in statistika ostaneta ohranjeni."
+          }
+        }
+      }
     }
   }
 }

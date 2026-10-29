@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Περίοδοι σταθερής τιμής / σταθερά συμβόλαια",
-        "description": "Διαχειριστείτε τις περιόδους σταθερής τιμής ή τα σταθερά συμβόλαια. Όταν μια περίοδος είναι ενεργή, το effective_price δείχνει την ορισμένη σταθερή τιμή αντί της spot.",
+        "description": "Διαχειριστείτε τις περιόδους σταθερής τιμής ή τα σταθερά συμβόλαια. Όταν μια περίοδος είναι ενεργή, το active_price δείχνει την ορισμένη σταθερή τιμή αντί της spot.",
         "data": {
           "action": "Ενέργεια"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Περιθώριο αρμπιτράζ σήμερα"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Μέση τιμή 120 λεπτών"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Μέση τιμή 30 λεπτών"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Μέση τιμή 60 λεπτών"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Συντελεστής ελέγχου δικτύου (διπολικός)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Ενεργή τιμή"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Τιμή έγχυσης"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Μέση τιμή έγχυσης σήμερα"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Μέγιστη τιμή έγχυσης σήμερα"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Ελάχιστη τιμή έγχυσης σήμερα"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Μέση τιμή έγχυσης αύριο"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Μέγιστη τιμή έγχυσης αύριο"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Ελάχιστη τιμή έγχυσης αύριο"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Μηνιαίο πάγιο κόστος σήμερα"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Μέσος όρος επόμενων ωρών"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Μέσος όρος επόμενου ηλιακού παραθύρου"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Αξία αυτοκατανάλωσης"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Αποδεκτή κατάταξη"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Ενεργό κλιμάκιο δικτύου"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Σχήμα συντελεστή ελέγχου"
       },
       "setting_forward_window": {
         "name": "Μελλοντικό παράθυρο"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Όριο τιμής"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Το όριο τιμής περιλαμβάνει το δίκτυο"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Μέσος όρος spot επόμενων ωρών"
       },
       "spot_price": {
         "name": "Τιμή spot"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Μέσος όρος σήμερα"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Μέγιστο σήμερα"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Ελάχιστο σήμερα"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Μέση τιμή spot σήμερα"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Μέγιστη τιμή spot σήμερα"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Ελάχιστη τιμή spot σήμερα"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Μέση συνολική τιμή σήμερα"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Μέγιστη συνολική τιμή σήμερα"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Ελάχιστη συνολική τιμή σήμερα"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Μέσος όρος αύριο"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Μέγιστο αύριο"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Ελάχιστο αύριο"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Μέση τιμή spot αύριο"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Μέγιστη τιμή spot αύριο"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Ελάχιστη τιμή spot αύριο"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Μέση συνολική τιμή αύριο"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Μέγιστη συνολική τιμή αύριο"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Ελάχιστη συνολική τιμή αύριο"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Αποδεκτή τιμή ή κατάταξη"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Ενεργή περίοδος σταθερής τιμής"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Χρησιμοποιείται εφεδρική πηγή τιμών",
       "description": "Το Kilowahti παρέχει τις τιμές για {region} από το {fallback_source} αντί για το {primary_source} για πάνω από 24 ώρες. Συνήθως αυτό σημαίνει ότι το {primary_source} έχει διακοπή λειτουργίας· το Kilowahti θα επιστρέψει αυτόματα σε αυτό μόλις αποκατασταθεί. Δεν απαιτείται καμία ενέργεια. Αν συνεχιστεί, δείτε τις [FAQ]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "Τα αναγνωριστικά οντοτήτων μπορούν να μεταφερθούν στο σταθερό σχήμα",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Μετονομασία αναγνωριστικών οντοτήτων",
+            "description": "{count} οντότητες του {name} χρησιμοποιούν ακόμη αναγνωριστικά που προέρχονται από τα εμφανιζόμενα ονόματά τους και διαφέρουν ανά γλώσσα και έκδοση. Με την επιβεβαίωση μετονομάζονται στα σταθερά αναγνωριστικά που αναφέρονται στη [σελίδα οντοτήτων]({entities_url}). Αυτοματισμοί, σενάρια, πρότυπα και ταμπλό που αναφέρονται στα παλιά αναγνωριστικά πρέπει να ενημερωθούν χειροκίνητα μετά. Οι οντότητες που μετονομάσατε μόνοι σας δεν αλλάζουν· το ιστορικό και τα στατιστικά διατηρούνται."
+          }
+        }
+      }
     }
   }
 }

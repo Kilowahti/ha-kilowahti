@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Fix áras időszakok / fix szerződések",
-        "description": "Fix áras időszakok és fix szerződések kezelése. Aktív időszak alatt az effective_price a beállított fix árat mutatja a tőzsdei helyett.",
+        "description": "Fix áras időszakok és fix szerződések kezelése. Aktív időszak alatt az active_price a beállított fix árat mutatja a tőzsdei helyett.",
         "data": {
           "action": "Művelet"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Mai arbitrázskülönbözet"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Átlagár 120 perc"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Átlagár 30 perc"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Átlagár 60 perc"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Hálózati díj vezérlési tényezője (bipoláris)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Aktív ár"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Betáplálási ár"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Mai átlagos betáplálási ár"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Mai legmagasabb betáplálási ár"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Mai legalacsonyabb betáplálási ár"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Holnapi átlagos betáplálási ár"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Holnapi legmagasabb betáplálási ár"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Holnapi legalacsonyabb betáplálási ár"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Havi fix költség ma"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Következő órák átlaga"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Következő napelemes ablak átlaga"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Saját fogyasztás értéke"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Elfogadható helyezés"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Aktív hálózati díjsáv"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Vezérlési tényező alakja"
       },
       "setting_forward_window": {
         "name": "Előretekintő ablak"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Árküszöb"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Az árküszöb tartalmazza a hálózati díjat"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Következő órák tőzsdei átlaga"
       },
       "spot_price": {
         "name": "Tőzsdei ár"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Mai átlag"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Mai maximum"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Mai minimum"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Mai átlagos tőzsdei ár"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Mai legmagasabb tőzsdei ár"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Mai legalacsonyabb tőzsdei ár"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Mai átlagos teljes ár"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Mai legmagasabb teljes ár"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Mai legalacsonyabb teljes ár"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Holnapi átlag"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Holnapi maximum"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Holnapi minimum"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Holnapi átlagos tőzsdei ár"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Holnapi legmagasabb tőzsdei ár"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Holnapi legalacsonyabb tőzsdei ár"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Holnapi átlagos teljes ár"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Holnapi legmagasabb teljes ár"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Holnapi legalacsonyabb teljes ár"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Ár vagy helyezés elfogadható"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Fix áras időszak aktív"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Tartalék árforrás van használatban",
       "description": "A Kilowahti több mint 24 órája a(z) {region} árait a(z) {fallback_source} forrásból szolgáltatja a(z) {primary_source} helyett. Ez általában azt jelenti, hogy a(z) {primary_source} üzemzavarral küzd; a Kilowahti automatikusan visszavált, amint helyreáll. Teendő nincs. Ha ez fennmarad, nézd meg a [GYIK]({faq_url})-et."
+    },
+    "stable_entity_ids": {
+      "title": "Az entitásazonosítók áthelyezhetők a stabil sémára",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Entitásazonosítók átnevezése",
+            "description": "A(z) {name} {count} entitása még a megjelenített nevekből képzett azonosítót használ, ami nyelvenként és verziónként eltér. A megerősítés átnevezi őket az [entitások oldalán]({entities_url}) felsorolt stabil azonosítókra. A régi azonosítókra hivatkozó automatizálásokat, szkripteket, sablonokat és irányítópultokat utána kézzel kell frissíteni. A te általad átnevezett entitásokat nem érinti; az előzmények és a statisztikák megmaradnak."
+          }
+        }
+      }
     }
   }
 }

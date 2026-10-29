@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Fastprisperioder/fastprisaftaler",
-        "description": "Administrér fastprisperioder eller fastprisaftaler. Når en periode er aktiv, viser effective_price den angivne faste pris i stedet for spot.",
+        "description": "Administrér fastprisperioder eller fastprisaftaler. Når en periode er aktiv, viser active_price den angivne faste pris i stedet for spot.",
         "data": {
           "action": "Handling"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Arbitragespænd i dag"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Gennemsnitspris 120 min"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Gennemsnitspris 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Gennemsnitspris 60 min"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Styringsfaktor for nettarif (bipolar)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Aktiv pris"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Eksportpris"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Gennemsnitlig eksportpris i dag"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Højeste eksportpris i dag"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Laveste eksportpris i dag"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Gennemsnitlig eksportpris i morgen"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Højeste eksportpris i morgen"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Laveste eksportpris i morgen"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Månedlig fast omkostning i dag"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Gennemsnit for de næste timer"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Gennemsnit for næste solvindue"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Egetforbrugsværdi"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Acceptabel rang"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Aktivt nettariftrin"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Styringsfaktorens form"
       },
       "setting_forward_window": {
         "name": "Fremadrettet vindue"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Prisgrænse"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Prisgrænse inkluderer nettarif"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Spotgennemsnit for de næste timer"
       },
       "spot_price": {
         "name": "Spotpris"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Gennemsnit i dag"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Maksimum i dag"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Minimum i dag"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Gennemsnitlig spotpris i dag"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Højeste spotpris i dag"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Laveste spotpris i dag"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Gennemsnitlig totalpris i dag"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Højeste totalpris i dag"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Laveste totalpris i dag"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Gennemsnit i morgen"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Maksimum i morgen"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Minimum i morgen"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Gennemsnitlig spotpris i morgen"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Højeste spotpris i morgen"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Laveste spotpris i morgen"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Gennemsnitlig totalpris i morgen"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Højeste totalpris i morgen"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Laveste totalpris i morgen"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Pris eller rang acceptabel"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Fastprisperiode aktiv"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Reservekilde til priser er i brug",
       "description": "Kilowahti har leveret priser for {region} fra {fallback_source} i stedet for {primary_source} i over 24 timer. Det betyder normalt, at {primary_source} har et nedbrud; Kilowahti skifter automatisk tilbage, når den er oppe igen. Ingen handling er nødvendig. Hvis det fortsætter, se [FAQ]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "Entitets-ID'er kan flyttes til det stabile format",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Omdøb entitets-ID'er",
+            "description": "{count} entiteter i {name} bruger stadig entitets-ID'er opbygget af visningsnavnene, som varierer mellem sprog og versioner. Bekræftelsen omdøber dem til de stabile ID'er, der er listet på [entitetssiden]({entities_url}). Automatiseringer, scripts, skabeloner og dashboards, der henviser til de gamle ID'er, skal opdateres manuelt bagefter. Entiteter, du selv har omdøbt, røres ikke; historik og statistik bevares."
+          }
+        }
+      }
     }
   }
 }

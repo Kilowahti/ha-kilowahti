@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Периоди с фиксирана цена / фиксирани договори",
-        "description": "Управлявайте периодите с фиксирана цена или фиксираните договори. Когато период е активен, effective_price показва зададената фиксирана цена вместо борсовата.",
+        "description": "Управлявайте периодите с фиксирана цена или фиксираните договори. Когато период е активен, active_price показва зададената фиксирана цена вместо борсовата.",
         "data": {
           "action": "Действие"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Арбитражна разлика днес"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Средна цена 120 мин"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Средна цена 30 мин"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Средна цена 60 мин"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Фактор на управление по пренос (биполярен)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Активна цена"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Изкупна цена"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Средна изкупна цена днес"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Най-висока изкупна цена днес"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Най-ниска изкупна цена днес"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Средна изкупна цена утре"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Най-висока изкупна цена утре"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Най-ниска изкупна цена утре"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Месечен фиксиран разход днес"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Средно за следващите часове"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Средно за следващия слънчев прозорец"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Стойност на собственото потребление"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Приемлив ранг"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Активно ниво за пренос"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Форма на фактора на управление"
       },
       "setting_forward_window": {
         "name": "Бъдещ прозорец"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Ценови праг"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Ценовият праг включва преноса"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Борсово средно за следващите часове"
       },
       "spot_price": {
         "name": "Борсова цена"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Средно днес"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Максимум днес"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Минимум днес"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Средна борсова цена днес"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Най-висока борсова цена днес"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Най-ниска борсова цена днес"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Средна обща цена днес"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Най-висока обща цена днес"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Най-ниска обща цена днес"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Средно утре"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Максимум утре"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Минимум утре"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Средна борсова цена утре"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Най-висока борсова цена утре"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Най-ниска борсова цена утре"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Средна обща цена утре"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Най-висока обща цена утре"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Най-ниска обща цена утре"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Цената или рангът са приемливи"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Активен период с фиксирана цена"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Използва се резервен източник на цени",
       "description": "Kilowahti предоставя цените за {region} от {fallback_source} вместо от {primary_source} вече над 24 часа. Обикновено това означава, че {primary_source} има неизправност; Kilowahti ще превключи автоматично обратно, щом тя се възстанови. Не е необходимо действие. Ако продължава, вижте [ЧЗВ]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "Идентификаторите на обектите могат да бъдат преместени към стабилната схема",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Преименуване на идентификаторите на обектите",
+            "description": "{count} обекта на {name} все още използват идентификатори, образувани от показваните имена, които се различават според езика и версията. Потвърждението ги преименува към стабилните идентификатори, изброени на [страницата с обекти]({entities_url}). Автоматизациите, скриптовете, шаблоните и таблата, които препращат към старите идентификатори, трябва да се обновят ръчно след това. Обектите, които сте преименували сами, не се променят; историята и статистиката се запазват."
+          }
+        }
+      }
     }
   }
 }

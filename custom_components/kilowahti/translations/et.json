@@ -327,7 +327,7 @@
       },
       "fixed_periods": {
         "title": "Fikseeritud hinnaga perioodid / püsilepingud",
-        "description": "Halda fikseeritud hinnaga perioode või püsilepinguid. Aktiivsena näitab effective_price määratud fikseeritud hinda spot-hinna asemel.",
+        "description": "Halda fikseeritud hinnaga perioode või püsilepinguid. Aktiivsena näitab active_price määratud fikseeritud hinda spot-hinna asemel.",
         "data": {
           "action": "Toiming"
         }
@@ -379,13 +379,13 @@
       "arbitrage_spread_today": {
         "name": "Arbitraaži vahe täna"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Keskmine hind 120 min"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Keskmine hind 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Keskmine hind 60 min"
       },
       "battery_charge_recommendation": {
@@ -417,7 +417,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Võrgutasu juhtimistegur (bipolaarne)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Aktiivne hind"
       },
       "exchange_rate": {
@@ -426,22 +426,22 @@
       "export_price": {
         "name": "Müügihind"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Keskmine müügihind täna"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Kõrgeim müügihind täna"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Madalaim müügihind täna"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Keskmine müügihind homme"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Kõrgeim müügihind homme"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Madalaim müügihind homme"
       },
       "import_export_spread": {
@@ -450,10 +450,10 @@
       "monthly_fixed_cost_today": {
         "name": "Püsiv kuutasu täna"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Järgmiste tundide keskmine"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Järgmise päikeseakna keskmine"
       },
       "optimal_charge_window_end": {
@@ -474,7 +474,7 @@
       "self_consumption_value": {
         "name": "Omatarbimise väärtus"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Aktsepteeritav järjekoht"
       },
       "setting_active_fixed_period": {
@@ -486,76 +486,76 @@
       "setting_active_transfer_tier": {
         "name": "Aktiivne võrgutasu tase"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Juhtimisteguri kuju"
       },
       "setting_forward_window": {
         "name": "Etteulatuv aken"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Hinnalävi"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Hinnalävi sisaldab võrgutasu"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Järgmiste tundide keskmine spot-hind"
       },
       "spot_price": {
         "name": "Spot-hind"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Keskmine hind täna"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Kõrgeim hind täna"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Madalaim hind täna"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Keskmine spot-hind täna"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Kõrgeim spot-hind täna"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Madalaim spot-hind täna"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Keskmine koguhind täna"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Kõrgeim koguhind täna"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Madalaim koguhind täna"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Keskmine hind homme"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Kõrgeim hind homme"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Madalaim hind homme"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Keskmine spot-hind homme"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Kõrgeim spot-hind homme"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Madalaim spot-hind homme"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Keskmine koguhind homme"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Kõrgeim koguhind homme"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Madalaim koguhind homme"
       },
       "total_price": {
@@ -589,7 +589,7 @@
       "price_or_rank_acceptable": {
         "name": "Hind või järjekoht aktsepteeritav"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Fikseeritud periood aktiivne"
       },
       "tomorrow_available": {
@@ -689,6 +689,17 @@
     "stale_failover": {
       "title": "Kasutusel on varuhinnaallikas",
       "description": "Kilowahti on üle 24 tunni pakkunud piirkonna {region} hindu allikast {fallback_source} allika {primary_source} asemel. See tähendab tavaliselt, et {primary_source} on rikkes; Kilowahti lülitub automaatselt tagasi, kui see taastub. Midagi pole vaja teha. Kui see jätkub, vaadake [KKK]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "Olemi ID-sid saab viia stabiilsele kujule",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Nimeta olemi ID-d ümber",
+            "description": "{name}: {count} olemit kasutab endiselt kuvanimedest tuletatud olemi ID-sid, mis erinevad keelte ja versioonide vahel. Kinnitamine nimetab need ümber [olemite lehel]({entities_url}) loetletud stabiilseteks ID-deks. Vanadele ID-dele viitavad automatiseeringud, skriptid, mallid ja töölauad tuleb pärast käsitsi uuendada. Sinu enda ümbernimetatud olemeid ei muudeta; ajalugu ja statistika säilivad."
+          }
+        }
+      }
     }
   }
 }

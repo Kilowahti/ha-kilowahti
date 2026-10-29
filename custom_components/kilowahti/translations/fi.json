@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Kiinteähintaiset jaksot / kiinteät sopimukset",
-        "description": "Hallitse kiinteähintaisia jaksoja tai kiinteitä sopimuksia. Kun aktiivinen, effective_price näyttää asetetun kiinteän hinnan spot-hinnan sijaan.",
+        "description": "Hallitse kiinteähintaisia jaksoja tai kiinteitä sopimuksia. Kun aktiivinen, active_price näyttää asetetun kiinteän hinnan spot-hinnan sijaan.",
         "data": {
           "action": "Toiminto"
         }
@@ -377,7 +377,7 @@
       "spot_price": {
         "name": "Spot-hinta"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Toteutuva hinta"
       },
       "transfer_price": {
@@ -395,64 +395,64 @@
       "total_price_quartile": {
         "name": "Kokonaishinnan kvartiili"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Tänään spot-keskiarvo"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Tänään spot-minimi"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Tänään spot-maksimi"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Huomenna spot-keskiarvo"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Huomenna spot-minimi"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Huomenna spot-maksimi"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Tänään kokonaishinnan keskiarvo"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Tänään kokonaishinnan minimi"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Tänään kokonaishinnan maksimi"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Huomenna kokonaishinnan keskiarvo"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Huomenna kokonaishinnan minimi"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Huomenna kokonaishinnan maksimi"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Tänään keskiarvo"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Tänään minimi"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Tänään maksimi"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Huomenna keskiarvo"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Huomenna minimi"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Huomenna maksimi"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Seuraavien tuntien keskiarvo"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Spot seuraavien tuntien keskiarvo"
       },
       "control_factor_price": {
@@ -476,16 +476,16 @@
       "price_quartile": {
         "name": "Hintakvartiili"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Hintaraja"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Hintaraja sisältää siirron"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Ohjausfunktion muoto"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Hyväksyttävä sijaluku"
       },
       "setting_forward_window": {
@@ -503,22 +503,22 @@
       "export_price": {
         "name": "Myyntihinta"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Tänään myyntihinnan keskiarvo"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Tänään myyntihinnan minimi"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Tänään myyntihinnan maksimi"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Huomenna myyntihinnan keskiarvo"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Huomenna myyntihinnan minimi"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Huomenna myyntihinnan maksimi"
       },
       "import_export_spread": {
@@ -527,16 +527,16 @@
       "self_consumption_value": {
         "name": "Omakulutuksen arvo"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Keskihinta 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Keskihinta 60 min"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Keskihinta 120 min"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Seuraavan aurinkoikkunan keskiarvo"
       },
       "arbitrage_spread_today": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Hinta tai sijaluku on hyväksyttävä"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Kiinteä hintajakso on aktiivinen"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Käytössä varahintalähde",
       "description": "Kilowahti on hakenut alueen {region} hinnat lähteestä {fallback_source} lähteen {primary_source} sijaan yli 24 tunnin ajan. Tämä tarkoittaa yleensä, että {primary_source} on poissa käytöstä; Kilowahti palaa siihen automaattisesti, kun se toipuu. Toimenpiteitä ei tarvita. Jos tilanne jatkuu, katso [UKK]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "Entiteettien tunnukset voi siirtää vakaaseen muotoon",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Nimeä entiteettien tunnukset uudelleen",
+            "description": "{name}: {count} entiteettiä käyttää yhä näyttönimistä muodostettuja entiteettitunnuksia, jotka vaihtelevat kielen ja version mukaan. Vahvistus nimeää ne uudelleen [entiteettisivulla]({entities_url}) lueteltuihin vakaisiin tunnuksiin. Vanhoihin tunnuksiin viittaavat automaatiot, skriptit, mallineet ja dashboardit on päivitettävä käsin jälkeenpäin. Itse uudelleennimeämiäsi entiteettejä ei muuteta; historia ja tilastot säilyvät."
+          }
+        }
+      }
     }
   }
 }

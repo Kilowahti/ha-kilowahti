@@ -327,7 +327,7 @@
       },
       "fixed_periods": {
         "title": "Fastprisperioder / fasta avtal",
-        "description": "Hantera fastprisperioder eller fasta avtal. När aktiv visar effective_price det inställda fasta priset i stället för spot.",
+        "description": "Hantera fastprisperioder eller fasta avtal. När aktiv visar active_price det inställda fasta priset i stället för spot.",
         "data": {
           "action": "Åtgärd"
         }
@@ -379,13 +379,13 @@
       "arbitrage_spread_today": {
         "name": "Arbitragedifferens idag"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Medelpris 120 min"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Medelpris 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Medelpris 60 min"
       },
       "battery_charge_recommendation": {
@@ -417,7 +417,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Överföringsstyrfaktor (bipolär)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Aktivt pris"
       },
       "exchange_rate": {
@@ -426,22 +426,22 @@
       "export_price": {
         "name": "Försäljningspris"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Medelförsäljningspris idag"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Högsta försäljningspris idag"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Lägsta försäljningspris idag"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Medelförsäljningspris imorgon"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Högsta försäljningspris imorgon"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Lägsta försäljningspris imorgon"
       },
       "import_export_spread": {
@@ -450,10 +450,10 @@
       "monthly_fixed_cost_today": {
         "name": "Fast månadskostnad idag"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Medelpris kommande timmar"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Medelpris nästa solfönster"
       },
       "optimal_charge_window_end": {
@@ -474,7 +474,7 @@
       "self_consumption_value": {
         "name": "Egenförbrukningsvärde"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Acceptabel rang"
       },
       "setting_active_fixed_period": {
@@ -486,76 +486,76 @@
       "setting_active_transfer_tier": {
         "name": "Aktiv överföringsnivå"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Styrfaktorns form"
       },
       "setting_forward_window": {
         "name": "Framåtfönster"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Priströskel"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Priströskel inkl. överföring"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Medelspotpris kommande timmar"
       },
       "spot_price": {
         "name": "Spotpris"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Medelpris idag"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Högsta pris idag"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Lägsta pris idag"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Medelspotpris idag"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Högsta spotpris idag"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Lägsta spotpris idag"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Medeltotalpris idag"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Högsta totalpris idag"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Lägsta totalpris idag"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Medelpris imorgon"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Högsta pris imorgon"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Lägsta pris imorgon"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Medelspotpris imorgon"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Högsta spotpris imorgon"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Lägsta spotpris imorgon"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Medeltotalpris imorgon"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Högsta totalpris imorgon"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Lägsta totalpris imorgon"
       },
       "total_price": {
@@ -589,7 +589,7 @@
       "price_or_rank_acceptable": {
         "name": "Pris eller rang acceptabel"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Fastprisperiod aktiv"
       },
       "tomorrow_available": {
@@ -689,6 +689,17 @@
     "stale_failover": {
       "title": "Reservkälla för priser används",
       "description": "Kilowahti har levererat priser för {region} från {fallback_source} i stället för {primary_source} i över 24 timmar. Det betyder oftast att {primary_source} har ett driftavbrott; Kilowahti växlar tillbaka automatiskt när den fungerar igen. Ingen åtgärd krävs. Om det kvarstår, se [FAQ]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "Entitets-ID:n kan flyttas till det stabila formatet",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Byt namn på entitets-ID:n",
+            "description": "{count} entiteter i {name} använder fortfarande entitets-ID:n som bygger på visningsnamnen, vilka skiljer sig mellan språk och versioner. Bekräftelsen byter namn på dem till de stabila ID:n som listas på [entitetssidan]({entities_url}). Automationer, skript, mallar och instrumentpaneler som refererar till de gamla ID:na måste uppdateras manuellt efteråt. Entiteter du själv har döpt om lämnas orörda; historik och statistik bevaras."
+          }
+        }
+      }
     }
   }
 }

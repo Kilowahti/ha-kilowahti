@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Fiksētas cenas periodi / fiksēti līgumi",
-        "description": "Pārvaldiet fiksētas cenas periodus vai fiksētus līgumus. Kad periods ir aktīvs, effective_price rāda iestatīto fiksēto cenu biržas cenas vietā.",
+        "description": "Pārvaldiet fiksētas cenas periodus vai fiksētus līgumus. Kad periods ir aktīvs, active_price rāda iestatīto fiksēto cenu biržas cenas vietā.",
         "data": {
           "action": "Darbība"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Arbitrāžas starpība šodien"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Vidējā cena 120 min"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Vidējā cena 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Vidējā cena 60 min"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Sadales tarifa vadības faktors (bipolārs)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Aktīvā cena"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Eksporta cena"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Vidējā eksporta cena šodien"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Augstākā eksporta cena šodien"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Zemākā eksporta cena šodien"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Vidējā eksporta cena rīt"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Augstākā eksporta cena rīt"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Zemākā eksporta cena rīt"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Ikmēneša fiksētā maksa šodien"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Nākamo stundu vidējā cena"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Nākamā saules loga vidējā cena"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Pašpatēriņa vērtība"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Pieņemamais rangs"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Aktīvais sadales tarifa līmenis"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Vadības faktora forma"
       },
       "setting_forward_window": {
         "name": "Nākotnes logs"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Cenas slieksnis"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Cenas slieksnis ietver sadales tarifu"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Nākamo stundu vidējā biržas cena"
       },
       "spot_price": {
         "name": "Biržas cena"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Vidējais šodien"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Maksimums šodien"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Minimums šodien"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Vidējā biržas cena šodien"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Augstākā biržas cena šodien"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Zemākā biržas cena šodien"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Vidējā kopējā cena šodien"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Augstākā kopējā cena šodien"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Zemākā kopējā cena šodien"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Vidējais rīt"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Maksimums rīt"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Minimums rīt"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Vidējā biržas cena rīt"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Augstākā biržas cena rīt"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Zemākā biržas cena rīt"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Vidējā kopējā cena rīt"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Augstākā kopējā cena rīt"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Zemākā kopējā cena rīt"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Cena vai rangs pieņemams"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Fiksētas cenas periods aktīvs"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Tiek izmantots rezerves cenu avots",
       "description": "Kilowahti jau vairāk nekā 24 stundas sniedz reģiona {region} cenas no avota {fallback_source}, nevis {primary_source}. Parasti tas nozīmē, ka {primary_source} ir traucējums; Kilowahti automātiski pārslēgsies atpakaļ, tiklīdz tas atjaunosies. Darbības nav nepieciešamas. Ja tas turpinās, skatiet [BUJ]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "Entītiju ID var pārvietot uz stabilo formātu",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Pārdēvēt entītiju ID",
+            "description": "{name}: {count} entītijas joprojām izmanto ID, kas veidoti no attēlotajiem nosaukumiem un atšķiras starp valodām un versijām. Apstiprinot, tās tiks pārdēvētas uz stabilajiem ID, kas norādīti [entītiju lapā]({entities_url}). Automatizācijas, skripti, veidnes un informācijas paneļi, kas atsaucas uz vecajiem ID, pēc tam jāatjaunina manuāli. Entītijas, kuras esat pārdēvējis pats, netiek mainītas; vēsture un statistika tiek saglabāta."
+          }
+        }
+      }
     }
   }
 }

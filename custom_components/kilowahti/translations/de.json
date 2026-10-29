@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Festpreiszeiträume / Festpreisverträge",
-        "description": "Verwalte Festpreiszeiträume oder Festpreisverträge. Ist ein Zeitraum aktiv, zeigt effective_price den festgelegten Festpreis statt des Spotpreises.",
+        "description": "Verwalte Festpreiszeiträume oder Festpreisverträge. Ist ein Zeitraum aktiv, zeigt active_price den festgelegten Festpreis statt des Spotpreises.",
         "data": {
           "action": "Aktion"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Arbitragespanne heute"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Durchschnittspreis 120 min"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Durchschnittspreis 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Durchschnittspreis 60 min"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Steuerfaktor Netzentgelt (bipolar)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Aktiver Preis"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Einspeisepreis"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Durchschnittlicher Einspeisepreis heute"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Höchster Einspeisepreis heute"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Niedrigster Einspeisepreis heute"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Durchschnittlicher Einspeisepreis morgen"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Höchster Einspeisepreis morgen"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Niedrigster Einspeisepreis morgen"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Monatliche Fixkosten heute"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Durchschnitt der nächsten Stunden"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Durchschnitt des nächsten Solarfensters"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Eigenverbrauchswert"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Akzeptabler Rang"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Aktive Netzentgeltstufe"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Steuerfaktorform"
       },
       "setting_forward_window": {
         "name": "Vorausschaufenster"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Preisschwelle"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Preisschwelle inklusive Netzentgelt"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Spot-Durchschnitt der nächsten Stunden"
       },
       "spot_price": {
         "name": "Spotpreis"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Durchschnitt heute"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Maximum heute"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Minimum heute"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Durchschnittlicher Spotpreis heute"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Höchster Spotpreis heute"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Niedrigster Spotpreis heute"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Durchschnittlicher Gesamtpreis heute"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Höchster Gesamtpreis heute"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Niedrigster Gesamtpreis heute"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Durchschnitt morgen"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Maximum morgen"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Minimum morgen"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Durchschnittlicher Spotpreis morgen"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Höchster Spotpreis morgen"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Niedrigster Spotpreis morgen"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Durchschnittlicher Gesamtpreis morgen"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Höchster Gesamtpreis morgen"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Niedrigster Gesamtpreis morgen"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Preis oder Rang akzeptabel"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Festpreiszeitraum aktiv"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Ersatz-Preisquelle in Verwendung",
       "description": "Kilowahti liefert die Preise für {region} seit über 24 Stunden von {fallback_source} statt von {primary_source}. Das bedeutet meist, dass bei {primary_source} eine Störung vorliegt; Kilowahti wechselt automatisch zurück, sobald sie behoben ist. Es ist nichts zu tun. Falls das anhält, sieh in den [FAQ]({faq_url}) nach."
+    },
+    "stable_entity_ids": {
+      "title": "Entitäts-IDs können auf das stabile Schema umgestellt werden",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Entitäts-IDs umbenennen",
+            "description": "{count} Entitäten von {name} verwenden noch Entitäts-IDs, die aus den Anzeigenamen gebildet wurden und sich je nach Sprache und Version unterscheiden. Mit dem Bestätigen werden sie auf die stabilen IDs umbenannt, die auf der [Entitäten-Seite]({entities_url}) aufgeführt sind. Automatisierungen, Skripte, Vorlagen und Dashboards, die auf die alten IDs verweisen, musst du danach manuell anpassen. Von dir selbst umbenannte Entitäten bleiben unberührt; Verlauf und Statistiken bleiben erhalten."
+          }
+        }
+      }
     }
   }
 }

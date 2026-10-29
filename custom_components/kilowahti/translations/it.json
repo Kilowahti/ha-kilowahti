@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Periodi a prezzo fisso / contratti fissi",
-        "description": "Gestisci i periodi a prezzo fisso o i contratti fissi. Quando un periodo è attivo, effective_price mostra il prezzo fisso impostato invece dello spot.",
+        "description": "Gestisci i periodi a prezzo fisso o i contratti fissi. Quando un periodo è attivo, active_price mostra il prezzo fisso impostato invece dello spot.",
         "data": {
           "action": "Azione"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Differenziale di arbitraggio oggi"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Prezzo medio 120 min"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Prezzo medio 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Prezzo medio 60 min"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Fattore di controllo del trasporto (bipolare)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Prezzo attivo"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Prezzo di immissione"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Prezzo di immissione medio oggi"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Prezzo di immissione massimo oggi"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Prezzo di immissione minimo oggi"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Prezzo di immissione medio domani"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Prezzo di immissione massimo domani"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Prezzo di immissione minimo domani"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Costo fisso mensile oggi"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Media delle prossime ore"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Media della prossima finestra solare"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Valore dell'autoconsumo"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Posizione accettabile"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Fascia di trasporto attiva"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Forma del fattore di controllo"
       },
       "setting_forward_window": {
         "name": "Finestra futura"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Soglia di prezzo"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "La soglia di prezzo include il trasporto"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Media spot delle prossime ore"
       },
       "spot_price": {
         "name": "Prezzo spot"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Media oggi"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Massimo oggi"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Minimo oggi"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Prezzo spot medio oggi"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Prezzo spot massimo oggi"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Prezzo spot minimo oggi"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Prezzo totale medio oggi"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Prezzo totale massimo oggi"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Prezzo totale minimo oggi"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Media domani"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Massimo domani"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Minimo domani"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Prezzo spot medio domani"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Prezzo spot massimo domani"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Prezzo spot minimo domani"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Prezzo totale medio domani"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Prezzo totale massimo domani"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Prezzo totale minimo domani"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Prezzo o posizione accettabile"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Periodo a prezzo fisso attivo"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "In uso una fonte di prezzi di riserva",
       "description": "Kilowahti fornisce i prezzi di {region} da {fallback_source} invece che da {primary_source} da oltre 24 ore. Di solito significa che {primary_source} ha un'interruzione; Kilowahti tornerà automaticamente alla fonte principale quando si riprende. Non serve alcuna azione. Se persiste, consulta le [FAQ]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "Gli ID delle entità possono passare allo schema stabile",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Rinomina gli ID delle entità",
+            "description": "{count} entità di {name} usano ancora ID costruiti dai nomi visualizzati, che cambiano con la lingua e la versione. Confermando, vengono rinominate con gli ID stabili elencati nella [pagina delle entità]({entities_url}). Automazioni, script, template e dashboard che fanno riferimento ai vecchi ID dovranno poi essere aggiornati a mano. Le entità che hai rinominato tu non vengono toccate; cronologia e statistiche vengono mantenute."
+          }
+        }
+      }
     }
   }
 }

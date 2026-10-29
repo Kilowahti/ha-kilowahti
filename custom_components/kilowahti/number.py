@@ -10,6 +10,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import KilowahtiConfigEntry
+from ._object_id import stable_object_id
 from .const import NUMBER_PRICE_THRESHOLD, NUMBER_RANK_THRESHOLD
 from .coordinator import KilowahtiCoordinator
 from .sensor import _device_info
@@ -42,6 +43,10 @@ class KilowahtiPriceThresholdNumber(CoordinatorEntity[KilowahtiCoordinator], Num
         self._entry = entry
         self._attr_unique_id = f"{entry.entry_id}_number_{NUMBER_PRICE_THRESHOLD}"
         self._attr_device_info = _device_info(entry)
+
+    @property
+    def suggested_object_id(self) -> str:
+        return stable_object_id(NUMBER_PRICE_THRESHOLD)
 
     @property
     def native_unit_of_measurement(self) -> str:
@@ -81,6 +86,10 @@ class KilowahtiRankThresholdNumber(CoordinatorEntity[KilowahtiCoordinator], Numb
         self._entry = entry
         self._attr_unique_id = f"{entry.entry_id}_number_{NUMBER_RANK_THRESHOLD}"
         self._attr_device_info = _device_info(entry)
+
+    @property
+    def suggested_object_id(self) -> str:
+        return stable_object_id(NUMBER_RANK_THRESHOLD)
 
     @property
     def native_max_value(self) -> float:

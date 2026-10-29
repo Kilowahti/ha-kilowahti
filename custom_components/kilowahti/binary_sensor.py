@@ -13,11 +13,12 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import KilowahtiConfigEntry
+from ._object_id import stable_object_id
 from .const import (
     BINARY_SENSOR_CHARGE_FROM_GRID_RECOMMENDED,
     BINARY_SENSOR_DISCHARGE_TO_GRID_RECOMMENDED,
     BINARY_SENSOR_EXPORT_PRICE_ACCEPTABLE,
-    BINARY_SENSOR_FIXED_PERIOD_ACTIVE,
+    BINARY_SENSOR_FIXED_PRICE_PERIOD_ACTIVE,
     BINARY_SENSOR_PRICE_ACCEPTABLE,
     BINARY_SENSOR_PRICE_OR_RANK_ACCEPTABLE,
     BINARY_SENSOR_RANK_ACCEPTABLE,
@@ -46,7 +47,7 @@ async def async_setup_entry(
         KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_PRICE_ACCEPTABLE),
         KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_RANK_ACCEPTABLE),
         KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_PRICE_OR_RANK_ACCEPTABLE),
-        KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_FIXED_PERIOD_ACTIVE),
+        KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_FIXED_PRICE_PERIOD_ACTIVE),
         KilowahtiBinarySensor(coordinator, entry, BINARY_SENSOR_TOMORROW_AVAILABLE),
     ]
     if coordinator.generation_enabled:
@@ -86,6 +87,10 @@ class KilowahtiBinarySensor(CoordinatorEntity[KilowahtiCoordinator], BinarySenso
         self._attr_device_info = _device_info(entry)
 
     @property
+    def suggested_object_id(self) -> str:
+        return stable_object_id(self._key)
+
+    @property
     def is_on(self) -> bool | None:
         c = self.coordinator
         key = self._key
@@ -111,7 +116,7 @@ class KilowahtiBinarySensor(CoordinatorEntity[KilowahtiCoordinator], BinarySenso
                 return None
             return bool(price_ok) or bool(rank_ok)
 
-        if key == BINARY_SENSOR_FIXED_PERIOD_ACTIVE:
+        if key == BINARY_SENSOR_FIXED_PRICE_PERIOD_ACTIVE:
             return c.fixed_period_active_now() is not None
 
         if key == BINARY_SENSOR_TOMORROW_AVAILABLE:

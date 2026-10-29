@@ -1,7 +1,7 @@
 get_active_prices:
   name: Get active prices
   description: >
-    Returns price slots with effective price (fixed-period override applied
+    Returns price slots with the active price (fixed-period override applied
     where active), transfer price included in total_price, and an is_fixed
     flag per slot. Without start/end returns today and tomorrow. With
     start/end returns that range. Prices are in the display unit configured for

@@ -325,7 +325,7 @@
       },
       "fixed_periods": {
         "title": "Okresy stałej ceny / umowy stałe",
-        "description": "Zarządzaj okresami stałej ceny lub umowami stałymi. Gdy okres jest aktywny, effective_price pokazuje ustaloną cenę stałą zamiast giełdowej.",
+        "description": "Zarządzaj okresami stałej ceny lub umowami stałymi. Gdy okres jest aktywny, active_price pokazuje ustaloną cenę stałą zamiast giełdowej.",
         "data": {
           "action": "Akcja"
         }
@@ -377,13 +377,13 @@
       "arbitrage_spread_today": {
         "name": "Różnica arbitrażowa dziś"
       },
-      "avg_price_120min": {
+      "average_price_120min": {
         "name": "Średnia cena 120 min"
       },
-      "avg_price_30min": {
+      "average_price_30min": {
         "name": "Średnia cena 30 min"
       },
-      "avg_price_60min": {
+      "average_price_60min": {
         "name": "Średnia cena 60 min"
       },
       "battery_charge_recommendation": {
@@ -415,7 +415,7 @@
       "control_factor_transfer_bipolar": {
         "name": "Współczynnik sterowania dystrybucji (bipolarny)"
       },
-      "effective_price": {
+      "active_price": {
         "name": "Cena aktywna"
       },
       "exchange_rate": {
@@ -424,22 +424,22 @@
       "export_price": {
         "name": "Cena sprzedaży"
       },
-      "export_today_avg": {
+      "export_today_average": {
         "name": "Średnia cena sprzedaży dziś"
       },
-      "export_today_max": {
+      "export_today_maximum": {
         "name": "Najwyższa cena sprzedaży dziś"
       },
-      "export_today_min": {
+      "export_today_minimum": {
         "name": "Najniższa cena sprzedaży dziś"
       },
-      "export_tomorrow_avg": {
+      "export_tomorrow_average": {
         "name": "Średnia cena sprzedaży jutro"
       },
-      "export_tomorrow_max": {
+      "export_tomorrow_maximum": {
         "name": "Najwyższa cena sprzedaży jutro"
       },
-      "export_tomorrow_min": {
+      "export_tomorrow_minimum": {
         "name": "Najniższa cena sprzedaży jutro"
       },
       "import_export_spread": {
@@ -448,10 +448,10 @@
       "monthly_fixed_cost_today": {
         "name": "Miesięczny koszt stały dziś"
       },
-      "next_hours_avg": {
+      "next_hours_average": {
         "name": "Średnia najbliższych godzin"
       },
-      "next_solar_window_avg": {
+      "next_solar_window_average": {
         "name": "Średnia następnego okna słonecznego"
       },
       "optimal_charge_window_end": {
@@ -472,7 +472,7 @@
       "self_consumption_value": {
         "name": "Wartość autokonsumpcji"
       },
-      "setting_acceptable_rank": {
+      "setting_rank_threshold": {
         "name": "Akceptowalna ranga"
       },
       "setting_active_fixed_period": {
@@ -484,76 +484,76 @@
       "setting_active_transfer_tier": {
         "name": "Aktywna stawka dystrybucyjna"
       },
-      "setting_control_factor_function": {
+      "setting_control_factor_shape": {
         "name": "Kształt współczynnika sterowania"
       },
       "setting_forward_window": {
         "name": "Okno przyszłe"
       },
-      "setting_max_price": {
+      "setting_price_threshold": {
         "name": "Próg ceny"
       },
       "setting_price_threshold_includes_transfer": {
         "name": "Próg ceny obejmuje dystrybucję"
       },
-      "spot_next_hours_avg": {
+      "spot_next_hours_average": {
         "name": "Średnia giełdowa najbliższych godzin"
       },
       "spot_price": {
         "name": "Cena giełdowa"
       },
-      "today_avg": {
+      "today_average": {
         "name": "Średnia dziś"
       },
-      "today_max": {
+      "today_maximum": {
         "name": "Maksimum dziś"
       },
-      "today_min": {
+      "today_minimum": {
         "name": "Minimum dziś"
       },
-      "today_spot_avg": {
+      "today_spot_average": {
         "name": "Średnia cena giełdowa dziś"
       },
-      "today_spot_max": {
+      "today_spot_maximum": {
         "name": "Najwyższa cena giełdowa dziś"
       },
-      "today_spot_min": {
+      "today_spot_minimum": {
         "name": "Najniższa cena giełdowa dziś"
       },
-      "today_total_avg": {
+      "today_total_average": {
         "name": "Średnia cena całkowita dziś"
       },
-      "today_total_max": {
+      "today_total_maximum": {
         "name": "Najwyższa cena całkowita dziś"
       },
-      "today_total_min": {
+      "today_total_minimum": {
         "name": "Najniższa cena całkowita dziś"
       },
-      "tomorrow_avg": {
+      "tomorrow_average": {
         "name": "Średnia jutro"
       },
-      "tomorrow_max": {
+      "tomorrow_maximum": {
         "name": "Maksimum jutro"
       },
-      "tomorrow_min": {
+      "tomorrow_minimum": {
         "name": "Minimum jutro"
       },
-      "tomorrow_spot_avg": {
+      "tomorrow_spot_average": {
         "name": "Średnia cena giełdowa jutro"
       },
-      "tomorrow_spot_max": {
+      "tomorrow_spot_maximum": {
         "name": "Najwyższa cena giełdowa jutro"
       },
-      "tomorrow_spot_min": {
+      "tomorrow_spot_minimum": {
         "name": "Najniższa cena giełdowa jutro"
       },
-      "tomorrow_total_avg": {
+      "tomorrow_total_average": {
         "name": "Średnia cena całkowita jutro"
       },
-      "tomorrow_total_max": {
+      "tomorrow_total_maximum": {
         "name": "Najwyższa cena całkowita jutro"
       },
-      "tomorrow_total_min": {
+      "tomorrow_total_minimum": {
         "name": "Najniższa cena całkowita jutro"
       },
       "total_price": {
@@ -587,7 +587,7 @@
       "price_or_rank_acceptable": {
         "name": "Cena lub ranga akceptowalna"
       },
-      "fixed_period_active": {
+      "fixed_price_period_active": {
         "name": "Okres stałej ceny aktywny"
       },
       "tomorrow_available": {
@@ -687,6 +687,17 @@
     "stale_failover": {
       "title": "Używane jest zapasowe źródło cen",
       "description": "Kilowahti od ponad 24 godzin pobiera ceny dla {region} z {fallback_source} zamiast z {primary_source}. Zwykle oznacza to awarię {primary_source}; Kilowahti wróci do niego automatycznie po przywróceniu działania. Nie są wymagane żadne działania. Jeśli sytuacja się utrzymuje, zajrzyj do [FAQ]({faq_url})."
+    },
+    "stable_entity_ids": {
+      "title": "Identyfikatory encji można przenieść na stabilny schemat",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Zmień nazwy identyfikatorów encji",
+            "description": "{count} encji w {name} nadal używa identyfikatorów utworzonych z wyświetlanych nazw, które różnią się w zależności od języka i wersji. Potwierdzenie zmieni je na stabilne identyfikatory wymienione na [stronie encji]({entities_url}). Automatyzacje, skrypty, szablony i dashboardy odwołujące się do starych identyfikatorów trzeba potem zaktualizować ręcznie. Encje, którym sam zmieniłeś nazwę, nie zostaną ruszone; historia i statystyki zostają zachowane."
+          }
+        }
+      }
     }
   }
 }

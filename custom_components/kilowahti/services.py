@@ -365,12 +365,12 @@ async def _handle_get_active_prices(call: ServiceCall) -> ServiceResponse:
         slot_local = dt_util.as_local(slot.dt_utc)
         period = coordinator.fixed_period_for_date(slot_local.date())
         is_fixed = period is not None
-        effective = period.price if is_fixed else coordinator._spot_effective(slot)
+        active = period.price if is_fixed else coordinator._spot_effective(slot)
         transfer = coordinator.transfer_price_for_slot(slot) or 0.0
         return {
             "time": slot_local.isoformat(),
-            "price": _fmt(coordinator, effective, formatted),
-            "total_price": _fmt(coordinator, effective + transfer, formatted),
+            "price": _fmt(coordinator, active, formatted),
+            "total_price": _fmt(coordinator, active + transfer, formatted),
             "rank": slot.rank,
             "is_fixed": is_fixed,
         }
