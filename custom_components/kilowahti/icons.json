@@ -1,0 +1,39 @@
+{
+  "entity": {
+    "sensor": {
+      "price_data_source": {
+        "default": "mdi:cloud-download-outline"
+      },
+      "setting_active_transfer_tier": {
+        "default": "mdi:transmission-tower"
+      },
+      "setting_active_fixed_period": {
+        "default": "mdi:calendar-lock"
+      }
+    },
+    "binary_sensor": {
+      "fixed_period_active": {
+        "default": "mdi:calendar-blank",
+        "state": {
+          "on": "mdi:calendar-check",
+          "off": "mdi:calendar-blank"
+        }
+      },
+      "tomorrow_available": {
+        "default": "mdi:calendar-question",
+        "state": {
+          "on": "mdi:calendar-check",
+          "off": "mdi:calendar-question"
+        }
+      }
+    },
+    "number": {
+      "price_threshold": {
+        "default": "mdi:cash-check"
+      },
+      "rank_threshold": {
+        "default": "mdi:sort-numeric-ascending"
+      }
+    }
+  }
+}
