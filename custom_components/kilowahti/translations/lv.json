@@ -694,11 +694,11 @@
         "step": {
           "confirm": {
             "title": "Pārdēvēt entītiju ID",
-            "description": "{name}: {count} entītijas joprojām izmanto ID, kas veidoti no attēlotajiem nosaukumiem un atšķiras starp valodām un versijām. Apstiprinot, tās tiks pārdēvētas uz stabilajiem ID, kas norādīti [entītiju lapā]({entities_url}). Entītijas, kuras esat pārdēvējis pats, netiek mainītas; vēsture un statistika tiek saglabāta.\n\nUz tām atsaucas šīs automatizācijas, skripti, ainas un grupas, kas pēc tam jāatjaunina manuāli. Informācijas paneļi, veidnes un citas sistēmas netiek pārbaudītas, tāpēc pārbaudiet arī tos:\n\n{usage}"
+            "description": "{name}: {count} entītijas joprojām izmanto ID, kas veidoti no attēlotajiem nosaukumiem un atšķiras starp valodām un versijām. Apstiprinot, tās tiks pārdēvētas uz stabilajiem ID, kas norādīti [entītiju lapā]({entities_url}). Entītijas, kuras esat pārdēvējis pats, netiek mainītas; vēsture un statistika tiek saglabāta.\n\nUz tām atsaucas šīs automatizācijas, skripti, ainas un grupas, kas pēc tam jāatjaunina manuāli. Informācijas paneļi, veidnes un citas sistēmas netiek pārbaudītas, tāpēc pārbaudiet arī tos:\n\n{usage}\n\nNoklikšķiniet uz Iesniegt, lai pārdēvētu entītijas."
           },
           "confirm_no_references": {
             "title": "Pārdēvēt entītiju ID",
-            "description": "{name}: {count} entītijas joprojām izmanto ID, kas veidoti no attēlotajiem nosaukumiem un atšķiras starp valodām un versijām. Apstiprinot, tās tiks pārdēvētas uz stabilajiem ID, kas norādīti [entītiju lapā]({entities_url}). Entītijas, kuras esat pārdēvējis pats, netiek mainītas; vēsture un statistika tiek saglabāta.\n\nUz tām neatsaucas neviena automatizācija, skripts, aina vai grupa. Informācijas paneļi, veidnes un citas sistēmas netiek pārbaudītas, tāpēc pārbaudiet arī tos."
+            "description": "{name}: {count} entītijas joprojām izmanto ID, kas veidoti no attēlotajiem nosaukumiem un atšķiras starp valodām un versijām. Apstiprinot, tās tiks pārdēvētas uz stabilajiem ID, kas norādīti [entītiju lapā]({entities_url}). Entītijas, kuras esat pārdēvējis pats, netiek mainītas; vēsture un statistika tiek saglabāta.\n\nUz tām neatsaucas neviena automatizācija, skripts, aina vai grupa. Informācijas paneļi, veidnes un citas sistēmas netiek pārbaudītas, tāpēc pārbaudiet arī tos.\n\nNoklikšķiniet uz Iesniegt, lai pārdēvētu entītijas."
           }
         }
       }

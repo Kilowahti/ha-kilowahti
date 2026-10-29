@@ -694,11 +694,11 @@
         "step": {
           "confirm": {
             "title": "Zmień nazwy identyfikatorów encji",
-            "description": "{count} encji w {name} nadal używa identyfikatorów utworzonych z wyświetlanych nazw, które różnią się w zależności od języka i wersji. Potwierdzenie zmieni je na stabilne identyfikatory wymienione na [stronie encji]({entities_url}). Encje, którym sam zmieniłeś nazwę, nie zostaną ruszone; historia i statystyki zostają zachowane.\n\nOdwołują się do nich te automatyzacje, skrypty, sceny i grupy, które trzeba potem zaktualizować ręcznie. Dashboardy, szablony i inne systemy nie są sprawdzane, więc sprawdź także je:\n\n{usage}"
+            "description": "{count} encji w {name} nadal używa identyfikatorów utworzonych z wyświetlanych nazw, które różnią się w zależności od języka i wersji. Potwierdzenie zmieni je na stabilne identyfikatory wymienione na [stronie encji]({entities_url}). Encje, którym sam zmieniłeś nazwę, nie zostaną ruszone; historia i statystyki zostają zachowane.\n\nOdwołują się do nich te automatyzacje, skrypty, sceny i grupy, które trzeba potem zaktualizować ręcznie. Dashboardy, szablony i inne systemy nie są sprawdzane, więc sprawdź także je:\n\n{usage}\n\nKliknij Wyślij, aby zmienić nazwy encji."
           },
           "confirm_no_references": {
             "title": "Zmień nazwy identyfikatorów encji",
-            "description": "{count} encji w {name} nadal używa identyfikatorów utworzonych z wyświetlanych nazw, które różnią się w zależności od języka i wersji. Potwierdzenie zmieni je na stabilne identyfikatory wymienione na [stronie encji]({entities_url}). Encje, którym sam zmieniłeś nazwę, nie zostaną ruszone; historia i statystyki zostają zachowane.\n\nŻadna automatyzacja, skrypt, scena ani grupa się do nich nie odwołuje. Dashboardy, szablony i inne systemy nie są sprawdzane, więc sprawdź także je."
+            "description": "{count} encji w {name} nadal używa identyfikatorów utworzonych z wyświetlanych nazw, które różnią się w zależności od języka i wersji. Potwierdzenie zmieni je na stabilne identyfikatory wymienione na [stronie encji]({entities_url}). Encje, którym sam zmieniłeś nazwę, nie zostaną ruszone; historia i statystyki zostają zachowane.\n\nŻadna automatyzacja, skrypt, scena ani grupa się do nich nie odwołuje. Dashboardy, szablony i inne systemy nie są sprawdzane, więc sprawdź także je.\n\nKliknij Wyślij, aby zmienić nazwy encji."
           }
         }
       }

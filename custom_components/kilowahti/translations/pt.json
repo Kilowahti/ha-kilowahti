@@ -694,11 +694,11 @@
         "step": {
           "confirm": {
             "title": "Mudar o nome dos IDs das entidades",
-            "description": "{count} entidades de {name} ainda usam IDs construídos a partir dos nomes apresentados, que variam consoante o idioma e a versão. Ao confirmar, são renomeadas para os IDs estáveis indicados na [página de entidades]({entities_url}). As entidades que renomeou não são alteradas; o histórico e as estatísticas são mantidos.\n\nEstas automatizações, scripts, cenas e grupos fazem referência a elas e têm de ser atualizados manualmente depois. Os painéis, modelos e outros sistemas não são verificados, por isso verifique-os também:\n\n{usage}"
+            "description": "{count} entidades de {name} ainda usam IDs construídos a partir dos nomes apresentados, que variam consoante o idioma e a versão. Ao confirmar, são renomeadas para os IDs estáveis indicados na [página de entidades]({entities_url}). As entidades que renomeou não são alteradas; o histórico e as estatísticas são mantidos.\n\nEstas automatizações, scripts, cenas e grupos fazem referência a elas e têm de ser atualizados manualmente depois. Os painéis, modelos e outros sistemas não são verificados, por isso verifique-os também:\n\n{usage}\n\nClique em Submeter para mudar o nome das entidades."
           },
           "confirm_no_references": {
             "title": "Mudar o nome dos IDs das entidades",
-            "description": "{count} entidades de {name} ainda usam IDs construídos a partir dos nomes apresentados, que variam consoante o idioma e a versão. Ao confirmar, são renomeadas para os IDs estáveis indicados na [página de entidades]({entities_url}). As entidades que renomeou não são alteradas; o histórico e as estatísticas são mantidos.\n\nNenhuma automatização, script, cena ou grupo faz referência a elas. Os painéis, modelos e outros sistemas não são verificados, por isso verifique-os também."
+            "description": "{count} entidades de {name} ainda usam IDs construídos a partir dos nomes apresentados, que variam consoante o idioma e a versão. Ao confirmar, são renomeadas para os IDs estáveis indicados na [página de entidades]({entities_url}). As entidades que renomeou não são alteradas; o histórico e as estatísticas são mantidos.\n\nNenhuma automatização, script, cena ou grupo faz referência a elas. Os painéis, modelos e outros sistemas não são verificados, por isso verifique-os também.\n\nClique em Submeter para mudar o nome das entidades."
           }
         }
       }

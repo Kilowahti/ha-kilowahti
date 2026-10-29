@@ -694,11 +694,11 @@
         "step": {
           "confirm": {
             "title": "Redenumește ID-urile entităților",
-            "description": "{count} entități din {name} folosesc încă ID-uri construite din numele afișate, care diferă în funcție de limbă și versiune. Confirmarea le redenumește cu ID-urile stabile listate pe [pagina entităților]({entities_url}). Entitățile pe care le-ai redenumit tu nu sunt modificate; istoricul și statisticile se păstrează.\n\nFac referire la ele aceste automatizări, scripturi, scene și grupuri, care trebuie actualizate manual după aceea. Dashboard-urile, șabloanele și alte sisteme nu sunt verificate, așa că verifică-le și pe acelea:\n\n{usage}"
+            "description": "{count} entități din {name} folosesc încă ID-uri construite din numele afișate, care diferă în funcție de limbă și versiune. Confirmarea le redenumește cu ID-urile stabile listate pe [pagina entităților]({entities_url}). Entitățile pe care le-ai redenumit tu nu sunt modificate; istoricul și statisticile se păstrează.\n\nFac referire la ele aceste automatizări, scripturi, scene și grupuri, care trebuie actualizate manual după aceea. Dashboard-urile, șabloanele și alte sisteme nu sunt verificate, așa că verifică-le și pe acelea:\n\n{usage}\n\nFă clic pe Trimite pentru a redenumi entitățile."
           },
           "confirm_no_references": {
             "title": "Redenumește ID-urile entităților",
-            "description": "{count} entități din {name} folosesc încă ID-uri construite din numele afișate, care diferă în funcție de limbă și versiune. Confirmarea le redenumește cu ID-urile stabile listate pe [pagina entităților]({entities_url}). Entitățile pe care le-ai redenumit tu nu sunt modificate; istoricul și statisticile se păstrează.\n\nNicio automatizare, niciun script, nicio scenă și niciun grup nu face referire la ele. Dashboard-urile, șabloanele și alte sisteme nu sunt verificate, așa că verifică-le și pe acelea."
+            "description": "{count} entități din {name} folosesc încă ID-uri construite din numele afișate, care diferă în funcție de limbă și versiune. Confirmarea le redenumește cu ID-urile stabile listate pe [pagina entităților]({entities_url}). Entitățile pe care le-ai redenumit tu nu sunt modificate; istoricul și statisticile se păstrează.\n\nNicio automatizare, niciun script, nicio scenă și niciun grup nu face referire la ele. Dashboard-urile, șabloanele și alte sisteme nu sunt verificate, așa că verifică-le și pe acelea.\n\nFă clic pe Trimite pentru a redenumi entitățile."
           }
         }
       }

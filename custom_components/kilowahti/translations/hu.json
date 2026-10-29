@@ -694,11 +694,11 @@
         "step": {
           "confirm": {
             "title": "Entitásazonosítók átnevezése",
-            "description": "A(z) {name} {count} entitása még a megjelenített nevekből képzett azonosítót használ, ami nyelvenként és verziónként eltér. A megerősítés átnevezi őket az [entitások oldalán]({entities_url}) felsorolt stabil azonosítókra. A te általad átnevezett entitásokat nem érinti; az előzmények és a statisztikák megmaradnak.\n\nRájuk hivatkoznak ezek az automatizálások, szkriptek, jelenetek és csoportok, amelyeket utána kézzel kell frissíteni. Az irányítópultokat, sablonokat és más rendszereket nem ellenőrizzük, ezért ezeket is nézd át:\n\n{usage}"
+            "description": "A(z) {name} {count} entitása még a megjelenített nevekből képzett azonosítót használ, ami nyelvenként és verziónként eltér. A megerősítés átnevezi őket az [entitások oldalán]({entities_url}) felsorolt stabil azonosítókra. A te általad átnevezett entitásokat nem érinti; az előzmények és a statisztikák megmaradnak.\n\nRájuk hivatkoznak ezek az automatizálások, szkriptek, jelenetek és csoportok, amelyeket utána kézzel kell frissíteni. Az irányítópultokat, sablonokat és más rendszereket nem ellenőrizzük, ezért ezeket is nézd át:\n\n{usage}\n\nAz entitások átnevezéséhez kattints a Küldés gombra."
           },
           "confirm_no_references": {
             "title": "Entitásazonosítók átnevezése",
-            "description": "A(z) {name} {count} entitása még a megjelenített nevekből képzett azonosítót használ, ami nyelvenként és verziónként eltér. A megerősítés átnevezi őket az [entitások oldalán]({entities_url}) felsorolt stabil azonosítókra. A te általad átnevezett entitásokat nem érinti; az előzmények és a statisztikák megmaradnak.\n\nEgyetlen automatizálás, szkript, jelenet vagy csoport sem hivatkozik rájuk. Az irányítópultokat, sablonokat és más rendszereket nem ellenőrizzük, ezért ezeket is nézd át."
+            "description": "A(z) {name} {count} entitása még a megjelenített nevekből képzett azonosítót használ, ami nyelvenként és verziónként eltér. A megerősítés átnevezi őket az [entitások oldalán]({entities_url}) felsorolt stabil azonosítókra. A te általad átnevezett entitásokat nem érinti; az előzmények és a statisztikák megmaradnak.\n\nEgyetlen automatizálás, szkript, jelenet vagy csoport sem hivatkozik rájuk. Az irányítópultokat, sablonokat és más rendszereket nem ellenőrizzük, ezért ezeket is nézd át.\n\nAz entitások átnevezéséhez kattints a Küldés gombra."
           }
         }
       }

@@ -123,6 +123,7 @@ async def test_generated_ids_are_offered_for_renaming(hass, options, mock_utcnow
     issue = ir.async_get(hass).async_get_issue(DOMAIN, f"stable_entity_ids_{entry.entry_id}")
     assert issue is not None and issue.is_fixable
     assert issue.translation_placeholders["count"] == "2"
+    assert issue.translation_placeholders["name"] == "Kilowahti Test Home"
 
     await _fix(hass, issue)
 

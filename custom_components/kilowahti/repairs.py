@@ -103,7 +103,7 @@ def async_check_stable_entity_ids(hass: HomeAssistant, entry: ConfigEntry) -> No
         severity=ir.IssueSeverity.WARNING,
         translation_key="stable_entity_ids",
         translation_placeholders={
-            "name": entry.title,
+            "name": f"Kilowahti {entry.title}",
             "count": str(len(entity_ids)),
             "entities_url": ENTITIES_URL,
         },

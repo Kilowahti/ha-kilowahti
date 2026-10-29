@@ -694,11 +694,11 @@
         "step": {
           "confirm": {
             "title": "Pervadinti esybių ID",
-            "description": "{name}: {count} esybių vis dar naudoja ID, sudarytus iš rodomų pavadinimų, kurie skiriasi priklausomai nuo kalbos ir versijos. Patvirtinus jos bus pervadintos į stabilius ID, išvardytus [esybių puslapyje]({entities_url}). Jūsų pačių pervadintos esybės nekeičiamos; istorija ir statistika išsaugomos.\n\nĮ jas remiasi šios automatizacijos, scenarijai, scenos ir grupės, kurias vėliau reikės atnaujinti rankiniu būdu. Skydeliai, šablonai ir kitos sistemos netikrinami, todėl patikrinkite ir juos:\n\n{usage}"
+            "description": "{name}: {count} esybių vis dar naudoja ID, sudarytus iš rodomų pavadinimų, kurie skiriasi priklausomai nuo kalbos ir versijos. Patvirtinus jos bus pervadintos į stabilius ID, išvardytus [esybių puslapyje]({entities_url}). Jūsų pačių pervadintos esybės nekeičiamos; istorija ir statistika išsaugomos.\n\nĮ jas remiasi šios automatizacijos, scenarijai, scenos ir grupės, kurias vėliau reikės atnaujinti rankiniu būdu. Skydeliai, šablonai ir kitos sistemos netikrinami, todėl patikrinkite ir juos:\n\n{usage}\n\nSpustelėkite Pateikti, kad pervadintumėte esybes."
           },
           "confirm_no_references": {
             "title": "Pervadinti esybių ID",
-            "description": "{name}: {count} esybių vis dar naudoja ID, sudarytus iš rodomų pavadinimų, kurie skiriasi priklausomai nuo kalbos ir versijos. Patvirtinus jos bus pervadintos į stabilius ID, išvardytus [esybių puslapyje]({entities_url}). Jūsų pačių pervadintos esybės nekeičiamos; istorija ir statistika išsaugomos.\n\nĮ jas nesiremia jokia automatizacija, scenarijus, scena ar grupė. Skydeliai, šablonai ir kitos sistemos netikrinami, todėl patikrinkite ir juos."
+            "description": "{name}: {count} esybių vis dar naudoja ID, sudarytus iš rodomų pavadinimų, kurie skiriasi priklausomai nuo kalbos ir versijos. Patvirtinus jos bus pervadintos į stabilius ID, išvardytus [esybių puslapyje]({entities_url}). Jūsų pačių pervadintos esybės nekeičiamos; istorija ir statistika išsaugomos.\n\nĮ jas nesiremia jokia automatizacija, scenarijus, scena ar grupė. Skydeliai, šablonai ir kitos sistemos netikrinami, todėl patikrinkite ir juos.\n\nSpustelėkite Pateikti, kad pervadintumėte esybes."
           }
         }
       }
