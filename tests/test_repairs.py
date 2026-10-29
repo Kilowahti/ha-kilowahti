@@ -212,6 +212,7 @@ async def test_confirm_step_lists_automations_using_the_entities(hass, options, 
 
     placeholders = result["description_placeholders"]
     assert placeholders["count"] == "1"
+    assert placeholders["name"] == "Kilowahti Test Home"
     assert result["step_id"] == "confirm"
     assert "Heat when cheap" in placeholders["usage"]
 
@@ -233,3 +234,30 @@ async def test_confirm_step_without_references_uses_its_own_text(hass, options, 
 
     done = await flow.async_step_confirm_no_references({})
     assert done["type"] == "create_entry"
+
+
+async def test_confirm_step_ignores_a_stale_stored_name(hass, options, mock_utcnow):
+    """Issues created by an earlier build keep their old placeholders; the flow recomputes the name."""
+    await hass.config.async_set_time_zone("UTC")
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=options)
+    entry.add_to_hass(hass)
+    _register(hass, entry, "spot_price", "Spot-hinta", "kilowahti_test_home_spot_hinta")
+    await _setup(hass, entry)
+    issue_id = f"stable_entity_ids_{entry.entry_id}"
+    issue = ir.async_get(hass).async_get_issue(DOMAIN, issue_id)
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        issue_id,
+        is_fixable=True,
+        severity=ir.IssueSeverity.WARNING,
+        translation_key="stable_entity_ids",
+        translation_placeholders={**issue.translation_placeholders, "name": "Test Home"},
+        data=issue.data,
+    )
+    flow = await async_create_fix_flow(hass, issue_id, issue.data)
+    flow.hass, flow.handler, flow.issue_id = hass, DOMAIN, issue_id
+
+    result = await flow.async_step_confirm()
+
+    assert result["description_placeholders"]["name"] == "Kilowahti Test Home"

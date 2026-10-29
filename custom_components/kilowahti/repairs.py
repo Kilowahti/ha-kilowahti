@@ -75,6 +75,11 @@ def async_update_failover_issue(
     )
 
 
+def entry_display_name(entry: ConfigEntry) -> str:
+    """Name of the entry as it appears on its device and entities."""
+    return f"Kilowahti {entry.title}"
+
+
 def stable_entity_ids_issue_id(entry_id: str) -> str:
     return f"stable_entity_ids_{entry_id}"
 
@@ -103,7 +108,7 @@ def async_check_stable_entity_ids(hass: HomeAssistant, entry: ConfigEntry) -> No
         severity=ir.IssueSeverity.WARNING,
         translation_key="stable_entity_ids",
         translation_placeholders={
-            "name": f"Kilowahti {entry.title}",
+            "name": entry_display_name(entry),
             "count": str(len(entity_ids)),
             "entities_url": ENTITIES_URL,
         },
@@ -162,12 +167,14 @@ class StableEntityIdsFlow(ConfirmRepairFlow):
             shown.append(f"- … (+{len(usage) - _USAGE_LIMIT})")
 
         issue = ir.async_get(self.hass).async_get_issue(self.handler, self.issue_id)
+        entry = self.hass.config_entries.async_get_entry(self._entry_id)
         return self.async_show_form(
             step_id="confirm" if usage else "confirm_no_references",
             data_schema=vol.Schema({}),
             description_placeholders={
                 **(issue.translation_placeholders if issue else {}),
                 "count": str(len(plan)),
+                **({"name": entry_display_name(entry)} if entry else {}),
                 "usage": "\n".join(shown),
             },
         )
