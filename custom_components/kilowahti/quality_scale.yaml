@@ -2,142 +2,142 @@ rules:
   action-setup: done
   appropriate-polling:
     status: done
-    comment: Price data is fetched about 2-3 times per day on a schedule; no per-minute polling.
+    comment: "Price data is fetched about 2-3 times per day on a schedule; no per-minute polling."
   brands:
     status: done
-    comment: Brand images are in the brand directory.
+    comment: "Brand images are in the brand directory."
   common-modules:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   config-flow: done
   config-flow-test-coverage:
     status: todo
-    comment: Config flow coverage is incomplete.
+    comment: "Config flow coverage is incomplete."
   dependency-transparency:
     status: todo
-    comment: Not audited: PyPI build/publish provenance of kilowahti.
+    comment: "Not audited: PyPI build/publish provenance of kilowahti."
   docs-actions:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   docs-conditions:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   docs-high-level-description:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   docs-installation-instructions:
     status: todo
-    comment: Needs the Marketplace wording from Home Assistant 2026.11.
+    comment: "Needs the Marketplace wording from Home Assistant 2026.11."
   docs-removal-instructions:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   docs-triggers:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   entity-event-setup:
     status: exempt
-    comment: Entities do not subscribe to events; the coordinator owns all listeners and timers.
+    comment: "Entities do not subscribe to events; the coordinator owns all listeners and timers."
   entity-unique-id: done
   has-entity-name: done
   runtime-data:
     status: todo
-    comment: Coordinators are stored in hass.data.
+    comment: "Coordinators are stored in hass.data."
   test-before-configure:
     status: exempt
-    comment: No host or credentials. Prices come from public sources with a fallback chain, so a connection test in the flow adds nothing.
+    comment: "No host or credentials. Prices come from public sources with a fallback chain, so a connection test in the flow adds nothing."
   test-before-setup:
     status: done
-    comment: The first price fetch raises ConfigEntryNotReady on failure.
+    comment: "The first price fetch raises ConfigEntryNotReady on failure."
   unique-config-entry:
     status: done
-    comment: The entry name is the unique ID.
+    comment: "The entry name is the unique ID."
   action-exceptions:
     status: done
-    comment: Service handlers raise ServiceValidationError.
+    comment: "Service handlers raise ServiceValidationError."
   config-entry-unloading: done
   docs-configuration-parameters:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   docs-installation-parameters:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   entity-unavailable:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   integration-owner:
     status: done
-    comment: codeowners is set in the manifest.
+    comment: "codeowners is set in the manifest."
   log-when-unavailable:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   parallel-updates:
     status: done
-    comment: PARALLEL_UPDATES is declared on every platform.
+    comment: "PARALLEL_UPDATES is declared on every platform."
   reauthentication-flow:
     status: exempt
-    comment: No authentication.
+    comment: "No authentication."
   test-coverage:
     status: todo
-    comment: Coverage is not measured against the 95% target.
+    comment: "Coverage is not measured against the 95% target."
   devices: done
   diagnostics: done
   discovery:
     status: exempt
-    comment: Cloud price data; there is nothing to discover on the network.
+    comment: "Cloud price data; there is nothing to discover on the network."
   discovery-update-info:
     status: exempt
-    comment: Cloud price data; there is nothing to discover on the network.
+    comment: "Cloud price data; there is nothing to discover on the network."
   docs-data-update:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   docs-examples:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   docs-known-limitations:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   docs-supported-devices:
     status: exempt
-    comment: No devices are supported; the integration reads public price data.
+    comment: "No devices are supported; the integration reads public price data."
   docs-supported-functions:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   docs-troubleshooting:
     status: done
-    comment: docs.kilowahti.fi has a troubleshooting page.
+    comment: "docs.kilowahti.fi has a troubleshooting page."
   docs-use-cases:
     status: done
-    comment: docs.kilowahti.fi has a how-do-i page.
+    comment: "docs.kilowahti.fi has a how-do-i page."
   dynamic-devices:
     status: exempt
-    comment: Each config entry has exactly one device.
+    comment: "Each config entry has exactly one device."
   entity-category: done
   entity-device-class:
     status: todo
-    comment: Not audited.
+    comment: "Not audited."
   entity-disabled-by-default:
     status: done
-    comment: Less useful sensors set entity_registry_enabled_default=False.
+    comment: "Less useful sensors set entity_registry_enabled_default=False."
   entity-translations: done
   exception-translations: done
   icon-translations:
     status: done
-    comment: icons.json covers the entities where the default icon is generic.
+    comment: "icons.json covers the entities where the default icon is generic."
   reconfiguration-flow:
     status: done
-    comment: Reconfigure renames the entry. Region, resolution, unit, VAT and the rest are edited in Options.
+    comment: "Reconfigure renames the entry. Region, resolution, unit, VAT and the rest are edited in Options."
   repair-issues:
     status: done
-    comment: A repair issue is raised when a fallback price source stays active for over 24 hours.
+    comment: "A repair issue is raised when a fallback price source stays active for over 24 hours."
   stale-devices:
     status: exempt
-    comment: Each config entry has exactly one device.
+    comment: "Each config entry has exactly one device."
   async-dependency:
     status: done
-    comment: kilowahti uses aiohttp.
+    comment: "kilowahti uses aiohttp."
   inject-websession:
     status: done
-    comment: Sources receive the Home Assistant client session.
+    comment: "Sources receive the Home Assistant client session."
   strict-typing:
     status: todo
-    comment: Not enabled.
+    comment: "Not enabled."
