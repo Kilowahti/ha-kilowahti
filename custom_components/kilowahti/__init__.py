@@ -7,6 +7,7 @@ import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.typing import ConfigType
 
 from .const import (
     CONF_BATTERY_CAPACITY_KWH,
@@ -25,7 +26,7 @@ from .const import (
     DOMAIN,
 )
 from .coordinator import KilowahtiCoordinator
-from .services import async_register_services, async_unregister_services
+from .services import async_register_services
 from .storage import KilowahtiStorage
 
 _LOGGER = logging.getLogger(__name__)
@@ -47,6 +48,12 @@ _RELOAD_REQUIRED_KEYS = frozenset(
         CONF_SHOW_ROLLING_AVERAGES,  # gates rolling avg sensors
     }
 )
+
+
+async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Register services once, before any config entry is set up."""
+    async_register_services(hass)
+    return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -71,9 +78,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Reload on options change
     entry.async_on_unload(entry.add_update_listener(_async_reload_entry))
 
-    # Register services once (idempotent)
-    async_register_services(hass)
-
     return True
 
 
@@ -84,10 +88,6 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if unload_ok:
         coordinator: KilowahtiCoordinator = hass.data[DOMAIN].pop(entry.entry_id)
         coordinator.async_unload()
-
-        # Unregister services only when no entries remain
-        if not hass.data[DOMAIN]:
-            async_unregister_services(hass)
 
     return unload_ok
 

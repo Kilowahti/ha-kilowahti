@@ -575,20 +575,3 @@ def async_register_services(hass: HomeAssistant) -> None:
         supports_response=SupportsResponse.ONLY,
     )
     _LOGGER.debug("Kilowahti services registered")
-
-
-def async_unregister_services(hass: HomeAssistant) -> None:
-    """Unregister services when the last entry is removed."""
-    for service in (
-        "get_active_prices",
-        "get_prices",
-        "cheapest_hours",
-        "average_price",
-        "add_fixed_period",
-        "remove_fixed_period",
-        "list_fixed_periods",
-        "get_export_prices",
-        "best_export_hours",
-        "generation_schedule",
-    ):
-        hass.services.async_remove(DOMAIN, service)

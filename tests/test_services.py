@@ -9,6 +9,7 @@ import voluptuous as vol
 from kilowahti.models import FixedPeriod
 
 from custom_components.kilowahti.const import DOMAIN
+from homeassistant.setup import async_setup_component
 
 # All slots in the fixture span 2026-03-13 00:00–02:00 UTC.
 _T0 = datetime(2026, 3, 13, 0, 0, tzinfo=timezone.utc)
@@ -225,3 +226,22 @@ async def test_get_active_prices_uses_fixed_price(hass, setup_integration, mock_
     for slot in fixed_day_slots:
         assert slot["price"] == pytest.approx(5.0)
         assert slot["is_fixed"] is True
+
+
+async def test_services_registered_before_any_entry_exists(hass):
+    """Services are callable once the component loads, before any entry is set up."""
+    assert not hass.services.has_service(DOMAIN, "get_prices")
+
+    assert await async_setup_component(hass, DOMAIN, {})
+    await hass.async_block_till_done()
+
+    assert hass.services.has_service(DOMAIN, "get_prices")
+
+    with pytest.raises(vol.Invalid):
+        await hass.services.async_call(
+            DOMAIN,
+            "get_prices",
+            {"start": "2026-03-13T00:00:00+00:00"},
+            blocking=True,
+            return_response=True,
+        )
