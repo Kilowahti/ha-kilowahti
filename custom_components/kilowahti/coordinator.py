@@ -11,6 +11,7 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers import issue_registry as ir
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.event import (
     async_call_later,
@@ -100,6 +101,7 @@ from .const import (
     UNIT_SNTPERKWH,
 )
 from .models import FixedPeriod, PriceResolution, PriceSlot, ScoreProfile, TransferGroup
+from .repairs import async_update_failover_issue, failover_issue_id
 from .storage import KilowahtiStorage
 
 _LOGGER = logging.getLogger(__name__)
@@ -434,6 +436,7 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
         for unsub in self._unsubscribers:
             unsub()
         self._unsubscribers.clear()
+        ir.async_delete_issue(self.hass, DOMAIN, failover_issue_id(self._entry.entry_id))
 
         if self._eager_poll_unsub is not None:
             self._eager_poll_unsub()
@@ -527,6 +530,14 @@ class KilowahtiCoordinator(DataUpdateCoordinator[None]):
             self._last_failover_utc = dt_util.utcnow()
             _LOGGER.warning("Price data now served by %s (was %s)", name, self._active_source_name)
             self._active_source_name = name
+        async_update_failover_issue(
+            self.hass,
+            entry_id=self._entry.entry_id,
+            region=self._region,
+            active_name=self._active_source_name,
+            primary_name=self._sources[0][0],
+            last_failover_utc=self._last_failover_utc,
+        )
 
     async def _chain_fetch_today(self) -> list[PriceSlot]:
         """Fetch today's prices from the first source in the chain that delivers."""

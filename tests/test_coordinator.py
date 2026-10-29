@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -38,6 +38,7 @@ from custom_components.kilowahti.const import (
     UNIT_EUROKWH,
 )
 from homeassistant.config_entries import ConfigEntryState
+from homeassistant.helpers import issue_registry as ir
 
 from .conftest import (
     CDN_PAYLOAD,
@@ -1405,3 +1406,19 @@ async def test_control_factor_transfer_follows_the_curve_settings(hass, options,
     with patch("homeassistant.util.dt.utcnow", return_value=mid_tier_time):
         # Middle of three tiers: sinusoidal gives 0.5, squared by the scaling
         assert coord.control_factor_transfer() == pytest.approx(0.25)
+
+
+async def test_persisting_failover_creates_and_unload_clears_repair_issue(
+    hass, setup_integration, mock_utcnow
+):
+    coord = hass.data[DOMAIN][setup_integration.entry_id]
+    issue_id = f"stale_failover_{setup_integration.entry_id}"
+    registry = ir.async_get(hass)
+
+    coord._last_failover_utc = mock_utcnow - timedelta(hours=25)
+    coord._active_source_name = "spot_hinta"
+    coord._mark_active_source("spot_hinta")
+    assert registry.async_get_issue(DOMAIN, issue_id) is not None
+
+    await hass.config_entries.async_unload(setup_integration.entry_id)
+    assert registry.async_get_issue(DOMAIN, issue_id) is None

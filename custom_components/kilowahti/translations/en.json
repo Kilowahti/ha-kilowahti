@@ -676,5 +676,11 @@
     "period_not_found": {
       "message": "No fixed-price period with id '{period_id}'."
     }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Using a fallback price source",
+      "description": "Kilowahti has been serving prices for {region} from {fallback_source} instead of {primary_source} for over 24 hours. This usually means {primary_source} is having an outage; Kilowahti will switch back automatically once it recovers. No action is needed. If this persists, check the [FAQ](https://docs.kilowahti.fi/faq/)."
+    }
   }
 }
