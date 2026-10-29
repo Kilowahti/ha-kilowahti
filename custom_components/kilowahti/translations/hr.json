@@ -16,6 +16,13 @@
           "display_unit": "Jedinica senzora"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Preimenuj",
+        "description": "Promijenite naziv ovog unosa. Sve ostale postavke mijenjaju se u Opcijama.",
+        "data": {
+          "name": "Naziv"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Valuta",
         "description": "Ova zona naplaćuje u valuti {currency}. Burzovne cijene preračunavaju se iz EUR dnevnim tečajem; sve cijene koje unesete (marža, stupnjevi mrežarine, pragovi) izražene su u odabranoj valuti prikaza.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Cijena mora biti veća od nule."
     },
     "abort": {
-      "already_configured": "Ova je instanca već konfigurirana."
+      "already_configured": "Ova je instanca već konfigurirana.",
+      "reconfigure_successful": "Rekonfiguracija je uspjela."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Sutrašnje cijene dostupne",
       "description": "Ispunjen kada su sutrašnje cijene struje dostupne."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Nijedan Kilowahti unos nije konfiguriran."
+    },
+    "entry_not_found": {
+      "message": "Ne postoji Kilowahti unos s id '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Postoji više Kilowahti unosa; navedite config_entry_id u pozivu usluge."
+    },
+    "invalid_period_dates": {
+      "message": "end_date mora biti istog dana kao start_date ili kasnije."
+    },
+    "invalid_period_price": {
+      "message": "price mora biti veći od nule."
+    },
+    "period_overlap": {
+      "message": "Ovo se razdoblje preklapa s postojećim razdobljem fiksne cijene."
+    },
+    "period_not_found": {
+      "message": "Ne postoji razdoblje fiksne cijene s id '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "U upotrebi je rezervni izvor cijena",
+      "description": "Kilowahti već više od 24 sata daje cijene za {region} iz izvora {fallback_source} umjesto {primary_source}. To obično znači da {primary_source} ima prekid; Kilowahti će se automatski vratiti na njega kad se oporavi. Nije potrebna nikakva radnja. Ako se nastavi, pogledajte [FAQ](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

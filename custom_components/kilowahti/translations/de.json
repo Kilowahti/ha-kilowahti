@@ -16,6 +16,13 @@
           "display_unit": "Sensoreinheit"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Umbenennen",
+        "description": "Ändere den Namen dieses Eintrags. Alle anderen Einstellungen werden unter Optionen geändert.",
+        "data": {
+          "name": "Name"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Währung",
         "description": "Diese Region rechnet in {currency} ab. Spotpreise werden mit einem täglichen Wechselkurs aus EUR umgerechnet; alle von dir eingegebenen Preise (Aufschlag, Netzentgelt-Stufen, Schwellen) sind in der gewählten Anzeigewährung.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Der Preis muss größer als null sein."
     },
     "abort": {
-      "already_configured": "Diese Instanz ist bereits konfiguriert."
+      "already_configured": "Diese Instanz ist bereits konfiguriert.",
+      "reconfigure_successful": "Die Neukonfiguration war erfolgreich."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Morgige Preise verfügbar",
       "description": "Erfüllt, wenn die morgigen Strompreise verfügbar sind."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Es sind keine Kilowahti-Einträge konfiguriert."
+    },
+    "entry_not_found": {
+      "message": "Es gibt keinen Kilowahti-Eintrag mit der ID '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Es gibt mehrere Kilowahti-Einträge; gib im Dienstaufruf config_entry_id an."
+    },
+    "invalid_period_dates": {
+      "message": "end_date muss am selben Tag wie start_date oder später liegen."
+    },
+    "invalid_period_price": {
+      "message": "price muss größer als null sein."
+    },
+    "period_overlap": {
+      "message": "Dieser Zeitraum überschneidet sich mit einem bestehenden Festpreiszeitraum."
+    },
+    "period_not_found": {
+      "message": "Es gibt keinen Festpreiszeitraum mit der ID '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Ersatz-Preisquelle in Verwendung",
+      "description": "Kilowahti liefert die Preise für {region} seit über 24 Stunden von {fallback_source} statt von {primary_source}. Das bedeutet meist, dass bei {primary_source} eine Störung vorliegt; Kilowahti wechselt automatisch zurück, sobald sie behoben ist. Es ist nichts zu tun. Falls das anhält, sieh in den [FAQ](https://docs.kilowahti.fi/faq/) nach."
     }
   }
 }

@@ -16,6 +16,13 @@
           "display_unit": "Sensor unit"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Rename",
+        "description": "Change the name of this entry. All other settings are changed from Options.",
+        "data": {
+          "name": "Name"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Currency",
         "description": "This region bills in {currency}. Spot prices are converted from EUR with a daily exchange rate; all prices you enter (commission, transfer tiers, thresholds) are in the selected display currency.",
@@ -158,7 +165,8 @@
       "period_price_zero": "Price must be greater than zero."
     },
     "abort": {
-      "already_configured": "This instance is already configured."
+      "already_configured": "This instance is already configured.",
+      "reconfigure_successful": "Reconfiguration was successful."
     }
   },
   "options": {

@@ -16,6 +16,13 @@
           "display_unit": "Sensorenhet"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Endre navn",
+        "description": "Endre navnet på denne oppføringen. Alle andre innstillinger endres under Alternativer.",
+        "data": {
+          "name": "Navn"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Valuta",
         "description": "Denne regionen faktureres i {currency}. Spotpriser regnes om fra EUR med en daglig valutakurs; alle priser du oppgir (provisjon, overføringspriser, prisgrenser) er i den valgte visningsvalutaen.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Prisen må være større enn null."
     },
     "abort": {
-      "already_configured": "Denne forekomsten er allerede konfigurert."
+      "already_configured": "Denne forekomsten er allerede konfigurert.",
+      "reconfigure_successful": "Rekonfigureringen var vellykket."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Morgendagens priser tilgjengelig",
       "description": "Pass når morgendagens strømpriser er tilgjengelige."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Ingen Kilowahti-oppføringer er konfigurert."
+    },
+    "entry_not_found": {
+      "message": "Ingen Kilowahti-oppføring med id '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Det finnes flere Kilowahti-oppføringer; angi config_entry_id i tjenestekallet."
+    },
+    "invalid_period_dates": {
+      "message": "end_date må være samme dag som start_date eller senere."
+    },
+    "invalid_period_price": {
+      "message": "price må være større enn null."
+    },
+    "period_overlap": {
+      "message": "Denne perioden overlapper en eksisterende fastprisperiode."
+    },
+    "period_not_found": {
+      "message": "Ingen fastprisperiode med id '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Reservekilde for priser er i bruk",
+      "description": "Kilowahti har levert priser for {region} fra {fallback_source} i stedet for {primary_source} i over 24 timer. Det betyr vanligvis at {primary_source} har et avbrudd; Kilowahti bytter automatisk tilbake når den er oppe igjen. Ingen handling er nødvendig. Hvis det vedvarer, se [FAQ](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

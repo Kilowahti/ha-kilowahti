@@ -16,6 +16,13 @@
           "display_unit": "Sensorenhed"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Omdøb",
+        "description": "Skift navnet på denne post. Alle andre indstillinger ændres under Valgmuligheder.",
+        "data": {
+          "name": "Navn"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Valuta",
         "description": "Denne region afregnes i {currency}. Spotpriser omregnes fra EUR med en daglig valutakurs; alle priser, du indtaster (tillæg, nettariftrin, grænser), er i den valgte visningsvaluta.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Prisen skal være større end nul."
     },
     "abort": {
-      "already_configured": "Denne instans er allerede konfigureret."
+      "already_configured": "Denne instans er allerede konfigureret.",
+      "reconfigure_successful": "Omkonfigureringen lykkedes."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Morgendagens priser tilgængelige",
       "description": "Opfyldes, når morgendagens elpriser er tilgængelige."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Ingen Kilowahti-poster er konfigureret."
+    },
+    "entry_not_found": {
+      "message": "Ingen Kilowahti-post med id '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Der findes flere Kilowahti-poster; angiv config_entry_id i tjenestekaldet."
+    },
+    "invalid_period_dates": {
+      "message": "end_date skal være samme dag som start_date eller senere."
+    },
+    "invalid_period_price": {
+      "message": "price skal være større end nul."
+    },
+    "period_overlap": {
+      "message": "Denne periode overlapper en eksisterende fastprisperiode."
+    },
+    "period_not_found": {
+      "message": "Ingen fastprisperiode med id '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Reservekilde til priser er i brug",
+      "description": "Kilowahti har leveret priser for {region} fra {fallback_source} i stedet for {primary_source} i over 24 timer. Det betyder normalt, at {primary_source} har et nedbrud; Kilowahti skifter automatisk tilbage, når den er oppe igen. Ingen handling er nødvendig. Hvis det fortsætter, se [FAQ](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

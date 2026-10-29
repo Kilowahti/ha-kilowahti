@@ -16,6 +16,13 @@
           "display_unit": "Jednostka sensora"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Zmień nazwę",
+        "description": "Zmień nazwę tego wpisu. Wszystkie pozostałe ustawienia zmienia się w Opcjach.",
+        "data": {
+          "name": "Nazwa"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Waluta",
         "description": "Ten region rozlicza się w walucie {currency}. Ceny giełdowe są przeliczane z EUR według dziennego kursu wymiany; wszystkie wprowadzane ceny (marża, stawki dystrybucyjne, progi) są w wybranej walucie wyświetlania.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Cena musi być większa od zera."
     },
     "abort": {
-      "already_configured": "Ta instancja jest już skonfigurowana."
+      "already_configured": "Ta instancja jest już skonfigurowana.",
+      "reconfigure_successful": "Rekonfiguracja zakończona powodzeniem."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Jutrzejsze ceny dostępne",
       "description": "Spełniony, gdy jutrzejsze ceny energii są dostępne."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Nie skonfigurowano żadnych wpisów Kilowahti."
+    },
+    "entry_not_found": {
+      "message": "Brak wpisu Kilowahti o identyfikatorze '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Istnieje wiele wpisów Kilowahti; podaj config_entry_id w wywołaniu usługi."
+    },
+    "invalid_period_dates": {
+      "message": "end_date musi przypadać w tym samym dniu co start_date lub później."
+    },
+    "invalid_period_price": {
+      "message": "price musi być większa od zera."
+    },
+    "period_overlap": {
+      "message": "Ten okres nakłada się na istniejący okres stałej ceny."
+    },
+    "period_not_found": {
+      "message": "Brak okresu stałej ceny o identyfikatorze '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Używane jest zapasowe źródło cen",
+      "description": "Kilowahti od ponad 24 godzin pobiera ceny dla {region} z {fallback_source} zamiast z {primary_source}. Zwykle oznacza to awarię {primary_source}; Kilowahti wróci do niego automatycznie po przywróceniu działania. Nie są wymagane żadne działania. Jeśli sytuacja się utrzymuje, zajrzyj do [FAQ](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

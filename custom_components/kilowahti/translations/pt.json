@@ -16,6 +16,13 @@
           "display_unit": "Unidade do sensor"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Mudar o nome",
+        "description": "Altere o nome desta entrada. Todas as outras definições são alteradas em Opções.",
+        "data": {
+          "name": "Nome"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Moeda",
         "description": "Esta zona fatura em {currency}. Os preços spot são convertidos de EUR com uma taxa de câmbio diária; todos os preços introduzidos (margem, escalões da tarifa de rede, limiares) estão na moeda de apresentação selecionada.",
@@ -157,7 +164,8 @@
       "period_price_zero": "O preço tem de ser maior que zero."
     },
     "abort": {
-      "already_configured": "Esta instância já está configurada."
+      "already_configured": "Esta instância já está configurada.",
+      "reconfigure_successful": "A reconfiguração foi concluída com êxito."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Preços de amanhã disponíveis",
       "description": "Cumpre-se quando os preços da eletricidade de amanhã estão disponíveis."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Não há entradas Kilowahti configuradas."
+    },
+    "entry_not_found": {
+      "message": "Não existe nenhuma entrada Kilowahti com o id '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Existem várias entradas Kilowahti; indique config_entry_id na chamada do serviço."
+    },
+    "invalid_period_dates": {
+      "message": "end_date tem de ser no mesmo dia que start_date ou posterior."
+    },
+    "invalid_period_price": {
+      "message": "price tem de ser maior que zero."
+    },
+    "period_overlap": {
+      "message": "Este período sobrepõe-se a um período de preço fixo existente."
+    },
+    "period_not_found": {
+      "message": "Não existe nenhum período de preço fixo com o id '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Fonte de preços alternativa em utilização",
+      "description": "O Kilowahti fornece os preços de {region} a partir de {fallback_source} em vez de {primary_source} há mais de 24 horas. Normalmente significa que {primary_source} tem uma falha; o Kilowahti voltará automaticamente a ela quando recuperar. Não é necessária qualquer ação. Se persistir, consulte as [FAQ](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

@@ -16,6 +16,13 @@
           "display_unit": "Andurite ühik"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Nimeta ümber",
+        "description": "Muuda selle kirje nime. Kõiki muid seadeid muudetakse valikutest.",
+        "data": {
+          "name": "Nimi"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Valuuta",
         "description": "Selles piirkonnas arveldatakse valuutas {currency}. Spot-hinnad arvutatakse eurodest ümber päevase vahetuskursiga; kõik sisestatud hinnad (marginaal, võrgutasu astmed, läved) on valitud kuvamisvaluutas.",
@@ -158,7 +165,8 @@
       "period_price_zero": "Hind peab olema suurem kui null."
     },
     "abort": {
-      "already_configured": "See eksemplar on juba seadistatud."
+      "already_configured": "See eksemplar on juba seadistatud.",
+      "reconfigure_successful": "Ümberseadistamine õnnestus."
     }
   },
   "options": {
@@ -652,6 +660,35 @@
     "tomorrow_available": {
       "name": "Homsed hinnad saadaval",
       "description": "Täidetud, kui homsed elektrihinnad on saadaval."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Ühtegi Kilowahti kirjet pole seadistatud."
+    },
+    "entry_not_found": {
+      "message": "Kilowahti kirjet ID-ga '{entry_id}' ei ole."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Kilowahti kirjeid on mitu; määrake teenusekutses config_entry_id."
+    },
+    "invalid_period_dates": {
+      "message": "end_date peab olema start_date'iga samal päeval või hilisem."
+    },
+    "invalid_period_price": {
+      "message": "price peab olema suurem kui null."
+    },
+    "period_overlap": {
+      "message": "See periood kattub olemasoleva fikseeritud perioodiga."
+    },
+    "period_not_found": {
+      "message": "Fikseeritud perioodi ID-ga '{period_id}' ei ole."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Kasutusel on varuhinnaallikas",
+      "description": "Kilowahti on üle 24 tunni pakkunud piirkonna {region} hindu allikast {fallback_source} allika {primary_source} asemel. See tähendab tavaliselt, et {primary_source} on rikkes; Kilowahti lülitub automaatselt tagasi, kui see taastub. Midagi pole vaja teha. Kui see jätkub, vaadake [KKK](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

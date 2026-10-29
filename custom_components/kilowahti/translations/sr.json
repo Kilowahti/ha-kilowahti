@@ -16,6 +16,13 @@
           "display_unit": "Јединица сензора"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Преименуј",
+        "description": "Промените назив овог уноса. Сва остала подешавања мењају се у Опцијама.",
+        "data": {
+          "name": "Назив"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Валута",
         "description": "Ова зона наплаћује у валути {currency}. Берзанске цене се прерачунавају из EUR дневним курсом; све цене које унесете (маржа, ступњеви мрежарине, прагови) изражене су у изабраној валути приказа.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Цена мора бити већа од нуле."
     },
     "abort": {
-      "already_configured": "Ова инстанца је већ подешена."
+      "already_configured": "Ова инстанца је већ подешена.",
+      "reconfigure_successful": "Реконфигурација је успешна."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Сутрашње цене доступне",
       "description": "Испуњен када су сутрашње цене струје доступне."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Ниједан Kilowahti унос није подешен."
+    },
+    "entry_not_found": {
+      "message": "Не постоји Kilowahti унос са ид '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Постоји више Kilowahti уноса; наведите config_entry_id у позиву услуге."
+    },
+    "invalid_period_dates": {
+      "message": "end_date мора бити истог дана као start_date или касније."
+    },
+    "invalid_period_price": {
+      "message": "price мора бити веће од нуле."
+    },
+    "period_overlap": {
+      "message": "Овај период се преклапа са постојећим периодом фиксне цене."
+    },
+    "period_not_found": {
+      "message": "Не постоји период фиксне цене са ид '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "У употреби је резервни извор цена",
+      "description": "Kilowahti већ више од 24 сата даје цене за {region} из извора {fallback_source} уместо {primary_source}. То обично значи да {primary_source} има прекид; Kilowahti ће се аутоматски вратити на њега када се опорави. Није потребна никаква радња. Ако се настави, погледајте [ЧПП](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

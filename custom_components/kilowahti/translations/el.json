@@ -16,6 +16,13 @@
           "display_unit": "Μονάδα του αισθητήρα"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Μετονομασία",
+        "description": "Αλλάξτε το όνομα αυτής της καταχώρισης. Όλες οι υπόλοιπες ρυθμίσεις αλλάζουν από τις Επιλογές.",
+        "data": {
+          "name": "Όνομα"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Νόμισμα",
         "description": "Αυτή η ζώνη τιμολογεί σε {currency}. Οι τιμές spot μετατρέπονται από EUR με ημερήσια ισοτιμία· όλες οι τιμές που εισάγετε (περιθώριο, κλιμάκια χρέωσης δικτύου, όρια) είναι στο επιλεγμένο νόμισμα εμφάνισης.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Η τιμή πρέπει να είναι μεγαλύτερη από μηδέν."
     },
     "abort": {
-      "already_configured": "Αυτή η εγκατάσταση έχει ήδη ρυθμιστεί."
+      "already_configured": "Αυτή η εγκατάσταση έχει ήδη ρυθμιστεί.",
+      "reconfigure_successful": "Η επαναρύθμιση ολοκληρώθηκε με επιτυχία."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Διαθέσιμες οι αυριανές τιμές",
       "description": "Ισχύει όταν οι αυριανές τιμές ρεύματος είναι διαθέσιμες."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Δεν έχει ρυθμιστεί καμία καταχώριση Kilowahti."
+    },
+    "entry_not_found": {
+      "message": "Δεν υπάρχει καταχώριση Kilowahti με αναγνωριστικό '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Υπάρχουν πολλές καταχωρίσεις Kilowahti· ορίστε το config_entry_id στην κλήση υπηρεσίας."
+    },
+    "invalid_period_dates": {
+      "message": "Το end_date πρέπει να είναι την ίδια ημέρα με το start_date ή μεταγενέστερο."
+    },
+    "invalid_period_price": {
+      "message": "Το price πρέπει να είναι μεγαλύτερο από μηδέν."
+    },
+    "period_overlap": {
+      "message": "Αυτή η περίοδος επικαλύπτεται με υπάρχουσα περίοδο σταθερής τιμής."
+    },
+    "period_not_found": {
+      "message": "Δεν υπάρχει περίοδος σταθερής τιμής με αναγνωριστικό '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Χρησιμοποιείται εφεδρική πηγή τιμών",
+      "description": "Το Kilowahti παρέχει τις τιμές για {region} από το {fallback_source} αντί για το {primary_source} για πάνω από 24 ώρες. Συνήθως αυτό σημαίνει ότι το {primary_source} έχει διακοπή λειτουργίας· το Kilowahti θα επιστρέψει αυτόματα σε αυτό μόλις αποκατασταθεί. Δεν απαιτείται καμία ενέργεια. Αν συνεχιστεί, δείτε τις [FAQ](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

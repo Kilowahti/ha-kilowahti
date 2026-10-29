@@ -16,6 +16,13 @@
           "display_unit": "Jutiklio vienetas"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Pervadinti",
+        "description": "Pakeiskite šio įrašo pavadinimą. Visi kiti nustatymai keičiami skiltyje Parinktys.",
+        "data": {
+          "name": "Pavadinimas"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Valiuta",
         "description": "Šiame regione atsiskaitoma valiuta {currency}. Biržos kainos perskaičiuojamos iš EUR pagal dienos valiutos kursą; visos įvestos kainos (antkainis, persiuntimo pakopos, slenksčiai) yra pasirinkta rodymo valiuta.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Kaina turi būti didesnė už nulį."
     },
     "abort": {
-      "already_configured": "Šis egzempliorius jau sukonfigūruotas."
+      "already_configured": "Šis egzempliorius jau sukonfigūruotas.",
+      "reconfigure_successful": "Perkonfigūravimas sėkmingas."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Rytojaus kainos prieinamos",
       "description": "Tenkinama, kai rytojaus elektros kainos yra prieinamos."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Nesukonfigūruotas nė vienas Kilowahti įrašas."
+    },
+    "entry_not_found": {
+      "message": "Nėra Kilowahti įrašo su id '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Yra keli Kilowahti įrašai; paslaugos iškvietime nurodykite config_entry_id."
+    },
+    "invalid_period_dates": {
+      "message": "end_date turi būti ta pati diena kaip start_date arba vėlesnė."
+    },
+    "invalid_period_price": {
+      "message": "price turi būti didesnis už nulį."
+    },
+    "period_overlap": {
+      "message": "Šis laikotarpis sutampa su esamu fiksuotos kainos laikotarpiu."
+    },
+    "period_not_found": {
+      "message": "Nėra fiksuotos kainos laikotarpio su id '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Naudojamas atsarginis kainų šaltinis",
+      "description": "Kilowahti jau daugiau nei 24 valandas teikia {region} kainas iš šaltinio {fallback_source}, o ne {primary_source}. Paprastai tai reiškia, kad {primary_source} sutriko; Kilowahti automatiškai persijungs atgal, kai šaltinis atsistatys. Nieko daryti nereikia. Jei tai tęsiasi, žr. [DUK](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

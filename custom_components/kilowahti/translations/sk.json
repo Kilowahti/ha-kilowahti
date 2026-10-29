@@ -16,6 +16,13 @@
           "display_unit": "Jednotka senzora"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Premenovať",
+        "description": "Zmeňte názov tejto položky. Všetky ostatné nastavenia sa menia v Možnostiach.",
+        "data": {
+          "name": "Názov"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Mena",
         "description": "Táto zóna účtuje v mene {currency}. Spotové ceny sa prepočítavajú z EUR denným výmenným kurzom; všetky zadané ceny (marža, pásma distribúcie, prahy) sú vo zvolenej mene zobrazenia.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Cena musí byť väčšia ako nula."
     },
     "abort": {
-      "already_configured": "Táto inštancia je už nakonfigurovaná."
+      "already_configured": "Táto inštancia je už nakonfigurovaná.",
+      "reconfigure_successful": "Prekonfigurovanie prebehlo úspešne."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Zajtrajšie ceny dostupné",
       "description": "Platí, keď sú dostupné zajtrajšie ceny elektriny."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Nie je nakonfigurovaná žiadna položka Kilowahti."
+    },
+    "entry_not_found": {
+      "message": "Neexistuje položka Kilowahti s id '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Existuje viac položiek Kilowahti; vo volaní služby uveďte config_entry_id."
+    },
+    "invalid_period_dates": {
+      "message": "end_date musí byť rovnaký deň ako start_date alebo neskorší."
+    },
+    "invalid_period_price": {
+      "message": "price musí byť väčšia ako nula."
+    },
+    "period_overlap": {
+      "message": "Toto obdobie sa prekrýva s existujúcim obdobím fixnej ceny."
+    },
+    "period_not_found": {
+      "message": "Neexistuje obdobie fixnej ceny s id '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Používa sa záložný zdroj cien",
+      "description": "Kilowahti už viac ako 24 hodín poskytuje ceny pre {region} zo zdroja {fallback_source} namiesto {primary_source}. Zvyčajne to znamená, že {primary_source} má výpadok; Kilowahti sa automaticky prepne späť, keď sa zdroj obnoví. Nie je potrebné nič robiť. Ak to pretrváva, pozrite si [FAQ](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

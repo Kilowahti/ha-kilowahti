@@ -16,6 +16,13 @@
           "display_unit": "A szenzor mértékegysége"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Átnevezés",
+        "description": "Módosítsd a bejegyzés nevét. Az összes többi beállítást az Opciókban módosíthatod.",
+        "data": {
+          "name": "Név"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Pénznem",
         "description": "Ez a zóna {currency} pénznemben számláz. A tőzsdei árak EUR-ból kerülnek átváltásra napi árfolyammal; minden megadott ár (árrés, hálózati díjsávok, küszöbök) a kiválasztott megjelenítési pénznemben értendő.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Az árnak nullánál nagyobbnak kell lennie."
     },
     "abort": {
-      "already_configured": "Ez a példány már be van állítva."
+      "already_configured": "Ez a példány már be van állítva.",
+      "reconfigure_successful": "Az újrakonfigurálás sikeres volt."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Holnapi árak elérhetők",
       "description": "Akkor teljesül, ha a holnapi villamosenergia-árak elérhetők."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Nincs beállított Kilowahti-bejegyzés."
+    },
+    "entry_not_found": {
+      "message": "Nincs '{entry_id}' azonosítójú Kilowahti-bejegyzés."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Több Kilowahti-bejegyzés létezik; add meg a config_entry_id értékét a szolgáltatáshívásban."
+    },
+    "invalid_period_dates": {
+      "message": "Az end_date nem lehet korábbi a start_date napjánál."
+    },
+    "invalid_period_price": {
+      "message": "A price értékének nullánál nagyobbnak kell lennie."
+    },
+    "period_overlap": {
+      "message": "Ez az időszak átfedi egy meglévő fix áras időszakot."
+    },
+    "period_not_found": {
+      "message": "Nincs '{period_id}' azonosítójú fix áras időszak."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Tartalék árforrás van használatban",
+      "description": "A Kilowahti több mint 24 órája a(z) {region} árait a(z) {fallback_source} forrásból szolgáltatja a(z) {primary_source} helyett. Ez általában azt jelenti, hogy a(z) {primary_source} üzemzavarral küzd; a Kilowahti automatikusan visszavált, amint helyreáll. Teendő nincs. Ha ez fennmarad, nézd meg a [GYIK](https://docs.kilowahti.fi/faq/)-et."
     }
   }
 }

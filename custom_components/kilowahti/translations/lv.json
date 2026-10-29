@@ -16,6 +16,13 @@
           "display_unit": "Sensora mērvienība"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Pārsaukt",
+        "description": "Mainiet šī ieraksta nosaukumu. Visi pārējie iestatījumi tiek mainīti sadaļā Opcijas.",
+        "data": {
+          "name": "Nosaukums"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Valūta",
         "description": "Šajā zonā norēķini notiek valūtā {currency}. Biržas cenas tiek pārrēķinātas no EUR pēc dienas valūtas kursa; visas ievadītās cenas (uzcenojums, sadales tarifa līmeņi, sliekšņi) ir izvēlētajā attēlošanas valūtā.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Cenai jābūt lielākai par nulli."
     },
     "abort": {
-      "already_configured": "Šī instance jau ir konfigurēta."
+      "already_configured": "Šī instance jau ir konfigurēta.",
+      "reconfigure_successful": "Pārkonfigurēšana bija veiksmīga."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Rītdienas cenas pieejamas",
       "description": "Izpildās, kad rītdienas elektroenerģijas cenas ir pieejamas."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Nav konfigurēts neviens Kilowahti ieraksts."
+    },
+    "entry_not_found": {
+      "message": "Nav Kilowahti ieraksta ar id '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Ir vairāki Kilowahti ieraksti; pakalpojuma izsaukumā norādiet config_entry_id."
+    },
+    "invalid_period_dates": {
+      "message": "end_date jābūt tajā pašā dienā kā start_date vai vēlāk."
+    },
+    "invalid_period_price": {
+      "message": "price jābūt lielākam par nulli."
+    },
+    "period_overlap": {
+      "message": "Šis periods pārklājas ar esošu fiksētas cenas periodu."
+    },
+    "period_not_found": {
+      "message": "Nav fiksētas cenas perioda ar id '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Tiek izmantots rezerves cenu avots",
+      "description": "Kilowahti jau vairāk nekā 24 stundas sniedz reģiona {region} cenas no avota {fallback_source}, nevis {primary_source}. Parasti tas nozīmē, ka {primary_source} ir traucējums; Kilowahti automātiski pārslēgsies atpakaļ, tiklīdz tas atjaunosies. Darbības nav nepieciešamas. Ja tas turpinās, skatiet [BUJ](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

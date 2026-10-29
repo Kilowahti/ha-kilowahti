@@ -16,6 +16,13 @@
           "display_unit": "Мерна единица на сензора"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Преименуване",
+        "description": "Променете името на този запис. Всички останали настройки се променят от Опции.",
+        "data": {
+          "name": "Име"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Валута",
         "description": "Тази зона се таксува в {currency}. Борсовите цени се преизчисляват от EUR по дневен валутен курс; всички въведени цени (надценка, нива на пренос, прагове) са в избраната валута за показване.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Цената трябва да е по-голяма от нула."
     },
     "abort": {
-      "already_configured": "Тази инстанция вече е настроена."
+      "already_configured": "Тази инстанция вече е настроена.",
+      "reconfigure_successful": "Преконфигурирането е успешно."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Утрешните цени са налични",
       "description": "Изпълнено е, когато утрешните цени на тока са налични."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Няма конфигурирани записи на Kilowahti."
+    },
+    "entry_not_found": {
+      "message": "Няма запис на Kilowahti с id '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Съществуват няколко записа на Kilowahti; задайте config_entry_id при извикването на услугата."
+    },
+    "invalid_period_dates": {
+      "message": "end_date трябва да е в същия ден като start_date или по-късно."
+    },
+    "invalid_period_price": {
+      "message": "price трябва да е по-голяма от нула."
+    },
+    "period_overlap": {
+      "message": "Този период се припокрива със съществуващ период с фиксирана цена."
+    },
+    "period_not_found": {
+      "message": "Няма период с фиксирана цена с id '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Използва се резервен източник на цени",
+      "description": "Kilowahti предоставя цените за {region} от {fallback_source} вместо от {primary_source} вече над 24 часа. Обикновено това означава, че {primary_source} има неизправност; Kilowahti ще превключи автоматично обратно, щом тя се възстанови. Не е необходимо действие. Ако продължава, вижте [ЧЗВ](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

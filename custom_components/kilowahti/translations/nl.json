@@ -16,6 +16,13 @@
           "display_unit": "Sensoreenheid"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Hernoemen",
+        "description": "Wijzig de naam van dit item. Alle andere instellingen wijzig je onder Opties.",
+        "data": {
+          "name": "Naam"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Valuta",
         "description": "Deze regio rekent af in {currency}. Spotprijzen worden omgerekend vanuit EUR met een dagelijkse wisselkoers; alle prijzen die je invoert (opslag, nettariefniveaus, drempels) zijn in de gekozen weergavevaluta.",
@@ -157,7 +164,8 @@
       "period_price_zero": "De prijs moet groter zijn dan nul."
     },
     "abort": {
-      "already_configured": "Deze instantie is al geconfigureerd."
+      "already_configured": "Deze instantie is al geconfigureerd.",
+      "reconfigure_successful": "Herconfiguratie geslaagd."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Prijzen van morgen beschikbaar",
       "description": "Voldoet wanneer de stroomprijzen van morgen beschikbaar zijn."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Er zijn geen Kilowahti-items geconfigureerd."
+    },
+    "entry_not_found": {
+      "message": "Er is geen Kilowahti-item met id '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Er zijn meerdere Kilowahti-items; geef config_entry_id op in de serviceaanroep."
+    },
+    "invalid_period_dates": {
+      "message": "end_date moet op dezelfde dag als start_date of later liggen."
+    },
+    "invalid_period_price": {
+      "message": "price moet groter zijn dan nul."
+    },
+    "period_overlap": {
+      "message": "Deze periode overlapt met een bestaande vasteprijsperiode."
+    },
+    "period_not_found": {
+      "message": "Er is geen vasteprijsperiode met id '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Reserveprijsbron in gebruik",
+      "description": "Kilowahti levert de prijzen voor {region} al meer dan 24 uur vanuit {fallback_source} in plaats van {primary_source}. Dit betekent meestal dat {primary_source} een storing heeft; Kilowahti schakelt automatisch terug zodra die is hersteld. Actie is niet nodig. Houdt dit aan, raadpleeg dan de [FAQ](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

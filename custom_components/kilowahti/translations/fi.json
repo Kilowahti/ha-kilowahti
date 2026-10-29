@@ -16,6 +16,13 @@
           "display_unit": "Anturien yksikkö"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Nimeä uudelleen",
+        "description": "Muuta tämän kohteen nimeä. Kaikki muut asetukset muutetaan kohteen asetuksista.",
+        "data": {
+          "name": "Nimi"
+        }
+      },
       "vat_and_tax": {
         "title": "ALV ja sähkövero",
         "description": "Arvot on esitäytetty valitun alueen mukaan, voit muuttaa niitä tarvittaessa. Kaikki hinnat (siirtohinnat, kiinteät jaksot) syötetään verollisina.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Hinnan on oltava suurempi kuin nolla."
     },
     "abort": {
-      "already_configured": "Tämä kohde on jo konfiguroitu."
+      "already_configured": "Tämä kohde on jo konfiguroitu.",
+      "reconfigure_successful": "Uudelleenmääritys onnistui."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Huomisen hinnat saatavilla",
       "description": "Täyttyy, kun huomisen sähkön hinnat ovat saatavilla."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Kilowahti-kohteita ei ole määritetty."
+    },
+    "entry_not_found": {
+      "message": "Kilowahti-kohdetta tunnuksella '{entry_id}' ei löydy."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Kilowahti-kohteita on useita; määritä config_entry_id palvelukutsussa."
+    },
+    "invalid_period_dates": {
+      "message": "end_date ei voi olla ennen start_date-päivää."
+    },
+    "invalid_period_price": {
+      "message": "price on oltava suurempi kuin nolla."
+    },
+    "period_overlap": {
+      "message": "Tämä jakso on päällekkäinen olemassa olevan kiinteähintaisen jakson kanssa."
+    },
+    "period_not_found": {
+      "message": "Kiinteähintaista jaksoa tunnuksella '{period_id}' ei löydy."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Käytössä varahintalähde",
+      "description": "Kilowahti on hakenut alueen {region} hinnat lähteestä {fallback_source} lähteen {primary_source} sijaan yli 24 tunnin ajan. Tämä tarkoittaa yleensä, että {primary_source} on poissa käytöstä; Kilowahti palaa siihen automaattisesti, kun se toipuu. Toimenpiteitä ei tarvita. Jos tilanne jatkuu, katso [UKK](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

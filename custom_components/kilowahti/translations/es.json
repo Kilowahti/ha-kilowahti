@@ -16,6 +16,13 @@
           "display_unit": "Unidad del sensor"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Renombrar",
+        "description": "Cambia el nombre de esta entrada. El resto de ajustes se cambian en Opciones.",
+        "data": {
+          "name": "Nombre"
+        }
+      },
       "vat_and_tax": {
         "title": "IVA e impuesto eléctrico",
         "description": "Precargado según tu región. Ajusta si es necesario. Todos los precios (tramos de peaje, periodos de precio fijo) se introducen con IVA incluido.",
@@ -157,7 +164,8 @@
       "period_price_zero": "El precio debe ser mayor que cero."
     },
     "abort": {
-      "already_configured": "Esta instancia ya está configurada."
+      "already_configured": "Esta instancia ya está configurada.",
+      "reconfigure_successful": "La reconfiguración se completó correctamente."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Precios de mañana disponibles",
       "description": "Se cumple cuando los precios de la electricidad de mañana están disponibles."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "No hay entradas de Kilowahti configuradas."
+    },
+    "entry_not_found": {
+      "message": "No hay ninguna entrada de Kilowahti con id '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Existen varias entradas de Kilowahti; indica config_entry_id en la llamada al servicio."
+    },
+    "invalid_period_dates": {
+      "message": "end_date debe ser el mismo día que start_date o posterior."
+    },
+    "invalid_period_price": {
+      "message": "price debe ser mayor que cero."
+    },
+    "period_overlap": {
+      "message": "Este periodo se solapa con un periodo de precio fijo existente."
+    },
+    "period_not_found": {
+      "message": "No hay ningún periodo de precio fijo con id '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Se usa una fuente de precios de respaldo",
+      "description": "Kilowahti lleva más de 24 horas sirviendo los precios de {region} desde {fallback_source} en lugar de {primary_source}. Normalmente significa que {primary_source} tiene una incidencia; Kilowahti volverá a ella automáticamente cuando se recupere. No hace falta hacer nada. Si persiste, consulta las [FAQ](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

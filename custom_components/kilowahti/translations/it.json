@@ -16,6 +16,13 @@
           "display_unit": "Unità del sensore"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Rinomina",
+        "description": "Cambia il nome di questa voce. Tutte le altre impostazioni si modificano in Opzioni.",
+        "data": {
+          "name": "Nome"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Valuta",
         "description": "Questa zona fattura in {currency}. I prezzi spot vengono convertiti dall'EUR con un tasso di cambio giornaliero; tutti i prezzi inseriti (margine, fasce di trasporto, soglie) sono nella valuta di visualizzazione selezionata.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Il prezzo deve essere maggiore di zero."
     },
     "abort": {
-      "already_configured": "Questa istanza è già configurata."
+      "already_configured": "Questa istanza è già configurata.",
+      "reconfigure_successful": "La riconfigurazione è riuscita."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Prezzi di domani disponibili",
       "description": "È soddisfatta quando i prezzi dell'elettricità di domani sono disponibili."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Nessuna voce Kilowahti configurata."
+    },
+    "entry_not_found": {
+      "message": "Nessuna voce Kilowahti con id '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Esistono più voci Kilowahti; specifica config_entry_id nella chiamata al servizio."
+    },
+    "invalid_period_dates": {
+      "message": "end_date deve essere lo stesso giorno di start_date o successiva."
+    },
+    "invalid_period_price": {
+      "message": "price deve essere maggiore di zero."
+    },
+    "period_overlap": {
+      "message": "Questo periodo si sovrappone a un periodo a prezzo fisso esistente."
+    },
+    "period_not_found": {
+      "message": "Nessun periodo a prezzo fisso con id '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "In uso una fonte di prezzi di riserva",
+      "description": "Kilowahti fornisce i prezzi di {region} da {fallback_source} invece che da {primary_source} da oltre 24 ore. Di solito significa che {primary_source} ha un'interruzione; Kilowahti tornerà automaticamente alla fonte principale quando si riprende. Non serve alcuna azione. Se persiste, consulta le [FAQ](https://docs.kilowahti.fi/faq/)."
     }
   }
 }

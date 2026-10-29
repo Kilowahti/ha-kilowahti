@@ -16,6 +16,13 @@
           "display_unit": "Unitatea senzorului"
         }
       },
+      "reconfigure": {
+        "title": "Kilowahti — Redenumire",
+        "description": "Schimbă numele acestei intrări. Toate celelalte setări se modifică din Opțiuni.",
+        "data": {
+          "name": "Nume"
+        }
+      },
       "currency": {
         "title": "Kilowahti — Monedă",
         "description": "Această zonă facturează în {currency}. Prețurile spot sunt convertite din EUR cu un curs de schimb zilnic; toate prețurile introduse (marjă, trepte de distribuție, praguri) sunt în moneda de afișare selectată.",
@@ -157,7 +164,8 @@
       "period_price_zero": "Prețul trebuie să fie mai mare decât zero."
     },
     "abort": {
-      "already_configured": "Această instanță este deja configurată."
+      "already_configured": "Această instanță este deja configurată.",
+      "reconfigure_successful": "Reconfigurarea a reușit."
     }
   },
   "options": {
@@ -650,6 +658,35 @@
     "tomorrow_available": {
       "name": "Prețurile de mâine disponibile",
       "description": "Se îndeplinește când prețurile energiei electrice de mâine sunt disponibile."
+    }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "Nu este configurată nicio intrare Kilowahti."
+    },
+    "entry_not_found": {
+      "message": "Nu există nicio intrare Kilowahti cu id '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Există mai multe intrări Kilowahti; specifică config_entry_id în apelul serviciului."
+    },
+    "invalid_period_dates": {
+      "message": "end_date trebuie să fie în aceeași zi cu start_date sau ulterior."
+    },
+    "invalid_period_price": {
+      "message": "price trebuie să fie mai mare decât zero."
+    },
+    "period_overlap": {
+      "message": "Această perioadă se suprapune cu o perioadă cu preț fix existentă."
+    },
+    "period_not_found": {
+      "message": "Nu există nicio perioadă cu preț fix cu id '{period_id}'."
+    }
+  },
+  "issues": {
+    "stale_failover": {
+      "title": "Se folosește o sursă de prețuri de rezervă",
+      "description": "Kilowahti furnizează de peste 24 de ore prețurile pentru {region} din {fallback_source}, în loc de {primary_source}. De obicei înseamnă că {primary_source} are o avarie; Kilowahti va reveni automat la ea când își revine. Nu este necesară nicio acțiune. Dacă persistă, consultă [FAQ](https://docs.kilowahti.fi/faq/)."
     }
   }
 }
