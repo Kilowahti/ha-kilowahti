@@ -695,6 +695,10 @@
           "confirm": {
             "title": "Omdøb entitets-ID'er",
             "description": "{count} entiteter i {name} bruger stadig entitets-ID'er opbygget af visningsnavnene, som varierer mellem sprog og versioner. Bekræftelsen omdøber dem til de stabile ID'er, der er listet på [entitetssiden]({entities_url}). Entiteter, du selv har omdøbt, røres ikke; historik og statistik bevares.\n\nDisse automatiseringer, scripts, scener og grupper henviser til dem og skal opdateres manuelt bagefter. Dashboards, skabeloner og andre systemer kontrolleres ikke, så tjek også dem:\n\n{usage}"
+          },
+          "confirm_no_references": {
+            "title": "Omdøb entitets-ID'er",
+            "description": "{count} entiteter i {name} bruger stadig entitets-ID'er opbygget af visningsnavnene, som varierer mellem sprog og versioner. Bekræftelsen omdøber dem til de stabile ID'er, der er listet på [entitetssiden]({entities_url}). Entiteter, du selv har omdøbt, røres ikke; historik og statistik bevares.\n\nIngen automatiseringer, scripts, scener eller grupper henviser til dem. Dashboards, skabeloner og andre systemer kontrolleres ikke, så tjek også dem."
           }
         }
       }

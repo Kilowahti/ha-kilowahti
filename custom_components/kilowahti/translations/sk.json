@@ -695,6 +695,10 @@
           "confirm": {
             "title": "Premenovať ID entít",
             "description": "{count} entít v {name} stále používa ID vytvorené zo zobrazovaných názvov, ktoré sa líšia podľa jazyka a verzie. Potvrdením ich premenujete na stabilné ID uvedené na [stránke entít]({entities_url}). Entity, ktoré ste premenovali sami, zostanú nezmenené; história a štatistiky sa zachovajú.\n\nOdkazujú na ne tieto automatizácie, skripty, scény a skupiny, ktoré potom musíte upraviť ručne. Dashboardy, šablóny a ďalšie systémy sa nekontrolujú, takže skontrolujte aj ich:\n\n{usage}"
+          },
+          "confirm_no_references": {
+            "title": "Premenovať ID entít",
+            "description": "{count} entít v {name} stále používa ID vytvorené zo zobrazovaných názvov, ktoré sa líšia podľa jazyka a verzie. Potvrdením ich premenujete na stabilné ID uvedené na [stránke entít]({entities_url}). Entity, ktoré ste premenovali sami, zostanú nezmenené; história a štatistiky sa zachovajú.\n\nŽiadna automatizácia, skript, scéna ani skupina na ne neodkazuje. Dashboardy, šablóny a ďalšie systémy sa nekontrolujú, takže skontrolujte aj ich."
           }
         }
       }

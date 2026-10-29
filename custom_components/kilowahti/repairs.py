@@ -163,14 +163,17 @@ class StableEntityIdsFlow(ConfirmRepairFlow):
 
         issue = ir.async_get(self.hass).async_get_issue(self.handler, self.issue_id)
         return self.async_show_form(
-            step_id="confirm",
+            step_id="confirm" if usage else "confirm_no_references",
             data_schema=vol.Schema({}),
             description_placeholders={
                 **(issue.translation_placeholders if issue else {}),
                 "count": str(len(plan)),
-                "usage": "\n".join(shown) or "—",
+                "usage": "\n".join(shown),
             },
         )
+
+    async def async_step_confirm_no_references(self, user_input: dict[str, str] | None = None):
+        return await self.async_step_confirm(user_input)
 
 
 async def async_create_fix_flow(

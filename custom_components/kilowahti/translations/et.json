@@ -697,6 +697,10 @@
           "confirm": {
             "title": "Nimeta olemi ID-d ümber",
             "description": "{name}: {count} olemit kasutab endiselt kuvanimedest tuletatud olemi ID-sid, mis erinevad keelte ja versioonide vahel. Kinnitamine nimetab need ümber [olemite lehel]({entities_url}) loetletud stabiilseteks ID-deks. Sinu enda ümbernimetatud olemeid ei muudeta; ajalugu ja statistika säilivad.\n\nNeile viitavad need automatiseeringud, skriptid, stseenid ja rühmad, mis tuleb pärast käsitsi uuendada. Töölaudu, malle ja muid süsteeme ei kontrollita, seega vaata ka neid:\n\n{usage}"
+          },
+          "confirm_no_references": {
+            "title": "Nimeta olemi ID-d ümber",
+            "description": "{name}: {count} olemit kasutab endiselt kuvanimedest tuletatud olemi ID-sid, mis erinevad keelte ja versioonide vahel. Kinnitamine nimetab need ümber [olemite lehel]({entities_url}) loetletud stabiilseteks ID-deks. Sinu enda ümbernimetatud olemeid ei muudeta; ajalugu ja statistika säilivad.\n\nNeile ei viita ükski automatiseering, skript, stseen ega rühm. Töölaudu, malle ja muid süsteeme ei kontrollita, seega vaata ka neid."
           }
         }
       }

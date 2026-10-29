@@ -211,10 +211,11 @@ async def test_confirm_step_lists_automations_using_the_entities(hass, options, 
 
     placeholders = result["description_placeholders"]
     assert placeholders["count"] == "1"
+    assert result["step_id"] == "confirm"
     assert "Heat when cheap" in placeholders["usage"]
 
 
-async def test_confirm_step_without_references_shows_a_dash(hass, options, mock_utcnow):
+async def test_confirm_step_without_references_uses_its_own_text(hass, options, mock_utcnow):
     await hass.config.async_set_time_zone("UTC")
     entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=options)
     entry.add_to_hass(hass)
@@ -227,4 +228,7 @@ async def test_confirm_step_without_references_shows_a_dash(hass, options, mock_
 
     result = await flow.async_step_confirm()
 
-    assert result["description_placeholders"]["usage"] == "—"
+    assert result["step_id"] == "confirm_no_references"
+
+    done = await flow.async_step_confirm_no_references({})
+    assert done["type"] == "create_entry"

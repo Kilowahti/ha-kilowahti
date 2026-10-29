@@ -695,6 +695,10 @@
           "confirm": {
             "title": "Nimeä entiteettien tunnukset uudelleen",
             "description": "{name}: {count} entiteettiä käyttää yhä näyttönimistä muodostettuja entiteettitunnuksia, jotka vaihtelevat kielen ja version mukaan. Vahvistus nimeää ne uudelleen [entiteettisivulla]({entities_url}) lueteltuihin vakaisiin tunnuksiin. Itse uudelleennimeämiäsi entiteettejä ei muuteta; historia ja tilastot säilyvät.\n\nNämä automaatiot, skriptit, näkymät ja ryhmät viittaavat niihin, ja ne on päivitettävä käsin jälkeenpäin. Dashboardeja, mallineita ja muita järjestelmiä ei tarkisteta, joten tarkista myös ne:\n\n{usage}"
+          },
+          "confirm_no_references": {
+            "title": "Nimeä entiteettien tunnukset uudelleen",
+            "description": "{name}: {count} entiteettiä käyttää yhä näyttönimistä muodostettuja entiteettitunnuksia, jotka vaihtelevat kielen ja version mukaan. Vahvistus nimeää ne uudelleen [entiteettisivulla]({entities_url}) lueteltuihin vakaisiin tunnuksiin. Itse uudelleennimeämiäsi entiteettejä ei muuteta; historia ja tilastot säilyvät.\n\nMikään automaatio, skripti, näkymä tai ryhmä ei viittaa niihin. Dashboardeja, mallineita ja muita järjestelmiä ei tarkisteta, joten tarkista myös ne."
           }
         }
       }

@@ -695,6 +695,10 @@
           "confirm": {
             "title": "Renombrar los ID de entidad",
             "description": "{count} entidades de {name} siguen usando ID de entidad construidos a partir de sus nombres visibles, que varían según el idioma y la versión. Al confirmar se renombran con los ID estables indicados en la [página de entidades]({entities_url}). Las entidades que hayas renombrado tú no se tocan; el historial y las estadísticas se conservan.\n\nHacen referencia a ellas estas automatizaciones, scripts, escenas y grupos, que deberás actualizar a mano después. Los paneles, plantillas y otros sistemas no se comprueban, así que revísalos también:\n\n{usage}"
+          },
+          "confirm_no_references": {
+            "title": "Renombrar los ID de entidad",
+            "description": "{count} entidades de {name} siguen usando ID de entidad construidos a partir de sus nombres visibles, que varían según el idioma y la versión. Al confirmar se renombran con los ID estables indicados en la [página de entidades]({entities_url}). Las entidades que hayas renombrado tú no se tocan; el historial y las estadísticas se conservan.\n\nNinguna automatización, script, escena ni grupo hace referencia a ellas. Los paneles, plantillas y otros sistemas no se comprueban, así que revísalos también."
           }
         }
       }
