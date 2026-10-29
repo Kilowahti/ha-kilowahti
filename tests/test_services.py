@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
+import json
+import re
 from datetime import date, datetime, timezone
+from pathlib import Path
 
 import pytest
-import voluptuous as vol
 from kilowahti.models import FixedPeriod
 
 from custom_components.kilowahti.const import DOMAIN
+from homeassistant.exceptions import ServiceValidationError
 from homeassistant.setup import async_setup_component
 
 # All slots in the fixture span 2026-03-13 00:00–02:00 UTC.
@@ -108,7 +111,7 @@ async def test_add_fixed_period_rejects_overlap(hass, setup_integration, mock_ut
     )
 
     # Attempt to add an overlapping period.
-    with pytest.raises(vol.Invalid):
+    with pytest.raises(ServiceValidationError) as exc_info:
         await hass.services.async_call(
             DOMAIN,
             "add_fixed_period",
@@ -120,6 +123,7 @@ async def test_add_fixed_period_rejects_overlap(hass, setup_integration, mock_ut
             },
             blocking=True,
         )
+    assert exc_info.value.translation_key == "period_overlap"
 
 
 # ---------------------------------------------------------------------------
@@ -237,11 +241,31 @@ async def test_services_registered_before_any_entry_exists(hass):
 
     assert hass.services.has_service(DOMAIN, "get_prices")
 
-    with pytest.raises(vol.Invalid):
+    with pytest.raises(ServiceValidationError) as exc_info:
         await hass.services.async_call(
             DOMAIN,
             "get_prices",
-            {"start": "2026-03-13T00:00:00+00:00"},
+            {"start": "2026-03-13T00:00:00+00:00", "end": "2026-03-14T00:00:00+00:00"},
             blocking=True,
             return_response=True,
         )
+    assert exc_info.value.translation_key == "no_entries_configured"
+
+
+async def test_unknown_period_id_error_carries_translation_placeholders(hass, setup_integration):
+    with pytest.raises(ServiceValidationError) as exc_info:
+        await hass.services.async_call(
+            DOMAIN, "remove_fixed_period", {"period_id": "does-not-exist"}, blocking=True
+        )
+    assert exc_info.value.translation_domain == DOMAIN
+    assert exc_info.value.translation_key == "period_not_found"
+    assert exc_info.value.translation_placeholders == {"period_id": "does-not-exist"}
+
+
+def test_every_service_exception_key_exists_in_en_json():
+    """Each translation_key raised by services.py has an entry in en.json."""
+    base = Path(__file__).parent.parent / "custom_components" / "kilowahti"
+    used = set(re.findall(r'translation_key="(\w+)"', (base / "services.py").read_text()))
+    defined = json.loads((base / "translations" / "en.json").read_text())["exceptions"]
+    assert used
+    assert used <= set(defined)

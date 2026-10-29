@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 import voluptuous as vol
 
 from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse
+from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers import config_validation as cv
 from homeassistant.util import dt as dt_util
 from kilowahti import calc
@@ -132,18 +133,29 @@ def _get_coordinator(hass: HomeAssistant, entry_id: str | None) -> KilowahtiCoor
     coordinators: dict[str, KilowahtiCoordinator] = hass.data.get(DOMAIN, {})
 
     if not coordinators:
-        raise vol.Invalid("No Kilowahti entries are configured")
+        raise ServiceValidationError(
+            "No Kilowahti entries are configured",
+            translation_domain=DOMAIN,
+            translation_key="no_entries_configured",
+        )
 
     if entry_id is not None:
         if entry_id not in coordinators:
-            raise vol.Invalid(f"No Kilowahti entry with id '{entry_id}'")
+            raise ServiceValidationError(
+                f"No Kilowahti entry with id '{entry_id}'",
+                translation_domain=DOMAIN,
+                translation_key="entry_not_found",
+                translation_placeholders={"entry_id": entry_id},
+            )
         return coordinators[entry_id]
 
     if len(coordinators) == 1:
         return next(iter(coordinators.values()))
 
-    raise vol.Invalid(
-        "Multiple Kilowahti entries exist; specify config_entry_id in the service call"
+    raise ServiceValidationError(
+        "Multiple Kilowahti entries exist; specify config_entry_id in the service call",
+        translation_domain=DOMAIN,
+        translation_key="multiple_entries_ambiguous",
     )
 
 
@@ -273,16 +285,28 @@ async def _handle_add_fixed_period(call: ServiceCall) -> None:
     end = call.data["end_date"]
 
     if end < start:
-        raise vol.Invalid("end_date must be on or after start_date")
+        raise ServiceValidationError(
+            "end_date must be on or after start_date",
+            translation_domain=DOMAIN,
+            translation_key="invalid_period_dates",
+        )
 
     price = call.data["price"]
     if price <= 0:
-        raise vol.Invalid("price must be greater than zero")
+        raise ServiceValidationError(
+            "price must be greater than zero",
+            translation_domain=DOMAIN,
+            translation_key="invalid_period_price",
+        )
 
     storage = coordinator._storage
     overlap = any(not (end < p.start_date or start > p.end_date) for p in storage.periods)
     if overlap:
-        raise vol.Invalid("This period overlaps with an existing fixed-price period")
+        raise ServiceValidationError(
+            "This period overlaps with an existing fixed-price period",
+            translation_domain=DOMAIN,
+            translation_key="period_overlap",
+        )
 
     period = FixedPeriod(
         id=str(uuid.uuid4()),
@@ -310,7 +334,12 @@ async def _handle_remove_fixed_period(call: ServiceCall) -> None:
 
     removed = await coordinator._storage.async_remove_period(period_id)
     if not removed:
-        raise vol.Invalid(f"No fixed-price period with id '{period_id}'")
+        raise ServiceValidationError(
+            f"No fixed-price period with id '{period_id}'",
+            translation_domain=DOMAIN,
+            translation_key="period_not_found",
+            translation_placeholders={"period_id": period_id},
+        )
 
     coordinator.async_update_listeners()
     _LOGGER.info("Removed fixed-price period %s", period_id)

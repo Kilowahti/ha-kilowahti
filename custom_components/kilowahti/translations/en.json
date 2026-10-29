@@ -653,5 +653,28 @@
       "name": "Tomorrow's prices available",
       "description": "Passes when tomorrow's electricity prices are available."
     }
+  },
+  "exceptions": {
+    "no_entries_configured": {
+      "message": "No Kilowahti entries are configured."
+    },
+    "entry_not_found": {
+      "message": "No Kilowahti entry with id '{entry_id}'."
+    },
+    "multiple_entries_ambiguous": {
+      "message": "Multiple Kilowahti entries exist; specify config_entry_id in the service call."
+    },
+    "invalid_period_dates": {
+      "message": "end_date must be on or after start_date."
+    },
+    "invalid_period_price": {
+      "message": "price must be greater than zero."
+    },
+    "period_overlap": {
+      "message": "This period overlaps with an existing fixed-price period."
+    },
+    "period_not_found": {
+      "message": "No fixed-price period with id '{period_id}'."
+    }
   }
 }
