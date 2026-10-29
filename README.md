@@ -52,10 +52,9 @@ Prices come from the first-party **Kilowahti CDN** (ENTSO-E day-ahead data) with
 
 ## Installation
 
-1. Install via [HACS](https://hacs.xyz/) — search for **Kilowahti** and click **Download**
-2. Restart Home Assistant
-3. Go to **Settings → Devices & Services → Add Integration → Kilowahti**
-4. Complete the setup wizard
+1. Install from the Marketplace (**Settings → Marketplace**, Home Assistant 2026.11+) or via [HACS](https://hacs.xyz/) (older versions) — search for **Kilowahti** and click **Install** / **Download**
+2. HACS only: restart Home Assistant, then go to **Settings → Devices & Services → Add Integration → Kilowahti**
+3. Complete the setup wizard
 
 See the [installation guide](https://docs.kilowahti.fi/installation/) and [configuration reference](https://docs.kilowahti.fi/configuration/) for full details.
 
