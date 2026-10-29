@@ -8,32 +8,32 @@ rules:
     comment: "Brand images are in the brand directory."
   common-modules:
     status: todo
-    comment: "Not audited."
+    comment: "coordinator.py exists; there is no shared entity.py, and the entity base class lives in sensor.py."
   config-flow: done
   config-flow-test-coverage:
     status: todo
-    comment: "Config flow coverage is incomplete."
+    comment: "config_flow.py coverage is 57%."
   dependency-transparency:
     status: todo
-    comment: "Not audited: PyPI build/publish provenance of kilowahti."
+    comment: "kilowahti is on PyPI under MIT but is built and uploaded by hand with twine; kilowahti-py has no CI publish workflow."
   docs-actions:
-    status: todo
-    comment: "Not audited."
+    status: done
+    comment: "docs.kilowahti.fi/services documents every service."
   docs-conditions:
-    status: todo
-    comment: "Not audited."
+    status: done
+    comment: "docs.kilowahti.fi/triggers-conditions covers the conditions."
   docs-high-level-description:
-    status: todo
-    comment: "Not audited."
+    status: done
+    comment: "docs.kilowahti.fi/index describes the integration and its supported regions."
   docs-installation-instructions:
     status: todo
     comment: "Needs the Marketplace wording from Home Assistant 2026.11."
   docs-removal-instructions:
     status: todo
-    comment: "Not audited."
+    comment: "No removal section in the docs."
   docs-triggers:
-    status: todo
-    comment: "Not audited."
+    status: done
+    comment: "docs.kilowahti.fi/triggers-conditions covers the triggers."
   entity-event-setup:
     status: exempt
     comment: "Entities do not subscribe to events; the coordinator owns all listeners and timers."
@@ -56,20 +56,20 @@ rules:
     comment: "Service handlers raise ServiceValidationError."
   config-entry-unloading: done
   docs-configuration-parameters:
-    status: todo
-    comment: "Not audited."
+    status: done
+    comment: "docs.kilowahti.fi/configuration covers every option, including updating settings."
   docs-installation-parameters:
-    status: todo
-    comment: "Not audited."
+    status: done
+    comment: "docs.kilowahti.fi/configuration walks through every setup step."
   entity-unavailable:
     status: todo
-    comment: "Not audited."
+    comment: "Relies on the CoordinatorEntity default; not checked against the rule."
   integration-owner:
     status: done
     comment: "codeowners is set in the manifest."
   log-when-unavailable:
     status: todo
-    comment: "Not audited."
+    comment: "Source failures are logged on every fetch; there is no log-once on unavailable and on recovery."
   parallel-updates:
     status: done
     comment: "PARALLEL_UPDATES is declared on every platform."
@@ -78,7 +78,7 @@ rules:
     comment: "No authentication."
   test-coverage:
     status: todo
-    comment: "Coverage is not measured against the 95% target."
+    comment: "Total coverage is 82% against the 95% target."
   devices: done
   diagnostics: done
   discovery:
@@ -88,20 +88,20 @@ rules:
     status: exempt
     comment: "Cloud price data; there is nothing to discover on the network."
   docs-data-update:
-    status: todo
-    comment: "Not audited."
+    status: done
+    comment: "docs.kilowahti.fi/faq explains the fetch schedule and where prices come from."
   docs-examples:
-    status: todo
-    comment: "Not audited."
+    status: done
+    comment: "docs.kilowahti.fi/automations has worked examples."
   docs-known-limitations:
     status: todo
-    comment: "Not audited."
+    comment: "Limitations are spread over the FAQ and troubleshooting pages; there is no single section."
   docs-supported-devices:
     status: exempt
     comment: "No devices are supported; the integration reads public price data."
   docs-supported-functions:
-    status: todo
-    comment: "Not audited."
+    status: done
+    comment: "docs.kilowahti.fi/entities lists every entity."
   docs-troubleshooting:
     status: done
     comment: "docs.kilowahti.fi has a troubleshooting page."
@@ -114,7 +114,7 @@ rules:
   entity-category: done
   entity-device-class:
     status: todo
-    comment: "Not audited."
+    comment: "device_class is set in only a few places in sensor.py; not audited."
   entity-disabled-by-default:
     status: done
     comment: "Less useful sensors set entity_registry_enabled_default=False."
