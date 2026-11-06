@@ -40,5 +40,6 @@
   "dependencyDashboard": false,
   "semanticCommits": "enabled",
   "semanticCommitType": "chore",
-  "semanticCommitScope": null
+  "semanticCommitScope": null,
+  "commitMessageLowerCase": "never"
 }
