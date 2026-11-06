@@ -1,0 +1,41 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "baseBranchPatterns": [
+    "dev"
+  ],
+  "minimumReleaseAge": "14 days",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/test\\.yml$/"
+      ],
+      "matchStrings": [
+        "\"?(?<depName>[A-Za-z0-9_.-]+)==(?<currentValue>[0-9][^\\s\"]*)\"?"
+      ],
+      "datasourceTemplate": "pypi"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDepNames": [
+        "python"
+      ],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": [
+        "kilowahti"
+      ],
+      "groupName": "kilowahti library"
+    }
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "gitAuthor": "Renovate Bot <29139614+renovate[bot]@users.noreply.github.com>",
+  "dependencyDashboard": false
+}
