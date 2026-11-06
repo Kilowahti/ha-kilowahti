@@ -11,7 +11,7 @@ from __future__ import annotations
 import logging
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, valid_entity_id
 from homeassistant.helpers import device_registry as dr, entity_registry as er
 from homeassistant.util import slugify
 
@@ -97,7 +97,7 @@ def _stable_entity_id(hass: HomeAssistant, entity: er.RegistryEntry) -> tuple[st
     if device is None or device.name is None:
         return None
 
-    key = entity.unique_id.removeprefix(f"{entity.config_entry_id}_")
+    key = slugify(entity.unique_id.removeprefix(f"{entity.config_entry_id}_"))
     if entity.domain == "number":
         key = key.removeprefix("number_")
     device_slug = slugify(device.name)
@@ -125,7 +125,7 @@ def async_plan_stable_renames(
     """Map each listed entity ID to its stable ID, leaving out entities that cannot move.
 
     Entities that no longer exist, already have the stable ID, or whose stable ID
-    is taken are omitted.
+    is invalid or taken are omitted.
     """
     registry = er.async_get(hass)
     plan = {}
@@ -135,6 +135,9 @@ def async_plan_stable_renames(
             continue
         ids = _stable_entity_id(hass, entity)
         if ids is None or ids[0] == entity_id:
+            continue
+        if not valid_entity_id(ids[0]):
+            _LOGGER.warning("Cannot rename %s to %s: not a valid entity ID", entity_id, ids[0])
             continue
         if registry.async_get(ids[0]) is not None or hass.states.get(ids[0]) is not None:
             _LOGGER.warning("Cannot rename %s to %s: ID already in use", entity_id, ids[0])

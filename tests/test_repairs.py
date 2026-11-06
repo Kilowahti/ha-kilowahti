@@ -133,6 +133,31 @@ async def test_generated_ids_are_offered_for_renaming(hass, options, mock_utcnow
     assert registry.async_get("sensor.kilowahti_test_home_active_price").id == renamed_key.id
 
 
+async def test_profile_id_with_hyphens_is_slugified(hass, options, mock_utcnow):
+    """A uuid profile ID in the unique ID yields a valid stable ID, not an exception."""
+    await hass.config.async_set_time_zone("UTC")
+    entry = MockConfigEntry(domain=DOMAIN, title="Test Home", options=options)
+    entry.add_to_hass(hass)
+    profile_id = "3f2a9c1e-1b2c-4d5e-8f90-a1b2c3d4e5f6"
+    score = _register(
+        hass,
+        entry,
+        f"score_{profile_id}_daily",
+        "Kokonaiskulutus score daily",
+        "kilowahti_test_home_kokonaiskulutus_score_daily",
+    )
+    spot = _register(hass, entry, "spot_price", "Spot-hinta", "kilowahti_test_home_spot_hinta")
+
+    await _setup(hass, entry)
+    issue = ir.async_get(hass).async_get_issue(DOMAIN, f"stable_entity_ids_{entry.entry_id}")
+    await _fix(hass, issue)
+
+    registry = er.async_get(hass)
+    stable = "sensor.kilowahti_test_home_score_3f2a9c1e_1b2c_4d5e_8f90_a1b2c3d4e5f6_daily"
+    assert registry.async_get(stable).id == score.id
+    assert registry.async_get("sensor.kilowahti_test_home_spot_price").id == spot.id
+
+
 async def test_user_renamed_entity_is_left_alone(hass, options, mock_utcnow):
     """An ID that does not match the generated one was chosen by the user."""
     await hass.config.async_set_time_zone("UTC")
