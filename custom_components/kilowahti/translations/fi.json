@@ -387,7 +387,7 @@
         "name": "Kokonaishinta"
       },
       "price_rank": {
-        "name": "Sijaluku"
+        "name": "Hinnan sijaluku"
       },
       "total_price_rank": {
         "name": "Kokonaishinnan sijaluku"
@@ -591,7 +591,7 @@
         "name": "Kiinteä hintajakso on aktiivinen"
       },
       "tomorrow_available": {
-        "name": "Huomisen hinnat saatavilla"
+        "name": "Huominen saatavilla"
       },
       "export_price_acceptable": {
         "name": "Myyntihinta hyväksyttävä"
