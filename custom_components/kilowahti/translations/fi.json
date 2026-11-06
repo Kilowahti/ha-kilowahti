@@ -567,6 +567,15 @@
       },
       "price_data_source": {
         "name": "Hintatietojen lähde"
+      },
+      "score_daily": {
+        "name": "{profile} pistemäärä (päivittäin)"
+      },
+      "score_monthly": {
+        "name": "{profile} pistemäärä (kuukausittain)"
+      },
+      "score_formula": {
+        "name": "{profile} pisteytyskaava"
       }
     },
     "number": {

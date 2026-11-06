@@ -569,6 +569,15 @@
       },
       "transfer_price": {
         "name": "Transfer price"
+      },
+      "score_daily": {
+        "name": "{profile} score (daily)"
+      },
+      "score_monthly": {
+        "name": "{profile} score (monthly)"
+      },
+      "score_formula": {
+        "name": "{profile} score formula"
       }
     },
     "number": {

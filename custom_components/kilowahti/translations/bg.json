@@ -567,6 +567,15 @@
       },
       "transfer_price": {
         "name": "Цена за пренос"
+      },
+      "score_daily": {
+        "name": "{profile} точки (дневни)"
+      },
+      "score_monthly": {
+        "name": "{profile} точки (месечни)"
+      },
+      "score_formula": {
+        "name": "{profile} формула за точки"
       }
     },
     "number": {

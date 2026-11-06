@@ -567,6 +567,15 @@
       },
       "transfer_price": {
         "name": "Hálózati díj"
+      },
+      "score_daily": {
+        "name": "{profile} pontszám (napi)"
+      },
+      "score_monthly": {
+        "name": "{profile} pontszám (havi)"
+      },
+      "score_formula": {
+        "name": "{profile} pontszámképlet"
       }
     },
     "number": {

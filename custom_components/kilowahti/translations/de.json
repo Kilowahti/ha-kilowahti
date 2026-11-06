@@ -567,6 +567,15 @@
       },
       "transfer_price": {
         "name": "Netzentgelt"
+      },
+      "score_daily": {
+        "name": "{profile} Punkte (täglich)"
+      },
+      "score_monthly": {
+        "name": "{profile} Punkte (monatlich)"
+      },
+      "score_formula": {
+        "name": "{profile} Punkteformel"
       }
     },
     "number": {

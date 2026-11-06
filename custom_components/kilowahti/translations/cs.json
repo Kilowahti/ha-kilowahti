@@ -567,6 +567,15 @@
       },
       "transfer_price": {
         "name": "Cena distribuce"
+      },
+      "score_daily": {
+        "name": "{profile} skóre (denní)"
+      },
+      "score_monthly": {
+        "name": "{profile} skóre (měsíční)"
+      },
+      "score_formula": {
+        "name": "{profile} vzorec skóre"
       }
     },
     "number": {

@@ -567,6 +567,15 @@
       },
       "transfer_price": {
         "name": "Мрежарина"
+      },
+      "score_daily": {
+        "name": "{profile} поени (дневни)"
+      },
+      "score_monthly": {
+        "name": "{profile} поени (месечни)"
+      },
+      "score_formula": {
+        "name": "{profile} формула на поените"
       }
     },
     "number": {

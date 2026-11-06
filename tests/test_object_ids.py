@@ -40,6 +40,12 @@ async def _ids_for_language(hass, options, lang: str) -> dict[str, str]:
     }
 
 
+async def _names_for_language(hass, options, lang: str) -> dict[str, str]:
+    ids = await _ids_for_language(hass, options, lang)
+    reg = er.async_get(hass)
+    return {key: reg.async_get(entity_id).original_name for key, entity_id in ids.items()}
+
+
 @pytest.mark.parametrize("lang", ["fi", "de", "sv"])
 async def test_entity_ids_do_not_follow_the_ui_language(hass, options, mock_utcnow, lang):
     """A Finnish install shows Finnish names but keeps the English entity IDs."""
@@ -75,3 +81,21 @@ async def test_translated_names_are_unaffected(hass, options, mock_utcnow):
 
     state = hass.states.get(ids["spot_price"])
     assert state.attributes["friendly_name"].endswith("Spot-hinta")
+
+
+@pytest.mark.parametrize(
+    ("lang", "expected"),
+    [
+        ("en", ("Total score (daily)", "Total score (monthly)", "Total score formula")),
+        ("sv", ("Total poäng (dagligen)", "Total poäng (månadsvis)", "Total poängformel")),
+    ],
+)
+async def test_score_sensor_names_are_translated(hass, options, mock_utcnow, lang, expected):
+    """Score sensor names are translated with the profile label as a placeholder."""
+    names = await _names_for_language(hass, options, lang)
+
+    assert (
+        names["score_total_daily"],
+        names["score_total_monthly"],
+        names["score_total_formula"],
+    ) == expected

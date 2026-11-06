@@ -567,6 +567,15 @@
       },
       "transfer_price": {
         "name": "Prezzo di trasporto"
+      },
+      "score_daily": {
+        "name": "{profile} punteggio (giornaliero)"
+      },
+      "score_monthly": {
+        "name": "{profile} punteggio (mensile)"
+      },
+      "score_formula": {
+        "name": "{profile} formula del punteggio"
       }
     },
     "number": {
