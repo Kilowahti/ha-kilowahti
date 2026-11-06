@@ -37,5 +37,8 @@
     "dependencies"
   ],
   "gitAuthor": "Renovate Bot <29139614+renovate[bot]@users.noreply.github.com>",
-  "dependencyDashboard": false
+  "dependencyDashboard": false,
+  "semanticCommits": "enabled",
+  "semanticCommitType": "chore",
+  "semanticCommitScope": null
 }
