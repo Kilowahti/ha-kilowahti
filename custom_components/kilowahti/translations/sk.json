@@ -467,7 +467,7 @@
         "name": "Cenový kvartil"
       },
       "price_rank": {
-        "name": "Poradie"
+        "name": "Poradie aktívnej ceny"
       },
       "self_consumption_value": {
         "name": "Hodnota vlastnej spotreby"

@@ -469,7 +469,7 @@
         "name": "Hinnakvartiil"
       },
       "price_rank": {
-        "name": "Järjekoht"
+        "name": "Aktiivse hinna järjekoht"
       },
       "self_consumption_value": {
         "name": "Omatarbimise väärtus"

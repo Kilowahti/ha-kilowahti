@@ -467,7 +467,7 @@
         "name": "Cuartila prețului"
       },
       "price_rank": {
-        "name": "Rang"
+        "name": "Rangul prețului activ"
       },
       "self_consumption_value": {
         "name": "Valoarea autoconsumului"

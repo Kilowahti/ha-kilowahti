@@ -387,7 +387,7 @@
         "name": "Kokonaishinta"
       },
       "price_rank": {
-        "name": "Sijaluku"
+        "name": "Toteutuvan hinnan sijaluku"
       },
       "total_price_rank": {
         "name": "Kokonaishinnan sijaluku"

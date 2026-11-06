@@ -469,7 +469,7 @@
         "name": "Price quartile"
       },
       "price_rank": {
-        "name": "Price rank"
+        "name": "Active price rank"
       },
       "self_consumption_value": {
         "name": "Self-consumption value"

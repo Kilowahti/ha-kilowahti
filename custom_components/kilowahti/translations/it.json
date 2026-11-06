@@ -467,7 +467,7 @@
         "name": "Quartile di prezzo"
       },
       "price_rank": {
-        "name": "Posizione"
+        "name": "Posizione del prezzo attivo"
       },
       "self_consumption_value": {
         "name": "Valore dell'autoconsumo"

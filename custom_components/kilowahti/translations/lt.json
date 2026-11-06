@@ -467,7 +467,7 @@
         "name": "Kainos kvartilis"
       },
       "price_rank": {
-        "name": "Rangas"
+        "name": "Aktyvios kainos rangas"
       },
       "self_consumption_value": {
         "name": "Suvartojimo savo reikmėms vertė"

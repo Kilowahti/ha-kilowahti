@@ -467,7 +467,7 @@
         "name": "Cenový kvartil"
       },
       "price_rank": {
-        "name": "Pořadí"
+        "name": "Pořadí aktivní ceny"
       },
       "self_consumption_value": {
         "name": "Hodnota vlastní spotřeby"

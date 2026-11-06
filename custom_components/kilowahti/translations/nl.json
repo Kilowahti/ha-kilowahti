@@ -467,7 +467,7 @@
         "name": "Prijskwartiel"
       },
       "price_rank": {
-        "name": "Rang"
+        "name": "Rang actieve prijs"
       },
       "self_consumption_value": {
         "name": "Eigenverbruikswaarde"

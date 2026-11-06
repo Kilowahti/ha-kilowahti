@@ -467,7 +467,7 @@
         "name": "Priskvartil"
       },
       "price_rank": {
-        "name": "Rang"
+        "name": "Aktiv prisrangering"
       },
       "self_consumption_value": {
         "name": "Egenforbruksverdi"

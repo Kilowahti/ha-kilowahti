@@ -387,7 +387,7 @@
         "name": "Precio total"
       },
       "price_rank": {
-        "name": "Posición"
+        "name": "Posición del precio activo"
       },
       "total_price_rank": {
         "name": "Posición del precio total"

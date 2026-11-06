@@ -467,7 +467,7 @@
         "name": "Preisquartil"
       },
       "price_rank": {
-        "name": "Rang"
+        "name": "Rang des aktiven Preises"
       },
       "self_consumption_value": {
         "name": "Eigenverbrauchswert"

@@ -467,7 +467,7 @@
         "name": "Kwartyl ceny"
       },
       "price_rank": {
-        "name": "Ranga"
+        "name": "Ranga ceny aktywnej"
       },
       "self_consumption_value": {
         "name": "Wartość autokonsumpcji"

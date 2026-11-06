@@ -467,7 +467,7 @@
         "name": "Kvartil cijene"
       },
       "price_rank": {
-        "name": "Rang"
+        "name": "Rang aktivne cijene"
       },
       "self_consumption_value": {
         "name": "Vrijednost vlastite potrošnje"

@@ -467,7 +467,7 @@
         "name": "Kvartil cene"
       },
       "price_rank": {
-        "name": "Rang"
+        "name": "Rang aktivne cene"
       },
       "self_consumption_value": {
         "name": "Vrednost samooskrbe"
