@@ -467,7 +467,7 @@
         "name": "Kainos kvartilis"
       },
       "price_rank": {
-        "name": "Rangas"
+        "name": "Aktyvios kainos rangas"
       },
       "self_consumption_value": {
         "name": "Suvartojimo savo reikmėms vertė"
@@ -567,6 +567,15 @@
       },
       "transfer_price": {
         "name": "Persiuntimo kaina"
+      },
+      "score_daily": {
+        "name": "{profile} taškai (dienos)"
+      },
+      "score_monthly": {
+        "name": "{profile} taškai (mėnesio)"
+      },
+      "score_formula": {
+        "name": "{profile} taškų formulė"
       }
     },
     "number": {

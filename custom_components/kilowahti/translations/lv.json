@@ -467,7 +467,7 @@
         "name": "Cenas kvartile"
       },
       "price_rank": {
-        "name": "Rangs"
+        "name": "Aktīvās cenas rangs"
       },
       "self_consumption_value": {
         "name": "Pašpatēriņa vērtība"
@@ -567,6 +567,15 @@
       },
       "transfer_price": {
         "name": "Sadales tarifs"
+      },
+      "score_daily": {
+        "name": "{profile} punkti (dienas)"
+      },
+      "score_monthly": {
+        "name": "{profile} punkti (mēneša)"
+      },
+      "score_formula": {
+        "name": "{profile} punktu formula"
       }
     },
     "number": {

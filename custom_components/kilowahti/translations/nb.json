@@ -467,7 +467,7 @@
         "name": "Priskvartil"
       },
       "price_rank": {
-        "name": "Rang"
+        "name": "Aktiv prisrangering"
       },
       "self_consumption_value": {
         "name": "Egenforbruksverdi"
@@ -567,6 +567,15 @@
       },
       "transfer_price": {
         "name": "Overføringspris"
+      },
+      "score_daily": {
+        "name": "{profile} poeng (daglig)"
+      },
+      "score_monthly": {
+        "name": "{profile} poeng (månedlig)"
+      },
+      "score_formula": {
+        "name": "{profile} poengformel"
       }
     },
     "number": {

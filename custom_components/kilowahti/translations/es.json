@@ -387,7 +387,7 @@
         "name": "Precio total"
       },
       "price_rank": {
-        "name": "Posición"
+        "name": "Posición del precio activo"
       },
       "total_price_rank": {
         "name": "Posición del precio total"
@@ -567,6 +567,15 @@
       },
       "price_data_source": {
         "name": "Fuente de datos de precios"
+      },
+      "score_daily": {
+        "name": "{profile} puntos (diarios)"
+      },
+      "score_monthly": {
+        "name": "{profile} puntos (mensuales)"
+      },
+      "score_formula": {
+        "name": "{profile} fórmula de puntos"
       }
     },
     "number": {

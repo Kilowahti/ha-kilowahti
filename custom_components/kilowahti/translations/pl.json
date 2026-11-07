@@ -467,7 +467,7 @@
         "name": "Kwartyl ceny"
       },
       "price_rank": {
-        "name": "Ranga"
+        "name": "Ranga ceny aktywnej"
       },
       "self_consumption_value": {
         "name": "Wartość autokonsumpcji"
@@ -567,6 +567,15 @@
       },
       "transfer_price": {
         "name": "Cena dystrybucji"
+      },
+      "score_daily": {
+        "name": "{profile} punkty (dzienne)"
+      },
+      "score_monthly": {
+        "name": "{profile} punkty (miesięczne)"
+      },
+      "score_formula": {
+        "name": "{profile} formuła punktacji"
       }
     },
     "number": {

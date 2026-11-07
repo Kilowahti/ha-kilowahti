@@ -733,7 +733,8 @@ class KilowahtiScoreSensor(CoordinatorEntity[KilowahtiCoordinator], SensorEntity
         self._period = period
         suffix = f"score_{profile.id}_{period}"
         self._attr_unique_id = f"{entry.entry_id}_{suffix}"
-        self._attr_name = f"{profile.label} score ({period})"
+        self._attr_translation_key = f"score_{period}"
+        self._attr_translation_placeholders = {"profile": profile.label}
         self._attr_device_info = _device_info(entry)
         self._suffix = suffix
 
@@ -780,7 +781,8 @@ class KilowahtiScoreFormulaSensor(CoordinatorEntity[KilowahtiCoordinator], Senso
         super().__init__(coordinator)
         self._profile_id = profile.id
         self._attr_unique_id = f"{entry.entry_id}_score_{profile.id}_formula"
-        self._attr_name = f"{profile.label} score formula"
+        self._attr_translation_key = "score_formula"
+        self._attr_translation_placeholders = {"profile": profile.label}
         self._attr_device_info = _device_info(entry)
         self._suffix = f"score_{profile.id}_formula"
 

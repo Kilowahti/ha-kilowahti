@@ -467,7 +467,7 @@
         "name": "Cuartila prețului"
       },
       "price_rank": {
-        "name": "Rang"
+        "name": "Rangul prețului activ"
       },
       "self_consumption_value": {
         "name": "Valoarea autoconsumului"
@@ -567,6 +567,15 @@
       },
       "transfer_price": {
         "name": "Preț de distribuție"
+      },
+      "score_daily": {
+        "name": "{profile} scor (zilnic)"
+      },
+      "score_monthly": {
+        "name": "{profile} scor (lunar)"
+      },
+      "score_formula": {
+        "name": "{profile} formula scorului"
       }
     },
     "number": {

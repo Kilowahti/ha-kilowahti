@@ -469,7 +469,7 @@
         "name": "Price quartile"
       },
       "price_rank": {
-        "name": "Price rank"
+        "name": "Active price rank"
       },
       "self_consumption_value": {
         "name": "Self-consumption value"
@@ -569,6 +569,15 @@
       },
       "transfer_price": {
         "name": "Transfer price"
+      },
+      "score_daily": {
+        "name": "{profile} score (daily)"
+      },
+      "score_monthly": {
+        "name": "{profile} score (monthly)"
+      },
+      "score_formula": {
+        "name": "{profile} score formula"
       }
     },
     "number": {

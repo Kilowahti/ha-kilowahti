@@ -467,7 +467,7 @@
         "name": "Kvartil cijene"
       },
       "price_rank": {
-        "name": "Rang"
+        "name": "Rang aktivne cijene"
       },
       "self_consumption_value": {
         "name": "Vrijednost vlastite potrošnje"
@@ -567,6 +567,15 @@
       },
       "transfer_price": {
         "name": "Mrežarina"
+      },
+      "score_daily": {
+        "name": "{profile} bodovi (dnevni)"
+      },
+      "score_monthly": {
+        "name": "{profile} bodovi (mjesečni)"
+      },
+      "score_formula": {
+        "name": "{profile} formula bodova"
       }
     },
     "number": {

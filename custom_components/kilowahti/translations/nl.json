@@ -467,7 +467,7 @@
         "name": "Prijskwartiel"
       },
       "price_rank": {
-        "name": "Rang"
+        "name": "Rang actieve prijs"
       },
       "self_consumption_value": {
         "name": "Eigenverbruikswaarde"
@@ -567,6 +567,15 @@
       },
       "transfer_price": {
         "name": "Nettarief"
+      },
+      "score_daily": {
+        "name": "{profile} punten (dagelijks)"
+      },
+      "score_monthly": {
+        "name": "{profile} punten (maandelijks)"
+      },
+      "score_formula": {
+        "name": "{profile} puntenformule"
       }
     },
     "number": {

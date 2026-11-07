@@ -467,7 +467,7 @@
         "name": "Quartile de prix"
       },
       "price_rank": {
-        "name": "Rang"
+        "name": "Rang du prix actif"
       },
       "self_consumption_value": {
         "name": "Valeur de l'autoconsommation"
@@ -567,6 +567,15 @@
       },
       "transfer_price": {
         "name": "Prix d'acheminement"
+      },
+      "score_daily": {
+        "name": "{profile} points (quotidien)"
+      },
+      "score_monthly": {
+        "name": "{profile} points (mensuel)"
+      },
+      "score_formula": {
+        "name": "{profile} formule des points"
       }
     },
     "number": {
